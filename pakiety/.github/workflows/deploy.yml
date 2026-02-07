@@ -1,0 +1,25 @@
+﻿name: 🚀 Deploy Website to LH.pl
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Copy files via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: serwer409986.lh.pl
+          username: serwer409986
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 40022
+          source: "./*, !.git"
+          target: "/home/platne/serwer409986/public_html/pakiety.raricart.pl/"
+          strip_components: 0
+          overwrite: true
