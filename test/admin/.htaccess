@@ -1,4 +1,0 @@
-<Files "leady.csv">
-    Order Allow,Deny
-    Deny from all
-</Files>
