@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy-site:
-    name: 🌐 Deploy SITE → test.rarycart.pl
+    name: 🌐 Deploy SITE → test.raricart.pl
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,7 @@ jobs:
           overwrite: true
 
   deploy-pakiety:
-    name: 📦 Deploy PAKIETY → test.pakiety.rarycard.pl
+    name: 📦 Deploy PAKIETY → test.pakiety.raricart.pl
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +42,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 40022
           source: "pakiety/**"
-          target: "/home/platne/serwer409986/public_html/test.pakiety.raricard.pl/"
+          target: "/home/platne/serwer409986/public_html/test.pakiety.raricart.pl/"
           strip_components: 1
           overwrite: true
