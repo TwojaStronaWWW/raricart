@@ -1,0 +1,5 @@
+{
+    "users": {
+        "admin@example.com": "$2y$10$hashed_password_placeholder"
+    }
+}

@@ -1,361 +1,619 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 
 <head>
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RARICARD | Live Food Station - Wkrótce</title>
+    <!-- Security: CSP & Honeypot setup -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://images.unsplash.com https://media.istockphoto.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com;">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600&family=Playfair+Display:wght@400;600;900&display=swap"
-        rel="stylesheet">
+    <!-- ANTI-SEO: Test Mode (No Index) -->
+    <meta name="robots" content="noindex, nofollow">
 
-    <style>
-        :root {
-            --color-bg: #f5f1eb;
-            --color-text: #5a5a5a;
-            --color-text-dark: #3d4a3a;
-            --color-accent: #a3b59a;
-            --font-primary: 'Comfortaa', sans-serif;
-            --font-secondary: 'Playfair Display', serif;
-            --bg-glass: rgba(255, 255, 255, 0.75);
-        }
+    <!-- SEO -->
+    <title>Raricart - Live Food Station & Catering</title>
+    <meta name="description"
+        content="Raricart to wyjątkowe mobilne stacje degustacyjne na wesela, eventy firmowe i festiwale. Slow BBQ, azjatycki wok, desery fine dining. Obsługa eventów w całej Polsce.">
+    <meta name="keywords"
+        content="catering eventowy, mobilne stacje gastronomiczne, live cooking, BBQ na event, catering na wesele, food truck, live food station">
+    <meta name="author" content="Raricart">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: var(--font-primary);
-            background: var(--color-bg);
-            color: var(--color-text);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(163, 181, 154, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(163, 181, 154, 0.1) 0%, transparent 40%);
-        }
+    <!-- Open Graph -->
+    <meta property="og:title" content="Raricart - Live Food Station | Mobilne Stacje Degustacyjne">
+    <meta property="og:description"
+        content="Tam, gdzie smak spotyka emocje, a prostota staje się elegancją. Tworzymy doświadczenie kulinarne, które zostaje w pamięci.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://raricart.pl">
+    <meta property="og:image" content="https://raricart.pl/Logo.png">
 
-        .container {
-            max-width: 800px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
+    <!-- Styles & Fonts -->
+    <link rel="canonical" href="https://raricart.pl">
+    <link rel="icon" type="image/png" href="favicon.png">
 
-        /* Glassmorphism Card */
-        .card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 4rem 3rem;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            animation: fadeIn 1.2s ease-out;
-        }
+    <!-- Critical CSS: Blocking load to prevent Layout Shift (CLS 1.0 fix) -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=33.0">
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+    <!-- Preload Fonts (Optimized for Critical Chain) -->
+    <!-- Comfortaa Light (300) - Main Body Text -->
+    <link rel="preload" href="assets/fonts/Comfortaa-Light.ttf" as="font" type="font/ttf" crossorigin>
+    <!-- Playfair SemiBold (600) - Main Headings -->
+    <link rel="preload" href="assets/fonts/Playfair-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    <!-- Scripts -->
 
-        .brand-name {
-            font-family: var(--font-secondary);
-            font-size: 4rem;
-            font-weight: 900;
-            color: var(--color-text-dark);
-            letter-spacing: 4px;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            text-transform: uppercase;
-        }
-
-        /* Pulse Animation for Logo/Name */
-        .pulse {
-            animation: heartbeat 2s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0% {
-                transform: scale(1);
-            }
-
-            5% {
-                transform: scale(1.05);
-            }
-
-            10% {
-                transform: scale(1);
-            }
-
-            15% {
-                transform: scale(1.05);
-            }
-
-            20% {
-                transform: scale(1);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .status-tag {
-            font-family: var(--font-secondary);
-            font-size: 0.9rem;
-            color: var(--color-accent);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .status-tag::before,
-        .status-tag::after {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background: var(--color-accent);
-        }
-
-        h1 {
-            font-family: var(--font-secondary);
-            font-size: 2.5rem;
-            color: var(--color-text-dark);
-            margin-bottom: 1.5rem;
-            font-weight: 400;
-            line-height: 1.2;
-        }
-
-        .description {
-            font-size: 1.15rem;
-            line-height: 1.9;
-            margin-bottom: 4rem;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 300;
-            color: var(--color-text);
-        }
-
-        .opening-date {
-            display: inline-block;
-            padding: 1.4rem 3rem;
-            background: var(--color-accent);
-            color: white;
-            border-radius: 100px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            box-shadow: 0 15px 30px rgba(163, 181, 154, 0.25);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 4.5rem;
-            text-transform: uppercase;
-        }
-
-        .opening-date:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(163, 181, 154, 0.4);
-        }
-
-        .subtext {
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: #8fa085;
-            letter-spacing: 1px;
-        }
-
-        /* Countdown Timer Styles */
-        .countdown-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 1.8rem 0.5rem;
-            border-radius: 20px;
-            border: 1px solid rgba(163, 181, 154, 0.15);
-            transition: all 0.4s ease;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.02);
-        }
-
-        .countdown-item:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.8);
-            border-color: var(--color-accent);
-            box-shadow: 0 20px 40px rgba(163, 181, 154, 0.15);
-        }
-
-        .countdown-value {
-            display: block;
-            font-family: var(--font-secondary);
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--color-text-dark);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .countdown-label {
-            display: block;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--color-accent);
-            font-weight: 600;
-        }
-
-        /* Decorative Elements */
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--color-accent);
-            opacity: 0.05;
-            z-index: -1;
-        }
-
-        .c1 {
-            width: 400px;
-            height: 400px;
-            top: -100px;
-            right: -150px;
-        }
-
-        .c2 {
-            width: 300px;
-            height: 300px;
-            bottom: -50px;
-            left: -100px;
-        }
-
-        @media (max-width: 768px) {
-            .brand-name {
-                font-size: 2.8rem;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            .countdown-container {
-                gap: 0.8rem;
-                margin-bottom: 2rem;
-            }
-
-            .countdown-item {
-                padding: 1rem 0.2rem;
-            }
-
-            .countdown-value {
-                font-size: 1.5rem;
-            }
-
-            .countdown-label {
-                font-size: 0.6rem;
-                letter-spacing: 1px;
-            }
-        }
-    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FoodEstablishment",
+      "name": "Raricart Live Food Station",
+      "description": "Mobilne stacje degustacyjne na eventy",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "PL"
+      },
+      "telephone": "+48883392688",
+      "email": "kontakt@raricart.pl",
+      "priceRange": "$$",
+      "servesCuisine": ["BBQ", "Asian", "Desserts"],
+      "url": "https://test.raricart.pl"
+    }
+    </script>
 </head>
 
 <body>
-    <div class="circle c1"></div>
-    <div class="circle c2"></div>
+    <!-- Backgrounds -->
+    <div class="video-background" id="videoBg">
+        <video autoplay muted loop playsinline aria-label="Tło wideo przedstawiające przygotowanie potraw">
+            <source src="assets/video/hero.mp4" type="video/mp4">
+            <track src="assets/video/captions.vtt" kind="captions" srclang="pl" label="Polski" default>
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+    <div class="background-overlay" id="bg"></div>
 
-    <div class="container">
-        <div class="card">
-            <div class="status-tag">W przygotowaniu</div>
-            <div class="brand-name pulse">RARICART</div>
-            <h1>Live Food Station</h1>
+    <!-- Header Container -->
+    <header id="main-header">
+        <!-- Branding & Nav -->
+        <div class="brand-container" id="brand">
+            <img src="assets/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
+                width="342" height="250" style="cursor:pointer" fetchpriority="high">
+        </div>
+        <h1 class="new-brand" id="brandText1" data-i18n="hero.title1">TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE
+            SIĘ ELEGANCJĄ...</h1>
+        <div class="new-brand" id="brandText2" data-i18n="hero.title2">...TAM ZACZYNA SIĘ RARICART</div>
 
-            <p class="description">
-                Tworzymy coś wyjątkowego. Mobilne stacje degustacyjne, które odmienią Twoje postrzeganie cateringu.
-                Smak, estetyka i pasja połączone w jedną, spójną całość.
-            </p>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-            <div class="opening-date">
-                WIELKIE OTWARCIE: 14 LUTEGO
+        <nav id="nav">
+            <ul class="nav-side nav-left">
+                <li><a href="#onas" aria-label="Przejdź do sekcji O Nas" data-i18n="nav.about">O Nas</a></li>
+                <li><a href="#oferta" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
+                <li><a href="#realizacje" aria-label="Przejdź do sekcji Galeria Realizacji"
+                        data-i18n="nav.gallery">Galeria</a></li>
+            </ul>
+
+            <div class="logo-spacer"></div>
+
+            <ul class="nav-side nav-right">
+                <li><a href="#faq" aria-label="Przejdź do sekcji FAQ" data-i18n="nav.faq">FAQ</a></li>
+                <li><a href="#dlaczego" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
+                        Wyróżnia</a></li>
+                <li><a href="#kontakt" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
+                <li class="lang-switch">
+                    <button class="lang-btn active" data-lang="pl">PL</button>
+                    <span class="sep">|</span>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <span class="sep">|</span>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scroll-indicator" id="scroll"><span data-i18n="hero.scroll">Przewiń w dół</span><span
+                class="scroll-arrow">↓</span></div>
+    </header>
+    <div class="spacer"></div>
+
+    <main class="content">
+
+        <!-- O Nas -->
+        <section id="onas" class="section section-fullwidth">
+            <h2 data-i18n="about.title">NIE TWORZYMY CATERINGU, LECZ DOŚWIADCZENIE, KTÓRE CIESZY OCZY, ANGAŻUJE
+                ZMYSŁY I
+                NA DŁUGO ZOSTAJE W
+                PAMIĘCI</h2>
+            <div class="offer-image-text-fullwidth">
+                <div class="offer-text-container-full">
+                    <div>
+                        <p data-i18n="about.p1">Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego
+                            wydarzenia, subtelne,
+                            dopracowane i&nbsp;pełne charakteru.</p>
+                        <p data-i18n="about.p2">Serwujemy lekkie, świeże kompozycje, od mini pancakes
+                            <br>i&nbsp;włoskich odów po aromatyczne
+                            deski
+                            serów, tworząc atmosferę, w której goście czują się swobodnie i&nbsp;wyjątkowo.
+                        </p>
+
+                        <div class="separator-line"></div>
+
+                        <!-- Raricart in Numbers (Butikowe) -->
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number" data-i18n="about.stats.s1.num">100%</span>
+                                <p class="stat-desc" data-i18n="about.stats.s1.text">Pasji i świeżości – każde danie
+                                    przygotowujemy na oczach gości.</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-i18n="about.stats.s2.num">3</span>
+                                <p class="stat-desc" data-i18n="about.stats.s2.text">Unikalne stacje – Mini Pancakes,
+                                    Lody Włoskie, Deski Serów (wyselekcjonowane i dopracowane).</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-i18n="about.stats.s3.num">0</span>
+                                <p class="stat-desc" data-i18n="about.stats.s3.text">Kompromisów – używamy tylko
+                                    składników premium i naturalnych produktów.</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-i18n="about.stats.s4.num">∞</span>
+                                <p class="stat-desc" data-i18n="about.stats.s4.text">Możliwości – personalizujemy menu i
+                                    wygląd stacji pod Twój event.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="offer-image-container-full">
+                    <img src="assets/images/about_group.webp"
+                        alt="Goście cieszący się posiłkiem podczas eventu Raricart" loading="lazy" width="800"
+                        height="600">
+                </div>
+            </div>
+        </section>
+
+        <!-- Oferta -->
+        <section id="oferta" class="section section-fullwidth">
+            <h2 data-i18n="offer.intro_title">NIE GOTUJEMY DAŃ, TWORZYMY CHWILE, KTÓRE ŁĄCZĄ LUDZI</h2>
+            <div class="offer-image-text-fullwidth">
+                <div class="offer-image-container-full">
+                    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1600"
+                        alt="Mobilna stacja gastronomiczna Raricart" loading="lazy">
+                </div>
+                <div class="offer-text-container-full no-separator">
+                    <div>
+                        <p data-i18n="offer.p1">Nasze stacje stają się miejscem rozmów, uśmiechów i&nbsp;zdjęć, a my
+                            dbamy o każdy szczegół,
+                            od
+                            montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.</p>
+                        <div class="separator-line"></div>
+                        <p style="margin-top: 0;" data-i18n="offer.p2">Obsługujemy eventy firmowe, wesela, gale<br>
+                            i&nbsp;prywatne
+                            przyjęcia,
+                            współpracując zarówno z agencjami, jak i&nbsp;klientami indywidualnymi.</p>
+                        <div class="separator-line"></div>
+                        <p data-i18n="offer.p3">W każdym projekcie kierujemy się zasadą, że smak i&nbsp;estetyka mają tę
+                            samą wartość, razem
+                            tworzą atmosferę, której nikt nie zapomina. Z Raricart zyskujesz nie tylko catering, ale
+                            spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak
+                            wygląda.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Countdown Timer -->
-            <div class="countdown-container">
-                <div class="countdown-item">
-                    <span class="countdown-value" id="days">00</span>
-                    <span class="countdown-label">Dni</span>
+
+            <h2 style="margin-top: 3rem;" data-i18n="offer.title">Nasza Oferta</h2>
+            <div class="offer-grid">
+                <article class="offer-card" data-offer="pancakes">
+                    <div class="offer-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=800');"
+                        role="img" aria-label="Mini Pancakes"></div>
+                    <div class="offer-content">
+                        <h3 data-i18n="offer.cards.pancakes.title">Mini Pancakes</h3>
+                        <p data-i18n="offer.cards.pancakes.desc">Słodka stacja, która angażuje gości i&nbsp;staje
+                            się sercem wydarzenia.</p>
+                    </div>
+                </article>
+                <article class="offer-card" data-offer="icecream">
+                    <div class="offer-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1560008581-09826d1de69e?w=800');"
+                        role="img" aria-label="Lody"></div>
+                    <div class="offer-content">
+                        <h3 data-i18n="offer.cards.icecream.title">Lody</h3>
+                        <p data-i18n="offer.cards.icecream.desc">Orzeźwiająca stacja, która zachwyca gości
+                            i&nbsp;buduje atmosferę.</p>
+                    </div>
+                </article>
+                <article class="offer-card" data-offer="cheese">
+                    <div class="offer-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1631379578550-7038263db699?w=800');"
+                        role="img" aria-label="Deska Serów"></div>
+                    <div class="offer-content">
+                        <h3 data-i18n="offer.cards.cheese.title">Deska Serów</h3>
+                        <p data-i18n="offer.cards.cheese.desc">Fascynująca strefa smaku z&nbsp;włoskimi serami
+                            i&nbsp;wędlinami.</p>
+                    </div>
+                </article>
+            </div>
+
+        </section>
+
+        <!-- Realizacje -->
+        <section id="realizacje" class="section">
+            <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
+            <div class="gallery-grid" id="dynamicGalleryGrid">
+                <!-- Col 1 -->
+                <div class="gallery-column static">
+                    <div class="gallery-item" data-index="0"><img src="assets/gallery/gallery_01.webp" width="600"
+                            height="800" alt="Catering event realizacja 1" loading="lazy"></div>
+                    <div class="gallery-item" data-index="1"><img src="assets/gallery/gallery_02.webp" width="600"
+                            height="800" alt="Catering event realizacja 2" loading="lazy"></div>
+                    <div class="gallery-item" data-index="2"><img src="assets/gallery/gallery_03.webp" width="600"
+                            height="800" alt="Catering event realizacja 3" loading="lazy"></div>
+                    <div class="gallery-item" data-index="3"><img src="assets/gallery/gallery_04.webp" width="600"
+                            height="800" alt="BBQ catering realizacja 4" loading="lazy"></div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-value" id="hours">00</span>
-                    <span class="countdown-label">Godz</span>
+                <!-- Col 2 Parallax -->
+                <div class="gallery-column parallax">
+                    <div class="gallery-item" data-index="4"><img src="assets/gallery/gallery_05.webp" width="600"
+                            height="800" alt="Event realizacja 5" loading="lazy"></div>
+                    <div class="gallery-item" data-index="5"><img src="assets/gallery/gallery_06.webp" width="600"
+                            height="800" alt="Live cooking realizacja 6" loading="lazy"></div>
+                    <div class="gallery-item" data-index="6"><img src="assets/gallery/gallery_01.webp" width="600"
+                            height="800" alt="Catering realizacja 7" loading="lazy"></div>
+                    <div class="gallery-item" data-index="7"><img src="assets/gallery/gallery_02.webp" width="600"
+                            height="800" alt="Event realizacja 8" loading="lazy"></div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-value" id="minutes">00</span>
-                    <span class="countdown-label">Min</span>
+                <!-- Col 3 -->
+                <div class="gallery-column static">
+                    <div class="gallery-item" data-index="8"><img src="assets/gallery/gallery_03.webp" width="600"
+                            height="800" alt="Food realizacja 9" loading="lazy"></div>
+                    <div class="gallery-item" data-index="9"><img src="assets/gallery/gallery_04.webp" width="600"
+                            height="800" alt="Catering realizacja 10" loading="lazy"></div>
+                    <div class="gallery-item" data-index="10"><img src="assets/gallery/gallery_05.webp" width="600"
+                            height="800" alt="BBQ realizacja 11" loading="lazy"></div>
+                    <div class="gallery-item" data-index="11"><img src="assets/gallery/gallery_06.webp" width="600"
+                            height="800" alt="Wok realizacja 12" loading="lazy"></div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-value" id="seconds">00</span>
-                    <span class="countdown-label">Sek</span>
+                <!-- Col 4 Parallax -->
+                <div class="gallery-column parallax">
+                    <div class="gallery-item" data-index="12"><img src="assets/gallery/gallery_04.webp" width="600"
+                            height="800" alt="Event realizacja 13" loading="lazy"></div>
+                    <div class="gallery-item" data-index="13"><img src="assets/gallery/gallery_01.webp" width="600"
+                            height="800" alt="Food realizacja 14" loading="lazy"></div>
+                    <div class="gallery-item" data-index="14"><img src="assets/gallery/gallery_02.webp" width="600"
+                            height="800" alt="Catering realizacja 15" loading="lazy"></div>
+                    <div class="gallery-item" data-index="15"><img src="assets/gallery/gallery_03.webp" width="600"
+                            height="800" alt="Catering realizacja 16" loading="lazy"></div>
+                </div>
+                <!-- Col 5 -->
+                <div class="gallery-column static">
+                    <div class="gallery-item" data-index="16"><img src="assets/gallery/gallery_04.webp" width="600"
+                            height="800" alt="Desery realizacja 17" loading="lazy"></div>
+                    <div class="gallery-item" data-index="17"><img src="assets/gallery/gallery_05.webp" width="600"
+                            height="800" alt="Event realizacja 18" loading="lazy"></div>
+                    <div class="gallery-item" data-index="18"><img src="assets/gallery/gallery_06.webp" width="600"
+                            height="800" alt="Event realizacja 19" loading="lazy"></div>
+                    <div class="gallery-item" data-index="19"><img src="assets/gallery/gallery_01.webp" width="600"
+                            height="800" alt="BBQ realizacja 20" loading="lazy"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="section">
+            <h2 data-i18n="faq.title">FAQ - Najczęściej Zadawane Pytania</h2>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q1.title">Jak daleko możecie dojechać z Waszą "Droną Eventową"?</h3>
+                <p data-i18n="faq.q1.desc">Obsługujemy wydarzenia w całej Polsce, a w przypadku większych imprez,
+                    jesteśmy otwarci na wyjazdy
+                    zagraniczne. Nasze mobilne stanowiska pozwalają nam dotrzeć do niemal każdej, nawet najbardziej
+                    wymagającej lokalizacji – od centrum miasta po odległe tereny piknikowe.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q2.title">Czy oferujecie opcje wegetariańskie, wegańskie lub bezglutenowe?</h3>
+                <p data-i18n="faq.q2.desc">Tak! Nasze menu jest w pełni elastyczne i dostosowujemy je do wymagań
+                    dietetycznych gości. W trakcie
+                    planowania menu z Klientem, zawsze proponujemy szeroki wybór opcji wege, wegańskich oraz dań bez
+                    glutenu, używając specjalnie dedykowanych składników.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q3.title">Jakie są wymagania techniczne na miejscu eventu?</h3>
+                <p data-i18n="faq.q3.desc">Nasze mobilne stacje są w dużej mierze samowystarczalne. Potrzebujemy jedynie
+                    stabilnej, równej
+                    powierzchni. Dostęp do prądu jest mile widziany, ale posiadamy własne ciche generatory, które możemy
+                    uruchomić w razie potrzeby.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q4.title">Jaki jest minimalny czas rezerwacji?</h3>
+                <p data-i18n="faq.q4.desc">Zalecamy rezerwację na minimum 2-3 miesiące przed planowaną datą, szczególnie
+                    w sezonie letnim, aby
+                    zagwarantować dostępność terminów i najlepszych składników. Oczywiście, w miarę możliwości
+                    obsługujemy także last minute!</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q5.title">Czy zapewniacie obsługę kelnerską?</h3>
+                <p data-i18n="faq.q5.desc">Tak! W ramach kompleksowej obsługi zapewniamy profesjonalny zespół kelnerski,
+                    który zadba o komfort
+                    Twoich gości. Nasi kelnerzy są doświadczeni w obsłudze eventów różnego typu i gwarantują najwyższy
+                    poziom usług.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q6.title">Ile osób możecie obsłużyć jednocześnie?</h3>
+                <p data-i18n="faq.q6.desc">Nasze mobilne stacje są skalowalne – od kameralnych spotkań dla 20 osób, po
+                    wielkie eventy dla
+                    kilkuset gości. W zależności od wielkości wydarzenia, dostosowujemy liczbę stanowisk i personelu,
+                    aby zapewnić płynną obsługę bez kolejek.</p>
+            </article>
+        </section>
+
+        <!-- Dlaczego My -->
+        <section id="dlaczego" class="section section-fullwidth">
+            <div class="parallax-why">
+                <h2 data-i18n="why.title">SZTUKA KULINARNYCH DOŚWIADCZEŃ</h2>
+                <div class="parallax-content">
+                    <div class="parallax-card">
+                        <h3 data-i18n="why.cards.1.title">EFEKT „WOW" Z KLASĄ</h3>
+                        <p data-i18n="why.cards.1.desc">Na oczach gości serwujemy ciepłe pancakes prosto z patelni,
+                            nalewamy cremowe lody i
+                            komponujemy deski serów - wszystko świeże, personalizowane i dopracowane w detalach. Proces
+                            live station przyciąga uwagę, integruje uczestników i tworzy naturalne punkty spotkań, gdzie
+                            przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż
+                            wydarzenia, łącząc estetykę premium z czystą przyjemnością dla zmysłów.</p>
+                    </div>
+                    <div class="parallax-card">
+                        <h3 data-i18n="why.cards.2.title">MNIEJ LOGISTYKI, WIĘCEJ SPOKOJU</h3>
+                        <p data-i18n="why.cards.2.desc">Raricart przejmuje całość: dojazd, montaż stacji, serwowanie
+                            podczas eventu, demontaż i
+                            perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje
+                            działają wszędzie: w loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych.
+                            Zespół synchronizuje serwis z harmonogramem, dba o płynny przepływ gości i minimalizuje
+                            kolejki.</p>
+                    </div>
+                    <div class="parallax-card">
+                        <h3 data-i18n="why.cards.3.title">DOŚWIADCZENIE ZAMIAST BUFETU</h3>
+                        <p data-i18n="why.cards.3.desc">W odróżnieniu od statycznego bufetu, nasze live stations
+                            angażują: goście obserwują nalewanie
+                            lodów, układanie pancakes i komponowanie desek serów, wybierając dodatki na bieżąco.
+                            Wszystko serwowane porcjami „tu i teraz" - świeże, bez marnowania, idealnie dopasowane do
+                            liczby i preferencji uczestników. Tematyczne stacje stają się magnesem na gości, budując
+                            emocje i niezapomniane wspomnienia.</p>
+                    </div>
+                    <div class="parallax-card">
+                        <h3 data-i18n="why.cards.4.title">BEZPIECZEŃSTWO, JAKOŚĆ, ESTETYKA</h3>
+                        <p data-i18n="why.cards.4.desc">Przestrzegamy rygorystycznych standardów higieny i
+                            bezpieczeństwa żywności, z naciskiem na
+                            świeżość składników i perfekcyjną prezencję. Używamy wyselekcjonowanych produktów
+                            serwowanych w optymalnej temperaturze. Każdy detal - od aranżacji stacji, przez zastawę, po
+                            pracę zespołu - tworzy spójną scenografię, wzmacniającą wizerunek Twojego wydarzenia.</p>
+                    </div>
+                    <div class="parallax-card">
+                        <h3 data-i18n="why.cards.5.title">PARTNER DLA WYMAGAJĄCYCH</h3>
+                        <p data-i18n="why.cards.5.desc">Agencje eventowe zyskują niezawodnego partnera rozumiejącego
+                            timing, layout i dynamikę dużych
+                            wydarzeń. Firmy, pary młode i organizatorzy prywatnych imprez otrzymują rozwiązanie premium:
+                            efekt „wow", emocje i pełną opiekę nad gośćmi. Właściciele lokali eventowych wzbogacają
+                            ofertę o mobilne stacje bez inwestycji w sprzęt – gotowe do działania w dowolnej
+                            przestrzeni.</p>
+                    </div>
+                    <div class="parallax-card">
+                        <h3 data-i18n="why.cards.6.title">NAPISZ DO NAS</h3>
+                        <p data-i18n="why.cards.6.desc">Twój event zasługuje na wyjątkowe live food station, które
+                            stanie się jego wizytówką. Napisz
+                            do nas już dziś - dopasujemy ofertę do Twojej wizji i zapewnimy termin. Razem stworzymy
+                            doświadczenie, które goście będą wspominać z zachwytem!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kontakt -->
+        <section id="kontakt" class="section">
+            <h2 data-i18n="contact.title">Zapytaj o dostępność terminu<br>i stwórzmy razem strefę smaku,<br>o której
+                Twoi goście długo nie
+                zapomną.</h2>
+            <div class="progress-container">
+                <div id="form-progress"></div>
+            </div>
+            <p id="progress-text" style="text-align: center; margin-bottom: 1rem; color: #666; font-size: 0.9rem;"
+                data-i18n="form.progress_text">
+                Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)</p>
+            <form id="form" class="contact-form" novalidate>
+                <div id="availability-notice" class="availability-notice" style="display:none"></div>
+                <!-- Honeypot for bots -->
+                <input type="text" name="website_check" style="display:none !important" tabindex="-1"
+                    autocomplete="off">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name" data-i18n="form.name">Imię i Nazwisko *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-i18n="form.email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" data-i18n="form.phone">Telefon *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="date" data-i18n="form.date">Data Wydarzenia *</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests" data-i18n="form.guests_label">Liczba Gości *</label>
+                    <select id="guests" name="guests" required>
+                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
+                        <option value="20-50">20-50 osób</option>
+                        <option value="50-100">50-100 osób</option>
+                        <option value="100-200">100-200 osób</option>
+                        <option value="200+">Powyżej 200 osób</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget" data-i18n="form.budget">Budżet *</label>
+                    <select id="budget" name="budget" required>
+                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
+                        <option value="5-10k">5 000 - 10 000 PLN</option>
+                        <option value="10-20k">10 000 - 20 000 PLN</option>
+                        <option value="20-30k">20 000 - 30 000 PLN</option>
+                        <option value="30k+">Powyżej 30 000 PLN</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="event_type" data-i18n="form.event_type">Rodzaj Wydarzenia *</label>
+                    <select id="event_type" name="event_type" required>
+                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
+                        <option value="wedding" data-i18n="form.types.wedding">Wesele</option>
+                        <option value="corporate" data-i18n="form.types.corporate">Event Firmowy</option>
+                        <option value="festival" data-i18n="form.types.festival">Festiwal/Piknik</option>
+                        <option value="private" data-i18n="form.types.private">Przyjęcie Prywatne</option>
+                        <option value="other" data-i18n="form.types.other">Inne</option>
+                    </select>
+                </div>
+                </div>
+                <div class="form-group full-width">
+                    <label data-i18n="form.stations">Interesujące Stacje *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item"><input type="checkbox" id="p" name="stations" value="pancakes"><label
+                                for="p" data-i18n="form.st_pancakes">Mini Pancakes</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="l" name="stations" value="lody"><label
+                                for="l" data-i18n="form.st_icecream">Lody</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="s" name="stations" value="sery"><label
+                                for="s" data-i18n="form.st_cheese">Deska Serów</label></div>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="message" data-i18n="form.message">Dodatkowe Informacje</label>
+                    <textarea id="message" name="message" rows="4"
+                        placeholder="Opisz swoje potrzeby, pytania lub preferencje..."
+                        data-i18n-placeholder="form.message_placeholder"></textarea>
+                </div>
+                <button type="submit" class="cta-primary" data-i18n="form.submit">Wyślij Zapytanie</button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- 1. Brand -->
+            <div class="footer-section">
+                <h3>Raricart</h3>
+                <p>Live Food Station</p>
+                <p data-i18n="footer.desc">Mobilne stacje degustacyjne na eventy w całej Polsce.</p>
+            </div>
+
+            <!-- 2. Quick Links (Moved 2nd) -->
+            <div class="footer-section">
+                <h3 data-i18n="footer.quick_links">Szybkie Linki</h3>
+                <nav class="footer-links">
+                    <a href="#onas" data-i18n="nav.about">O Nas</a>
+                    <a href="#oferta" data-i18n="nav.offer">Oferta</a>
+                    <a href="#realizacje" data-i18n="nav.gallery">Realizacje</a>
+                    <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
+                </nav>
+            </div>
+
+            <!-- 3. Contact (Moved 3rd) -->
+            <div class="footer-section">
+                <h3 data-i18n="nav.contact">Kontakt</h3>
+                <div class="contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        class="contact-icon">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                            stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <a href="mailto:kontakt@raricart.pl">kontakt@raricart.pl</a>
+                </div>
+                <div class="contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        class="contact-icon">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.12 2h3a2 2 0 0 1 2 1.72 12.05 12.05 0 0 0 .57 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.05 12.05 0 0 0 2.81.57A2 2 0 0 1 22 16.92z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <a href="tel:+48883392688" class="phone-link">+48 883 392 688</a>
                 </div>
             </div>
 
-            <p class="subtext">Do zobaczenia już wkrótce!</p>
+            <!-- 4. Media (Labels added) -->
+            <div class="footer-section">
+                <h3>Media</h3>
+                <div class="footer-socials vertical">
+                    <a href="https://www.instagram.com/raricart.pl" target="_blank" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            class="social-icon">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor"
+                                stroke-width="2"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor"
+                                stroke-width="2"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2"></line>
+                        </svg>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/people/Raricart/61585951812916/" target="_blank"
+                        aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            class="social-icon">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                        <span>Facebook</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()" aria-label="Zamknij modal">&times;</button>
+            <img id="modalImg" src="" alt="">
+            <div class="modal-description">
+                <h3 id="modalTitle"></h3>
+                <div id="modalText"></div>
+            </div>
         </div>
     </div>
-    <script>
-        // Countdown Timer Logic
-        const targetDate = new Date('February 14, 2026 22:00:00').getTime();
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
+    <div id="galleryModal" class="gallery-modal">
+        <button class="gallery-modal-close" aria-label="Zamknij galerię">&times;</button>
+        <img id="galleryModalImg" src="" alt="Powiększone zdjęcie realizacji">
+        <button class="gallery-nav gallery-prev" aria-label="Poprzednie zdjęcie">‹</button>
+        <button class="gallery-nav gallery-next" aria-label="Następne zdjęcie">›</button>
+    </div>
 
-            if (distance < 0) {
-                document.querySelector('.countdown-container').style.display = 'none';
-                document.querySelector('.opening-date').innerText = 'ZAPRASZAMY!';
-                return;
-            }
+    <!-- Cookie Banner -->
+    <div id="cookie-banner" class="cookie-banner" style="display: none;">
+        <div class="cookie-content">
+            <p data-i18n="cookies.text">
+                Ta strona używa plików cookies, aby zapewnić najlepszą jakość. Korzystając ze strony, zgadzasz
+                się na ich użycie.
+            </p>
+            <div class="cookie-buttons">
+                <button id="reject-cookies" class="cta-secondary small-btn"
+                    style="margin-right: 10px; border: 1px solid rgba(255,255,255,0.3); color: #fff;"
+                    data-i18n="cookies.reject">Odrzuć</button>
+                <button id="accept-cookies" class="cta-primary small-btn" data-i18n="cookies.accept">Akceptuję</button>
+            </div>
+        </div>
+    </div>
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = days.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-    </script>
+    <!-- Scripts -->
+    <script src="assets/js/script.js?v=34.0" defer></script>
 </body>
 
-</html>
 
-<!-- test  l-->
+</html>

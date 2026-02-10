@@ -31,3 +31,7 @@ composer.phar
 # Assets cleanup
 assets/data/*.json
 !assets/data/*.json.dist
+
+# deploy / runtime
+.ftp-deploy-sync-state.json
+.htpasswd

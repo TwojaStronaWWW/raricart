@@ -1,6 +1,15 @@
-﻿.DS_Store
-node_modules/
-.env
-*.log
+# System Files
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
+
+# Configuration
+assets/data/config.json
+
+# User Uploads (prevent overwriting / tracking)
+assets/gallery/img_*
+assets/gallery/vid_*
+assets/images/img_*
+assets/images/vid_*
+assets/data/*.json

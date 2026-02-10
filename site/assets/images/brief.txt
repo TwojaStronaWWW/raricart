@@ -1,0 +1,57 @@
+Brief dla Fotografa - Raricart Live Food Station
+Ten dokument zawiera listę zdjęć niezbędnych do odświeżenia strony internetowej raricart.pl. Celem jest zastąpienie obecnych zdjęć stockowych autorskimi fotografiami, które oddadzą klimat, jakość i charakter marki.
+
+Styl i Klimat
+Słowa kluczowe: Elegancja, świeżość, "human touch", jakość premium, naturalne światło (lub dobrze doświetlone ciepłym światłem).
+Kolorystyka: Zgodna z identyfikacją (beże, zielenie, naturalne drewno), zdjęcia nie powinny być przesadnie nasycone ani zbyt ciemne.
+Format: Większość zdjęć pozioma (landscape) do sekcji szerokokątnych, ale potrzebne też kadry pionowe (portrait) do social media i wersji mobilnej.
+Lista Ujęć (Shot List)
+1. Sekcja Hero (Strona Główna - Góra)
+To pierwsze co widzi klient. Może to być wideo (jeśli fotograf realizuje też wideo) lub statyczne zdjęcie.
+
+Ujęcie: Szeroki plan (Wide Shot) stacji w pięknej lokalizacji (np. plener weselny, elegancka sala).
+Co zawiera: Cała stacja z obsługą, widoczni zadowoleni goście w tle (nieostrzy), "życie" wokół stacji.
+Wskazówka: Musi mieć dużo puste przestrzeni (negative space) lub być dość ciemne/jasne, aby napisy na stronie były czytelne.
+2. Sekcja "O Nas"
+Zdjęcie budujące zaufanie i pokazujące "ludzką twarz" firmy.
+
+Ujęcie: Portret zespołu lub zdjęcie sytuacyjne (Candid).
+Co zawiera: Uśmiechnięta obsługa/właściciele przy pracy (np. nalewanie wina, przygotowywanie deski serów) lub wspólne zdjęcie zespołu przy stacji.
+Klimat: Ciepły, gościnny.
+3. Sekcja "Oferta" (Tło i Ogólne)
+Ujęcie: Detal lub szeroki plan stacji "w akcji".
+Wymaganie: Zdjęcie, które posłuży jako tło lub ilustracja główna oferty. Może to być np. estetycznie ułożone produkty na blacie stacji.
+4. Karty Ofertowe (Szczegółowe Stacje)
+Potrzebne są konkretne zdjęcia do "kafelków" z ofertą. Muszą być apetyczne (Food Porn).
+
+Mini Pancakes:
+Close-up: Stosik placuszków polany sosem/syropem, ze świeżymi owocami.
+Action: Moment nakładania/smażenia.
+Lody Włoskie:
+Close-up: Idealnie zakręcony lód w rożku lub kubeczku, ładna posypka.
+Action: Dłoń podająca loda dziecku lub dorosłemu.
+Deska Serów / Wędliny (Charcuterie):
+Close-up: Bogata deska z serami, winogronami, orzechami. Detal na teksturę sera.
+Inne (Grill/Wok - jeśli dotyczy):
+Zdjęcia dymu, ognia, smażenia – dynamika.
+5. Galeria (Co najmniej 20 różnorodnych zdjęć)
+Mieszanka ujęć do sekcji "Zrealizowane Projekty". Ważne: Galeria na stronie wyświetla zdjęcia w formacie PIONOWYM (3:4).
+
+Setup (30%): Puste stacje przygotowane na przyjęcie gości (pionowe kadry).
+Jedzenie (30%): Zbliżenia na gotowe porcje.
+Ludzie/Emocje (20%): Goście przy stacji (pionowe kadry dobrze wyglądają na mobile).
+Detale (20%): Logo, sztućce, dłonie.
+6. Sekcja "Dlaczego My" (Tło Parallax)
+Ujęcie: Bardzo klimatyczne, artystyczne tło.
+Co zawiera: Np. rozmyte światła wieczornego przyjęcia (bokeh), dym z grilla podświetlony słońcem, lub artystyczne zbliżenie na teksturę drewna/jedzenia.
+Ważne: To zdjęcie będzie przyciemnione, służy jako tło.
+7. Tło Sekcji "Galeria" (Parallax)
+Ujęcie: Spokojne, teksturalne tło, które nie odwraca uwagi od zdjęć realizacji.
+Co zawiera: Ciemne drewno, beton architektoniczny, rozmyta zieleń lub elegancki obrus.
+Cel: Tło dla kafelków ze zdjęciami – musi być "ciche" wizualnie (mało detali, jednolita kolorystyka).
+Wymagania Techniczne dla Fotografa
+Rozdzielczość: Wysoka (do druku i web), ale poproś o wersje zoptymalizowane do weba (JPG, sRGB).
+Proporcje:
+Horyzontalne 16:9 (na banery i dwa tła parallax: "Dlaczego My" oraz "Galeria").
+Pionowe 3:4 (do głównej galerii realizacji - bardzo ważne!).
+Pionowe 9:16 (na relacje IG/TikTok).

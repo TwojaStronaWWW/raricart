@@ -1,0 +1,52 @@
+
+/* --- Parallax Why Section --- */
+.parallax-why {
+    position: relative;
+    background-color: #333; /* Fallback */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 6rem 1rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.parallax-why h2 {
+    color: white;
+    margin-bottom: 3rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.parallax-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.parallax-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 8px;
+    color: var(--color-text);
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.parallax-card h3 {
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .parallax-why {
+        background-attachment: scroll; /* Performance fix for mobile */
+        padding: 4rem 1rem;
+    }
+}
