@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy-site:
-    name: 🌐 Deploy SITE → test.rarycard.pl
+    name: 🌐 Deploy SITE → test.rarycart.pl
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 40022
           source: "site/**"
-          target: "/home/platne/serwer409986/public_html/test.raricard.pl/"
+          target: "/home/platne/serwer409986/public_html/test.raricart.pl/"
           strip_components: 1
           overwrite: true
 
