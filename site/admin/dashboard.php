@@ -133,6 +133,34 @@ if (file_exists($status_file)) {
                 </label>
             </div>
         </div>
+        
+        <h3 style="margin-top:2rem; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 1rem;">Zdjęcia w Modalu Oferty (Szczegóły)</h3>
+        <div class="media-grid">
+             <!-- Offer Modal Images -->
+             <div class="media-item">
+                <h4>Pancakes (Modal)</h4>
+                <div class="media-preview" id="preview-offer_modals-pancakes"></div>
+                <label class="btn btn-secondary upload-btn">
+                    Zmień
+                    <input type="file" onchange="uploadContent(this, 'offer_modals.pancakes', 'image')" accept="image/*">
+                </label>
+            </div>
+            <div class="media-item">
+                <h4>Lody (Modal)</h4>
+                <div class="media-preview" id="preview-offer_modals-icecream"></div>
+                <label class="btn btn-secondary upload-btn">
+                    Zmień
+                    <input type="file" onchange="uploadContent(this, 'offer_modals.icecream', 'image')" accept="image/*">
+                </label>
+            </div>
+            <div class="media-item">
+                <h4>Deska Serów (Modal)</h4>
+                <div class="media-preview" id="preview-offer_modals-cheese"></div>
+                <label class="btn btn-secondary upload-btn">
+                    Zmień
+                    <input type="file" onchange="uploadContent(this, 'offer_modals.cheese', 'image')" accept="image/*">
+                </label>
+            </div>
     </div>
 
     <!-- Image Upload -->
@@ -523,8 +551,8 @@ function resizeImage(file) {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 1920;
-                const MAX_HEIGHT = 1080;
+                const MAX_WIDTH = 2500;
+                const MAX_HEIGHT = 2000;
                 let width = img.width;
                 let height = img.height;
                 
@@ -545,7 +573,7 @@ function resizeImage(file) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
+                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.95);
             };
             img.src = e.target.result;
         };

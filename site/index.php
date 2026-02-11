@@ -173,7 +173,7 @@ include 'parts/navbar.php';
                     }
                 }
 
-                $colsCount = 4;
+                $colsCount = 5;
                 $columns = array_fill(0, $colsCount, []);
                 foreach ($galleryFiles as $idx => $src) {
                     $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
@@ -392,6 +392,9 @@ include 'parts/navbar.php';
 <?php
 // 3. FOOTER
 include 'parts/footer.php';
+
+// 4. MODALS (Moved outside footer to ensure top Z-Index)
+include 'parts/modals.php';
 ?>
 
 

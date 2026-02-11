@@ -535,7 +535,7 @@ video::-webkit-media-text-track-display {
 
 .premium-image {
     width: 100%;
-    height: 700px;
+    height: 600px;
     object-fit: cover;
     border-radius: var(--radius-ui);
     box-shadow: 0 30px 60px rgba(0,0,0,0.12);
@@ -1166,12 +1166,7 @@ footer {
 }
 
 /* Updated Close Button */
-.gallery-modal-wrapper {
-    position: relative;
-    display: inline-block;
-    max-width: 90%;
-    max-height: 90vh;
-}
+
 
 .modal-close,
 .gallery-modal-close {

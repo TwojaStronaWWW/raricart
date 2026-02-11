@@ -428,7 +428,7 @@
     }
     
     // Text fade out at bottom of Hero
-    if (textProgress > 2.2) {
+    if (textProgress > 1.5) {
       if (ui.brandText1) { ui.brandText1.classList.remove('visible'); ui.brandText1.classList.add('hidden'); }
       if (ui.brandText2) { ui.brandText2.classList.remove('visible'); ui.brandText2.classList.add('hidden'); }
     }
@@ -600,7 +600,19 @@
     const data = translations[currentLang]?.modals?.[type];
     
     if (data && modal) {
-      img.src = data.image;
+      let imgSrc = data.image;
+      
+      // Override with dynamic content if available (Specific Modal Image)
+      if (window.siteContentConfig && 
+          window.siteContentConfig.offer_modals && 
+          window.siteContentConfig.offer_modals[type]) {
+          imgSrc = window.siteContentConfig.offer_modals[type] + '?v=' + Date.now();
+      } 
+      // Fallback to dynamic card image if modal specific not set but card is? 
+      // User asked for specific modal image. If not set, keep default or card image?
+      // For now, keep default logic (translations or card image if translations uses it).
+      
+      img.src = imgSrc;
       img.alt = data.title;
       title.textContent = data.title;
       text.innerHTML = data.content; // Render HTML directly
@@ -619,6 +631,10 @@
     
     if (modal && img) {
       img.src = galleryImages[index];
+      // Reset styles in case they were stuck in transition
+      img.style.opacity = '1';
+      img.style.transform = 'scale(1)';
+      
       modal.classList.add('active');
       toggleBodyScroll(true);
       
@@ -810,9 +826,11 @@
             // SAFETY: If we have very few images (e.g. local dev), repeat them to fill the grid visuals
             // Target at least 15 images for a good parallax effect
             const MIN_IMAGES = 15;
-            if (images.length < MIN_IMAGES) {
+            if (images.length > 0 && images.length < MIN_IMAGES) {
                 const originalLength = images.length;
-                while (images.length < MIN_IMAGES) {
+                let safetyCounter = 0;
+                while (images.length < MIN_IMAGES && safetyCounter < 20) {
+                    safetyCounter++;
                     for (let i = 0; i < originalLength; i++) {
                         if (images.length >= MIN_IMAGES) break;
                         images.push(images[i]);
@@ -1159,11 +1177,7 @@
             }
 
             if (typeof text === 'string') {
-                // Optimized: Only overwrite if NOT Polish or if specifically needed
-                // This allows the user to edit index.php directly without JS reverting it for the main language
-                if (lang !== 'pl' || el.hasAttribute('data-force-i18n')) {
-                    el.innerHTML = text; 
-                }
+                el.innerHTML = text;
             }
         });
 
