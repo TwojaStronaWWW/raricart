@@ -1,0 +1,141 @@
+* [33m729f545[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m poprawiki
+[31m|[m * [33ma001f41[m[33m ([m[1;31morigin/staging[m[33m, [m[1;32mstaging[m[33m)[m test
+[31m|[m * [33m60fd489[m test
+[31m|[m * [33m45fd85e[m test
+[31m|[m * [33m01fcac7[m Initial commit: rarycard.pl monorepo (site + packages)
+[31m|[m * [33m60ba3de[m Cleanup: usunięcie starej struktury (main, test, pakiety)
+[31m|[m * [33m1830e66[m Refactor: nowa struktura projektu (site, packages)
+[31m|[m * [33m770dcf3[m Initial commit: Centralized Raricart repositories (main, test, pakiety)
+[31m|[m * [33m6275222[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m impuls hero
+[31m|[m[31m/[m  
+* [33ma3a0a01[m usuwanie napisow do wideo
+* [33mdb70962[m poprawap isowni i polityka peywarnosci
+* [33md7a495b[m poprawap isowni i polityka peywarnosci
+* [33ma41c0d3[m poprawap isowni i polityka peywarnosci
+* [33m9ff8a37[m favucib
+* [33m84a858d[m sekcja o nas
+* [33mba1ec52[m poprawki cache
+* [33md1f5908[m poprawki cache
+* [33med2c57b[m poprawki cache
+* [33m1340b5b[m poprawki cache
+* [33m58f6cb1[m poprawki cache
+* [33m8c66c83[m poprawki cache
+* [33m27e74b6[m poprawki cache
+* [33m25e5fe7[m poprawki cache
+* [33mf343c80[m poprawki cache
+* [33m9a60612[m zniana zakladki o nas
+* [33m1d82ae8[m zniana zakladki o nas
+* [33m1411b52[m zniana zakladki o nas
+* [33m69bf9dc[m poprawki
+* [33m36ddffc[m poprawki
+* [33mc067301[m poprawki
+* [33m07c1832[m test
+* [33m6267156[m poprawka
+* [33mf05daef[m test
+* [33mcc363bc[m optymalizajca google
+* [33mbdee36e[m aktualizacja strony administratorskiej v5
+* [33mbc48768[m aktualizacja strony administratorskiej v4
+* [33m8281aaf[m aktualizacja strony administratorskiej v3
+* [33m12ad4ec[m aktualizacja strony administratorskiej v2
+* [33m257490b[m aktualizacja strony administratorskiej
+* [33m99a6887[m baza danych na csv
+* [33m03ea10c[m przejscie na php
+* [33m4ad4870[m poprawa papalaxu i unkci panelu admina v3
+* [33m8d9410f[m poprawa papalaxu i unkci panelu admina v2
+* [33mef4f1fd[m poprawa papalaxu i unkci panelu admina
+* [33m25b4e09[m yjatki w git
+* [33m2b13f7b[m optymalizajca google v7
+* [33me31846f[m optymalizajca google v6
+* [33ma5525f3[m optymalizajca google v5
+* [33m28cb5f3[m optymalizajca google v4
+* [33meb2df1f[m optymalizajca google v3
+* [33m1f77007[m optymalizajca google v2
+* [33m7dedb60[m optymalizajca google v1
+* [33mb01b05a[m zmniejszenie zdjec pod acp
+* [33mb9432c2[m optymalizacja google v2
+* [33m0cea4cc[m optymalizacja google
+* [33m525bf6b[m uniezaleznienie od zczcioek i zdjec plus pentesty
+* [33m836fdba[m sprzatanie v2
+* [33m63d3e3f[m sprzatanie
+* [33mc3bd401[m poprawki wersji mobilnej v3
+* [33md5eaa4a[m poprawki wersji mobilnejv2
+* [33m4227cbf[m poprawki wersji mobilnej
+* [33mccdf7b6[m panel testowy - aktaliajca o zewnetrzne zdjecia v16
+* [33m1289a46[m panel testowy - aktaliajca o zewnetrzne zdjecia v15
+* [33m7b725ea[m panel testowy - aktaliajca o zewnetrzne zdjecia v14
+* [33m1ef2f43[m panel testowy - aktaliajca o zewnetrzne zdjecia v13
+* [33ma857cf1[m panel testowy - aktaliajca o zewnetrzne zdjecia v12
+* [33m5e2ea42[m panel testowy - aktaliajca o zewnetrzne zdjecia v11
+* [33m8d88379[m panel testowy - aktaliajca o zewnetrzne zdjecia v10
+* [33m38ee7f9[m panel testowy - aktaliajca o zewnetrzne zdjecia v9
+* [33m5ad719f[m panel testowy - aktaliajca o zewnetrzne zdjecia v8
+* [33md61ad02[m panel testowy - aktaliajca o zewnetrzne zdjecia v7
+* [33md3ec3be[m panel testowy - aktaliajca o zewnetrzne zdjecia v6
+* [33mae7e838[m panel testowy - aktaliajca o zewnetrzne zdjecia v5
+* [33m7e40098[m panel testowy - aktaliajca o zewnetrzne zdjecia v4
+* [33maa922a5[m panel testowy - aktaliajca o zewnetrzne zdjecia v3
+* [33m1dbfbff[m panel testowy - aktaliajca o zewnetrzne zdjecia
+* [33m5d2bf3e[m panel testowy - aktaliajca o zewnetrzne zdjecia
+* [33m825ed21[m panel testowy - poprawki wyswietlajace komunikat przy formularzu
+* [33mb13b3ce[m panel testowy - poprawki wyswietlajace komunikat przy formularzu
+* [33md312ad1[m panel testowy - poprawki wyswietlajace komunikat przy formularzu
+* [33m1cf6611[m testowy panel administracyjny
+* [33me05002c[m aktualizacja sekcji baner , stopka, logo, zamykanie obrazkow, aktuualizacja tekstow w ofertcie
+* [33m9470e46[m sekcja o nas zaaktualizowana
+* [33m25d150d[m popraw tla, poprawa przyciuk hamburger,implementacja przyciks u back w komorkach
+* [33m1d86126[m tlo i optymalizacja
+* [33m7913b41[m poprawa interfejsku na komorkach v3
+* [33mffa32cf[m poprawa interfejsku na komorkach v2
+* [33mb9888a6[m poprawa interfejsku na komorkach
+* [33meef0b9a[m poprawa bezpieczenistwa, oraz skoski w galerii usuniete
+* [33m99b1a41[m usuniecie bledu, synhornizacji p ootwarxiu zdjecia, galeria nie ucieka juz do stnau pierwotnego
+* [33m5312386[m przycisk odrzuci w cookie
+* [33ma32123b[m komunikat dla serwera o bledzie 404
+* [33mb8006f5[m pliki cookie i strona 404
+* [33m91b0471[m dodanie systemu lidow
+* [33mb7cbd84[m tesotwanie synchronizacji git lh
+* [33m86b3077[m tesotwanie synchronizacji git lh
+* [33m768e3d8[m tesotwanie synchronizacji git lh
+* [33mba721c9[m tesotwanie synchronizacji git lh
+* [33m25cc9bc[m tesotwanie synchronizacji git lh
+* [33meb5cfa1[m tesotwanie synchronizacji git lh
+* [33mbe9ca56[m tesotwanie synchronizacji git lh
+* [33m4a662bb[m tesotwanie synchronizacji git lh
+* [33m5509216[m tesotwanie synchronizacji git lh
+* [33mc7f56ce[m tesotwanie synchronizacji git lh
+* [33mc4f774a[m tesotwanie synchronizacji git lh
+* [33m92366f6[m tesotwanie synchronizacji git lh
+* [33ma1089ae[m tesotwanie synchronizacji git lh
+* [33me2f4aaf[m tesotwanie synchronizacji git lh
+* [33m7b96166[m tesotwanie synchronizacji git lh
+* [33mcda32c3[m tesotwanie synchronizacji git lh
+* [33m685f193[m tesotwanie synchronizacji git lh
+* [33mb377118[m tesotwanie synchronizacji git lh
+* [33mbfeb6b4[m tesotwanie synchronizacji git lh
+* [33ma95a358[m tesotwanie synchronizacji git lh
+* [33m5e92128[m tesotwanie synchronizacji git lh
+* [33m1d2c32d[m nalozenie blokady przed indeksowaniem, zmiana formularza na niealezny w php
+* [33m80e55b4[m google amaliz
+* [33m7152dd1[m optymalizaja strony
+* [33mc80b6d9[m poprawki tlumaczeniowe
+* [33mf151685[m tlumaczenie na ang i hiszpanski
+* [33mc44b5f2[m aktualizacja sekcji nasza ofeta
+* [33mbd8ca7a[m zmiana naglowka w formularzu
+* [33m7fc3971[m efekt wstazki
+* [33m690375e[m aktualizacja czcionki
+* [33me312bdc[m stopka, sekcja oferta
+* [33mbeb878c[m czcionki
+* [33m8b64395[m porpawa naglowkow w 2 pierszych skecjach, modyfikacja ... w sentencji
+* [33m18d992b[m rozstrzepienie sentencji romocyjnej na 3 czesci, zamiana sekcji realizacje o raz sekcjo o nas zmiana pogrubienia sentencji
+* [33m6768a95[m zmiana logiki sekcji nasza oferta, dodanie obrazow do skecji spodniej naszej oferty
+* [33m35b1654[m zmiana logiki sekcji nasza oferta, dodanie obrazow do skecji spodniej naszej oferty
+* [33m6b0d876[m zmiana logiki sekcji nasza oferta, dodanie obrazow do skecji spodniej naszej oferty
+* [33ma385793[m drobne poprawki
+* [33m8d38382[m zakladka realizacje, paralax, zdjecia
+* [33m47db3bd[m czcionki, teksty, seo
+* [33ma6f8c2b[m czcionki, teksty, seo
+* [33m1389974[m czcionki, teksty, seo
+* [33m13fcc7e[m czcionki, teksty, seo
+* [33m3d3b5cc[m Twoja wiadomość opisująca zmiany
+* [33mcfed400[m Twoja wiadomość opisująca zmiany
+* [33m7031d93[m Pierwszy commit

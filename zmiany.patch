@@ -1,0 +1,2637 @@
+diff --git a/.github/workflows/deploy-staging.yml b/.github/workflows/deploy-staging.yml
+new file mode 100644
+index 0000000..6ae9e13
+--- /dev/null
++++ b/.github/workflows/deploy-staging.yml
+@@ -0,0 +1,47 @@
++name: 🚀 Deploy STAGING (test environments)
++
++on:
++  push:
++    branches:
++      - staging
++
++jobs:
++  deploy-site:
++    name: 🌐 Deploy SITE → test.raricart.pl
++    runs-on: ubuntu-latest
++
++    steps:
++      - name: 📥 Checkout repository
++        uses: actions/checkout@v3
++
++      - name: 🚀 Upload site files
++        uses: appleboy/scp-action@master
++        with:
++          host: serwer409986.lh.pl
++          username: serwer409986
++          password: ${{ secrets.FTP_PASSWORD }}
++          port: 40022
++          source: "site/**"
++          target: "/home/platne/serwer409986/public_html/test.raricart.pl/"
++          strip_components: 1
++          overwrite: true
++
++  deploy-pakiety:
++    name: 📦 Deploy PAKIETY → test.pakiety.raricart.pl
++    runs-on: ubuntu-latest
++
++    steps:
++      - name: 📥 Checkout repository
++        uses: actions/checkout@v3
++
++      - name: 🚀 Upload pakiety files
++        uses: appleboy/scp-action@master
++        with:
++          host: serwer409986.lh.pl
++          username: serwer409986
++          password: ${{ secrets.FTP_PASSWORD }}
++          port: 40022
++          source: "pakiety/**"
++          target: "/home/platne/serwer409986/public_html/test.pakiety.raricart.pl/"
++          strip_components: 1
++          overwrite: true
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+deleted file mode 100644
+index 390aa3f..0000000
+--- a/.github/workflows/deploy.yml
++++ /dev/null
+@@ -1,25 +0,0 @@
+-name: 🚀 Deploy Website to LH.pl
+-
+-on:
+-  push:
+-    branches:
+-      - master
+-
+-jobs:
+-  deploy:
+-    runs-on: ubuntu-latest
+-    steps:
+-      - name: 🚚 Get latest code
+-        uses: actions/checkout@v3
+-
+-      - name: 🚀 Copy files via SSH
+-        uses: appleboy/scp-action@master
+-        with:
+-          host: serwer409986.lh.pl
+-          username: serwer409986
+-          password: ${{ secrets.FTP_PASSWORD }}
+-          port: 40022
+-          source: "./*, !.git"
+-          target: "/home/platne/serwer409986/public_html/test.raricart.pl/"
+-          strip_components: 0
+-          overwrite: true
+\ No newline at end of file
+diff --git a/.gitignore b/.gitignore
+index 450eda0..b6ee90e 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,15 +1,37 @@
+-# System Files
++# Collective .gitignore for Raricart repository
++
++# Dependencies
++vendor/
++node_modules/
++
++# Logs
++*.log
++npm-debug.log*
++yarn-debug.log*
++yarn-error.log*
++
++# OS files
+ .DS_Store
+ Thumbs.db
+-.vscode/
+-.idea/
+ 
+-# Configuration
+-assets/data/config.json
++# Environment / Config
++.env
++.env.local
++.env.production
++config.json
++content.json
+ 
+-# User Uploads (prevent overwriting / tracking)
+-assets/gallery/img_*
+-assets/gallery/vid_*
+-assets/images/img_*
+-assets/images/vid_*
++# Exclude existing git history from subfolders if they were not removed
++**/ .git/
++
++# PHP specific
++composer.phar
++.phpunit.result.cache
++
++# Assets cleanup
+ assets/data/*.json
++!assets/data/*.json.dist
++
++# deploy / runtime
++.ftp-deploy-sync-state.json
++.htpasswd
+diff --git a/.vscode/sftp.json b/.vscode/sftp.json
+deleted file mode 100644
+index 90d6da7..0000000
+--- a/.vscode/sftp.json
++++ /dev/null
+@@ -1,16 +0,0 @@
+-{
+-    "name": "LH-Test",
+-    "host": "serwer409986.lh.pl",
+-    "protocol": "sftp",
+-    "port":40022,
+-    "username": "serwer409986",
+-    "password": "Fs1o&uC^aIQ5$fkh",
+-    "remotePath": "/home/platne/serwer409986/public_html/test.raricart.pl",
+-    "uploadOnSave": true,
+-    "concurrency": 1,
+-    "ignore": [
+-        "**/.git/**",
+-        "**/.vscode/**",
+-        "**/node_modules/**"
+-    ]
+-}
+\ No newline at end of file
+diff --git a/packages/.gitignore b/packages/.gitignore
+new file mode 100644
+index 0000000..c91632f
+--- /dev/null
++++ b/packages/.gitignore
+@@ -0,0 +1,6 @@
++﻿.DS_Store
++node_modules/
++.env
++*.log
++.vscode/
++.idea/
+diff --git a/packages/.htaccess b/packages/.htaccess
+new file mode 100644
+index 0000000..fd5e5c8
+--- /dev/null
++++ b/packages/.htaccess
+@@ -0,0 +1,4 @@
++AuthType Basic
++AuthName "Staging – dostęp tylko dla uprawnionych"
++AuthUserFile /home/serverXXXX/.htpasswd
++Require valid-user
+diff --git a/packages/assets/css/style.css b/packages/assets/css/style.css
+new file mode 100644
+index 0000000..408521a
+--- /dev/null
++++ b/packages/assets/css/style.css
+@@ -0,0 +1,398 @@
++:root {
++    --bg-light: #f5f1eb;
++    --color-white: #ffffff;
++    --color-text: #5a5a5a;
++    --color-text-dark: #3d4a3a;
++    
++    /* Brand Accent ( Sage ) */
++    --accent: #a3b59a;
++    --accent-dark: #8fa085;
++    --accent-glow: rgba(163, 181, 154, 0.3);
++    
++    /* Glassmorphism */
++    --bg-glass: rgba(255, 255, 255, 0.75);
++    --glass-border: rgba(255, 255, 255, 0.5);
++    
++    /* Typography */
++    --font-heading: 'Playfair Display', serif;
++    --font-body: 'Comfortaa', sans-serif;
++    
++    --radius-ui: 16px;
++    --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.08);
++}
++
++* {
++    margin: 0;
++    padding: 0;
++    box-sizing: border-box;
++    -webkit-tap-highlight-color: transparent;
++}
++
++body {
++    background-color: var(--bg-light);
++    color: var(--color-text);
++    font-family: var(--font-body);
++    font-weight: 400;
++    line-height: 1.6;
++    overflow-x: hidden;
++    position: relative;
++}
++
++/* Background Decorations */
++.bg-decoration {
++    position: fixed;
++    border-radius: 50%;
++    filter: blur(80px);
++    z-index: -1;
++    opacity: 0.4;
++    pointer-events: none;
++}
++
++.dec-1 {
++    width: 400px;
++    height: 400px;
++    background: var(--accent);
++    top: -100px;
++    right: -100px;
++    animation: float-dec 20s infinite alternate ease-in-out;
++}
++
++.dec-2 {
++    width: 300px;
++    height: 300px;
++    background: var(--accent-glow);
++    bottom: 10% ;
++    left: -100px;
++    animation: float-dec 15s infinite alternate-reverse ease-in-out;
++}
++
++@keyframes float-dec {
++    from { transform: translate(0, 0) rotate(0deg); }
++    to { transform: translate(30px, 50px) rotate(15deg); }
++}
++
++.container {
++    max-width: 600px;
++    margin: 0 auto;
++    padding: 20px;
++}
++
++header {
++    text-align: center;
++    padding: 30px 0 10px;
++}
++
++.brand-logo {
++    max-width: 280px;
++    height: auto;
++    margin-bottom: 10px;
++    filter: drop-shadow(0 4px 10px rgba(61, 74, 58, 0.1));
++}
++
++.subtitle {
++    font-size: 0.8rem;
++    color: var(--accent);
++    text-transform: uppercase;
++    letter-spacing: 4px;
++    font-weight: 600;
++}
++
++h1, h2, h3 {
++    font-family: var(--font-heading);
++    color: var(--color-text-dark);
++}
++
++.section-title {
++    text-align: center;
++    font-size: 1.8rem;
++    margin-top: 50px;
++    margin-bottom: 30px;
++    text-transform: uppercase;
++    letter-spacing: 1px;
++    position: relative;
++}
++
++.section-title::after {
++    content: '';
++    display: block;
++    width: 60px;
++    height: 3px;
++    background: var(--accent);
++    margin: 15px auto;
++}
++
++.section-intro {
++    text-align: center;
++    max-width: 500px;
++    margin: 0 auto 40px;
++    font-size: 0.95rem;
++    line-height: 1.7;
++    color: var(--color-text);
++}
++
++.section-intro p {
++    margin-bottom: 15px;
++}
++
++/* CARDS */
++.card {
++    background: var(--bg-glass);
++    backdrop-filter: blur(25px);
++    -webkit-backdrop-filter: blur(25px);
++    border: 1px solid var(--glass-border);
++    border-radius: var(--radius-ui);
++    padding: 35px;
++    margin-bottom: 30px;
++    box-shadow: var(--shadow-premium);
++    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
++    opacity: 0;
++    transform: translateY(30px);
++    animation: reveal-card 0.8s forwards;
++}
++
++@keyframes reveal-card {
++    to {
++        opacity: 1;
++        transform: translateY(0);
++    }
++}
++
++.card:nth-child(1) { animation-delay: 0.1s; }
++.card:nth-child(2) { animation-delay: 0.2s; }
++.card:nth-child(3) { animation-delay: 0.3s; }
++.card:nth-child(4) { animation-delay: 0.4s; }
++.card:nth-child(5) { animation-delay: 0.5s; }
++
++.card:hover {
++    transform: translateY(-5px);
++    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
++    border-color: var(--accent);
++}
++
++.card:active {
++    transform: scale(0.98);
++}
++
++.card-title {
++    display: flex;
++    align-items: center;
++    gap: 12px;
++    font-size: 1.5rem;
++    color: var(--color-text-dark);
++    margin-bottom: 20px;
++}
++
++
++.package-list {
++    list-style: none;
++    margin-bottom: 25px;
++}
++
++.package-list li {
++    font-size: 1rem;
++    margin-bottom: 12px;
++    padding-left: 25px;
++    position: relative;
++    color: var(--color-text);
++}
++
++.package-list li::before {
++    content: '';
++    position: absolute;
++    left: 0;
++    top: 10px;
++    width: 10px;
++    height: 2px;
++    background: var(--accent);
++}
++
++/* PRICING GRID */
++.price-grid {
++    display: grid;
++    grid-template-columns: repeat(2, 1fr);
++    gap: 12px;
++}
++
++.price-item {
++    background: rgba(163, 181, 154, 0.08);
++    padding: 15px;
++    border-radius: 12px;
++    text-align: center;
++    transition: all 0.3s ease;
++    border: 1px solid transparent;
++}
++
++.price-item:hover {
++    background: rgba(163, 181, 154, 0.15);
++    transform: translateY(-3px);
++    border-color: var(--accent-glow);
++}
++
++.price-label {
++    font-size: 0.8rem;
++    color: var(--accent-dark);
++    display: block;
++    text-transform: uppercase;
++    letter-spacing: 1px;
++    margin-bottom: 5px;
++}
++
++.price-value {
++    font-weight: 700;
++    color: var(--color-text-dark);
++    font-size: 1.1rem;
++}
++
++/* HERO CARD (3 STATIONS) */
++.hero-card {
++    border: 2px solid var(--accent);
++    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(163, 181, 154, 0.05));
++}
++
++.badge {
++    display: table;
++    margin: 0 auto 20px;
++    background: var(--accent);
++    color: var(--color-white);
++    padding: 8px 18px;
++    border-radius: 50px;
++    font-size: 0.75rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    letter-spacing: 2px;
++    box-shadow: 0 4px 15px var(--accent-glow);
++}
++
++.hero-total {
++    text-align: center;
++    margin-top: 30px;
++    padding: 30px;
++    background: rgba(163, 181, 154, 0.15);
++    border-radius: 12px;
++    border: 1px solid var(--accent-glow);
++}
++
++.hero-total .price-label {
++    margin-bottom: 4px;
++    color: var(--color-text-dark);
++    font-weight: 700;
++}
++
++.hero-total .price-value {
++    font-size: 1.8rem;
++    color: var(--color-text-dark);
++}
++
++.hero-description {
++    font-size: 0.95rem;
++    line-height: 1.7;
++    color: var(--color-text);
++    margin-bottom: 25px;
++}
++
++.hero-description p {
++    margin-bottom: 12px;
++}
++
++.hero-highlight-box {
++    background: rgba(163, 181, 154, 0.1);
++    border: 1px dashed var(--accent);
++    padding: 15px;
++    border-radius: 12px;
++    margin-top: 15px;
++}
++
++.hero-highlight-box strong {
++    display: block;
++    color: var(--color-text-dark);
++    margin-bottom: 5px;
++    font-size: 1rem;
++}
++
++/* 2-STATION COMBOS */
++.combo-card {
++    border-left: 5px solid var(--accent);
++}
++
++.combo-header {
++    display: flex;
++    justify-content: space-between;
++    align-items: center;
++    margin-bottom: 15px;
++}
++
++.combo-price-main {
++    font-weight: 700;
++    color: var(--accent-dark);
++    font-size: 1.3rem;
++}
++
++.combo-per-person {
++    font-size: 0.9rem;
++    color: var(--color-text);
++    font-weight: 300;
++}
++
++/* LOGISTICS */
++.logistics {
++    text-align: center;
++    margin-top: 50px;
++    padding: 30px;
++    background: rgba(255,255,255,0.4);
++    border-radius: var(--radius-ui);
++    font-size: 0.95rem;
++}
++
++.logistics p {
++    margin-bottom: 10px;
++}
++
++/* CTA */
++footer {
++    text-align: center;
++    padding: 60px 0;
++}
++
++.cta-btn {
++    display: inline-block;
++    background: var(--color-text-dark);
++    color: var(--color-white);
++    padding: 20px 50px;
++    border-radius: 50px;
++    text-decoration: none;
++    font-weight: 700;
++    font-size: 1.15rem;
++    letter-spacing: 2px;
++    text-transform: uppercase;
++    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
++    box-shadow: 0 10px 30px rgba(61, 74, 58, 0.2);
++    position: relative;
++    overflow: hidden;
++}
++
++.cta-btn::after {
++    content: '';
++    position: absolute;
++    top: -50%;
++    left: -50%;
++    width: 200%;
++    height: 200%;
++    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
++    transform: rotate(45deg);
++    transition: 0.6s;
++}
++
++.cta-btn:hover {
++    background: var(--accent-dark);
++    transform: translateY(-5px) scale(1.05);
++    box-shadow: 0 20px 40px rgba(163, 181, 154, 0.4);
++}
++
++.cta-btn:hover::after {
++    left: 100%;
++}
++
++@media (max-width: 480px) {
++    .brand-logo { max-width: 220px; }
++    .section-title { font-size: 1.5rem; }
++}
+diff --git a/packages/index.html b/packages/index.html
+new file mode 100644
+index 0000000..fc63637
+--- /dev/null
++++ b/packages/index.html
+@@ -0,0 +1,240 @@
++﻿<!DOCTYPE html>
++<html lang="pl">
++
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Raricart - Pakiety Eventowe</title>
++    <!-- Fonts -->
++    <link rel="preconnect" href="https://fonts.googleapis.com">
++    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
++    <link
++        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
++        rel="stylesheet">
++    <!-- Favicon -->
++    <link rel="icon" type="image/png" href="logo_optimized.png">
++    <!-- CSS -->
++    <link rel="stylesheet" href="assets/css/style.css">
++</head>
++
++<body>
++    <div class="bg-decoration dec-1"></div>
++    <div class="bg-decoration dec-2"></div>
++
++    <div class="container">
++        <header>
++            <img src="logo_optimized.png" alt="Raricart Logo" class="brand-logo">
++        </header>
++
++        <main>
++            <!-- INDIVIDUAL STATIONS -->
++            <section>
++                <h2 class="section-title">POJEDYNCZE STANOWISKA</h2>
++                <div class="section-intro">
++                    <p>Nie tworzymy cateringu, tworzymy strefę smaku, która przyciąga gości, buduje atmosferę i
++                        naturalnie staje się sercem wydarzenia.</p>
++                    <p>Nasze live food stations łączą świeżo przygotowywane kompozycje, estetyczną oprawę i serwis na
++                        żywo, dając gościom swobodę wyboru i moment przyjemności dokładnie wtedy, gdy mają na to ochotę.
++                    </p>
++                </div>
++
++                <div class="card">
++                    <div class="card-title">Mini Pancakes</div>
++                    <ul class="package-list">
++                        <li>Stały serwis świeżo przygotowywanych mini pancakes przez cały czas obsługi</li>
++                        <li>Słodkie dodatki w cenie: świeże owoce, kremy czekoladowe, polewy, posypki oraz chrupiące
++                            ciasteczka</li>
++                        <li>Możliwość samodzielnego komponowania własnych zestawów przez gości</li>
++                        <li>Stacja live cooking z aranżacją</li>
++                    </ul>
++                    <div class="price-grid">
++                        <div class="price-item"><span class="price-label">50 os.</span><span class="price-value">3 150
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">100 os.</span><span class="price-value">4 500
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">5 850
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">7 200
++                                zł</span></div>
++                    </div>
++                </div>
++
++                <div class="card">
++                    <div class="card-title">Lody Włoskie</div>
++                    <ul class="package-list">
++                        <li>Strefa lodów włoskich dostępna dla gości przez cały czas obsługi</li>
++                        <li>Serwis live i aranżacja stanowiska</li>
++                        <li>Słodkie dodatki w cenie: świeże owoce, sosy owocowe i czekoladowe, chrupiące posypki,
++                            orzechy, mini ciasteczka</li>
++                    </ul>
++                    <div class="price-grid">
++                        <div class="price-item"><span class="price-label">50 os.</span><span class="price-value">3 000
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">100 os.</span><span class="price-value">4 250
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">5 550
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">6 800
++                                zł</span></div>
++                    </div>
++                </div>
++
++                <div class="card">
++                    <div class="card-title">Deska Serów</div>
++                    <ul class="package-list">
++                        <li>Stały serwis i uzupełnianie ekspozycji przez cały czas obsługi</li>
++                        <li>Strefa degustacyjna obejmująca 12 starannie wyselekcjonowanych pozycji: włoskie sery i
++                            wędliny premium z wytrawnymi dodatkami i sosami</li>
++                        <li>Możliwość samodzielnego komponowania mini desek przez gości</li>
++                        <li>Stylowa prezentacja stacji</li>
++                    </ul>
++                    <div class="price-grid">
++                        <div class="price-item"><span class="price-label">50 os.</span><span class="price-value">3 250
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">100 os.</span><span class="price-value">4 750
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">6 300
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">7 800
++                                zł</span></div>
++                    </div>
++                </div>
++            </section>
++
++            <!-- HERO: 3 STATIONS -->
++            <section>
++                <h2 class="section-title">PAKIET – 3 STANOWISKA</h2>
++                <div class="card hero-card">
++                    <span class="badge">NAJLEPSZA OPCJA (-10%)</span>
++                    <div class="hero-description">
++                        <p>Pełne doświadczenie live food, które robi wrażenie i ustawia wydarzenie na wyższym poziomie.
++                        </p>
++                        <p>Trzy stanowiska tworzą kompletną strefę smaku, bez kolejek, bez kompromisów i bez
++                            powtarzalności. Goście swobodnie krążą między stacjami, atmosfera żyje, a całość staje się
++                            jednym z najmocniejszych punktów wydarzenia.</p>
++                        <p>To wybór dla tych, którzy chcą, by live food było nie dodatkiem, a prawdziwą atrakcją.</p>
++                        <div class="hero-highlight-box">
++                            <strong>Dlaczego klienci decydują się na 3 stanowiska?</strong>
++                            <p>Bo daje maksymalną różnorodność, najwyższy komfort serwisu i efekt, który zostaje w
++                                pamięci gości na długo.</p>
++                        </div>
++                    </div>
++                    <div class="card-title">
++                        Pakiety Kompleksowe
++                    </div>
++                    <ul class="package-list">
++                        <li>Mini Pancakes Live Station</li>
++                        <li>Lody Włoskie Live Station</li>
++                        <li>Deska Serów Live Station</li>
++                    </ul>
++                    <div class="price-grid">
++                        <div class="price-item">
++                            <span class="price-label">50 osób</span>
++                            <span class="price-value">8 870 zł</span>
++                        </div>
++                        <div class="price-item">
++                            <span class="price-label">100 osób</span>
++                            <span class="price-value">12 560 zł</span>
++                        </div>
++                        <div class="price-item">
++                            <span class="price-label">150 osób</span>
++                            <span class="price-value">16 340 zł</span>
++                        </div>
++                        <div class="price-item">
++                            <span class="price-label">200 osób</span>
++                            <span class="price-value">20 030 zł</span>
++                        </div>
++                    </div>
++                </div>
++            </section>
++
++            <!-- COMBOS: 2 STATIONS -->
++            <section>
++                <h2 class="section-title">PAKIETY – 2 STANOWISKA</h2>
++                <div class="card hero-card" style="margin-bottom: 40px;">
++                    <span class="badge">RABAT PAKIETOWY -5%</span>
++                    <div class="hero-description">
++                        <p>Więcej wyboru, większy komfort i płynność, którą goście naprawdę doceniają.</p>
++                        <p>Dwa stanowiska live food pozwalają rozłożyć ruch, skrócić kolejki i dać gościom swobodę
++                            wyboru bez pośpiechu. To rozwiązanie, które sprawia, że strefa smaku działa naturalnie,
++                            każdy znajduje coś dla siebie, a Ty zyskujesz spokojny przebieg wydarzenia bez chaosu i
++                            przestojów.</p>
++                        <div class="hero-highlight-box">
++                            <strong>Dlaczego klienci wybierają 2 stanowiska:</strong>
++                            <p>Bo to najbardziej wyczuwalny upgrade doświadczenia przy zachowaniu pełnej kontroli nad
++                                budżetem.</p>
++                        </div>
++                    </div>
++                </div>
++
++                <div class="card combo-card">
++                    <div class="card-title">
++                        Mini Pancakes + Lody Włoskie
++                    </div>
++                    <div class="price-grid">
++                        <div class="price-item"><span class="price-label">50 os.</span><span class="price-value">6 250
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">100 os.</span><span class="price-value">8 720
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">11 240
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">13 710
++                                zł</span></div>
++                    </div>
++                </div>
++
++                <div class="card combo-card">
++                    <div class="card-title">
++                        Mini Pancakes + Deska Serów
++                    </div>
++                    <div class="price-grid">
++                        <div class="price-item"><span class="price-label">50 os.</span><span class="price-value">6 490
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">100 os.</span><span class="price-value">9 200
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">11 950
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">14 660
++                                zł</span></div>
++                    </div>
++                </div>
++
++                <div class="card combo-card">
++                    <div class="card-title">
++                        Lody Włoskie + Deska Serów
++                    </div>
++                    <div class="price-grid">
++                        <div class="price-item"><span class="price-label">50 os.</span><span class="price-value">6 350
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">100 os.</span><span class="price-value">8 960
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">11 670
++                                zł</span></div>
++                        <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">14 280
++                                zł</span></div>
++                    </div>
++                </div>
++            </section>
++
++            <!-- LOGISTICS -->
++            <section class="logistics">
++                <p>Dojazd do 50 km – w cenie</p>
++                <p>Powyżej 50 km: +2 zł/km</p>
++                <p style="margin-top: 10px;">Każde stanowisko zapewnia dedykowaną obsługę.</p>
++            </section>
++
++        </main>
++
++        <footer>
++            <a href="https://test.raricart.pl/#kontakt" class="cta-btn">ZAPYTAJ O WYCENĘ</a>
++            <p style="margin-top: 20px; font-size: 0.7rem; color: var(--text-muted);">test.raricart.pl • Live Food
++                Station
++            </p>
++        </footer>
++    </div>
++
++</body>
++
++</html>
++
++<!-- test -->
+\ No newline at end of file
+diff --git a/assets/images/logo_optimized.png b/packages/logo_optimized.png
+similarity index 100%
+rename from assets/images/logo_optimized.png
+rename to packages/logo_optimized.png
+diff --git a/site/.gitignore b/site/.gitignore
+new file mode 100644
+index 0000000..450eda0
+--- /dev/null
++++ b/site/.gitignore
+@@ -0,0 +1,15 @@
++# System Files
++.DS_Store
++Thumbs.db
++.vscode/
++.idea/
++
++# Configuration
++assets/data/config.json
++
++# User Uploads (prevent overwriting / tracking)
++assets/gallery/img_*
++assets/gallery/vid_*
++assets/images/img_*
++assets/images/vid_*
++assets/data/*.json
+diff --git a/.htaccess b/site/.htaccess
+similarity index 92%
+rename from .htaccess
+rename to site/.htaccess
+index 2f15466..93bdfff 100644
+--- a/.htaccess
++++ b/site/.htaccess
+@@ -1,3 +1,8 @@
++AuthType Basic
++AuthName "Staging – dostęp tylko dla uprawnionych"
++AuthUserFile /home/platne/serwer409986/public_html/.htpasswd
++Require valid-user
++
+ DirectoryIndex index.php
+ RewriteEngine On
+ RewriteCond %{HTTPS} !=on
+diff --git a/404.html b/site/404.html
+similarity index 100%
+rename from 404.html
+rename to site/404.html
+diff --git a/site/README.md b/site/README.md
+new file mode 100644
+index 0000000..8933bc7
+--- /dev/null
++++ b/site/README.md
+@@ -0,0 +1,38 @@
++# Dokumentacja Strony Raricart
++
++To jest repozytorium projektu strony internetowej Raricart.
++
++## Struktura Katalogów
++
++*   `admin/` - Panel administracyjny.
++*   `api/` - Skrypty API obsługujące formularze i dynamiczne akcje.
++*   `assets/` - Zasoby statyczne (CSS, JS, Obrazy) oraz dane konfiguracyjne.
++*   `parts/` - Fragmenty kodu PHP (np. nagłówek, stopka).
++
++## Panel Administratora
++
++Panel administratora znajduje się pod adresem: `/admin`.
++
++### Logowanie i Hasła
++
++System nie posiada domyślnego hasła "zaszytego" w kodzie. 
++
++Podczas **pierwszego uruchomienia** panelu administratora (`/admin`), zostaniesz automatycznie przekierowany do strony konfiguracyjnej (`setup.php`), gdzie należy ustawić hasło dostępu.
++
++Hasło (w postaci bezpiecznego skrótu/hasha) jest przechowywane w pliku:
++`assets/data/config.json`
++
++### Resetowanie Hasła
++
++W przypadku zapomnienia hasła, procedurę resetowania można przeprowadzić ręcznie:
++
++1.  Zaloguj się na serwer (FTP/SSH) lub uzyskaj dostęp do plików lokalnych.
++2.  Usuń lub zmień nazwę pliku: `assets/data/config.json`.
++3.  Wejdź ponownie na adres `/admin` w przeglądarce.
++4.  System wykryje brak konfiguracji i wyświetli formularz ustawienia nowego hasła.
++
++> **Ważne:** Usunięcie pliku `config.json` zresetuje tylko hasło administratora. Nie wpłynie na treści strony, galerię ani inne ustawienia.
++
++### Zmiana Hasła (dla zalogowanych)
++
++Jeśli znasz obecne hasło i chcesz je zmienić, możesz to zrobić bezpośrednio z poziomu panelu administratora, korzystając z odpowiedniej opcji w ustawieniach.
+diff --git a/admin/.htaccess b/site/admin/.htaccess
+similarity index 100%
+rename from admin/.htaccess
+rename to site/admin/.htaccess
+diff --git a/admin/admin.css b/site/admin/admin.css
+similarity index 100%
+rename from admin/admin.css
+rename to site/admin/admin.css
+diff --git a/admin/auth.php b/site/admin/auth.php
+similarity index 100%
+rename from admin/auth.php
+rename to site/admin/auth.php
+diff --git a/admin/change_password.php b/site/admin/change_password.php
+similarity index 100%
+rename from admin/change_password.php
+rename to site/admin/change_password.php
+diff --git a/admin/dashboard.php b/site/admin/dashboard.php
+similarity index 92%
+rename from admin/dashboard.php
+rename to site/admin/dashboard.php
+index f178fcc..1ad5866 100644
+--- a/admin/dashboard.php
++++ b/site/admin/dashboard.php
+@@ -133,6 +133,34 @@ if (file_exists($status_file)) {
+                 </label>
+             </div>
+         </div>
++        
++        <h3 style="margin-top:2rem; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 1rem;">Zdjęcia w Modalu Oferty (Szczegóły)</h3>
++        <div class="media-grid">
++             <!-- Offer Modal Images -->
++             <div class="media-item">
++                <h4>Pancakes (Modal)</h4>
++                <div class="media-preview" id="preview-offer_modals-pancakes"></div>
++                <label class="btn btn-secondary upload-btn">
++                    Zmień
++                    <input type="file" onchange="uploadContent(this, 'offer_modals.pancakes', 'image')" accept="image/*">
++                </label>
++            </div>
++            <div class="media-item">
++                <h4>Lody (Modal)</h4>
++                <div class="media-preview" id="preview-offer_modals-icecream"></div>
++                <label class="btn btn-secondary upload-btn">
++                    Zmień
++                    <input type="file" onchange="uploadContent(this, 'offer_modals.icecream', 'image')" accept="image/*">
++                </label>
++            </div>
++            <div class="media-item">
++                <h4>Deska Serów (Modal)</h4>
++                <div class="media-preview" id="preview-offer_modals-cheese"></div>
++                <label class="btn btn-secondary upload-btn">
++                    Zmień
++                    <input type="file" onchange="uploadContent(this, 'offer_modals.cheese', 'image')" accept="image/*">
++                </label>
++            </div>
+     </div>
+ 
+     <!-- Image Upload -->
+@@ -523,8 +551,8 @@ function resizeImage(file) {
+             const img = new Image();
+             img.onload = () => {
+                 const canvas = document.createElement('canvas');
+-                const MAX_WIDTH = 1920;
+-                const MAX_HEIGHT = 1080;
++                const MAX_WIDTH = 2500;
++                const MAX_HEIGHT = 2000;
+                 let width = img.width;
+                 let height = img.height;
+                 
+@@ -545,7 +573,7 @@ function resizeImage(file) {
+                 const ctx = canvas.getContext('2d');
+                 ctx.drawImage(img, 0, 0, width, height);
+                 
+-                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
++                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.95);
+             };
+             img.src = e.target.result;
+         };
+diff --git a/admin/delete.php b/site/admin/delete.php
+similarity index 100%
+rename from admin/delete.php
+rename to site/admin/delete.php
+diff --git a/admin/download_leads.php b/site/admin/download_leads.php
+similarity index 100%
+rename from admin/download_leads.php
+rename to site/admin/download_leads.php
+diff --git a/admin/forgot_password.php b/site/admin/forgot_password.php
+similarity index 100%
+rename from admin/forgot_password.php
+rename to site/admin/forgot_password.php
+diff --git a/admin/generate_hash.php b/site/admin/generate_hash.php
+similarity index 100%
+rename from admin/generate_hash.php
+rename to site/admin/generate_hash.php
+diff --git a/admin/index.php b/site/admin/index.php
+similarity index 100%
+rename from admin/index.php
+rename to site/admin/index.php
+diff --git a/site/admin/leady.csv b/site/admin/leady.csv
+new file mode 100644
+index 0000000..5659012
+--- /dev/null
++++ b/site/admin/leady.csv
+@@ -0,0 +1,3 @@
++﻿"Data zgłoszenia",Imię,Email,Telefon,"Data wydarzenia",Goście,Budżet,Typ,Stacje,Wiadomość
++"2026-01-28 18:12:18","Krzysztof Sebastian Poczatek",poczatek.krzysztof@gmail.com,535050460,2026-01-29,"50-100 osób","5 000 - 10 000 PLN","Event Firmowy","Mini Pancakes","Brak dodatkowej wiadomości"
++"2026-02-04 10:31:20","Krzysztof Sebastian Poczatek",poczatek.krzysztof@gmail.com,535050460,2026-02-05,"50-100 osób","5 000 - 10 000 PLN","Event Firmowy","Mini Pancakes","Brak dodatkowej wiadomości"
+diff --git a/admin/logout.php b/site/admin/logout.php
+similarity index 100%
+rename from admin/logout.php
+rename to site/admin/logout.php
+diff --git a/admin/migrate_users.php b/site/admin/migrate_users.php
+similarity index 100%
+rename from admin/migrate_users.php
+rename to site/admin/migrate_users.php
+diff --git a/admin/reset_password.php b/site/admin/reset_password.php
+similarity index 100%
+rename from admin/reset_password.php
+rename to site/admin/reset_password.php
+diff --git a/admin/save_content.php b/site/admin/save_content.php
+similarity index 100%
+rename from admin/save_content.php
+rename to site/admin/save_content.php
+diff --git a/admin/save_gallery.php b/site/admin/save_gallery.php
+similarity index 100%
+rename from admin/save_gallery.php
+rename to site/admin/save_gallery.php
+diff --git a/admin/save_status.php b/site/admin/save_status.php
+similarity index 100%
+rename from admin/save_status.php
+rename to site/admin/save_status.php
+diff --git a/admin/setup.php b/site/admin/setup.php
+similarity index 100%
+rename from admin/setup.php
+rename to site/admin/setup.php
+diff --git a/admin/upload.php b/site/admin/upload.php
+similarity index 100%
+rename from admin/upload.php
+rename to site/admin/upload.php
+diff --git a/api/contact.php b/site/api/contact.php
+similarity index 100%
+rename from api/contact.php
+rename to site/api/contact.php
+diff --git a/site/api/drafts/.htaccess b/site/api/drafts/.htaccess
+new file mode 100644
+index 0000000..14249c5
+--- /dev/null
++++ b/site/api/drafts/.htaccess
+@@ -0,0 +1 @@
++Deny from all
+\ No newline at end of file
+diff --git a/site/api/drafts/draft_4da013f59f42eb5b9e16f7e497d0ccc4.json b/site/api/drafts/draft_4da013f59f42eb5b9e16f7e497d0ccc4.json
+new file mode 100644
+index 0000000..6498283
+--- /dev/null
++++ b/site/api/drafts/draft_4da013f59f42eb5b9e16f7e497d0ccc4.json
+@@ -0,0 +1 @@
++{"data":{"website_check":"","name":"Krzysztof Sebastian Poczatek","email":"poczatek.krzysztof@gmail.com","phone":"535050460","date":"","guests":"","budget":"","event_type":"","stations":"Mini Pancakes","message":"","is_partial":true},"score":4,"timestamp":1770197524,"formattedBody":"--- TO JEST NIEUKO\u0143CZONY SZKIC FORMULARZA ---\n\n\ud83d\udc64 Imi\u0119: Krzysztof Sebastian Poczatek\n\ud83d\udce7 Email: poczatek.krzysztof@gmail.com\n\ud83d\udcde Tel: 535050460\n\n\ud83d\udcc5 Data wydarzenia: \n\ud83d\udc65 Liczba go\u015bci: \n\ud83d\udcb0 Bud\u017cet: \n\ud83c\udf89 Rodzaj wydarzenia: \n\ud83d\udd25 Interesuj\u0105ce stacje: Mini Pancakes\n\n\ud83d\udcac Wiadomo\u015b\u0107:\n","subject":"\u26a0\ufe0f SZKIC (Porzucony): Krzysztof Sebastian Poczatek"}
+\ No newline at end of file
+diff --git a/site/api/drafts/last_run.txt b/site/api/drafts/last_run.txt
+new file mode 100644
+index 0000000..aada277
+--- /dev/null
++++ b/site/api/drafts/last_run.txt
+@@ -0,0 +1 @@
++1770197439
+\ No newline at end of file
+diff --git a/site/api/gallery.php b/site/api/gallery.php
+new file mode 100644
+index 0000000..9edd84d
+--- /dev/null
++++ b/site/api/gallery.php
+@@ -0,0 +1,44 @@
++<?php
++// api/gallery.php
++header("Content-Type: application/json; charset=UTF-8");
++header("Access-Control-Allow-Origin: *");
++
++$jsonFile = __DIR__ . '/../assets/data/gallery.json';
++$galleryDir = __DIR__ . '/../assets/gallery';
++
++// 1. Try to read from JSON (Order is important)
++if (file_exists($jsonFile)) {
++    $content = file_get_contents($jsonFile);
++    $data = json_decode($content, true);
++    if (is_array($data)) {
++        echo json_encode($data);
++        exit;
++    }
++}
++
++// 2. Fallback: Scan directory (Auto-discovery)
++$images = [];
++if (is_dir($galleryDir)) {
++    $files = scandir($galleryDir);
++    foreach ($files as $file) {
++        if (in_array($file, ['.', '..'])) continue;
++        
++        // Check extension
++        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
++        if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
++            $images[] = 'assets/gallery/' . $file;
++        }
++    }
++}
++
++// 3. Save this state to JSON for next time (Self-healing)
++if (!empty($images)) {
++    // Ensure dir exists
++    if (!file_exists(dirname($jsonFile))) {
++        mkdir(dirname($jsonFile), 0755, true);
++    }
++    file_put_contents($jsonFile, json_encode($images, JSON_PRETTY_PRINT));
++}
++
++echo json_encode($images);
++?>
+diff --git a/api/get_gallery.php b/site/api/get_gallery.php
+similarity index 100%
+rename from api/get_gallery.php
+rename to site/api/get_gallery.php
+diff --git a/api/get_status.php b/site/api/get_status.php
+similarity index 100%
+rename from api/get_status.php
+rename to site/api/get_status.php
+diff --git a/assets/css/styles.css b/site/assets/css/styles.css
+similarity index 99%
+rename from assets/css/styles.css
+rename to site/assets/css/styles.css
+index d409754..3821fc2 100644
+--- a/assets/css/styles.css
++++ b/site/assets/css/styles.css
+@@ -535,7 +535,7 @@ video::-webkit-media-text-track-display {
+ 
+ .premium-image {
+     width: 100%;
+-    height: 700px;
++    height: 600px;
+     object-fit: cover;
+     border-radius: var(--radius-ui);
+     box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+@@ -1166,12 +1166,7 @@ footer {
+ }
+ 
+ /* Updated Close Button */
+-.gallery-modal-wrapper {
+-    position: relative;
+-    display: inline-block;
+-    max-width: 90%;
+-    max-height: 90vh;
+-}
++
+ 
+ .modal-close,
+ .gallery-modal-close {
+diff --git a/site/assets/css/styles_temp.css b/site/assets/css/styles_temp.css
+new file mode 100644
+index 0000000..89aa181
+--- /dev/null
++++ b/site/assets/css/styles_temp.css
+@@ -0,0 +1,52 @@
++
++/* --- Parallax Why Section --- */
++.parallax-why {
++    position: relative;
++    background-color: #333; /* Fallback */
++    background-attachment: fixed;
++    background-position: center;
++    background-repeat: no-repeat;
++    background-size: cover;
++    padding: 6rem 1rem;
++    color: white;
++    text-align: center;
++    margin-bottom: 2rem;
++}
++
++.parallax-why h2 {
++    color: white;
++    margin-bottom: 3rem;
++    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
++}
++
++.parallax-content {
++    display: grid;
++    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
++    gap: 2rem;
++    max-width: 1200px;
++    margin: 0 auto;
++}
++
++.parallax-card {
++    background: rgba(255, 255, 255, 0.95);
++    padding: 2rem;
++    border-radius: 8px;
++    color: var(--color-text);
++    text-align: left;
++    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
++}
++
++.parallax-card h3 {
++    color: var(--color-accent);
++    margin-bottom: 0.5rem;
++    font-size: 1.1rem;
++    text-transform: uppercase;
++    letter-spacing: 1px;
++}
++
++@media (max-width: 768px) {
++    .parallax-why {
++        background-attachment: scroll; /* Performance fix for mobile */
++        padding: 4rem 1rem;
++    }
++}
+diff --git a/assets/data/.htaccess b/site/assets/data/.htaccess
+similarity index 100%
+rename from assets/data/.htaccess
+rename to site/assets/data/.htaccess
+diff --git a/assets/data/config.json.dist b/site/assets/data/config.json.dist
+similarity index 100%
+rename from assets/data/config.json.dist
+rename to site/assets/data/config.json.dist
+diff --git a/assets/data/content.json.dist b/site/assets/data/content.json.dist
+similarity index 100%
+rename from assets/data/content.json.dist
+rename to site/assets/data/content.json.dist
+diff --git a/assets/data/gallery.json.dist b/site/assets/data/gallery.json.dist
+similarity index 100%
+rename from assets/data/gallery.json.dist
+rename to site/assets/data/gallery.json.dist
+diff --git a/assets/data/status.json.dist b/site/assets/data/status.json.dist
+similarity index 100%
+rename from assets/data/status.json.dist
+rename to site/assets/data/status.json.dist
+diff --git a/assets/fonts/Comfortaa-Light.ttf b/site/assets/fonts/Comfortaa-Light.ttf
+similarity index 100%
+rename from assets/fonts/Comfortaa-Light.ttf
+rename to site/assets/fonts/Comfortaa-Light.ttf
+diff --git a/assets/fonts/Comfortaa-Regular.ttf b/site/assets/fonts/Comfortaa-Regular.ttf
+similarity index 100%
+rename from assets/fonts/Comfortaa-Regular.ttf
+rename to site/assets/fonts/Comfortaa-Regular.ttf
+diff --git a/assets/fonts/Comfortaa-SemiBold.ttf b/site/assets/fonts/Comfortaa-SemiBold.ttf
+similarity index 100%
+rename from assets/fonts/Comfortaa-SemiBold.ttf
+rename to site/assets/fonts/Comfortaa-SemiBold.ttf
+diff --git a/assets/fonts/Playfair-Regular.ttf b/site/assets/fonts/Playfair-Regular.ttf
+similarity index 100%
+rename from assets/fonts/Playfair-Regular.ttf
+rename to site/assets/fonts/Playfair-Regular.ttf
+diff --git a/assets/fonts/Playfair-SemiBold.ttf b/site/assets/fonts/Playfair-SemiBold.ttf
+similarity index 100%
+rename from assets/fonts/Playfair-SemiBold.ttf
+rename to site/assets/fonts/Playfair-SemiBold.ttf
+diff --git a/assets/gallery/gallery_01.webp b/site/assets/gallery/gallery_01.webp
+similarity index 100%
+rename from assets/gallery/gallery_01.webp
+rename to site/assets/gallery/gallery_01.webp
+diff --git a/assets/gallery/gallery_02.webp b/site/assets/gallery/gallery_02.webp
+similarity index 100%
+rename from assets/gallery/gallery_02.webp
+rename to site/assets/gallery/gallery_02.webp
+diff --git a/assets/gallery/gallery_03.webp b/site/assets/gallery/gallery_03.webp
+similarity index 100%
+rename from assets/gallery/gallery_03.webp
+rename to site/assets/gallery/gallery_03.webp
+diff --git a/assets/gallery/gallery_04.webp b/site/assets/gallery/gallery_04.webp
+similarity index 100%
+rename from assets/gallery/gallery_04.webp
+rename to site/assets/gallery/gallery_04.webp
+diff --git a/assets/gallery/gallery_05.webp b/site/assets/gallery/gallery_05.webp
+similarity index 100%
+rename from assets/gallery/gallery_05.webp
+rename to site/assets/gallery/gallery_05.webp
+diff --git a/assets/gallery/gallery_06.webp b/site/assets/gallery/gallery_06.webp
+similarity index 100%
+rename from assets/gallery/gallery_06.webp
+rename to site/assets/gallery/gallery_06.webp
+diff --git a/site/assets/images/Logo.png b/site/assets/images/Logo.png
+new file mode 100644
+index 0000000..c43bb95
+Binary files /dev/null and b/site/assets/images/Logo.png differ
+diff --git a/site/assets/images/about_group.jpg b/site/assets/images/about_group.jpg
+new file mode 100644
+index 0000000..331f800
+--- /dev/null
++++ b/site/assets/images/about_group.jpg
+@@ -0,0 +1 @@
++<html><body>404</body></html>
+\ No newline at end of file
+diff --git a/assets/images/about_group.webp b/site/assets/images/about_group.webp
+similarity index 100%
+rename from assets/images/about_group.webp
+rename to site/assets/images/about_group.webp
+diff --git a/site/assets/images/brief.txt b/site/assets/images/brief.txt
+new file mode 100644
+index 0000000..8f11b5b
+--- /dev/null
++++ b/site/assets/images/brief.txt
+@@ -0,0 +1,57 @@
++Brief dla Fotografa - Raricart Live Food Station
++Ten dokument zawiera listę zdjęć niezbędnych do odświeżenia strony internetowej raricart.pl. Celem jest zastąpienie obecnych zdjęć stockowych autorskimi fotografiami, które oddadzą klimat, jakość i charakter marki.
++
++Styl i Klimat
++Słowa kluczowe: Elegancja, świeżość, "human touch", jakość premium, naturalne światło (lub dobrze doświetlone ciepłym światłem).
++Kolorystyka: Zgodna z identyfikacją (beże, zielenie, naturalne drewno), zdjęcia nie powinny być przesadnie nasycone ani zbyt ciemne.
++Format: Większość zdjęć pozioma (landscape) do sekcji szerokokątnych, ale potrzebne też kadry pionowe (portrait) do social media i wersji mobilnej.
++Lista Ujęć (Shot List)
++1. Sekcja Hero (Strona Główna - Góra)
++To pierwsze co widzi klient. Może to być wideo (jeśli fotograf realizuje też wideo) lub statyczne zdjęcie.
++
++Ujęcie: Szeroki plan (Wide Shot) stacji w pięknej lokalizacji (np. plener weselny, elegancka sala).
++Co zawiera: Cała stacja z obsługą, widoczni zadowoleni goście w tle (nieostrzy), "życie" wokół stacji.
++Wskazówka: Musi mieć dużo puste przestrzeni (negative space) lub być dość ciemne/jasne, aby napisy na stronie były czytelne.
++2. Sekcja "O Nas"
++Zdjęcie budujące zaufanie i pokazujące "ludzką twarz" firmy.
++
++Ujęcie: Portret zespołu lub zdjęcie sytuacyjne (Candid).
++Co zawiera: Uśmiechnięta obsługa/właściciele przy pracy (np. nalewanie wina, przygotowywanie deski serów) lub wspólne zdjęcie zespołu przy stacji.
++Klimat: Ciepły, gościnny.
++3. Sekcja "Oferta" (Tło i Ogólne)
++Ujęcie: Detal lub szeroki plan stacji "w akcji".
++Wymaganie: Zdjęcie, które posłuży jako tło lub ilustracja główna oferty. Może to być np. estetycznie ułożone produkty na blacie stacji.
++4. Karty Ofertowe (Szczegółowe Stacje)
++Potrzebne są konkretne zdjęcia do "kafelków" z ofertą. Muszą być apetyczne (Food Porn).
++
++Mini Pancakes:
++Close-up: Stosik placuszków polany sosem/syropem, ze świeżymi owocami.
++Action: Moment nakładania/smażenia.
++Lody Włoskie:
++Close-up: Idealnie zakręcony lód w rożku lub kubeczku, ładna posypka.
++Action: Dłoń podająca loda dziecku lub dorosłemu.
++Deska Serów / Wędliny (Charcuterie):
++Close-up: Bogata deska z serami, winogronami, orzechami. Detal na teksturę sera.
++Inne (Grill/Wok - jeśli dotyczy):
++Zdjęcia dymu, ognia, smażenia – dynamika.
++5. Galeria (Co najmniej 20 różnorodnych zdjęć)
++Mieszanka ujęć do sekcji "Zrealizowane Projekty". Ważne: Galeria na stronie wyświetla zdjęcia w formacie PIONOWYM (3:4).
++
++Setup (30%): Puste stacje przygotowane na przyjęcie gości (pionowe kadry).
++Jedzenie (30%): Zbliżenia na gotowe porcje.
++Ludzie/Emocje (20%): Goście przy stacji (pionowe kadry dobrze wyglądają na mobile).
++Detale (20%): Logo, sztućce, dłonie.
++6. Sekcja "Dlaczego My" (Tło Parallax)
++Ujęcie: Bardzo klimatyczne, artystyczne tło.
++Co zawiera: Np. rozmyte światła wieczornego przyjęcia (bokeh), dym z grilla podświetlony słońcem, lub artystyczne zbliżenie na teksturę drewna/jedzenia.
++Ważne: To zdjęcie będzie przyciemnione, służy jako tło.
++7. Tło Sekcji "Galeria" (Parallax)
++Ujęcie: Spokojne, teksturalne tło, które nie odwraca uwagi od zdjęć realizacji.
++Co zawiera: Ciemne drewno, beton architektoniczny, rozmyta zieleń lub elegancki obrus.
++Cel: Tło dla kafelków ze zdjęciami – musi być "ciche" wizualnie (mało detali, jednolita kolorystyka).
++Wymagania Techniczne dla Fotografa
++Rozdzielczość: Wysoka (do druku i web), ale poproś o wersje zoptymalizowane do weba (JPG, sRGB).
++Proporcje:
++Horyzontalne 16:9 (na banery i dwa tła parallax: "Dlaczego My" oraz "Galeria").
++Pionowe 3:4 (do głównej galerii realizacji - bardzo ważne!).
++Pionowe 9:16 (na relacje IG/TikTok).
+\ No newline at end of file
+diff --git a/site/assets/images/cheese.jpg b/site/assets/images/cheese.jpg
+new file mode 100644
+index 0000000..a4b46f6
+Binary files /dev/null and b/site/assets/images/cheese.jpg differ
+diff --git a/assets/images/cheese.webp b/site/assets/images/cheese.webp
+similarity index 100%
+rename from assets/images/cheese.webp
+rename to site/assets/images/cheese.webp
+diff --git a/site/assets/images/icecream.jpg b/site/assets/images/icecream.jpg
+new file mode 100644
+index 0000000..85b6d93
+Binary files /dev/null and b/site/assets/images/icecream.jpg differ
+diff --git a/assets/images/icecream.webp b/site/assets/images/icecream.webp
+similarity index 100%
+rename from assets/images/icecream.webp
+rename to site/assets/images/icecream.webp
+diff --git a/site/assets/images/logo_optimized.png b/site/assets/images/logo_optimized.png
+new file mode 100644
+index 0000000..4c9f01a
+Binary files /dev/null and b/site/assets/images/logo_optimized.png differ
+diff --git a/site/assets/images/offer_main.jpg b/site/assets/images/offer_main.jpg
+new file mode 100644
+index 0000000..df86fad
+Binary files /dev/null and b/site/assets/images/offer_main.jpg differ
+diff --git a/assets/images/offer_main.webp b/site/assets/images/offer_main.webp
+similarity index 100%
+rename from assets/images/offer_main.webp
+rename to site/assets/images/offer_main.webp
+diff --git a/site/assets/images/pancakes.jpg b/site/assets/images/pancakes.jpg
+new file mode 100644
+index 0000000..2f5e832
+Binary files /dev/null and b/site/assets/images/pancakes.jpg differ
+diff --git a/assets/images/pancakes.webp b/site/assets/images/pancakes.webp
+similarity index 100%
+rename from assets/images/pancakes.webp
+rename to site/assets/images/pancakes.webp
+diff --git a/site/assets/images/parallax_bg.jpg b/site/assets/images/parallax_bg.jpg
+new file mode 100644
+index 0000000..34f4af7
+Binary files /dev/null and b/site/assets/images/parallax_bg.jpg differ
+diff --git a/assets/images/parallax_bg.webp b/site/assets/images/parallax_bg.webp
+similarity index 100%
+rename from assets/images/parallax_bg.webp
+rename to site/assets/images/parallax_bg.webp
+diff --git a/assets/js/script.js b/site/assets/js/script.js
+similarity index 83%
+rename from assets/js/script.js
+rename to site/assets/js/script.js
+index fde1206..0d9ae20 100644
+--- a/assets/js/script.js
++++ b/site/assets/js/script.js
+@@ -302,97 +302,7 @@
+             }
+         }
+     },
+-    es: {
+-        nav: { about: "Sobre Nosotros", offer: "Oferta", gallery: "Galería", faq: "FAQ", why_us: "Por Qué Nosotros", contact: "Contacto" },
+-        hero: { title1: "DONDE EL SABOR SE ENCUENTRA CON LA EMOCIÓN Y LA SIMPLICIDAD SE VUELVE ELEGANCIA...", title2: "...AHÍ ES DONDE COMIENZA RARICART", scroll: "Desplácese hacia abajo" },
+-        about: {
+-            title: "No creamos catering, sino una experiencia.",
+-            p1: "Creamos estaciones de degustación móviles que se convierten en el punto culminante de cada evento. No es solo comida, es un elemento escénico <span class=\"highlight\">sutil, refinado y lleno de carácter</span>.",
+-            p2: "Servimos composiciones ligeras y frescas, desde mini pancakes esponjosos, pasando por helados italianos auténticos, hasta aromáticas tablas de quesos. Construimos una atmósfera de clase y libertad, donde tus invitados se sentirán especiales."
+-        },
+-        offer: {
+-            title: "Nuestra Oferta",
+-            intro_title: "NO SOLO COCINAMOS, CREAMOS MOMENTOS QUE CONECTAN A LAS PERSONAS",
+-            p1: "Nuestras estaciones se convierten en lugares para conversar, sonreír y tomar fotos, mientras nosotros nos ocupamos de cada detalle, desde el montaje hasta el último servicio, para que puedas disfrutar del evento tanto como tus invitados.",
+-            p2: "Atendemos eventos corporativos, bodas, galas<br> y fiestas privadas, trabajando tanto con agencias como con clientes individuales.",
+-            p3: "En cada proyecto, nos guiamos por el principio de que el sabor y la estética tienen el mismo valor: juntos crean una atmósfera inolvidable. Con Raricart obtienes no solo catering, sino un elemento escénico coherente y hermoso de tu evento, que sabe tan bien como se ve.",
+-            cards: {
+-                pancakes: { title: "Mini Pancakes", desc: "Una estación dulce que atrae a los invitados y se convierte en el corazón del evento." },
+-                icecream: { title: "Helado Suave", desc: "Una estación refrescante que deleita a los invitados y crea ambiente." },
+-                cheese: { title: "Tabla de Quesos", desc: "Una fascinante zona de sabor con quesos y embutidos italianos." }
+-            }
+-        },
+-        why: {
+-            title: "EL ARTE DE LAS EXPERIENCIAS CULINARIAS",
+-            cards: {
+-                1: { title: "EFECTO 'WOW' CON CLASE", desc: "Servimos pancakes calientes directamente de la plancha, vertemos helado cremoso y componemos tablas de quesos ante los ojos de los invitados: todo fresco, personalizado y refinado en cada detalle. El proceso de estación en vivo atrae la atención, integra a los participantes y crea puntos de encuentro naturales, donde nacen conversaciones ante una vista apetecible. El diseño elegante y móvil de la estación eleva el prestigio del evento, combinando estética premium con puro placer para los sentidos." },
+-                2: { title: "MENOS LOGÍSTICA, MÁS PAZ", desc: "Raricart se encarga de todo: viaje, montaje de la estación, servicio durante el evento, desmontaje y limpieza perfecta después. No necesitamos instalaciones de cocina: nuestras estaciones móviles funcionan en todas partes: en lofts, jardines, salones o espacios para eventos inusuales. El equipo sincroniza el servicio con el horario, asegura un flujo fluido de invitados y minimiza las colas." },
+-                3: { title: "EXPERIENCIA EN LUGAR DE BUFFET", desc: "A diferencia de un buffet estático, nuestras estaciones en vivo involucran: los invitados observan cómo se sirve el helado, se apilan los pancakes y se componen las tablas de quesos, eligiendo aderezos sobre la marcha. Todo se sirve en porciones 'aquí y ahora': fresco, sin desperdicios, perfectamente adaptado al número y preferencias de los participantes. Las estaciones temáticas se convierten en un imán para los invitados, construyendo emociones y recuerdos inolvidables." },
+-                4: { title: "SEGURIDAD, CALIDAD, ESTÉTICA", desc: "Cumplimos con estrictos estándares de higiene y seguridad alimentaria, con énfasis en la frescura de los ingredientes y una presentación perfecta. Utilizamos productos seleccionados servidos a temperaturas óptimas. Cada detalle, desde la disposición de la estación, pasando por la vajilla, hasta el trabajo del equipo, crea una escenografía coherente que fortalece la imagen de tu evento." },
+-                5: { title: "SOCIO PARA LOS EXIGENTES", desc: "Las agencias de eventos obtienen un socio confiable que comprende los tiempos, el diseño y la dinámica de los grandes eventos. Empresas, parejas y organizadores de fiestas privadas reciben una solución premium: efecto 'wow', emociones y cuidado total de los invitados. Los propietarios de locales para eventos enriquecen su oferta con estaciones móviles sin invertir en equipos, listos para operar en cualquier espacio." },
+-                6: { title: "ESCRIBENOS", desc: "Tu evento merece una estación de comida en vivo única que se convierta en su escaparate. Escríbenos hoy: adaptaremos la oferta a tu visión y aseguraremos la fecha. ¡Juntos crearemos una experiencia que los invitados recordarán con deleite!" }
+-            }
+-        },
+-        faq: {
+-            title: "FAQ - Preguntas Frecuentes",
+-            q1: { title: "¿Hasta dónde viajan?", desc: "Atendemos eventos en toda Polonia y, para eventos más grandes, estamos abiertos a viajes internacionales. Nuestras estaciones móviles nos permiten llegar a casi cualquier lugar, incluso el más exigente: desde el centro de la ciudad hasta áreas de picnic remotas." },
+-            q2: { title: "¿Ofrecen opciones vegetarianas/veganas/sin gluten?", desc: "¡Sí! Nuestro menú es totalmente flexible y lo adaptamos a los requisitos dietéticos de los invitados. Durante la planificación del menú con el Cliente, siempre proponemos una amplia selección de opciones vegetarianas, veganas y sin gluten, utilizando ingredientes especialmente dedicados." },
+-            q3: { title: "¿Cuáles son los requisitos técnicos en el lugar del evento?", desc: "Nuestras estaciones móviles son en gran medida autosuficientes. Solo necesitamos una superficie estable y nivelada. El acceso a la electricidad es bienvenido, pero tenemos nuestros propios generadores silenciosos que podemos encender si es necesario." },
+-            q4: { title: "¿Cuál es el tiempo mínimo de reserva?", desc: "Recomendamos reservar con al menos 2-3 meses de antelación a la fecha prevista, especialmente en la temporada de verano, para garantizar la disponibilidad de fechas y los mejores ingredientes. Por supuesto, también atendemos solicitudes de última hora siempre que sea posible." },
+-            q5: { title: "¿Ofrecen servicio de camareros?", desc: "¡Sí! Como parte de nuestro servicio integral, proporcionamos un equipo de camareros profesionales que garantizarán la comodidad de sus invitados. Nuestros camareros tienen experiencia en el servicio de varios tipos de eventos y garantizan el más alto nivel de servicio." },
+-            q6: { title: "¿A cuántas personas pueden atender a la vez?", desc: "Nuestras estaciones móviles son escalables: desde reuniones íntimas para 20 personas hasta grandes eventos para varios cientos de invitados. Dependiendo del tamaño del evento, ajustamos el número de estaciones y personal para garantizar un servicio fluido sin colas." }
+-        },
+-        contact: { title: "Pregunte por disponibilidad<br>y creemos juntos una zona de sabor<br>que sus invitados no olvidarán." },
+-        form: {
+-            name: "Nombre y Apellidos *", email: "Email *", phone: "Teléfono *", date: "Fecha del Evento *", 
+-            guests_label: "Número de Invitados *", budget: "Presupuesto *", event_type: "Tipo de Evento *",
+-            select_placeholder: "Seleccionar...",
+-            types: { wedding: "Boda", corporate: "Evento Corporativo", festival: "Festival/Picnic", private: "Fiesta Privada", other: "Otro" },
+-            stations: "Estaciones de Interés *",
+-            st_pancakes: "Mini Pancakes", st_icecream: "Helado Suave", st_cheese: "Tabla de Quesos",
+-            message: "Información Adicional", submit: "Enviar Consulta",
+-            required: "Este campo es requerido",
+-            stations_error: "Seleccione al menos una estación",
+-            sending: "Enviando...",
+-            success_msg: "Los detalles de la consulta han sido enviados. Confirmamos la recepción del mensaje. Nos pondremos en contacto con usted pronto para discutir los detalles.",
+-            error_msg: "Error al enviar. Compruebe su conexión o inténtelo de nuevo más tarde."
+-        },
+-        footer: {
+-            desc: "Estaciones de degustación móviles para eventos en toda Polonia.",
+-            phone: "Teléfono: <a href=\"tel:+48883392688\" class=\"phone-link\">+48 883 392 688</a>",
+-            quick_links: "Enlaces Rápidos"
+-        },
+-        gallery: { title: "GALERÍA" },
+-        modals: {
+-            pancakes: {
+-                title: 'Mini Pancakes',
+-                content: `<p class="modal-lead">Una estación dulce que atrae a los invitados, capta la atención y, naturalmente, se convierte en uno de los puntos más queridos del evento.</p>
+-        <div class="modal-section"><h4>¿CÓMO FUNCIONA?</h4><p>Delicados y dorados pancakes se crean ante los ojos de los invitados: ligeros, esponjosos y servidos de forma elegante. Cada porción se prepara al momento, llenando el espacio con un agradable aroma que atrae inmediatamente la atención.</p><p>Los invitados pueden crear su propia composición, eligiendo entre aderezos como frutas, chocolate, chispas, salsas o galletas crujientes. Es un momento de libertad y creatividad que convierte la degustación en una experiencia placentera, no solo un postre.</p></div>
+-        <div class="modal-section"><h4>SELECCIÓN DE ADEREZOS</h4><p>Si lo prefieres, nosotros nos encargamos de esta parte: prepararemos un conjunto de aderezos perfectamente adaptados al estilo del evento y al perfil de los invitados. Nos aseguraremos de la armonía de sabores y la presentación estética, para que todo sea coherente con el carácter y la atmósfera del evento.</p><p>También puedes elegir los aderezos de nuestra lista: te damos total libertad para componer la oferta según tus propias preferencias.</p></div>
+-        <div class="modal-section"><h4>¿DÓNDE FUNCIONA NUESTRA ESTACIÓN?</h4><ul><li>Eventos corporativos y conferencias</li><li>Bodas y recepciones de boda</li><li>Galas y banquetes</li><li>Fiestas privadas y cumpleaños</li><li>Eventos al aire libre y picnics</li></ul></div>
+-        <div class="modal-section"><h4>¿QUÉ OBTIENES?</h4><ul><li>Estación profesional y móvil con una estética refinada</li><li>Servicio desde el montaje hasta el último servicio</li><li>Pancakes recién preparados y aderezos cuidadosamente seleccionados</li><li>Un punto que atrae a los invitados y crea un lugar de encuentro natural</li></ul></div>`,
+-                image: 'assets/images/pancakes.webp'
+-            },
+-            icecream: {
+-                title: 'Helado Suave',
+-                content: `<p class="modal-lead">Una estación refrescante que deleita a los invitados, crea ambiente y, naturalmente, se convierte en un éxito del evento.</p>
+-        <div class="modal-section"><h4>¿CÓMO FUNCIONA?</h4><p>Los invitados tienen la oportunidad de ver cómo se vierte cremoso helado italiano directamente de la máquina en elegantes vasos: con una consistencia aterciopelada y una frescura ideal. Esta presentación sencilla y espectacular apela a los sentidos y hace que cada postre sea único. Las porciones se sirven continuamente, tanto para eventos al aire libre como en espacios cerrados.</p><p>Seleccionamos aderezos para el helado como frutas frescas, salsas de frutas y chocolate, chispas crujientes, nueces o mini galletas, permitiendo a los invitados crear sus propias composiciones de sabores.</p></div>
+-        <div class="modal-section"><h4>SELECCIÓN DE SABORES Y ADEREZOS</h4><p>Puedes confiarnos la selección de sabores y aderezos: adaptaremos la configuración al carácter del evento, la temporada y el perfil de los invitados. También es posible una total libertad para componer la lista tú mismo, para que la oferta se adapte perfectamente a tu concepto.</p></div>
+-        <div class="modal-section"><h4>¿DÓNDE FUNCIONA LA ESTACIÓN DE HELADOS?</h4><ul><li>Eventos corporativos y jornadas de puertas abiertas</li><li>Bodas, post-bodas y recepciones de verano</li><li>Galas, estrenos, eventos de imagen</li><li>Fiestas familiares, cumpleaños, comuniones</li><li>Eventos al aire libre y picnics</li></ul></div>
+-        <div class="modal-section"><h4>¿QUÉ GANAS?</h4><ul><li>Estación de helados estética y móvil adaptada al carácter del evento</li><li>Servicio integral – desde la preparación hasta el servicio durante el evento</li><li>Cremoso helado italiano servido en vivo con aderezos seleccionados profesionalmente</li><li>Un punto que atrae naturalmente a los invitados y construye asociaciones positivas con el evento.</li></ul></div>`,
+-                image: 'assets/images/icecream.webp'
+-            },
+-            cheese: {
+-                title: 'Tabla de Quesos',
+-                content: `<p class="modal-lead">Una fascinante zona de sabor que realza el valor de tu evento.</p>
+-        <div class="modal-section"><h4>¿CÓMO FUNCIONA?</h4><p>Nuestro puesto ofrece 12 artículos cuidadosamente seleccionados: quesos y embutidos italianos de alta calidad, complementados con exquisitos aderezos salados. Todo esto se combina en un conjunto armonioso, enriquecido con salsas especialmente seleccionadas que realzan el sabor de cada degustación. Los invitados crean sus propias mini composiciones de tablas de quesos, eligiendo libremente sus ingredientes favoritos: desde quesos cremosos con embutidos curados, pasando por aderezos crujientes, hasta salsas refinadas que realzan el carácter italiano del conjunto.</p></div>
+-        <div class="modal-section"><h4>SELECCIÓN CUIDADOSAMENTE COMPUESTA DE INGREDIENTES</h4><p>La selección de los 12 artículos y salsas está precisamente pensada: cada ingrediente ha sido seleccionado para complementar perfectamente a los demás, creando un conjunto armonioso de sabor y visual. La composición fue creada pensando en los más altos estándares de experiencias de degustación, garantizando a los invitados impresiones profesionales de clase mundial. Confiarnos este aspecto te permite concentrarte en la organización del evento, mientras nosotros aseguramos la consistencia y calidad de cada porción.</p></div>
+-        <div class="modal-section"><h4>¿DÓNDE FUNCIONA EL PUESTO DE QUESOS?</h4><ul><li>Eventos corporativos, banquetes y cócteles</li><li>Bodas, fiestas pre-boda y post-bodas</li><li>Galas, vernissages, lanzamientos de productos</li><li>Fiestas privadas íntimas y reuniones de negocios</li><li>Conferencias y reuniones de networking</li></ul></div>
+-        <div class="modal-section"><h4>¿QUÉ GANAS?</h4><ul><li>Puesto estético y móvil con quesos y embutidos italianos de primera calidad</li><li>Servicio integral: desde la disposición hasta el servicio y la reposición durante el evento</li><li>12 artículos seleccionados con precisión más salsas que realzan la degustación</li><li>Un punto que atrae naturalmente a los invitados y construye asociaciones positivas con el evento.</li></ul></div>`,
+-                image: 'assets/images/cheese.webp'
+-            }
+-        }
+-    }
++
+   };
+ 
+   let tick = false;
+@@ -518,7 +428,7 @@
+     }
+     
+     // Text fade out at bottom of Hero
+-    if (textProgress > 2.2) {
++    if (textProgress > 1.5) {
+       if (ui.brandText1) { ui.brandText1.classList.remove('visible'); ui.brandText1.classList.add('hidden'); }
+       if (ui.brandText2) { ui.brandText2.classList.remove('visible'); ui.brandText2.classList.add('hidden'); }
+     }
+@@ -690,7 +600,19 @@
+     const data = translations[currentLang]?.modals?.[type];
+     
+     if (data && modal) {
+-      img.src = data.image;
++      let imgSrc = data.image;
++      
++      // Override with dynamic content if available (Specific Modal Image)
++      if (window.siteContentConfig && 
++          window.siteContentConfig.offer_modals && 
++          window.siteContentConfig.offer_modals[type]) {
++          imgSrc = window.siteContentConfig.offer_modals[type] + '?v=' + Date.now();
++      } 
++      // Fallback to dynamic card image if modal specific not set but card is? 
++      // User asked for specific modal image. If not set, keep default or card image?
++      // For now, keep default logic (translations or card image if translations uses it).
++      
++      img.src = imgSrc;
+       img.alt = data.title;
+       title.textContent = data.title;
+       text.innerHTML = data.content; // Render HTML directly
+@@ -709,6 +631,10 @@
+     
+     if (modal && img) {
+       img.src = galleryImages[index];
++      // Reset styles in case they were stuck in transition
++      img.style.opacity = '1';
++      img.style.transform = 'scale(1)';
++      
+       modal.classList.add('active');
+       toggleBodyScroll(true);
+       
+@@ -900,9 +826,11 @@
+             // SAFETY: If we have very few images (e.g. local dev), repeat them to fill the grid visuals
+             // Target at least 15 images for a good parallax effect
+             const MIN_IMAGES = 15;
+-            if (images.length < MIN_IMAGES) {
++            if (images.length > 0 && images.length < MIN_IMAGES) {
+                 const originalLength = images.length;
+-                while (images.length < MIN_IMAGES) {
++                let safetyCounter = 0;
++                while (images.length < MIN_IMAGES && safetyCounter < 20) {
++                    safetyCounter++;
+                     for (let i = 0; i < originalLength; i++) {
+                         if (images.length >= MIN_IMAGES) break;
+                         images.push(images[i]);
+@@ -1249,11 +1177,7 @@
+             }
+ 
+             if (typeof text === 'string') {
+-                // Optimized: Only overwrite if NOT Polish or if specifically needed
+-                // This allows the user to edit index.php directly without JS reverting it for the main language
+-                if (lang !== 'pl' || el.hasAttribute('data-force-i18n')) {
+-                    el.innerHTML = text; 
+-                }
++                el.innerHTML = text;
+             }
+         });
+ 
+diff --git a/assets/video/captions.vtt b/site/assets/video/captions.vtt
+similarity index 100%
+rename from assets/video/captions.vtt
+rename to site/assets/video/captions.vtt
+diff --git a/site/assets/video/hero.mp4 b/site/assets/video/hero.mp4
+new file mode 100644
+index 0000000..96fa456
+Binary files /dev/null and b/site/assets/video/hero.mp4 differ
+diff --git a/assets/video/hero_BzKLKptZ.mp4 b/site/assets/video/hero_BzKLKptZ.mp4
+similarity index 100%
+rename from assets/video/hero_BzKLKptZ.mp4
+rename to site/assets/video/hero_BzKLKptZ.mp4
+diff --git a/cleanup_assets.ps1 b/site/cleanup_assets.ps1
+similarity index 100%
+rename from cleanup_assets.ps1
+rename to site/cleanup_assets.ps1
+diff --git a/site/contact.php b/site/contact.php
+new file mode 100644
+index 0000000..e2ffaa6
+--- /dev/null
++++ b/site/contact.php
+@@ -0,0 +1,177 @@
++<?php
++// contact.php
++
++// --- KONFIGURACJA ---
++$toEmail = "pomoc@raricart.pl"; // Poprawione: czysty adres w cudzysłowie
++$subjectPrefix = "[Formularz Raricart]"; 
++// ---------------------
++
++header("Content-Type: application/json; charset=UTF-8");
++header("Access-Control-Allow-Origin: *");
++header("Access-Control-Allow-Methods: POST");
++
++$input = file_get_contents("php://input");
++$data = json_decode($input, true);
++
++// Anti-Spam
++if (!empty($data['website_check'])) {
++    echo json_encode(["status" => "success", "message" => "Wiadomość została wysłana!"]);
++    exit;
++}
++
++// --- POOR MAN'S CRON TRIGGER ---
++// Pozwala "obudzić" skrypt samym wejściem na stronę
++if (($data['action'] ?? '') === 'ping') {
++    processDraftQueue($draftsDir, $toEmail);
++    echo json_encode(["status" => "pong"]);
++    exit;
++}
++
++if (!$data) {
++    http_response_code(400);
++    echo json_encode(["status" => "error", "message" => "Brak danych."]);
++    exit;
++}
++
++// Sanityzacja
++$name = htmlspecialchars(strip_tags($data['name'] ?? ''));
++$email = filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL);
++$phone = htmlspecialchars(strip_tags($data['phone'] ?? ''));
++$date = htmlspecialchars(strip_tags($data['date'] ?? ''));
++$guests = htmlspecialchars(strip_tags($data['guests'] ?? ''));
++$budget = htmlspecialchars(strip_tags($data['budget'] ?? ''));
++$event_type = htmlspecialchars(strip_tags($data['event_type'] ?? ''));
++$stations = htmlspecialchars(strip_tags($data['stations'] ?? ''));
++$message = htmlspecialchars(strip_tags($data['message'] ?? ''));
++$isPartial = $data['is_partial'] ?? false;
++
++// Walidacja
++if (!$isPartial && (empty($name) || empty($email))) {
++    http_response_code(400);
++    echo json_encode(["status" => "error", "message" => "Wypełnij wymagane pola."]);
++    exit;
++}
++
++// Jeśli partial, ale brak kontaktu, też odrzuć po cichu (żeby nie słać pustych)
++if ($isPartial && empty($email) && empty($phone)) {
++    // Nie traktujemy tego jako błąd 400, tylko success bez wysyłki (silent ignore)
++    echo json_encode(["status" => "success", "message" => "Ignored empty draft"]);
++    exit;
++}
++
++$emailSubject = $isPartial ? "⚠️ SZKIC (Porzucony): $name" : "$subjectPrefix Nowe zapytanie od: $name";
++$emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" : "Nowe zapytanie ze strony:\n\n") .
++             "👤 Imię: $name\n" .
++             "📧 Email: $email\n" .
++             "📞 Tel: $phone\n\n" .
++             "📅 Data wydarzenia: $date\n" .
++             "👥 Liczba gości: $guests\n" .
++             "💰 Budżet: $budget\n" .
++             "🎉 Rodzaj wydarzenia: $event_type\n" .
++             "🔥 Interesujące stacje: $stations\n\n" .
++             "💬 Wiadomość:\n$message";
++
++// --- LOGIKA SKŁADOWANIA SZKICÓW (DRAFT) ---
++$draftsDir = __DIR__ . '/drafts';
++if (!is_dir($draftsDir)) {
++    @mkdir($draftsDir, 0777, true);
++    // Zabezpiecz katalog przed podglądem
++    @file_put_contents($draftsDir . '/.htaccess', "Deny from all"); 
++}
++
++// Unikalny identyfikator użytkownika (Email lub Telefon)
++$userId = $email ? md5($email) : ($phone ? md5($phone) : null);
++
++if ($isPartial && $userId) {
++    $draftFile = $draftsDir . '/draft_' . $userId . '.json';
++    
++    // Oblicz "wynik" wypełnienia (liczba pól)
++    $currentScore = 0;
++    foreach ([$name, $email, $phone, $date, $guests, $budget, $event_type, $stations, $message] as $field) {
++        if (!empty(trim($field))) $currentScore++;
++    }
++
++    $shouldSave = true;
++
++    // Sprawdź czy mamy już lepszy szkic
++    if (file_exists($draftFile)) {
++        $savedData = json_decode(file_get_contents($draftFile), true);
++        if (($savedData['score'] ?? 0) > $currentScore) {
++            $shouldSave = false;
++        }
++    }
++
++    if ($shouldSave) {
++        $payloadToSave = [
++            'data' => $data, // Zapisz surowe dane
++            'score' => $currentScore,
++            'timestamp' => time(),
++            'formattedBody' => $emailBody,
++            'subject' => $emailSubject
++        ];
++        file_put_contents($draftFile, json_encode($payloadToSave));
++    }
++
++    echo json_encode(["status" => "success", "message" => "Draft saved/updated."]);
++} 
++// --- NORMALNA WYSYŁKA (FINAL SUBMIT) ---
++else {
++    // 1. Wyślij normalnego maila
++    $headers = "From: Formularz WWW <kontakt@raricart.pl>\r\n";
++    $headers .= "Reply-To: $email\r\n";
++    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
++
++    if (mail($toEmail, $emailSubject, $emailBody, $headers)) {
++        echo json_encode(["status" => "success", "message" => "Wiadomość wysłana!"]);
++
++        // 2. Jeśli użytkownik wysłał formularz, usuń jego szkic (nie potrzebujemy go już)
++        if ($userId) {
++            $draftFile = $draftsDir . '/draft_' . $userId . '.json';
++            if (file_exists($draftFile)) @unlink($draftFile);
++        }
++    } else {
++        http_response_code(500);
++        echo json_encode(["status" => "error", "message" => "Błąd wysyłki maila."]);
++    }
++}
++
++// (Check removed: duplicates start of logic)
++
++// ... (Reszta skryptu: Walidacja, Wysyłka itp.) ...
++
++// Na samym końcu skryptu, po próbie wysyłki normalnej:
++processDraftQueue($draftsDir, $toEmail);
++
++// --- FUNKCJA CRON (DEFINICJA) ---
++function processDraftQueue($draftsDir, $toEmail) {
++    $lockFile = $draftsDir . '/last_run.txt';
++    $lastRun = file_exists($lockFile) ? (int)file_get_contents($lockFile) : 0;
++
++    if (time() - $lastRun > 600) { // 600 sekund = 10 minut
++        // Zaktualizuj czas (blokada)
++        file_put_contents($lockFile, time());
++
++        $files = glob($draftsDir . '/draft_*.json');
++        if ($files) {
++            foreach ($files as $file) {
++                $mtime = filemtime($file);
++                // Upewnij się, że mtime jest poprawny (nie false) i minęło 10 minut
++                if ($mtime && (time() - $mtime > 600)) {
++                    $content = json_decode(file_get_contents($file), true);
++                    
++                    if ($content) {
++                        $dSubject = $content['subject'];
++                        $dBody = $content['formattedBody'];
++                        
++                        $cronHeaders = "From: Formularz WWW (Szkic) <kontakt@raricart.pl>\r\n";
++                        $cronHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
++                        
++                        mail($toEmail, $dSubject, $dBody, $cronHeaders);
++                    }
++                    @unlink($file);
++                }
++            }
++        }
++    }
++}
++?>
+\ No newline at end of file
+diff --git a/debug.php b/site/debug.php
+similarity index 100%
+rename from debug.php
+rename to site/debug.php
+diff --git a/site/drafts/.htaccess b/site/drafts/.htaccess
+new file mode 100644
+index 0000000..14249c5
+--- /dev/null
++++ b/site/drafts/.htaccess
+@@ -0,0 +1 @@
++Deny from all
+\ No newline at end of file
+diff --git a/site/drafts/draft_4da013f59f42eb5b9e16f7e497d0ccc4.json b/site/drafts/draft_4da013f59f42eb5b9e16f7e497d0ccc4.json
+new file mode 100644
+index 0000000..fdaa52e
+--- /dev/null
++++ b/site/drafts/draft_4da013f59f42eb5b9e16f7e497d0ccc4.json
+@@ -0,0 +1 @@
++{"data":{"website_check":"","name":"Krzysztof Poczatek","email":"poczatek.krzysztof@gmail.com","phone":"535050460","date":"2026-01-10","guests":"","budget":"","event_type":"","message":"","stations":"","is_partial":true},"score":4,"timestamp":1769613886,"formattedBody":"--- TO JEST NIEUKO\u0143CZONY SZKIC FORMULARZA ---\n\n\ud83d\udc64 Imi\u0119: Krzysztof Poczatek\n\ud83d\udce7 Email: poczatek.krzysztof@gmail.com\n\ud83d\udcde Tel: 535050460\n\n\ud83d\udcc5 Data wydarzenia: 2026-01-10\n\ud83d\udc65 Liczba go\u015bci: \n\ud83d\udcb0 Bud\u017cet: \n\ud83c\udf89 Rodzaj wydarzenia: \n\ud83d\udd25 Interesuj\u0105ce stacje: \n\n\ud83d\udcac Wiadomo\u015b\u0107:\n","subject":"\u26a0\ufe0f SZKIC (Porzucony): Krzysztof Poczatek"}
+\ No newline at end of file
+diff --git a/site/drafts/draft_fc932f0141825fed2fd2752e4be473e5.json b/site/drafts/draft_fc932f0141825fed2fd2752e4be473e5.json
+new file mode 100644
+index 0000000..b50dc0a
+--- /dev/null
++++ b/site/drafts/draft_fc932f0141825fed2fd2752e4be473e5.json
+@@ -0,0 +1 @@
++{"data":{"website_check":"","name":"Krzysztof Poczatek","email":"","phone":"535050460","date":"2026-01-10","guests":"","budget":"","event_type":"","message":"","stations":"","is_partial":true},"score":3,"timestamp":1769613886,"formattedBody":"--- TO JEST NIEUKO\u0143CZONY SZKIC FORMULARZA ---\n\n\ud83d\udc64 Imi\u0119: Krzysztof Poczatek\n\ud83d\udce7 Email: \n\ud83d\udcde Tel: 535050460\n\n\ud83d\udcc5 Data wydarzenia: 2026-01-10\n\ud83d\udc65 Liczba go\u015bci: \n\ud83d\udcb0 Bud\u017cet: \n\ud83c\udf89 Rodzaj wydarzenia: \n\ud83d\udd25 Interesuj\u0105ce stacje: \n\n\ud83d\udcac Wiadomo\u015b\u0107:\n","subject":"\u26a0\ufe0f SZKIC (Porzucony): Krzysztof Poczatek"}
+\ No newline at end of file
+diff --git a/site/drafts/last_run.txt b/site/drafts/last_run.txt
+new file mode 100644
+index 0000000..2e510b7
+--- /dev/null
++++ b/site/drafts/last_run.txt
+@@ -0,0 +1 @@
++1769613878
+\ No newline at end of file
+diff --git a/site/generate_hash.php b/site/generate_hash.php
+new file mode 100644
+index 0000000..8bb5cd4
+--- /dev/null
++++ b/site/generate_hash.php
+@@ -0,0 +1 @@
++<?php echo password_hash('admin123', PASSWORD_DEFAULT); ?>
+diff --git a/google0b6228584fad3500.html b/site/google0b6228584fad3500.html
+similarity index 100%
+rename from google0b6228584fad3500.html
+rename to site/google0b6228584fad3500.html
+diff --git a/site/index.html b/site/index.html
+new file mode 100644
+index 0000000..3f209e1
+--- /dev/null
++++ b/site/index.html
+@@ -0,0 +1,619 @@
++<!DOCTYPE html>
++<html lang="pl">
++
++<head>
++
++
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <!-- Security: CSP & Honeypot setup -->
++    <meta http-equiv="Content-Security-Policy"
++        content="default-src 'self' https://images.unsplash.com https://media.istockphoto.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com;">
++
++    <!-- ANTI-SEO: Test Mode (No Index) -->
++    <meta name="robots" content="noindex, nofollow">
++
++    <!-- SEO -->
++    <title>Raricart - Live Food Station & Catering</title>
++    <meta name="description"
++        content="Raricart to wyjątkowe mobilne stacje degustacyjne na wesela, eventy firmowe i festiwale. Slow BBQ, azjatycki wok, desery fine dining. Obsługa eventów w całej Polsce.">
++    <meta name="keywords"
++        content="catering eventowy, mobilne stacje gastronomiczne, live cooking, BBQ na event, catering na wesele, food truck, live food station">
++    <meta name="author" content="Raricart">
++
++
++    <!-- Open Graph -->
++    <meta property="og:title" content="Raricart - Live Food Station | Mobilne Stacje Degustacyjne">
++    <meta property="og:description"
++        content="Tam, gdzie smak spotyka emocje, a prostota staje się elegancją. Tworzymy doświadczenie kulinarne, które zostaje w pamięci.">
++    <meta property="og:type" content="website">
++    <meta property="og:url" content="https://raricart.pl">
++    <meta property="og:image" content="https://raricart.pl/Logo.png">
++
++    <!-- Styles & Fonts -->
++    <link rel="canonical" href="https://raricart.pl">
++    <link rel="icon" type="image/png" href="favicon.png">
++
++    <!-- Critical CSS: Blocking load to prevent Layout Shift (CLS 1.0 fix) -->
++    <link rel="stylesheet" href="assets/css/styles.css?v=33.0">
++
++    <!-- Preload Fonts (Optimized for Critical Chain) -->
++    <!-- Comfortaa Light (300) - Main Body Text -->
++    <link rel="preload" href="assets/fonts/Comfortaa-Light.ttf" as="font" type="font/ttf" crossorigin>
++    <!-- Playfair SemiBold (600) - Main Headings -->
++    <link rel="preload" href="assets/fonts/Playfair-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
++
++    <!-- Scripts -->
++
++    <script type="application/ld+json">
++    {
++      "@context": "https://schema.org",
++      "@type": "FoodEstablishment",
++      "name": "Raricart Live Food Station",
++      "description": "Mobilne stacje degustacyjne na eventy",
++      "address": {
++        "@type": "PostalAddress",
++        "addressCountry": "PL"
++      },
++      "telephone": "+48883392688",
++      "email": "kontakt@raricart.pl",
++      "priceRange": "$$",
++      "servesCuisine": ["BBQ", "Asian", "Desserts"],
++      "url": "https://test.raricart.pl"
++    }
++    </script>
++</head>
++
++<body>
++    <!-- Backgrounds -->
++    <div class="video-background" id="videoBg">
++        <video autoplay muted loop playsinline aria-label="Tło wideo przedstawiające przygotowanie potraw">
++            <source src="assets/video/hero.mp4" type="video/mp4">
++            <track src="assets/video/captions.vtt" kind="captions" srclang="pl" label="Polski" default>
++        </video>
++        <div class="video-overlay"></div>
++    </div>
++    <div class="background-overlay" id="bg"></div>
++
++    <!-- Header Container -->
++    <header id="main-header">
++        <!-- Branding & Nav -->
++        <div class="brand-container" id="brand">
++            <img src="assets/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
++                width="342" height="250" style="cursor:pointer" fetchpriority="high">
++        </div>
++        <h1 class="new-brand" id="brandText1" data-i18n="hero.title1">TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE
++            SIĘ ELEGANCJĄ...</h1>
++        <div class="new-brand" id="brandText2" data-i18n="hero.title2">...TAM ZACZYNA SIĘ RARICART</div>
++
++        <div class="hamburger" id="hamburger">
++            <span></span>
++            <span></span>
++            <span></span>
++        </div>
++
++        <nav id="nav">
++            <ul class="nav-side nav-left">
++                <li><a href="#onas" aria-label="Przejdź do sekcji O Nas" data-i18n="nav.about">O Nas</a></li>
++                <li><a href="#oferta" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
++                <li><a href="#realizacje" aria-label="Przejdź do sekcji Galeria Realizacji"
++                        data-i18n="nav.gallery">Galeria</a></li>
++            </ul>
++
++            <div class="logo-spacer"></div>
++
++            <ul class="nav-side nav-right">
++                <li><a href="#faq" aria-label="Przejdź do sekcji FAQ" data-i18n="nav.faq">FAQ</a></li>
++                <li><a href="#dlaczego" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
++                        Wyróżnia</a></li>
++                <li><a href="#kontakt" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
++                <li class="lang-switch">
++                    <button class="lang-btn active" data-lang="pl">PL</button>
++                    <span class="sep">|</span>
++                    <button class="lang-btn" data-lang="en">EN</button>
++                    <span class="sep">|</span>
++                    <button class="lang-btn" data-lang="es">ES</button>
++                </li>
++            </ul>
++        </nav>
++
++        <div class="scroll-indicator" id="scroll"><span data-i18n="hero.scroll">Przewiń w dół</span><span
++                class="scroll-arrow">↓</span></div>
++    </header>
++    <div class="spacer"></div>
++
++    <main class="content">
++
++        <!-- O Nas -->
++        <section id="onas" class="section section-fullwidth">
++            <h2 data-i18n="about.title">NIE TWORZYMY CATERINGU, LECZ DOŚWIADCZENIE, KTÓRE CIESZY OCZY, ANGAŻUJE
++                ZMYSŁY I
++                NA DŁUGO ZOSTAJE W
++                PAMIĘCI</h2>
++            <div class="offer-image-text-fullwidth">
++                <div class="offer-text-container-full">
++                    <div>
++                        <p data-i18n="about.p1">Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego
++                            wydarzenia, subtelne,
++                            dopracowane i&nbsp;pełne charakteru.</p>
++                        <p data-i18n="about.p2">Serwujemy lekkie, świeże kompozycje, od mini pancakes
++                            <br>i&nbsp;włoskich odów po aromatyczne
++                            deski
++                            serów, tworząc atmosferę, w której goście czują się swobodnie i&nbsp;wyjątkowo.
++                        </p>
++
++                        <div class="separator-line"></div>
++
++                        <!-- Raricart in Numbers (Butikowe) -->
++                        <div class="stats-grid">
++                            <div class="stat-item">
++                                <span class="stat-number" data-i18n="about.stats.s1.num">100%</span>
++                                <p class="stat-desc" data-i18n="about.stats.s1.text">Pasji i świeżości – każde danie
++                                    przygotowujemy na oczach gości.</p>
++                            </div>
++                            <div class="stat-item">
++                                <span class="stat-number" data-i18n="about.stats.s2.num">3</span>
++                                <p class="stat-desc" data-i18n="about.stats.s2.text">Unikalne stacje – Mini Pancakes,
++                                    Lody Włoskie, Deski Serów (wyselekcjonowane i dopracowane).</p>
++                            </div>
++                            <div class="stat-item">
++                                <span class="stat-number" data-i18n="about.stats.s3.num">0</span>
++                                <p class="stat-desc" data-i18n="about.stats.s3.text">Kompromisów – używamy tylko
++                                    składników premium i naturalnych produktów.</p>
++                            </div>
++                            <div class="stat-item">
++                                <span class="stat-number" data-i18n="about.stats.s4.num">∞</span>
++                                <p class="stat-desc" data-i18n="about.stats.s4.text">Możliwości – personalizujemy menu i
++                                    wygląd stacji pod Twój event.</p>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++                <div class="offer-image-container-full">
++                    <img src="assets/images/about_group.webp"
++                        alt="Goście cieszący się posiłkiem podczas eventu Raricart" loading="lazy" width="800"
++                        height="600">
++                </div>
++            </div>
++        </section>
++
++        <!-- Oferta -->
++        <section id="oferta" class="section section-fullwidth">
++            <h2 data-i18n="offer.intro_title">NIE GOTUJEMY DAŃ, TWORZYMY CHWILE, KTÓRE ŁĄCZĄ LUDZI</h2>
++            <div class="offer-image-text-fullwidth">
++                <div class="offer-image-container-full">
++                    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1600"
++                        alt="Mobilna stacja gastronomiczna Raricart" loading="lazy">
++                </div>
++                <div class="offer-text-container-full no-separator">
++                    <div>
++                        <p data-i18n="offer.p1">Nasze stacje stają się miejscem rozmów, uśmiechów i&nbsp;zdjęć, a my
++                            dbamy o każdy szczegół,
++                            od
++                            montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.</p>
++                        <div class="separator-line"></div>
++                        <p style="margin-top: 0;" data-i18n="offer.p2">Obsługujemy eventy firmowe, wesela, gale<br>
++                            i&nbsp;prywatne
++                            przyjęcia,
++                            współpracując zarówno z agencjami, jak i&nbsp;klientami indywidualnymi.</p>
++                        <div class="separator-line"></div>
++                        <p data-i18n="offer.p3">W każdym projekcie kierujemy się zasadą, że smak i&nbsp;estetyka mają tę
++                            samą wartość, razem
++                            tworzą atmosferę, której nikt nie zapomina. Z Raricart zyskujesz nie tylko catering, ale
++                            spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak
++                            wygląda.</p>
++                    </div>
++                </div>
++            </div>
++
++
++            <h2 style="margin-top: 3rem;" data-i18n="offer.title">Nasza Oferta</h2>
++            <div class="offer-grid">
++                <article class="offer-card" data-offer="pancakes">
++                    <div class="offer-image"
++                        style="background-image: url('https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=800');"
++                        role="img" aria-label="Mini Pancakes"></div>
++                    <div class="offer-content">
++                        <h3 data-i18n="offer.cards.pancakes.title">Mini Pancakes</h3>
++                        <p data-i18n="offer.cards.pancakes.desc">Słodka stacja, która angażuje gości i&nbsp;staje
++                            się sercem wydarzenia.</p>
++                    </div>
++                </article>
++                <article class="offer-card" data-offer="icecream">
++                    <div class="offer-image"
++                        style="background-image: url('https://images.unsplash.com/photo-1560008581-09826d1de69e?w=800');"
++                        role="img" aria-label="Lody"></div>
++                    <div class="offer-content">
++                        <h3 data-i18n="offer.cards.icecream.title">Lody</h3>
++                        <p data-i18n="offer.cards.icecream.desc">Orzeźwiająca stacja, która zachwyca gości
++                            i&nbsp;buduje atmosferę.</p>
++                    </div>
++                </article>
++                <article class="offer-card" data-offer="cheese">
++                    <div class="offer-image"
++                        style="background-image: url('https://images.unsplash.com/photo-1631379578550-7038263db699?w=800');"
++                        role="img" aria-label="Deska Serów"></div>
++                    <div class="offer-content">
++                        <h3 data-i18n="offer.cards.cheese.title">Deska Serów</h3>
++                        <p data-i18n="offer.cards.cheese.desc">Fascynująca strefa smaku z&nbsp;włoskimi serami
++                            i&nbsp;wędlinami.</p>
++                    </div>
++                </article>
++            </div>
++
++        </section>
++
++        <!-- Realizacje -->
++        <section id="realizacje" class="section">
++            <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
++            <div class="gallery-grid" id="dynamicGalleryGrid">
++                <!-- Col 1 -->
++                <div class="gallery-column static">
++                    <div class="gallery-item" data-index="0"><img src="assets/gallery/gallery_01.webp" width="600"
++                            height="800" alt="Catering event realizacja 1" loading="lazy"></div>
++                    <div class="gallery-item" data-index="1"><img src="assets/gallery/gallery_02.webp" width="600"
++                            height="800" alt="Catering event realizacja 2" loading="lazy"></div>
++                    <div class="gallery-item" data-index="2"><img src="assets/gallery/gallery_03.webp" width="600"
++                            height="800" alt="Catering event realizacja 3" loading="lazy"></div>
++                    <div class="gallery-item" data-index="3"><img src="assets/gallery/gallery_04.webp" width="600"
++                            height="800" alt="BBQ catering realizacja 4" loading="lazy"></div>
++                </div>
++                <!-- Col 2 Parallax -->
++                <div class="gallery-column parallax">
++                    <div class="gallery-item" data-index="4"><img src="assets/gallery/gallery_05.webp" width="600"
++                            height="800" alt="Event realizacja 5" loading="lazy"></div>
++                    <div class="gallery-item" data-index="5"><img src="assets/gallery/gallery_06.webp" width="600"
++                            height="800" alt="Live cooking realizacja 6" loading="lazy"></div>
++                    <div class="gallery-item" data-index="6"><img src="assets/gallery/gallery_01.webp" width="600"
++                            height="800" alt="Catering realizacja 7" loading="lazy"></div>
++                    <div class="gallery-item" data-index="7"><img src="assets/gallery/gallery_02.webp" width="600"
++                            height="800" alt="Event realizacja 8" loading="lazy"></div>
++                </div>
++                <!-- Col 3 -->
++                <div class="gallery-column static">
++                    <div class="gallery-item" data-index="8"><img src="assets/gallery/gallery_03.webp" width="600"
++                            height="800" alt="Food realizacja 9" loading="lazy"></div>
++                    <div class="gallery-item" data-index="9"><img src="assets/gallery/gallery_04.webp" width="600"
++                            height="800" alt="Catering realizacja 10" loading="lazy"></div>
++                    <div class="gallery-item" data-index="10"><img src="assets/gallery/gallery_05.webp" width="600"
++                            height="800" alt="BBQ realizacja 11" loading="lazy"></div>
++                    <div class="gallery-item" data-index="11"><img src="assets/gallery/gallery_06.webp" width="600"
++                            height="800" alt="Wok realizacja 12" loading="lazy"></div>
++                </div>
++                <!-- Col 4 Parallax -->
++                <div class="gallery-column parallax">
++                    <div class="gallery-item" data-index="12"><img src="assets/gallery/gallery_04.webp" width="600"
++                            height="800" alt="Event realizacja 13" loading="lazy"></div>
++                    <div class="gallery-item" data-index="13"><img src="assets/gallery/gallery_01.webp" width="600"
++                            height="800" alt="Food realizacja 14" loading="lazy"></div>
++                    <div class="gallery-item" data-index="14"><img src="assets/gallery/gallery_02.webp" width="600"
++                            height="800" alt="Catering realizacja 15" loading="lazy"></div>
++                    <div class="gallery-item" data-index="15"><img src="assets/gallery/gallery_03.webp" width="600"
++                            height="800" alt="Catering realizacja 16" loading="lazy"></div>
++                </div>
++                <!-- Col 5 -->
++                <div class="gallery-column static">
++                    <div class="gallery-item" data-index="16"><img src="assets/gallery/gallery_04.webp" width="600"
++                            height="800" alt="Desery realizacja 17" loading="lazy"></div>
++                    <div class="gallery-item" data-index="17"><img src="assets/gallery/gallery_05.webp" width="600"
++                            height="800" alt="Event realizacja 18" loading="lazy"></div>
++                    <div class="gallery-item" data-index="18"><img src="assets/gallery/gallery_06.webp" width="600"
++                            height="800" alt="Event realizacja 19" loading="lazy"></div>
++                    <div class="gallery-item" data-index="19"><img src="assets/gallery/gallery_01.webp" width="600"
++                            height="800" alt="BBQ realizacja 20" loading="lazy"></div>
++                </div>
++            </div>
++        </section>
++
++        <!-- FAQ -->
++        <section id="faq" class="section">
++            <h2 data-i18n="faq.title">FAQ - Najczęściej Zadawane Pytania</h2>
++            <article class="faq-item">
++                <h3 data-i18n="faq.q1.title">Jak daleko możecie dojechać z Waszą "Droną Eventową"?</h3>
++                <p data-i18n="faq.q1.desc">Obsługujemy wydarzenia w całej Polsce, a w przypadku większych imprez,
++                    jesteśmy otwarci na wyjazdy
++                    zagraniczne. Nasze mobilne stanowiska pozwalają nam dotrzeć do niemal każdej, nawet najbardziej
++                    wymagającej lokalizacji – od centrum miasta po odległe tereny piknikowe.</p>
++            </article>
++            <article class="faq-item">
++                <h3 data-i18n="faq.q2.title">Czy oferujecie opcje wegetariańskie, wegańskie lub bezglutenowe?</h3>
++                <p data-i18n="faq.q2.desc">Tak! Nasze menu jest w pełni elastyczne i dostosowujemy je do wymagań
++                    dietetycznych gości. W trakcie
++                    planowania menu z Klientem, zawsze proponujemy szeroki wybór opcji wege, wegańskich oraz dań bez
++                    glutenu, używając specjalnie dedykowanych składników.</p>
++            </article>
++            <article class="faq-item">
++                <h3 data-i18n="faq.q3.title">Jakie są wymagania techniczne na miejscu eventu?</h3>
++                <p data-i18n="faq.q3.desc">Nasze mobilne stacje są w dużej mierze samowystarczalne. Potrzebujemy jedynie
++                    stabilnej, równej
++                    powierzchni. Dostęp do prądu jest mile widziany, ale posiadamy własne ciche generatory, które możemy
++                    uruchomić w razie potrzeby.</p>
++            </article>
++            <article class="faq-item">
++                <h3 data-i18n="faq.q4.title">Jaki jest minimalny czas rezerwacji?</h3>
++                <p data-i18n="faq.q4.desc">Zalecamy rezerwację na minimum 2-3 miesiące przed planowaną datą, szczególnie
++                    w sezonie letnim, aby
++                    zagwarantować dostępność terminów i najlepszych składników. Oczywiście, w miarę możliwości
++                    obsługujemy także last minute!</p>
++            </article>
++            <article class="faq-item">
++                <h3 data-i18n="faq.q5.title">Czy zapewniacie obsługę kelnerską?</h3>
++                <p data-i18n="faq.q5.desc">Tak! W ramach kompleksowej obsługi zapewniamy profesjonalny zespół kelnerski,
++                    który zadba o komfort
++                    Twoich gości. Nasi kelnerzy są doświadczeni w obsłudze eventów różnego typu i gwarantują najwyższy
++                    poziom usług.</p>
++            </article>
++            <article class="faq-item">
++                <h3 data-i18n="faq.q6.title">Ile osób możecie obsłużyć jednocześnie?</h3>
++                <p data-i18n="faq.q6.desc">Nasze mobilne stacje są skalowalne – od kameralnych spotkań dla 20 osób, po
++                    wielkie eventy dla
++                    kilkuset gości. W zależności od wielkości wydarzenia, dostosowujemy liczbę stanowisk i personelu,
++                    aby zapewnić płynną obsługę bez kolejek.</p>
++            </article>
++        </section>
++
++        <!-- Dlaczego My -->
++        <section id="dlaczego" class="section section-fullwidth">
++            <div class="parallax-why">
++                <h2 data-i18n="why.title">SZTUKA KULINARNYCH DOŚWIADCZEŃ</h2>
++                <div class="parallax-content">
++                    <div class="parallax-card">
++                        <h3 data-i18n="why.cards.1.title">EFEKT „WOW" Z KLASĄ</h3>
++                        <p data-i18n="why.cards.1.desc">Na oczach gości serwujemy ciepłe pancakes prosto z patelni,
++                            nalewamy cremowe lody i
++                            komponujemy deski serów - wszystko świeże, personalizowane i dopracowane w detalach. Proces
++                            live station przyciąga uwagę, integruje uczestników i tworzy naturalne punkty spotkań, gdzie
++                            przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż
++                            wydarzenia, łącząc estetykę premium z czystą przyjemnością dla zmysłów.</p>
++                    </div>
++                    <div class="parallax-card">
++                        <h3 data-i18n="why.cards.2.title">MNIEJ LOGISTYKI, WIĘCEJ SPOKOJU</h3>
++                        <p data-i18n="why.cards.2.desc">Raricart przejmuje całość: dojazd, montaż stacji, serwowanie
++                            podczas eventu, demontaż i
++                            perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje
++                            działają wszędzie: w loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych.
++                            Zespół synchronizuje serwis z harmonogramem, dba o płynny przepływ gości i minimalizuje
++                            kolejki.</p>
++                    </div>
++                    <div class="parallax-card">
++                        <h3 data-i18n="why.cards.3.title">DOŚWIADCZENIE ZAMIAST BUFETU</h3>
++                        <p data-i18n="why.cards.3.desc">W odróżnieniu od statycznego bufetu, nasze live stations
++                            angażują: goście obserwują nalewanie
++                            lodów, układanie pancakes i komponowanie desek serów, wybierając dodatki na bieżąco.
++                            Wszystko serwowane porcjami „tu i teraz" - świeże, bez marnowania, idealnie dopasowane do
++                            liczby i preferencji uczestników. Tematyczne stacje stają się magnesem na gości, budując
++                            emocje i niezapomniane wspomnienia.</p>
++                    </div>
++                    <div class="parallax-card">
++                        <h3 data-i18n="why.cards.4.title">BEZPIECZEŃSTWO, JAKOŚĆ, ESTETYKA</h3>
++                        <p data-i18n="why.cards.4.desc">Przestrzegamy rygorystycznych standardów higieny i
++                            bezpieczeństwa żywności, z naciskiem na
++                            świeżość składników i perfekcyjną prezencję. Używamy wyselekcjonowanych produktów
++                            serwowanych w optymalnej temperaturze. Każdy detal - od aranżacji stacji, przez zastawę, po
++                            pracę zespołu - tworzy spójną scenografię, wzmacniającą wizerunek Twojego wydarzenia.</p>
++                    </div>
++                    <div class="parallax-card">
++                        <h3 data-i18n="why.cards.5.title">PARTNER DLA WYMAGAJĄCYCH</h3>
++                        <p data-i18n="why.cards.5.desc">Agencje eventowe zyskują niezawodnego partnera rozumiejącego
++                            timing, layout i dynamikę dużych
++                            wydarzeń. Firmy, pary młode i organizatorzy prywatnych imprez otrzymują rozwiązanie premium:
++                            efekt „wow", emocje i pełną opiekę nad gośćmi. Właściciele lokali eventowych wzbogacają
++                            ofertę o mobilne stacje bez inwestycji w sprzęt – gotowe do działania w dowolnej
++                            przestrzeni.</p>
++                    </div>
++                    <div class="parallax-card">
++                        <h3 data-i18n="why.cards.6.title">NAPISZ DO NAS</h3>
++                        <p data-i18n="why.cards.6.desc">Twój event zasługuje na wyjątkowe live food station, które
++                            stanie się jego wizytówką. Napisz
++                            do nas już dziś - dopasujemy ofertę do Twojej wizji i zapewnimy termin. Razem stworzymy
++                            doświadczenie, które goście będą wspominać z zachwytem!</p>
++                    </div>
++                </div>
++            </div>
++        </section>
++
++        <!-- Kontakt -->
++        <section id="kontakt" class="section">
++            <h2 data-i18n="contact.title">Zapytaj o dostępność terminu<br>i stwórzmy razem strefę smaku,<br>o której
++                Twoi goście długo nie
++                zapomną.</h2>
++            <div class="progress-container">
++                <div id="form-progress"></div>
++            </div>
++            <p id="progress-text" style="text-align: center; margin-bottom: 1rem; color: #666; font-size: 0.9rem;"
++                data-i18n="form.progress_text">
++                Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)</p>
++            <form id="form" class="contact-form" novalidate>
++                <div id="availability-notice" class="availability-notice" style="display:none"></div>
++                <!-- Honeypot for bots -->
++                <input type="text" name="website_check" style="display:none !important" tabindex="-1"
++                    autocomplete="off">
++
++                <div class="form-row">
++                    <div class="form-group">
++                        <label for="name" data-i18n="form.name">Imię i Nazwisko *</label>
++                        <input type="text" id="name" name="name" required>
++                    </div>
++                    <div class="form-group">
++                        <label for="email" data-i18n="form.email">Email *</label>
++                        <input type="email" id="email" name="email" required>
++                    </div>
++                </div>
++                <div class="form-group">
++                    <label for="phone" data-i18n="form.phone">Telefon *</label>
++                    <input type="tel" id="phone" name="phone" required>
++                </div>
++                <div class="form-group">
++                    <label for="date" data-i18n="form.date">Data Wydarzenia *</label>
++                    <input type="date" id="date" name="date" required>
++                </div>
++                <div class="form-group">
++                    <label for="guests" data-i18n="form.guests_label">Liczba Gości *</label>
++                    <select id="guests" name="guests" required>
++                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
++                        <option value="20-50">20-50 osób</option>
++                        <option value="50-100">50-100 osób</option>
++                        <option value="100-200">100-200 osób</option>
++                        <option value="200+">Powyżej 200 osób</option>
++                    </select>
++                </div>
++                <div class="form-group">
++                    <label for="budget" data-i18n="form.budget">Budżet *</label>
++                    <select id="budget" name="budget" required>
++                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
++                        <option value="5-10k">5 000 - 10 000 PLN</option>
++                        <option value="10-20k">10 000 - 20 000 PLN</option>
++                        <option value="20-30k">20 000 - 30 000 PLN</option>
++                        <option value="30k+">Powyżej 30 000 PLN</option>
++                    </select>
++                </div>
++                <div class="form-group">
++                    <label for="event_type" data-i18n="form.event_type">Rodzaj Wydarzenia *</label>
++                    <select id="event_type" name="event_type" required>
++                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
++                        <option value="wedding" data-i18n="form.types.wedding">Wesele</option>
++                        <option value="corporate" data-i18n="form.types.corporate">Event Firmowy</option>
++                        <option value="festival" data-i18n="form.types.festival">Festiwal/Piknik</option>
++                        <option value="private" data-i18n="form.types.private">Przyjęcie Prywatne</option>
++                        <option value="other" data-i18n="form.types.other">Inne</option>
++                    </select>
++                </div>
++                </div>
++                <div class="form-group full-width">
++                    <label data-i18n="form.stations">Interesujące Stacje *</label>
++                    <div class="checkbox-group">
++                        <div class="checkbox-item"><input type="checkbox" id="p" name="stations" value="pancakes"><label
++                                for="p" data-i18n="form.st_pancakes">Mini Pancakes</label></div>
++                        <div class="checkbox-item"><input type="checkbox" id="l" name="stations" value="lody"><label
++                                for="l" data-i18n="form.st_icecream">Lody</label></div>
++                        <div class="checkbox-item"><input type="checkbox" id="s" name="stations" value="sery"><label
++                                for="s" data-i18n="form.st_cheese">Deska Serów</label></div>
++                    </div>
++                </div>
++                <div class="form-group full-width">
++                    <label for="message" data-i18n="form.message">Dodatkowe Informacje</label>
++                    <textarea id="message" name="message" rows="4"
++                        placeholder="Opisz swoje potrzeby, pytania lub preferencje..."
++                        data-i18n-placeholder="form.message_placeholder"></textarea>
++                </div>
++                <button type="submit" class="cta-primary" data-i18n="form.submit">Wyślij Zapytanie</button>
++            </form>
++        </section>
++
++    </main>
++
++    <footer>
++        <div class="footer-content">
++            <!-- 1. Brand -->
++            <div class="footer-section">
++                <h3>Raricart</h3>
++                <p>Live Food Station</p>
++                <p data-i18n="footer.desc">Mobilne stacje degustacyjne na eventy w całej Polsce.</p>
++            </div>
++
++            <!-- 2. Quick Links (Moved 2nd) -->
++            <div class="footer-section">
++                <h3 data-i18n="footer.quick_links">Szybkie Linki</h3>
++                <nav class="footer-links">
++                    <a href="#onas" data-i18n="nav.about">O Nas</a>
++                    <a href="#oferta" data-i18n="nav.offer">Oferta</a>
++                    <a href="#realizacje" data-i18n="nav.gallery">Realizacje</a>
++                    <a href="#kontakt" data-i18n="nav.contact">Kontakt</a>
++                </nav>
++            </div>
++
++            <!-- 3. Contact (Moved 3rd) -->
++            <div class="footer-section">
++                <h3 data-i18n="nav.contact">Kontakt</h3>
++                <div class="contact-item">
++                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
++                        class="contact-icon">
++                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
++                            stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
++                        <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
++                            stroke-linejoin="round" />
++                    </svg>
++                    <a href="mailto:kontakt@raricart.pl">kontakt@raricart.pl</a>
++                </div>
++                <div class="contact-item">
++                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
++                        class="contact-icon">
++                        <path
++                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.12 2h3a2 2 0 0 1 2 1.72 12.05 12.05 0 0 0 .57 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.05 12.05 0 0 0 2.81.57A2 2 0 0 1 22 16.92z"
++                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
++                    </svg>
++                    <a href="tel:+48883392688" class="phone-link">+48 883 392 688</a>
++                </div>
++            </div>
++
++            <!-- 4. Media (Labels added) -->
++            <div class="footer-section">
++                <h3>Media</h3>
++                <div class="footer-socials vertical">
++                    <a href="https://www.instagram.com/raricart.pl" target="_blank" aria-label="Instagram">
++                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
++                            class="social-icon">
++                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor"
++                                stroke-width="2"></rect>
++                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor"
++                                stroke-width="2"></path>
++                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2"></line>
++                        </svg>
++                        <span>Instagram</span>
++                    </a>
++                    <a href="https://www.facebook.com/people/Raricart/61585951812916/" target="_blank"
++                        aria-label="Facebook">
++                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
++                            class="social-icon">
++                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
++                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
++                            </path>
++                        </svg>
++                        <span>Facebook</span>
++                    </a>
++                </div>
++            </div>
++        </div>
++    </footer>
++
++    <!-- Modals -->
++    <div id="modal" class="modal">
++        <div class="modal-content">
++            <button class="modal-close" onclick="closeModal()" aria-label="Zamknij modal">&times;</button>
++            <img id="modalImg" src="" alt="">
++            <div class="modal-description">
++                <h3 id="modalTitle"></h3>
++                <div id="modalText"></div>
++            </div>
++        </div>
++    </div>
++
++    <div id="galleryModal" class="gallery-modal">
++        <button class="gallery-modal-close" aria-label="Zamknij galerię">&times;</button>
++        <img id="galleryModalImg" src="" alt="Powiększone zdjęcie realizacji">
++        <button class="gallery-nav gallery-prev" aria-label="Poprzednie zdjęcie">‹</button>
++        <button class="gallery-nav gallery-next" aria-label="Następne zdjęcie">›</button>
++    </div>
++
++    <!-- Cookie Banner -->
++    <div id="cookie-banner" class="cookie-banner" style="display: none;">
++        <div class="cookie-content">
++            <p data-i18n="cookies.text">
++                Ta strona używa plików cookies, aby zapewnić najlepszą jakość. Korzystając ze strony, zgadzasz
++                się na ich użycie.
++            </p>
++            <div class="cookie-buttons">
++                <button id="reject-cookies" class="cta-secondary small-btn"
++                    style="margin-right: 10px; border: 1px solid rgba(255,255,255,0.3); color: #fff;"
++                    data-i18n="cookies.reject">Odrzuć</button>
++                <button id="accept-cookies" class="cta-primary small-btn" data-i18n="cookies.accept">Akceptuję</button>
++            </div>
++        </div>
++    </div>
++
++    <!-- Scripts -->
++    <script src="assets/js/script.js?v=34.0" defer></script>
++</body>
++
++
++</html>
+\ No newline at end of file
+diff --git a/index.php b/site/index.php
+similarity index 99%
+rename from index.php
+rename to site/index.php
+index 8818a6e..4a6a147 100644
+--- a/index.php
++++ b/site/index.php
+@@ -173,7 +173,7 @@ include 'parts/navbar.php';
+                     }
+                 }
+ 
+-                $colsCount = 4;
++                $colsCount = 5;
+                 $columns = array_fill(0, $colsCount, []);
+                 foreach ($galleryFiles as $idx => $src) {
+                     $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
+@@ -392,6 +392,9 @@ include 'parts/navbar.php';
+ <?php
+ // 3. FOOTER
+ include 'parts/footer.php';
++
++// 4. MODALS (Moved outside footer to ensure top Z-Index)
++include 'parts/modals.php';
+ ?>
+ 
+ 
+diff --git a/parts/footer.php b/site/parts/footer.php
+similarity index 76%
+rename from parts/footer.php
+rename to site/parts/footer.php
+index c5bffb4..87aa1b4 100644
+--- a/parts/footer.php
++++ b/site/parts/footer.php
+@@ -71,41 +71,7 @@
+             </div>
+         </div>
+ 
+-    <!-- Modals -->
+-    <div id="modal" class="modal">
+-        <div class="modal-content">
+-            <button class="modal-close" onclick="closeModal()" aria-label="Zamknij modal">&times;</button>
+-            <img id="modalImg" src="" alt="">
+-            <div class="modal-description">
+-                <h3 id="modalTitle"></h3>
+-                <div id="modalText"></div>
+-            </div>
+-        </div>
+-    </div>
+-
+-    <div id="galleryModal" class="gallery-modal">
+-        <div class="gallery-modal-wrapper">
+-             <button class="gallery-modal-close" aria-label="Zamknij galerię">&times;</button>
+-             <img id="galleryModalImg" src="" alt="Powiększone zdjęcie realizacji">
+-        </div>
+-        <button class="gallery-nav gallery-prev" aria-label="Poprzednie zdjęcie">‹</button>
+-        <button class="gallery-nav gallery-next" aria-label="Następne zdjęcie">›</button>
+-    </div>
+ 
+-    <!-- Cookie Banner -->
+-    <div id="cookie-banner" class="cookie-banner" style="display: none;">
+-        <div class="cookie-content">
+-            <p data-i18n="cookies.text">
+-                Ta strona używa plików cookies, aby zapewnić najlepszą jakość. Korzystając ze strony, zgadzasz
+-                się na ich użycie.
+-            </p>
+-            <div class="cookie-buttons">
+-                <button id="reject-cookies" class="cta-secondary small-btn"
+-                    data-i18n="cookies.reject">Odrzuć</button>
+-                <button id="accept-cookies" class="cta-primary small-btn" data-i18n="cookies.accept">Akceptuję</button>
+-            </div>
+-        </div>
+-    </div>
+ 
+     <!-- Footer Bottom -->
+         <div class="footer-bottom" style="text-align: center; padding: 2rem 0; border-top: 1px solid rgba(0,0,0,0.05); font-size: 0.85rem; color: #666; background: var(--color-bg); position: relative; z-index: 25;">
+diff --git a/parts/head.php b/site/parts/head.php
+similarity index 100%
+rename from parts/head.php
+rename to site/parts/head.php
+diff --git a/site/parts/modals.php b/site/parts/modals.php
+new file mode 100644
+index 0000000..34de004
+--- /dev/null
++++ b/site/parts/modals.php
+@@ -0,0 +1,35 @@
++    <!-- Modals -->
++    <div id="modal" class="modal">
++        <div class="modal-content">
++            <button class="modal-close" aria-label="Zamknij modal">&times;</button>
++            <img id="modalImg" src="" alt="">
++            <div class="modal-description">
++                <h3 id="modalTitle"></h3>
++                <div id="modalText"></div>
++            </div>
++        </div>
++    </div>
++
++    <div id="galleryModal" class="gallery-modal">
++        <div class="gallery-modal-wrapper">
++             <button class="gallery-modal-close" aria-label="Zamknij galerię">&times;</button>
++             <img id="galleryModalImg" src="" alt="Powiększone zdjęcie realizacji">
++        </div>
++        <button class="gallery-nav gallery-prev" aria-label="Poprzednie zdjęcie">‹</button>
++        <button class="gallery-nav gallery-next" aria-label="Następne zdjęcie">›</button>
++    </div>
++
++    <!-- Cookie Banner -->
++    <div id="cookie-banner" class="cookie-banner" style="display: none;">
++        <div class="cookie-content">
++            <p data-i18n="cookies.text">
++                Ta strona używa plików cookies, aby zapewnić najlepszą jakość. Korzystając ze strony, zgadzasz
++                się na ich użycie.
++            </p>
++            <div class="cookie-buttons">
++                <button id="reject-cookies" class="cta-secondary small-btn"
++                    data-i18n="cookies.reject">Odrzuć</button>
++                <button id="accept-cookies" class="cta-primary small-btn" data-i18n="cookies.accept">Akceptuję</button>
++            </div>
++        </div>
++    </div>
+diff --git a/parts/navbar.php b/site/parts/navbar.php
+similarity index 100%
+rename from parts/navbar.php
+rename to site/parts/navbar.php
+diff --git a/polityka-prywatnosci.php b/site/polityka-prywatnosci.php
+similarity index 100%
+rename from polityka-prywatnosci.php
+rename to site/polityka-prywatnosci.php
+diff --git a/purge_cache.php b/site/purge_cache.php
+similarity index 100%
+rename from purge_cache.php
+rename to site/purge_cache.php
+diff --git a/site/resize_logo.ps1 b/site/resize_logo.ps1
+new file mode 100644
+index 0000000..c59db56
+--- /dev/null
++++ b/site/resize_logo.ps1
+@@ -0,0 +1,17 @@
++
++Add-Type -AssemblyName System.Drawing
++try {
++    $img = [System.Drawing.Image]::FromFile("assets/images/Logo.png")
++    # Target size 342x250
++    $newImg = new-object System.Drawing.Bitmap(342, 250)
++    $graph = [System.Drawing.Graphics]::FromImage($newImg)
++    $graph.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
++    $graph.DrawImage($img, 0, 0, 342, 250)
++    $newImg.Save("assets/images/logo_optimized.png", [System.Drawing.Imaging.ImageFormat]::Png)
++    $img.Dispose()
++    $newImg.Dispose()
++    $graph.Dispose()
++    Write-Host "Logo resized successfully."
++} catch {
++    Write-Error "Failed to resize logo: $_"
++}
+diff --git a/robots.txt b/site/robots.txt
+similarity index 100%
+rename from robots.txt
+rename to site/robots.txt
+diff --git a/tests/api_audit.php b/site/tests/api_audit.php
+similarity index 100%
+rename from tests/api_audit.php
+rename to site/tests/api_audit.php
+diff --git a/tests/verify_cache.php b/site/tests/verify_cache.php
+similarity index 100%
+rename from tests/verify_cache.php
+rename to site/tests/verify_cache.php
