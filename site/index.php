@@ -113,7 +113,7 @@ include 'parts/navbar.php';
             <div class="offer-grid">
                 <article class="offer-card" data-offer="pancakes">
                     <div class="offer-image-wrapper">
-                         <img src="<?php echo get_val('offer_cards.pancakes', 'assets/images/offer_pancakes.webp'); ?>" 
+                         <img src="<?php echo get_val('offer_cards.pancakes', 'assets/images/placeholder.webp'); ?>" 
                               alt="Mini Pancakes" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -124,7 +124,7 @@ include 'parts/navbar.php';
                 </article>
                 <article class="offer-card" data-offer="icecream">
                     <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.icecream', 'assets/images/offer_icecream.webp'); ?>" 
+                        <img src="<?php echo get_val('offer_cards.icecream', 'assets/images/placeholder.webp'); ?>" 
                              alt="Lody Włoskie" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -135,7 +135,7 @@ include 'parts/navbar.php';
                 </article>
                 <article class="offer-card" data-offer="cheese">
                     <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.cheese', 'assets/images/offer_cheese.webp'); ?>" 
+                        <img src="<?php echo get_val('offer_cards.cheese', 'assets/images/placeholder.webp'); ?>" 
                              alt="Deska Serów" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -200,46 +200,40 @@ include 'parts/navbar.php';
         <section id="faq" class="section">
             <h2 data-i18n="faq.title">FAQ - Najczęściej Zadawane Pytania</h2>
             <article class="faq-item">
-                <h3 data-i18n="faq.q1.title">Jak daleko możecie dojechać z Waszą "Droną Eventową"?</h3>
-                <p data-i18n="faq.q1.desc">Obsługujemy wydarzenia w całej Polsce, a w przypadku większych imprez,
-                    jesteśmy otwarci na wyjazdy
-                    zagraniczne. Nasze mobilne stanowiska pozwalają nam dotrzeć do niemal każdej, nawet najbardziej
-                    wymagającej lokalizacji – od centrum miasta po odległe tereny piknikowe.</p>
+                <h3 data-i18n="faq.q1.title">Czy jest ograniczona ilość porcji na osobę?</h3>
+                <p data-i18n="faq.q1.desc">Nie, nie ma żadnych limitów! Goście mogą sięgać po świeże porcje ile tylko chcą. Nasze live food station to obfitość smaków przygotowywanych na żywo.</p>
             </article>
             <article class="faq-item">
-                <h3 data-i18n="faq.q2.title">Czy oferujecie opcje wegetariańskie, wegańskie lub bezglutenowe?</h3>
-                <p data-i18n="faq.q2.desc">Tak! Nasze menu jest w pełni elastyczne i dostosowujemy je do wymagań
-                    dietetycznych gości. W trakcie
-                    planowania menu z Klientem, zawsze proponujemy szeroki wybór opcji wege, wegańskich oraz dań bez
-                    glutenu, używając specjalnie dedykowanych składników.</p>
+                <h3 data-i18n="faq.q2.title">Czy można przedłużyć czas trwania usługi?</h3>
+                <p data-i18n="faq.q2.desc">Oczywiście! Elastyczność to nasza specjalność. Możesz przedłużyć usługę wcześniej, ustalając szczegóły, lub spontanicznie w trakcie eventu.</p>
             </article>
             <article class="faq-item">
-                <h3 data-i18n="faq.q3.title">Jakie są wymagania techniczne na miejscu eventu?</h3>
-                <p data-i18n="faq.q3.desc">Nasze mobilne stacje są w dużej mierze samowystarczalne. Potrzebujemy jedynie
-                    stabilnej, równej
-                    powierzchni. Dostęp do prądu jest mile widziany, ale posiadamy własne ciche generatory, które możemy
-                    uruchomić w razie potrzeby.</p>
+                <h3 data-i18n="faq.q3.title">W którym momencie wydarzenia najlepiej skorzystać ze stoiska Raricart?</h3>
+                <p data-i18n="faq.q3.desc">Wybór należy do Ciebie - my idealnie się dopasujemy! Najczęściej stawiamy stoiska jako atrakcję na początek, podczas przerwy koktajlowej lub na deserowy finisz.</p>
             </article>
             <article class="faq-item">
-                <h3 data-i18n="faq.q4.title">Jaki jest minimalny czas rezerwacji?</h3>
-                <p data-i18n="faq.q4.desc">Zalecamy rezerwację na minimum 2-3 miesiące przed planowaną datą, szczególnie
-                    w sezonie letnim, aby
-                    zagwarantować dostępność terminów i najlepszych składników. Oczywiście, w miarę możliwości
-                    obsługujemy także last minute!</p>
+                <h3 data-i18n="faq.q4.title">Jak zarezerwować usługę Raricart?</h3>
+                <p data-i18n="faq.q4.desc">To proste: skontaktuj się z nami przez formularz na stronie, e-mail lub telefon. Opowiedz o evencie, a w 24h prześlemy spersonalizowaną ofertę z menu i dostępnością. Rezerwacja z lekkim sercem!</p>
             </article>
             <article class="faq-item">
-                <h3 data-i18n="faq.q5.title">Czy zapewniacie obsługę kelnerską?</h3>
-                <p data-i18n="faq.q5.desc">Tak! W ramach kompleksowej obsługi zapewniamy profesjonalny zespół kelnerski,
-                    który zadba o komfort
-                    Twoich gości. Nasi kelnerzy są doświadczeni w obsłudze eventów różnego typu i gwarantują najwyższy
-                    poziom usług.</p>
+                <h3 data-i18n="faq.q5.title">Co jest potrzebne, by Raricart pojawiło się na Twoim evencie?</h3>
+                <p data-i18n="faq.q5.desc">Tylko miejsce na nasze eleganckie stoisko (ok. 3x3m) i gniazdko prądu. Resztę załatwiamy my: dojazd, montaż, pełną obsługę, demontaż i sprzątanie. Zero zmartwień dla Ciebie.</p>
             </article>
             <article class="faq-item">
-                <h3 data-i18n="faq.q6.title">Ile osób możecie obsłużyć jednocześnie?</h3>
-                <p data-i18n="faq.q6.desc">Nasze mobilne stacje są skalowalne – od kameralnych spotkań dla 20 osób, po
-                    wielkie eventy dla
-                    kilkuset gości. W zależności od wielkości wydarzenia, dostosowujemy liczbę stanowisk i personelu,
-                    aby zapewnić płynną obsługę bez kolejek.</p>
+                <h3 data-i18n="faq.q6.title">Jakie są ceny usług Raricart?</h3>
+                <p data-i18n="faq.q6.desc">Ceny są elastyczne i zależą od menu, liczby gości oraz czasu trwania – od 150 zł/os. wzwyż dla premium live stations. Wyślij zapytanie, a przygotujemy transparentną wycenę.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q7.title">Czy obsługujecie eventy plenerowe i bez kuchni na miejscu?</h3>
+                <p data-i18n="faq.q7.desc">Tak, jesteśmy mobilni na 100%! Dojedziemy wszędzie - na wesela w ogrodzie, firmowe pikniki czy gale pod chmurką. Bez zaplecza kuchennego? Żaden problem, nasze stoiska to kompletna, samodzielna magia kulinarna.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q8.title">Ile gości minimalnie obsługujecie?</h3>
+                <p data-i18n="faq.q8.desc">Nie ma minimum – realizujemy zlecenia na każdą skalę! Od kameralnych imprez prywatnych (20+ osób) po duże eventy (500+). Dla mniejszych grup skalujemy jedno eleganckie stoisko z pełnym efektem "wow". Przy większych imprezach zalecamy więcej niż jedno stoisko – to poprawia jakość obsługi, skraca czas oczekiwania i minimalizuje kolejki.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q9.title">Jak zapewniacie higienę i bezpieczeństwo?</h3>
+                <p data-i18n="faq.q9.desc">Jesteśmy certyfikowani (HACCP, Sanepid), z pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i doświadczona obsługa.</p>
             </article>
         </section>
 
