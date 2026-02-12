@@ -400,7 +400,8 @@
 
 
     // --- Hero Animation Sequence (Stretched) ---
-    if (textProgress > 0.1) {
+    // User requested delay: Start at 30% scroll instead of 10%
+    if (textProgress > 0.3) {
         // Step 1: Scroll started -> Move Logo (Scale Down), Hide Scroll Arrow
         if (ui.brand) {
             ui.brand.classList.add('moving'); 

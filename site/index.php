@@ -172,32 +172,52 @@ include 'parts/navbar.php';
                 
                 // Fallback removed - JSON is the single source of truth
 
-                $colsCount = 5;
+                // Dynamic Columns Logic: Adapt to content size
+                $totalImages = count($galleryFiles);
+                // If few images, use fewer columns. Max 5.
+                $colsCount = ($totalImages > 0) ? max(1, min(5, $totalImages)) : 5;
+                
+                // Disable parallax effect for small galleries to prevent glitches
+                $enableParallax = ($totalImages >= 5);
+
                 $columns = array_fill(0, $colsCount, []);
                 foreach ($galleryFiles as $idx => $item) {
                     $src = '';
                     if (is_string($item)) {
                         $src = $item;
-                    } elseif (is_array($item) && isset($item['image'])) {
-                        $src = $item['image'];
                     } elseif (is_array($item) && isset($item['src'])) {
                         $src = $item['src'];
                     }
 
-                    if ($src) {
-                         $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
+                    if (!empty($src)) {
+                        // Distribute among columns
+                        $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
                     }
                 }
 
                 foreach ($columns as $cIdx => $colItems):
-                    $isParallax = ($cIdx % 2 !== 0) ? 'parallax' : 'static';
-                ?>
-                    <div class="gallery-column <?php echo $isParallax; ?>">
+                    // Add parallax class only if enough content
+                    $parallaxClass = ($enableParallax && $cIdx % 2 !== 0) ? 'parallax' : '';
+                    ?>
+                    <div class="gallery-column <?php echo $parallaxClass; ?>">
                         <?php foreach ($colItems as $item): ?>
-                            <div class="gallery-item" data-index="<?php echo $item['index']; ?>">
-                                <img src="<?php echo $item['src']; ?>" alt="Realizacja <?php echo $item['index'] + 1; ?>" loading="lazy">
-                            </div>
+                            <img src="<?php echo htmlspecialchars($item['src']); ?>" 
+                                 onclick="openGalleryModal(<?php echo $item['index']; ?>)" 
+                                 loading="lazy" 
+                                 alt="Realizacja Raricart">
                         <?php endforeach; ?>
+                        
+                        <?php 
+                        // Duplicate content for infinite scroll ONLY if parallax is active
+                        if ($enableParallax): 
+                            foreach ($colItems as $item): ?>
+                            <img src="<?php echo htmlspecialchars($item['src']); ?>" 
+                                 onclick="openGalleryModal(<?php echo $item['index']; ?>)" 
+                                 loading="lazy" 
+                                 alt="Realizacja Raricart" aria-hidden="true">
+                        <?php endforeach; 
+                        endif; 
+                        ?>
                     </div>
                 <?php endforeach; ?>
             </div>
