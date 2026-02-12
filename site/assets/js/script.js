@@ -430,8 +430,8 @@
     }
     
     // Text fade out at bottom of Hero
-    // User requested to extend visibility by ~40% (1.5 * 1.4 = 2.1)
-    if (textProgress > 2.1) {
+    // User correction: +20% from original (1.5 * 1.2 = 1.8)
+    if (textProgress > 1.8) {
       if (ui.brandText1) { ui.brandText1.classList.remove('visible'); ui.brandText1.classList.add('hidden'); }
       if (ui.brandText2) { ui.brandText2.classList.remove('visible'); ui.brandText2.classList.add('hidden'); }
     }
