@@ -690,17 +690,30 @@ video::-webkit-media-text-track-display {
     opacity: 1;
 }
 
-.offer-image {
+/* Old Offer Image (Background) - Removed */
+/* .offer-image { ... } */
 
-
-	width: 100%;
-	height: 500px;
-	background-size: cover; 
-	background-position: center;
-    position: relative; /* For overlay */
+/* New Offer Image Structure (Img Tag) */
+.offer-image-wrapper {
+    height: 250px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
-.offer-image::after {
+.offer-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+}
+
+.offer-card:hover .offer-image-img {
+    transform: scale(1.1);
+}
+
+.offer-image-wrapper::after {
     content: 'Zobacz więcej';
     position: absolute;
     top: 0;

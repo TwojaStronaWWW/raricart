@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mimeType = finfo_file($finfo, $file['tmp_name']);
         finfo_close($finfo);
         
-        // Combine allowed types based on context if needed, but for now allow both for content
+        // Combine allowed types based on context if needed
         $allowedTypes = array_merge($allowedImageTypes, $allowedVideoTypes);
 
         if (!in_array($mimeType, $allowedTypes)) {
@@ -57,16 +57,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Generate Unique Filename
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $prefix = in_array($mimeType, $allowedVideoTypes) ? 'vid_' : 'img_';
+        $isImage = in_array($mimeType, $allowedImageTypes);
+        $prefix = $isImage ? 'img_' : 'vid_';
+        
+        // If image, force .webp extension
+        if ($isImage) {
+            $ext = 'webp';
+        }
+        
         $filename = $prefix . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
         $destination = $uploadDir . $filename;
         
-        if (move_uploaded_file($file['tmp_name'], $destination)) {
-            ob_clean();
-            echo json_encode(['status' => 'success', 'file' => $webPath . $filename, 'type' => in_array($mimeType, $allowedVideoTypes) ? 'video' : 'image']);
+        if ($isImage) {
+            // --- IMAGE PROCESSING (Resize & Convert to WebP) ---
+            $sourceImage = null;
+            switch ($mimeType) {
+                case 'image/jpeg': $sourceImage = @imagecreatefromjpeg($file['tmp_name']); break;
+                case 'image/png': 
+                    $sourceImage = @imagecreatefrompng($file['tmp_name']); 
+                    imagepalettetotruecolor($sourceImage);
+                    imagealphablending($sourceImage, true);
+                    imagesavealpha($sourceImage, true);
+                    break;
+                case 'image/gif': $sourceImage = @imagecreatefromgif($file['tmp_name']); break;
+                case 'image/webp': $sourceImage = @imagecreatefromwebp($file['tmp_name']); break;
+            }
+
+            if ($sourceImage) {
+                $width = imagesx($sourceImage);
+                $height = imagesy($sourceImage);
+                $maxWidth = 1920;
+
+                // Resize if needed
+                if ($width > $maxWidth) {
+                    $newWidth = $maxWidth;
+                    $newHeight = floor($height * ($maxWidth / $width));
+                    
+                    $newImage = imagecreatetruecolor($newWidth, $newHeight);
+                    
+                    // Handle transparency
+                    if ($mimeType == 'image/png' || $mimeType == 'image/gif' || $mimeType == 'image/webp') {
+                         imagealphablending($newImage, false);
+                         imagesavealpha($newImage, true);
+                         $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+                         imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+                    }
+                    
+                    imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                    imagedestroy($sourceImage);
+                    $sourceImage = $newImage;
+                }
+
+                // Save as WebP
+                if (imagewebp($sourceImage, $destination, 85)) { // Quality 85
+                    imagedestroy($sourceImage);
+                    ob_clean();
+                    echo json_encode(['status' => 'success', 'file' => $webPath . $filename, 'type' => 'image']);
+                    exit;
+                } else {
+                    imagedestroy($sourceImage);
+                    ob_clean();
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to save converted image.']);
+                    exit;
+                }
+            } else {
+                 // Fallback if GD fails to open image (e.g. corrupt)
+                 if (move_uploaded_file($file['tmp_name'], $destination)) {
+                    ob_clean();
+                    echo json_encode(['status' => 'success', 'file' => $webPath . $filename, 'type' => 'image', 'warning' => 'Image saved but not optimized (GD error).']);
+                 } else {
+                    ob_clean();
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file.']);
+                 }
+            }
         } else {
-            ob_clean();
-            echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file.']);
+            // --- VIDEO HANDLING (Direct Upload) ---
+            if (move_uploaded_file($file['tmp_name'], $destination)) {
+                ob_clean();
+                echo json_encode(['status' => 'success', 'file' => $webPath . $filename, 'type' => 'video']);
+            } else {
+                ob_clean();
+                echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded video.']);
+            }
         }
     } else {
         ob_clean();

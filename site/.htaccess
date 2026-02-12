@@ -1,7 +1,8 @@
-AuthType Basic
-AuthName "Staging – dostęp tylko dla uprawnionych"
-AuthUserFile /home/platne/serwer409986/public_html/.htpasswd
-Require valid-user
+# AuthType Basic
+#AuthName "Staging – dostęp tylko dla uprawnionych"
+# AuthUserFile /home/platne/serwer409986/
+# public_html/.htpasswd
+# Require valid-user
 
 DirectoryIndex index.php
 RewriteEngine On
@@ -39,17 +40,22 @@ ErrorDocument 404 /404.html
     ExpiresDefault "access plus 1 minute"
 </IfModule>
 
-# Agresywne Wyłączenie LiteSpeed Cache (LH.pl)
-<IfModule litespeed>
-    CacheDisable public /
-    CacheDisable private /
-</IfModule>
+# Agresywne Wyłączenie LiteSpeed Cache (LH.pl) - USUNIĘTE DLA OPTYMALIZACJI
+# <IfModule litespeed>
+#     CacheDisable public /
+#     CacheDisable private /
+# </IfModule>
 
-# Wymuszenie nagłówków braku cache w HTTP
+# Wymuszenie nagłówków cache w HTTP (naprawa "no-cache")
 <IfModule mod_headers.c>
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-    Header set Expires "0"
+    # Cache Control dla plików statycznych (1 rok)
+    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|js|css|swf)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+    
+    # Wyłącz nagłówki "no-cache" dodawane przez serwer/hosting
+    Header unset Pragma
+    Header unset Expires
 </IfModule>
 
 <IfModule mod_deflate.c>

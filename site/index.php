@@ -6,13 +6,13 @@ header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: SAMEORIGIN");
 header("X-XSS-Protection: 1; mode=block");
 
-// Prevent PHP / LiteSpeed Caching
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
-header("X-LiteSpeed-Cache-Control: no-cache"); // Specific for LH.pl / LiteSpeed
-header("Clear-Site-Data: \"cache\""); // Instruct browser to clear its cache
+// Prevent PHP / LiteSpeed Caching - USUNIĘTE DLA OPTYMALIZACJI
+// header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+// header("Cache-Control: post-check=0, pre-check=0", false);
+// header("Pragma: no-cache");
+// header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+// header("X-LiteSpeed-Cache-Control: no-cache"); 
+// header("Clear-Site-Data: \"cache\"");
 
 clearstatcache();
 
@@ -59,7 +59,7 @@ include 'parts/navbar.php';
         <section id="onas" class="section-premium">
             <div class="premium-container">
                 <div class="premium-col-image">
-                    <img src="<?php echo get_val('about_image', 'https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=1200'); ?>"
+                    <img src="<?php echo get_val('about_image', 'assets/images/about_experience.webp'); ?>"
                         alt="Raricart Live Food Experience - Goście cieszący się wydarzeniem" loading="lazy" class="premium-img">
                 </div>
                 <div class="premium-col-text">
@@ -112,9 +112,10 @@ include 'parts/navbar.php';
             <h2 data-i18n="offer.title">Nasza Oferta</h2>
             <div class="offer-grid">
                 <article class="offer-card" data-offer="pancakes">
-                    <div class="offer-image"
-                        style="background-image: url('<?php echo get_val('offer_cards.pancakes', 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=800'); ?>');"
-                        role="img" aria-label="Mini Pancakes"></div>
+                    <div class="offer-image-wrapper">
+                         <img src="<?php echo get_val('offer_cards.pancakes', 'assets/images/offer_pancakes.webp'); ?>" 
+                              alt="Mini Pancakes" loading="lazy" class="offer-image-img">
+                    </div>
                     <div class="offer-content">
                         <h3 data-i18n="offer.cards.pancakes.title">Mini Pancakes</h3>
                         <p data-i18n="offer.cards.pancakes.desc">Słodka stacja, która angażuje gości i&nbsp;staje
@@ -122,9 +123,10 @@ include 'parts/navbar.php';
                     </div>
                 </article>
                 <article class="offer-card" data-offer="icecream">
-                    <div class="offer-image"
-                        style="background-image: url('<?php echo get_val('offer_cards.icecream', 'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=800'); ?>');"
-                        role="img" aria-label="Lody"></div>
+                    <div class="offer-image-wrapper">
+                        <img src="<?php echo get_val('offer_cards.icecream', 'assets/images/offer_icecream.webp'); ?>" 
+                             alt="Lody Włoskie" loading="lazy" class="offer-image-img">
+                    </div>
                     <div class="offer-content">
                         <h3 data-i18n="offer.cards.icecream.title">Lody Włoskie</h3>
                         <p data-i18n="offer.cards.icecream.desc">Orzeźwiająca stacja, która zachwyca gości
@@ -132,9 +134,10 @@ include 'parts/navbar.php';
                     </div>
                 </article>
                 <article class="offer-card" data-offer="cheese">
-                    <div class="offer-image"
-                        style="background-image: url('<?php echo get_val('offer_cards.cheese', 'https://images.unsplash.com/photo-1631379578550-7038263db699?w=800'); ?>');"
-                        role="img" aria-label="Deska Serów"></div>
+                    <div class="offer-image-wrapper">
+                        <img src="<?php echo get_val('offer_cards.cheese', 'assets/images/offer_cheese.webp'); ?>" 
+                             alt="Deska Serów" loading="lazy" class="offer-image-img">
+                    </div>
                     <div class="offer-content">
                         <h3 data-i18n="offer.cards.cheese.title">Deska Serów</h3>
                         <p data-i18n="offer.cards.cheese.desc">Fascynująca strefa smaku z&nbsp;włoskimi serami
