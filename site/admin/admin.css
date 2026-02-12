@@ -215,3 +215,49 @@ input:checked + .slider:before { transform: translateX(24px); }
     left: 0; top: 0; width: 100%; height: 100%;
     opacity: 0; cursor: pointer;
 }
+
+/* Gallery Sorting Controls */
+.gallery-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none; /* Allow click through if needed, but buttons need events */
+}
+.gallery-item:hover .gallery-controls { opacity: 1; pointer-events: auto; }
+
+.move-btn {
+    background: white;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    color: #444;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.move-btn:disabled { 
+    opacity: 0; 
+    cursor: default; 
+    pointer-events: none;
+}
+
+.move-btn:hover:not(:disabled) { 
+    background: var(--color-accent); 
+    color: white; 
+    transform: scale(1.1);
+}

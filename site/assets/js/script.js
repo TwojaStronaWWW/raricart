@@ -89,7 +89,7 @@
         <div class="modal-section"><h4>GDZIE SPRAWDZA SIĘ NASZA STACJA?</h4><ul><li>Eventy firmowe i&nbsp;konferencje</li><li>Wesela i&nbsp;przyjęcia weselne</li><li>Gale i&nbsp;bankiety</li><li>Prywatne przyjęcia i&nbsp;urodziny</li><li>Imprezy plenerowe i&nbsp;pikniki</li></ul></div>
         <div class="modal-section"><h4>PRZYKŁADOWE MENU</h4><ul><li><strong>Classic:</strong> Cukier puder / Syrop klonowy</li><li><strong>Sweet Dream:</strong> Nutella / Banan / Kruszonka</li><li><strong>Fruity Fresh:</strong> Biała Czekolada / Świeże Maliny</li><li><strong>Crunchy:</strong> Solony Karmel / Orzeszki Ziemne</li></ul></div>
         <div class="modal-section"><h4>CO OTRZYMUJESZ?</h4><ul><li>Profesjonalną, mobilną stację o&nbsp;dopracowanej estetyce</li><li>Obsługę od montażu po ostatni serwis</li><li>Świeżo przygotowane pancakes i&nbsp;starannie dobrane dodatki</li><li>Punkt, który angażuje gości i&nbsp;tworzy naturalne miejsce spotkań</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=1200'
+
             },
             icecream: {
                 title: 'Lody Włoskie',
@@ -99,7 +99,6 @@
         <div class="modal-section"><h4>GDZIE SPRAWDZA SIĘ STACJA LODÓW?</h4><ul><li>Eventy firmowe i&nbsp;dni otwarte</li><li>Wesela, poprawiny i&nbsp;letnie przyjęcia</li><li>Gale, premiery, eventy wizerunkowe</li><li>Przyjęcia rodzinne, urodziny, komunie</li><li>Imprezy plenerowe i&nbsp;pikniki</li></ul></div>
         <div class="modal-section"><h4>PRZYKŁADOWE MENU (Smaki)</h4><ul><li><strong>Pistacja Sycylijska:</strong> 100% pasty pistacjowej</li><li><strong>Belgijska Czekolada:</strong> Intensywna i kremowa</li><li><strong>Śmietanka z Wanilią:</strong> Klasyka w najlepszym wydaniu</li><li><strong>Sorbet Mango-Marakuja:</strong> Orzeźwienie z nutą orientu</li></ul></div>
         <div class="modal-section"><h4>CO ZYSKUJESZ?</h4><ul><li>Estetyczną, mobilną stację lodów dopasowaną do charakteru wydarzenia</li><li>Kompleksową obsługę – od przygotowania po serwis w&nbsp;trakcie eventu</li><li>Kremowe lody włoskie serwowane na żywo z&nbsp;profesjonalnie dobranymi dodatkami</li><li>Punkt, który naturalnie przyciąga gości i&nbsp;buduje pozytywne skojarzenia z&nbsp;wydarzeniem.</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=1200'
             },
             cheese: {
                 title: 'Deska Serów',
@@ -110,7 +109,6 @@
         <div class="modal-section"><h4>GDZIE SPRAWDZA SIĘ STACJA SERÓW?</h4><ul><li>Koktajle biznesowe i&nbsp;wernisaże</li><li>Strefy chillout na weselach</li><li>Ekskluzywne bankiety</li><li>Degustacje win</li></ul></div>
         <div class="modal-section"><h4>PRZYKŁADOWE MENU</h4><ul><li><strong>Sery:</strong> Parmigiano Reggiano 24m, Gorgonzola Dolce, Pecorino Romano</li><li><strong>Wędliny:</strong> Prosciutto di Parma, Spianata Piccante, Salami Milano</li><li><strong>Dodatki:</strong> Konfitura z fig, oliwki Liguryjskie, świeże winogrona, orzechy włoskie, krakersy rzemieślnicze</li></ul></div>
         <div class="modal-section"><h4>CO ZYSKUJESZ?</h4><ul><li>Spektakularną ekspozycję kulinarną, która przyciąga wzrok</li><li>Wysokiej jakości produkty, które zadowolą koneserów</li><li>Alternatywę dla klasycznego bufetu – "grazing table" w&nbsp;wersji premium</li><li>Elegancki element, który podnosi rangę wydarzenia</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?w=1200'
             }
         }
     },
@@ -193,7 +191,6 @@
         <div class="modal-section"><h4>TOPPING SELECTION</h4><p>If you prefer, we'll take care of this part for you: we'll prepare a set of toppings perfectly matched to the event style and guest profile. We'll ensure harmony of flavors and aesthetic presentation, so that the whole is consistent with the event's character and atmosphere.</p><p>You can also choose toppings from our list yourself: we give you full freedom to compose the offer according to your own preferences.</p></div>
         <div class="modal-section"><h4>WHERE DOES OUR STATION WORK?</h4><ul><li>Corporate events and conferences</li><li>Weddings and wedding receptions</li><li>Galas and banquets</li><li>Private parties and birthdays</li><li>Outdoor events and picnics</li></ul></div>
         <div class="modal-section"><h4>WHAT DO YOU GET?</h4><ul><li>Professional, mobile station with refined aesthetics</li><li>Service from setup to the last serving</li><li>Freshly prepared pancakes and carefully selected toppings</li><li>A point that engages guests and creates a natural meeting place</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=1200'
             },
             icecream: {
                 title: 'Soft Serve',
@@ -202,7 +199,6 @@
         <div class="modal-section"><h4>FLAVOR AND TOPPING SELECTION</h4><p>You can entrust us with the selection of flavors and toppings: we will adapt the configuration to the character of the event, season, and guest profile. Full freedom is also possible in composing the list yourself, so that the offer perfectly fits your concept.</p></div>
         <div class="modal-section"><h4>WHERE DOES THE ICE CREAM STATION WORK?</h4><ul><li>Corporate events and open days</li><li>Weddings, after-parties, and summer receptions</li><li>Galas, premieres, image events</li><li>Family parties, birthdays, communions</li><li>Outdoor events and picnics</li></ul></div>
         <div class="modal-section"><h4>WHAT DO YOU GAIN?</h4><ul><li>Aesthetic, mobile ice cream station adapted to the event's character</li><li>Comprehensive service – from preparation to service during the event</li><li>Creamy Italian ice cream served live with professionally selected toppings</li><li>A point that naturally attracts guests and builds positive associations with the event.</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=1200'
             },
             cheese: {
                 title: 'Cheese Board',
@@ -211,7 +207,6 @@
         <div class="modal-section"><h4>CAREFULLY COMPOSED SELECTION OF INGREDIENTS</h4><p>The selection of all 12 items and sauces is precisely thought out: each ingredient has been selected to perfectly complement the others, creating a harmonious taste and visual whole. The composition was created with the highest standards of tasting experiences in mind, guaranteeing guests professional, world-class impressions. Entrusting us with this aspect allows you to focus on organizing the event, while we ensure the consistency and quality of each portion.</p></div>
         <div class="modal-section"><h4>WHERE DOES THE CHEESE STAND WORK?</h4><ul><li>Corporate events, banquets, and cocktails</li><li>Weddings, pre-wedding parties, and after-parties</li><li>Galas, vernissages, product launches</li><li>Intimate private parties and business meetings</li><li>Conferences and networking meetings</li></ul></div>
         <div class="modal-section"><h4>WHAT DO YOU GAIN?</h4><ul><li>Aesthetic, mobile stand with top-quality Italian cheeses and cold cuts</li><li>Comprehensive service: from arrangement to service and replenishment during the event</li><li>12 precisely selected items plus sauces enhancing the tasting</li><li>A point that naturally attracts guests and builds positive associations with the event.</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1631379578550-7038263db699?w=1200'
             }
         }
     },
@@ -289,7 +284,6 @@
         <div class="modal-section"><h4>SELECCIÓN DE ADEREZOS</h4><p>Si lo prefieres, nosotros nos encargamos de esta parte: prepararemos un conjunto de aderezos perfectamente adaptados al estilo del evento y al perfil de los invitados. Nos aseguraremos de la armonía de sabores y la presentación estética, para que todo sea coherente con el carácter y la atmósfera del evento.</p><p>También puedes elegir los aderezos de nuestra lista: te damos total libertad para componer la oferta según tus propias preferencias.</p></div>
         <div class="modal-section"><h4>¿DÓNDE FUNCIONA NUESTRA ESTACIÓN?</h4><ul><li>Eventos corporativos y conferencias</li><li>Bodas y recepciones de boda</li><li>Galas y banquetes</li><li>Fiestas privadas y cumpleaños</li><li>Eventos al aire libre y picnics</li></ul></div>
         <div class="modal-section"><h4>¿QUÉ OBTIENES?</h4><ul><li>Estación profesional y móvil con una estética refinada</li><li>Servicio desde el montaje hasta el último servicio</li><li>Pancakes recién preparados y aderezos cuidadosamente seleccionados</li><li>Un punto que atrae a los invitados y crea un lugar de encuentro natural</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1598214886806-c87b84b7078b?w=1200'
             },
             icecream: {
                 title: 'Helado Suave',
@@ -298,7 +292,6 @@
         <div class="modal-section"><h4>SELECCIÓN DE SABORES Y ADEREZOS</h4><p>Puedes confiarnos la selección de sabores y aderezos: adaptaremos la configuración al carácter del evento, la temporada y el perfil de los invitados. También es posible una total libertad para componer la lista tú mismo, para que la oferta se adapte perfectamente a tu concepto.</p></div>
         <div class="modal-section"><h4>¿DÓNDE FUNCIONA LA ESTACIÓN DE HELADOS?</h4><ul><li>Eventos corporativos y jornadas de puertas abiertas</li><li>Bodas, post-bodas y recepciones de verano</li><li>Galas, estrenos, eventos de imagen</li><li>Fiestas familiares, cumpleaños, comuniones</li><li>Eventos al aire libre y picnics</li></ul></div>
         <div class="modal-section"><h4>¿QUÉ GANAS?</h4><ul><li>Estación de helados estética y móvil adaptada al carácter del evento</li><li>Servicio integral – desde la preparación hasta el servicio durante el evento</li><li>Cremoso helado italiano servido en vivo con aderezos seleccionados profesionalmente</li><li>Un punto que atrae naturalmente a los invitados y construye asociaciones positivas con el evento.</li></ul></div>`,
-                image: 'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=1200'
             },
             cheese: {
                 title: 'Tabla de Quesos',
@@ -307,7 +300,6 @@
         <div class="modal-section"><h4>SELECCIÓN CUIDADOSAMENTE COMPUESTA DE INGREDIENTES</h4><p>La selección de los 12 artículos y salsas está precisamente pensada: cada ingrediente ha sido seleccionado para complementar perfectamente a los demás, creando un conjunto armonioso de sabor y visual. La composición fue creada pensando en los más altos estándares de experiencias de degustación, garantizando a los invitados impresiones profesionales de clase mundial. Confiarnos este aspecto te permite concentrarte en la organización del evento, mientras nosotros aseguramos la consistencia y calidad de cada porción.</p></div>
         <div class="modal-section"><h4>¿DÓNDE FUNCIONA EL PUESTO DE QUESOS?</h4><ul><li>Eventos corporativos, banquetes y cócteles</li><li>Bodas, fiestas pre-boda y post-bodas</li><li>Galas, vernissages, lanzamientos de productos</li><li>Fiestas privadas íntimas y reuniones de negocios</li><li>Conferencias y reuniones de networking</li></ul></div>
         <div class="modal-section"><h4>¿QUÉ GANAS?</h4><ul><li>Puesto estético y móvil con quesos y embutidos italianos de primera calidad</li><li>Servicio integral: desde la disposición hasta el servicio y la reposición durante el evento</li><li>12 artículos seleccionados con precisión más salsas que realzan la degustación</li><li>Un punto que atrae naturalmente a los invitados y construye asociaciones positivas con el evento.</li></ul></div>`,
-                image: 'assets/images/cheese.webp'
             }
         }
     },
@@ -609,17 +601,26 @@
     const data = translations[currentLang]?.modals?.[type];
     
     if (data && modal) {
-      let imgSrc = data.image;
-      
-      // Override with dynamic content if available (Specific Modal Image)
+      let imgSrc = data.image; // May be undefined now
+
+      // 1. Try Specific Modal Image from Config
       if (window.siteContentConfig && 
           window.siteContentConfig.offer_modals && 
           window.siteContentConfig.offer_modals[type]) {
           imgSrc = window.siteContentConfig.offer_modals[type] + '?v=' + Date.now();
       } 
-      // Fallback to dynamic card image if modal specific not set but card is? 
-      // User asked for specific modal image. If not set, keep default or card image?
-      // For now, keep default logic (translations or card image if translations uses it).
+      // 2. Fallback to Card Image from Config if Modal Image not set
+      else if (window.siteContentConfig && 
+               window.siteContentConfig.offer_cards && 
+               window.siteContentConfig.offer_cards[type]) {
+          imgSrc = window.siteContentConfig.offer_cards[type] + '?v=' + Date.now();
+      }
+      
+      // 3. Last resort fallback (absolute path if needed, or placeholder)
+      if (!imgSrc) {
+          // Optional: Set a default placeholder if nothing exists
+          // imgSrc = 'assets/images/placeholder.jpg';
+      }
       
       img.src = imgSrc;
       img.alt = data.title;

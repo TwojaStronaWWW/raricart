@@ -291,18 +291,31 @@ function renderGallery() {
         if (src.startsWith('http') || src.startsWith('//')) {
              displaySrc = src;
         } else {
-             // If path is like 'assets/gallery/img.jpg', make it '../assets/gallery/img.jpg'
-             // If someone saved it as '../assets...', clean it first
              const cleanPath = src.replace(/^(\.\.\/)+/, '');
              displaySrc = '../' + cleanPath;
         }
         
         div.innerHTML = `
             <img src="${displaySrc}" loading="lazy">
-            <button class="delete-btn" onclick="deleteImageInGrid(${index})">×</button>
+            <button class="delete-btn" onclick="deleteImageInGrid(${index})" title="Usuń">×</button>
+            <div class="gallery-controls">
+                <button class="move-btn" onclick="moveImage(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="Przesuń w lewo">←</button>
+                <button class="move-btn" onclick="moveImage(${index}, 1)" ${index === galleryImages.length - 1 ? 'disabled' : ''} title="Przesuń w prawo">→</button>
+            </div>
         `;
         grid.appendChild(div);
     });
+}
+
+function moveImage(index, direction) {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= galleryImages.length) return;
+
+    // Swap elements
+    [galleryImages[index], galleryImages[newIndex]] = [galleryImages[newIndex], galleryImages[index]];
+    
+    renderGallery();
+    saveGalleryState();
 }
 
 function saveGalleryState() {
@@ -476,6 +489,12 @@ function renderContentPreviews() {
         setPrev('offer_cards-pancakes', siteContent.offer_cards.pancakes);
         setPrev('offer_cards-icecream', siteContent.offer_cards.icecream);
         setPrev('offer_cards-cheese', siteContent.offer_cards.cheese);
+    }
+
+    if(siteContent.offer_modals) {
+        setPrev('offer_modals-pancakes', siteContent.offer_modals.pancakes);
+        setPrev('offer_modals-icecream', siteContent.offer_modals.icecream);
+        setPrev('offer_modals-cheese', siteContent.offer_modals.cheese);
     }
 }
 

@@ -2222,6 +2222,8 @@ footer {
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
     /* Initial state for animation handled by JS/Observer ideally, or just static for now if no JS changes */
     /* Assuming existing scroll logic might need update, or I can add a simple animation class */
+    max-height: 700px;
+    object-fit: cover;
 }
 
 /* Typography */
