@@ -41,7 +41,7 @@ jobs:
           username: serwer409986
           password: ${{ secrets.FTP_PASSWORD }}
           port: 40022
-          source: "pakiety/**"
+          source: "packages/**"
           target: "/home/platne/serwer409986/public_html/test.pakiety.raricart.pl/"
           strip_components: 1
           overwrite: true
