@@ -28,14 +28,24 @@ if (file_exists($content_file)) {
 
 function get_val($key, $default) {
     global $content;
-    $val = $content[$key] ?? $default;
-    // Cache busting oparty na czasie modyfikacji pliku lokalnego (jeśli to ścieżka lokalna)
+    
+    // Obsługa zagnieżdżonych kluczy (np. offer_cards.pancakes)
+    $keys = explode('.', $key);
+    $val = $content;
+    
+    foreach ($keys as $k) {
+        if (is_array($val) && isset($val[$k])) {
+            $val = $val[$k];
+        } else {
+            return $default;
+        }
+    }
+    
+    // Cache busting oparty na czasie modyfikacji pliku lokalnego
     if ($val !== $default && strpos($val, '?') === false) {
         $local_path = __DIR__ . '/' . ltrim($val, '/');
         if (file_exists($local_path)) {
             $val .= '?v=' . filemtime($local_path);
-        } else {
-            // Jeśli to zewnętrzny URL lub plik nie istnieje, nie dodajemy time() który wymusza pobranie co sekundę
         }
     }
     return $val;

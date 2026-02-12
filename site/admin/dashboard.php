@@ -21,6 +21,7 @@ if (file_exists($status_file)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administratora - Raricart</title>
     <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token']; ?>">
 </head>
 <body>
@@ -286,6 +287,7 @@ function renderGallery() {
     galleryImages.forEach((src, index) => {
         const div = document.createElement('div');
         div.className = 'gallery-item';
+        div.setAttribute('data-src', src); // Ważne dla SortableJS
         
         let displaySrc;
         if (src.startsWith('http') || src.startsWith('//')) {
@@ -298,29 +300,34 @@ function renderGallery() {
         div.innerHTML = `
             <img src="${displaySrc}" loading="lazy">
             <button class="delete-btn" onclick="deleteImageInGrid(${index})" title="Usuń">×</button>
-            <div class="gallery-controls">
-                <button class="move-btn" onclick="moveImage(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="Przesuń w lewo">←</button>
-                <button class="move-btn" onclick="moveImage(${index}, 1)" ${index === galleryImages.length - 1 ? 'disabled' : ''} title="Przesuń w prawo">→</button>
-            </div>
         `;
         grid.appendChild(div);
     });
+
+    initDragAndDrop();
 }
 
-function moveImage(index, direction) {
-    const newIndex = index + direction;
-    if (newIndex < 0 || newIndex >= galleryImages.length) return;
+function initDragAndDrop() {
+    const el = document.getElementById('galleryList');
+    if(el.sortable) el.sortable.destroy(); // Cleanup old instance if exists
 
-    // Swap elements
-    [galleryImages[index], galleryImages[newIndex]] = [galleryImages[newIndex], galleryImages[index]];
-    
-    renderGallery();
-    saveGalleryState();
+    el.sortable = new Sortable(el, {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        onEnd: function () {
+            const newOrder = [];
+            document.querySelectorAll('#galleryList .gallery-item').forEach(item => {
+                newOrder.push(item.getAttribute('data-src'));
+            });
+
+            galleryImages = newOrder;
+            saveGalleryState();
+        }
+    });
 }
 
 function saveGalleryState() {
     fetch('save_gallery.php', {
-        method: 'POST',
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json',
