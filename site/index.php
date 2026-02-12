@@ -178,8 +178,19 @@ include 'parts/navbar.php';
 
                 $colsCount = 5;
                 $columns = array_fill(0, $colsCount, []);
-                foreach ($galleryFiles as $idx => $src) {
-                    $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
+                foreach ($galleryFiles as $idx => $item) {
+                    $src = '';
+                    if (is_string($item)) {
+                        $src = $item;
+                    } elseif (is_array($item) && isset($item['image'])) {
+                        $src = $item['image'];
+                    } elseif (is_array($item) && isset($item['src'])) {
+                        $src = $item['src'];
+                    }
+
+                    if ($src) {
+                         $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
+                    }
                 }
 
                 foreach ($columns as $cIdx => $colItems):
