@@ -170,21 +170,7 @@ include 'parts/navbar.php';
                     if (!is_array($galleryFiles)) $galleryFiles = [];
                 }
                 
-                // Fallback if JSON empty
-                if (empty($galleryFiles)) {
-                    $galDir = __DIR__ . '/assets/gallery/';
-                    if (is_dir($galDir)) {
-                        $files = scandir($galDir);
-                        foreach ($files as $f) {
-                            if ($f !== '.' && $f !== '..') {
-                                $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-                                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                                    $galleryFiles[] = 'assets/gallery/' . $f;
-                                }
-                            }
-                        }
-                    }
-                }
+                // Fallback removed - JSON is the single source of truth
 
                 $colsCount = 5;
                 $columns = array_fill(0, $colsCount, []);

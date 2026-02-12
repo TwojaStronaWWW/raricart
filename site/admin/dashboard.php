@@ -599,7 +599,13 @@ function resizeImage(file) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.95);
+                // Use original file type to preserve transparency for PNG/WebP
+                let outputType = file.type;
+                if(outputType !== 'image/png' && outputType !== 'image/webp') {
+                    outputType = 'image/jpeg';
+                }
+                
+                canvas.toBlob((blob) => resolve(blob), outputType, 0.95);
             };
             img.src = e.target.result;
         };

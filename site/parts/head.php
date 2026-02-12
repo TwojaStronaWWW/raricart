@@ -75,6 +75,9 @@
       "url": "https://test.raricart.pl"
     }
     </script>
+    <script>
+        window.siteContentConfig = <?php echo json_encode($content ?? []); ?>;
+    </script>
 </head>
 
 <body>
