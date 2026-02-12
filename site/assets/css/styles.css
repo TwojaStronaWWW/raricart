@@ -695,7 +695,7 @@ video::-webkit-media-text-track-display {
 
 /* New Offer Image Structure (Img Tag) */
 .offer-image-wrapper {
-    height: 250px;
+    height: 500px;
     width: 100%;
     overflow: hidden;
     position: relative;
