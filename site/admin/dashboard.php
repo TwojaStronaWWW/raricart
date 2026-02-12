@@ -432,10 +432,11 @@ async function handleFiles(files) {
         }
     }
     
-    // Add new images to start of gallery
-    // Add new images to start of gallery
+    // Add new images to start of gallery (Avoid Duplicates)
     if (newImages.length > 0) {
         galleryImages = [...newImages, ...galleryImages];
+        // Remove duplicates just in case
+        galleryImages = [...new Set(galleryImages)];
         saveGalleryState();
     }
     
