@@ -16,29 +16,6 @@ if (file_exists($jsonFile)) {
     }
 }
 
-// 2. Fallback: Scan directory (Auto-discovery)
-$images = [];
-if (is_dir($galleryDir)) {
-    $files = scandir($galleryDir);
-    foreach ($files as $file) {
-        if (in_array($file, ['.', '..'])) continue;
-        
-        // Check extension
-        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-        if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-            $images[] = 'assets/gallery/' . $file;
-        }
-    }
-}
-
-// 3. Save this state to JSON for next time (Self-healing)
-if (!empty($images)) {
-    // Ensure dir exists
-    if (!file_exists(dirname($jsonFile))) {
-        mkdir(dirname($jsonFile), 0755, true);
-    }
-    file_put_contents($jsonFile, json_encode($images, JSON_PRETTY_PRINT));
-}
-
-echo json_encode($images);
+// 2. If JSON not found or invalid, return empty array
+echo json_encode([]);
 ?>

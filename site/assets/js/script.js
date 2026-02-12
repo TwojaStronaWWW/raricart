@@ -834,20 +834,9 @@
         .then(images => {
             if (images.length === 0) return; 
 
-            // SAFETY: If we have very few images (e.g. local dev), repeat them to fill the grid visuals
-            // Target at least 15 images for a good parallax effect
-            const MIN_IMAGES = 15;
-            if (images.length > 0 && images.length < MIN_IMAGES) {
-                const originalLength = images.length;
-                let safetyCounter = 0;
-                while (images.length < MIN_IMAGES && safetyCounter < 20) {
-                    safetyCounter++;
-                    for (let i = 0; i < originalLength; i++) {
-                        if (images.length >= MIN_IMAGES) break;
-                        images.push(images[i]);
-                    }
-                }
-            }
+            // SAFETY: Logic removed to prevent duplication of images in small galleries.
+            // We now rely on dynamic column count in PHP/CSS or just render what we have.
+            // const MIN_IMAGES = 15; // Removed
 
             // Clear static items only if we have API images
             const columns = galleryGrid.querySelectorAll('.gallery-column');
