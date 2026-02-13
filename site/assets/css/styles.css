@@ -499,9 +499,15 @@ video::-webkit-media-text-track-display {
 }
 
 /* --- Premium Overlap Sections (O Nas & Oferta) --- */
-.section-premium, .section-offer-intro {
+.section-premium {
     background: #faf8f5;
     padding: 10rem 2rem;
+    overflow: visible;
+}
+
+.section-offer-intro {
+    background: #faf8f5;
+    padding: 10rem 2rem 2rem 2rem;
     overflow: visible;
 }
 
