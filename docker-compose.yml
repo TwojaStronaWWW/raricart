@@ -4,8 +4,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./site:/var/www/html
-      - ./packages:/var/www/html/packages
+      - .:/var/www/html
     depends_on:
       - db
 
