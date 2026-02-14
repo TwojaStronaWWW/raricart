@@ -160,68 +160,16 @@ video::-webkit-media-text-track-display {
 	height: 100%;
 }
 
-.background-overlay {
-	/* Glassmorphism Gradient - Semi-transparent Sage */
-	background: linear-gradient(135deg, rgba(163, 181, 154, 0.85), rgba(143, 160, 133, 0.85));
-	backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-	z-index: 1900;
-	transition: opacity 1.5s ease-in-out;
-	will-change: opacity;
-    top: 0;
-    left: 0;
-    position: fixed;
-    height: 80px; 
-    opacity: 0;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.background-overlay.shrink {
-    opacity: 1;
-    visibility: visible;
-}
+/* .background-overlay removed - Refactored to #nav */
 
 /* --- Brand & Nav --- */
-
-.brand-container {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: var(--z-modal);
-	transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-	pointer-events: auto;
-	will-change: top, transform;
-}
-
-.brand-container.moving {
-	top: 40px;
-	transition: var(--transition-slow);
-}
-
-.brand-logo {
-	width: 400px;
-	height: auto;
-	transition: var(--transition-slow);
-	object-fit: contain;
-	max-height: 250px;
-	filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.7)) brightness(1.15) contrast(1.4);
-	font-weight: 900;
-	will-change: width, max-height, filter;
-}
-
-.brand-container.moving .brand-logo {
-	width: 100px;
-	max-height: 70px;
-}
 
 .new-brand {
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%) scale(0.5);
-	z-index: 9999;
+	z-index: 31000; /* Ensure above logo (30000) */
 	font-size: 2rem;
 	font-weight: 400;
 	color: #000;
@@ -303,43 +251,126 @@ video::-webkit-media-text-track-display {
 
 /* --- Navigation Layout --- */
 #nav {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 80px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: var(--z-controls);
-	opacity: 0;
-	transition: opacity 1.5s ease-in-out;
-	pointer-events: none;
-	padding: 0 2rem;
-	max-width: 1400px;
-	margin: 0 auto;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1400px;
+    height: 80px;
+
+    display: flex;
+    justify-content: center; /* Center axis for reference */
+    align-items: center;
+    /* gap removed */
+
+    padding: 0 40px; /* Standard padding */
+    z-index: var(--z-controls);
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    pointer-events: none;
 }
 
 #nav.visible {
 	opacity: 1;
 	pointer-events: all;
+    /* No background here anymore */
 }
 
+/* Full Width Glass Background */
+.nav-bg {
+    /* ... existing ... */
+}
+
+/* .nav-bg class is outside this block, so I will focus on #nav and children */
+
 .nav-side {
-    flex: 1;
     display: flex;
     align-items: center;
     list-style: none;
-    gap: 4rem;
+    gap: 32px; /* Tighter gap */
 }
 
 .nav-left {
-    justify-content: flex-end;
+    position: absolute;
+    right: 50%;
+    left: auto; /* Reset left from previous */
+    margin-right: 90px; /* Space for half logo + buffer */
+    justify-content: flex-end; /* Align closer to center */
 }
 
 .nav-right {
-    justify-content: flex-start;
+    position: absolute;
+    left: 50%;
+    right: auto; /* Reset right from previous */
+    margin-left: 90px; /* Space for half logo + buffer */
+    justify-content: flex-start; /* Align closer to center */
 }
+
+.hero-logo {
+    position: fixed;
+    top: 40%; /* Moved up by 10% from 50% */
+    left: 50%;
+    width: 330px; /* Increased by 10% from 300px */
+    max-width: 70vw;
+    transform: translateX(-50%) translateY(-50%); /* Explicit geometry */
+    z-index: 30000;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+    will-change: transform, top;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-logo img {
+    width: 100%;
+    height: auto;
+}
+
+.hero-logo.moving {
+    top: 40px;
+    transform: translateX(-50%) translateY(-50%) scale(0.243); 
+    /* 330px * 0.243 ~= 80px visual width */
+    /* translateY(-50%) aligns center of logo to top:40px line */
+}
+
+.brand-logo {
+    width: 60px; /* Base size in header */
+    height: auto;
+    object-fit: contain;
+    /* Remove redundant transitions on image if container handles it */
+}
+
+#nav.visible {
+	opacity: 1;
+	pointer-events: all;
+    /* No background here anymore */
+}
+
+/* Full Width Glass Background */
+.nav-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(163, 181, 154, 0.35); /* Low alpha for glass effect */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1999; /* Just below #nav (2000) */
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    pointer-events: none;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-bg.visible {
+    opacity: 1;
+}
+
+/* .nav-side, .nav-left, .nav-right defined in #nav block */
 
 .nav-side a {
 	color: var(--color-white);
@@ -402,15 +433,7 @@ video::-webkit-media-text-track-display {
 
 /* --- Layout Sections --- */
 
-.content {
-	position: relative;
-	padding: 0;
-	max-width: 100%;
-	margin: 0 auto;
-	z-index: 1100;
-	pointer-events: auto;
-    background: #faf8f5;
-}
+
 
 
 
@@ -766,44 +789,41 @@ video::-webkit-media-text-track-display {
 /* --- Features / Parallax "Why Us" --- */
 
 .parallax-why {
-	min-height: 100vh;
-	background-image: url('../images/parallax_bg.webp');
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
-	position: relative;
-	padding: 6rem 0;
-	display: flex;
-	flex-direction: column; /* Changed for Header */
-	align-items: center;
-	justify-content: center;
+    position: relative;
+    min-height: 100vh;
+    padding: 6rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../images/parallax_bg.webp');
+    background-attachment: fixed; /* User requested classic fixed background */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-#dlaczego h2 {
-	margin-bottom: 3rem;
-	position: relative;
-	z-index: 1;
-	color: var(--color-white);
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-	text-align: center;
-	font-size: 2.8rem;
-	font-weight: 600;
-	letter-spacing: 1px;
-	font-family: var(--font-secondary);
-	text-transform: uppercase;
-}
-
-.parallax-why::before,
-#realizacje::before {
+/* Overlay */
+.parallax-why::after,
+#realizacje::after {
 	content: '';
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Unified darken overlay */
-	z-index: 0; 
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1; /* Overlay on top of bg, below content */
 	pointer-events: none;
+}
+
+/* Ensure content is above overlay */
+.parallax-content, 
+.parallax-why h2 {
+    position: relative;
+    z-index: 5;
+    color: var(--color-white);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .parallax-content {
@@ -890,17 +910,27 @@ video::-webkit-media-text-track-display {
 
 #realizacje {
 	padding: 6rem 2rem;
-	background-image: url('../images/parallax_bg.jpg');
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
 	position: relative;
-	overflow: hidden;
+    background-image: url('../images/parallax_bg.jpg'); /* Default */
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-#realizacje::before {
+/* Ensure ::before is not just an overlay but the BG now */
+#realizacje::after {
+    /* This was the old ::before overlay */
+	content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 	background: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(3px);
+    z-index: 1;
+    pointer-events: none;
 }
 
 #realizacje h2 {
@@ -1376,14 +1406,15 @@ footer {
 
 /* --- Language Switcher --- */
 .lang-switch {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    position: absolute; /* Fix layout shift */
-    right: 0;
+    position: absolute;
+    right: 40px;
     top: 50%;
     transform: translateY(-50%);
-    margin-left: 0;
+    width: 120px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    gap: 0;
 }
 
 .lang-btn {
@@ -1391,19 +1422,21 @@ footer {
     border: none;
     color: var(--color-white);
     font-family: var(--font-primary);
-    font-weight: 300;
+    font-weight: 600; /* Constant weight to prevent shift */
     font-size: 0.9rem;
     cursor: pointer;
     padding: 0;
-    transition: color 0.3s;
+    transition: opacity 0.3s, color 0.3s;
     text-transform: uppercase;
-    opacity: 0.6;
+    opacity: 0.5; /* Inactive state */
+    width: 30px;
+    text-align: center;
+    display: inline-block;
 }
 
 .lang-btn:hover,
 .lang-btn.active {
     opacity: 1;
-    font-weight: 600;
     color: var(--color-accent);
 }
 
@@ -2095,85 +2128,7 @@ footer {
     from { opacity: 0; transform: translateY(-10px); }
 }
 
-/* --- Parallax Why Section --- */
-.parallax-why {
-    position: relative;
-    background-image: url('../images/parallax_bg.webp');
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 6rem 1rem;
-    color: var(--color-white); /* Changed to variable */
-    text-align: center;
-    margin-bottom: 2rem;
-}
 
-.parallax-why h2 {
-    color: white;
-    margin-bottom: 3rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.parallax-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    justify-content: center;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.parallax-card {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    border-radius: 8px;
-    color: var(--color-text);
-    text-align: left;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.parallax-card h3 {
-    color: var(--color-accent);
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-@media (max-width: 768px) {
-    .parallax-why {
-        background-attachment: scroll; /* Performance fix for mobile */
-        padding: 4rem 1rem;
-    }
-
-    /* Mobile Gallery Fix */
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-    }
-    
-    .gallery-column {
-        display: contents; /* Ensure columns flatten into grid */
-    }
-    
-    .gallery-item {
-        width: 100%;
-        margin-bottom: 0;
-    }
-
-    /* Parallax Cards: Full Width One Column */
-    .parallax-content {
-        grid-template-columns: 1fr;
-        padding: 0 1rem;
-    }
-    
-    .parallax-card {
-        width: 100%;
-    }
-}
 
 
 
@@ -2325,4 +2280,8 @@ footer {
     animation: logoPulse 3s ease-in-out infinite;
     font-weight: 600;
 }
+
+
+
+
 

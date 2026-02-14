@@ -159,7 +159,7 @@ include 'parts/navbar.php';
         </section>
 
         <!-- Realizacje -->
-        <section id="realizacje" class="section">
+        <section id="realizacje" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?>">
             <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
             <div class="gallery-grid" id="dynamicGalleryGrid">
                 <?php
@@ -266,7 +266,7 @@ include 'parts/navbar.php';
 
         <!-- Dlaczego My -->
         <section id="dlaczego" class="section section-fullwidth">
-            <div class="parallax-why" style="<?php if($why_us_bg) echo "background-image: url('$why_us_bg');"; ?>">
+            <div class="parallax-why" style="<?php if($why_us_bg) echo "--bg-image: url('$why_us_bg');"; ?>">
                 <h2 data-i18n="why.title">SZTUKA KULINARNYCH DOŚWIADCZEŃ</h2>
                 <div class="parallax-content">
                     <div class="parallax-card">

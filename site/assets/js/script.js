@@ -317,7 +317,8 @@
   const ui = {
     brand: null, brandText1: null, brandText2: null,
     nav: null, hamburger: null, bg: null, scroll: null,
-    videoBg: null, onasSection: null, gallerySection: null
+    videoBg: null, onasSection: null, gallerySection: null,
+    navBg: null // New Background Element
   };
 
   function cacheElements() {
@@ -325,12 +326,12 @@
     ui.brandText1 = document.getElementById('brandText1');
     ui.brandText2 = document.getElementById('brandText2');
     ui.nav = document.getElementById('nav');
+    ui.navBg = document.getElementById('navBg'); // Cache new element
     ui.hamburger = document.getElementById('hamburger');
     ui.bg = document.getElementById('bg');
     ui.scroll = document.getElementById('scroll');
     ui.videoBg = document.getElementById('videoBg');
     ui.onasSection = document.getElementById('onas');
-    ui.gallerySection = document.getElementById('realizacje');
     ui.gallerySection = document.getElementById('realizacje');
     // NOTE: measureLayout() deferred to avoid blocking start-up
   }
@@ -399,51 +400,85 @@
 
 
 
-    // --- Hero Animation Sequence (Stretched) ---
-    // User requested delay: Start at 30% scroll instead of 10%
-    if (textProgress > 0.3) {
-        // Step 1: Scroll started -> Move Logo (Scale Down), Hide Scroll Arrow
-        if (ui.brand) {
-            ui.brand.classList.add('moving'); 
-            // Removed opacity=0 here so logo stays visible while moving
-        }
-        if (ui.scroll) ui.scroll.classList.add('hidden');
-      
-        // Step 2 & 3: Text Sequence
-        if (textProgress < 1.0) {
-            if (ui.brandText1) { ui.brandText1.classList.remove('hidden'); ui.brandText1.classList.add('visible'); }
-            if (ui.brandText2) { ui.brandText2.classList.remove('visible'); ui.brandText2.classList.add('hidden'); }
-        } else {
-            if (ui.brandText1) { ui.brandText1.classList.remove('visible'); ui.brandText1.classList.add('hidden'); }
-            if (ui.brandText2) { ui.brandText2.classList.remove('hidden'); ui.brandText2.classList.add('visible'); }
-        }
+        // --- HERO SEQUENCE ---
+        if (textProgress <= 0.5) { // Adjusted to 0.5 to avoid conflict with text (starts at 0.6)
 
-    } else {
-        // Reset: At top -> Show Logo (Center), Show Scroll Arrow
-        if (ui.brand) {
-            ui.brand.classList.remove('moving');
-            ui.brand.style.opacity = '1';
+            // TOP – stan początkowy
+            if (ui.brand) ui.brand.classList.remove('moving');
+            if (ui.scroll) ui.scroll.classList.remove('hidden');
+
+            if (ui.brandText1) {
+                ui.brandText1.classList.remove('visible');
+                ui.brandText1.classList.add('hidden');
+            }
+
+            if (ui.brandText2) {
+                ui.brandText2.classList.remove('visible');
+                ui.brandText2.classList.add('hidden');
+            }
+
+        } else {
+
+            // Logo w headerze
+            if (ui.brand) ui.brand.classList.add('moving');
+            if (ui.scroll) ui.scroll.classList.add('hidden');
+
+            // TEXT 1
+            if (textProgress > 0.6 && textProgress < 1.0) {
+
+                if (ui.brandText1) {
+                    ui.brandText1.classList.remove('hidden');
+                    ui.brandText1.classList.add('visible');
+                }
+
+                if (ui.brandText2) {
+                    ui.brandText2.classList.remove('visible');
+                    ui.brandText2.classList.add('hidden');
+                }
+
+            }
+
+            // TEXT 2
+            else if (textProgress > 1.1 && textProgress < 1.6) {
+
+                if (ui.brandText1) {
+                    ui.brandText1.classList.remove('visible');
+                    ui.brandText1.classList.add('hidden');
+                }
+
+                if (ui.brandText2) {
+                    ui.brandText2.classList.remove('hidden');
+                    ui.brandText2.classList.add('visible');
+                }
+
+            }
+
+            // Pomiędzy lub po animacji – ukryj teksty
+            else {
+
+                if (ui.brandText1) {
+                    ui.brandText1.classList.remove('visible');
+                    ui.brandText1.classList.add('hidden');
+                }
+
+                if (ui.brandText2) {
+                    ui.brandText2.classList.remove('visible');
+                    ui.brandText2.classList.add('hidden');
+                }
+
+            }
         }
-        if (ui.scroll) ui.scroll.classList.remove('hidden');
-        if (ui.brandText1) { ui.brandText1.classList.remove('visible'); ui.brandText1.classList.add('hidden'); }
-        if (ui.brandText2) { ui.brandText2.classList.remove('visible'); ui.brandText2.classList.add('hidden'); }
-    }
-    
-    // Text fade out at bottom of Hero
-    // User correction: +20% from original (1.5 * 1.2 = 1.8)
-    if (textProgress > 1.8) {
-      if (ui.brandText1) { ui.brandText1.classList.remove('visible'); ui.brandText1.classList.add('hidden'); }
-      if (ui.brandText2) { ui.brandText2.classList.remove('visible'); ui.brandText2.classList.add('hidden'); }
-    }
 
     // --- Navbar State Apply ---
     if (shouldShowNavbar) {
         if (ui.bg) ui.bg.classList.add('shrink');
         if (ui.nav) ui.nav.classList.add('visible');
+        if (ui.navBg) ui.navBg.classList.add('visible'); // Toggle background
         if (ui.hamburger) ui.hamburger.classList.add('visible');
     } else {
         if (ui.bg) ui.bg.classList.remove('shrink');
         if (ui.nav) ui.nav.classList.remove('visible');
+        if (ui.navBg) ui.navBg.classList.remove('visible'); // Toggle background
         if (ui.hamburger) ui.hamburger.classList.remove('visible');
     }
     
@@ -499,6 +534,8 @@
           });
       });
   }
+
+
 
 
 
@@ -565,7 +602,9 @@
       requestAnimationFrame(() => {
         const scrollY = window.pageYOffset;
         const vh = window.innerHeight;
+         // updateBackgroundParallax(scrollY, vh); // Removed JS Parallax
         updateLayout(scrollY, vh);
+
         updateGalleryParallax(scrollY, vh);
         tick = false;
       });
@@ -805,12 +844,10 @@
             // ALTERNATIVE: Target `.gallery-column.parallax` or the section itself.
             // Safe bet: Set it as style on #bg to replace default overlay if desired
             // OR if user meant the parallax effect specifically.
-            const bg = document.getElementById('bg');
-            if(bg) {
-                // Ensure bg image also refreshes if changed
-                bg.style.backgroundImage = `url('${content.gallery_bg}?v=${new Date().getTime()}')`;
-                bg.style.backgroundSize = 'cover';
-                bg.style.backgroundPosition = 'center';
+            // Update Gallery Section Background directly via CSS Variable
+            const gallerySection = document.getElementById('realizacje');
+            if(gallerySection) {
+                gallerySection.style.setProperty('--bg-image', `url('${content.gallery_bg}?v=${new Date().getTime()}')`);
             }
         }
 
@@ -818,7 +855,7 @@
         if(content.why_us_bg) {
             const whySection = document.querySelector('.parallax-why');
             if(whySection) {
-                whySection.style.backgroundImage = `url('${content.why_us_bg}?v=${new Date().getTime()}')`;
+                whySection.style.setProperty('--bg-image', `url('${content.why_us_bg}?v=${new Date().getTime()}')`);
             }
         }
     })
@@ -873,6 +910,9 @@
                 
                 div.appendChild(img);
                 col.appendChild(div);
+
+                // Observe for animation
+                galleryObserver.observe(div);
                 
                 // Add to lightbox array
                 galleryImages[globalIndex] = src;
@@ -1274,5 +1314,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => banner.style.display = 'none', 500);
         }
     }
-    // Cookie & Analytics logic remains here
+    
+    // Cookie & Analytics Logic
+    // ... code ...
 });
