@@ -920,15 +920,10 @@ video::-webkit-media-text-track-display {
 
 /* Ensure ::before is not just an overlay but the BG now */
 #realizacje::after {
-    /* This was the old ::before overlay */
-	content: '';
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-	background: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(3px);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45); /* Lighter overlay, no blur */
     z-index: 1;
     pointer-events: none;
 }
@@ -954,7 +949,7 @@ video::-webkit-media-text-track-display {
 	max-width: 1600px;
 	margin: 0 auto;
 	position: relative;
-	z-index: 1;
+	z-index: 5; /* Ensure above overlay */
 }
 
 .gallery-column {
