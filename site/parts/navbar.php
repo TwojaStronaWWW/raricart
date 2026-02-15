@@ -54,7 +54,6 @@
                 <span class="sep">|</span>
                 <button class="lang-btn" data-lang="es">ES</button>
             </div>
-            </ul>
         </nav>
 
         <div class="scroll-indicator" id="scroll"><span data-i18n="hero.scroll">Przewiń w dół</span><span
