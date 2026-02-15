@@ -1749,6 +1749,12 @@ footer {
 		display: none;
 	}
 
+	body.nav-open .hero-logo {
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.3s ease;
+	}
+
 	.nav-side li {
 		opacity: 0;
 		transform: translateY(20px);
