@@ -1671,4 +1671,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Cookie & Analytics Logic
 	// ... code ...
+
+	// --- SCROLL TO SECTION (query param ?goto= OR hash #) ---
+	// ?goto= bypasses native browser hash scroll entirely (preferred for cross-page links).
+	// #hash kept as fallback for in-page links.
+	const gotoParam = new URLSearchParams(window.location.search).get('goto')
+	const scrollTarget = gotoParam ? '#' + gotoParam : window.location.hash
+
+	if (scrollTarget) {
+		const NAVBAR_OFFSET = 100
+
+		// 1. Force-reveal ALL sections (skip animations)
+		document.querySelectorAll('.section, .section-premium').forEach(s => {
+			s.style.transition = 'none'
+			s.classList.add('visible')
+		})
+		document.body.offsetHeight // Force reflow
+
+		// 2. Scroll helper
+		function scrollToTarget() {
+			const el = document.querySelector(scrollTarget)
+			if (el) {
+				const y = el.getBoundingClientRect().top + window.pageYOffset - NAVBAR_OFFSET
+				window.scrollTo({ top: y, behavior: 'instant' })
+			}
+		}
+
+		// 3. Scroll immediately
+		scrollToTarget()
+
+		// 4. Re-scroll on full load (images/fonts shift layout)
+		window.addEventListener('load', () => {
+			scrollToTarget()
+			// Clean URL: remove ?goto= param (leave clean URL in address bar)
+			if (gotoParam) {
+				const cleanUrl = window.location.pathname + '#' + gotoParam
+				history.replaceState(null, '', cleanUrl)
+			}
+			if ('scrollRestoration' in history) history.scrollRestoration = 'auto'
+		})
+
+		// 5. Re-enable transitions for future scroll reveals
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				document.querySelectorAll('.section, .section-premium').forEach(s => {
+					s.style.transition = ''
+				})
+			})
+		})
+	}
 })

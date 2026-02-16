@@ -82,6 +82,15 @@
     <script>
         window.siteContentConfig = <?php echo json_encode($content ?? []); ?>;
     </script>
+    <!-- Hash Navigation: Block native scroll BEFORE layout renders -->
+    <script>
+        if (window.location.hash) {
+            // Prevent browser's native hash scroll (fires before defer scripts)
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+            // Immediately pin to top — our JS will handle scrolling after sections are revealed
+            window.scrollTo(0, 0);
+        }
+    </script>
 </head>
 
 <body>

@@ -86,6 +86,7 @@
 
 html {
 	scroll-behavior: smooth;
+	scroll-padding-top: 100px; /* Offset for fixed navbar (#nav = 80px + breathing room) */
 }
 
 body {
@@ -451,6 +452,7 @@ video::-webkit-media-text-track-display {
 .section {
 	margin-bottom: 0;
 	padding: 0;
+	scroll-margin-top: 90px; /* Offset for fixed navbar (80px + 10px breathing room) */
 	background: #faf8f5;
 	opacity: 0;
 	transform: translateY(40px);
