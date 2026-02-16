@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hero Intro — Podsumowanie zmian | Raricart</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.7;
+            padding: 3rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: .5rem;
+            color: #0d0d0d
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin: 2rem 0 .8rem;
+            color: #333;
+            border-bottom: 2px solid #f0c040;
+            padding-bottom: .4rem;
+            display: inline-block
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            margin: 1.2rem 0 .5rem;
+            color: #555
+        }
+
+        p,
+        li {
+            font-size: .92rem;
+            margin-bottom: .5rem
+        }
+
+        ul {
+            padding-left: 1.4rem
+        }
+
+        li {
+            margin-bottom: .3rem
+        }
+
+        strong {
+            color: #0d0d0d
+        }
+
+        .badge {
+            display: inline-block;
+            background: #f0c040;
+            color: #0d0d0d;
+            padding: .15rem .6rem;
+            border-radius: 4px;
+            font-size: .75rem;
+            font-weight: 600;
+            margin-left: .5rem;
+            vertical-align: middle
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0
+        }
+
+        th {
+            background: #f8f4e8;
+            text-align: left;
+            padding: .6rem .8rem;
+            font-size: .85rem;
+            border-bottom: 2px solid #f0c040
+        }
+
+        td {
+            padding: .5rem .8rem;
+            font-size: .85rem;
+            border-bottom: 1px solid #eee
+        }
+
+        td:nth-child(2) {
+            text-align: center;
+            font-weight: 600;
+            color: #b47a00
+        }
+
+        .note {
+            background: #fdf6e3;
+            border-left: 4px solid #f0c040;
+            padding: .8rem 1rem;
+            margin: 1rem 0;
+            font-size: .85rem;
+            border-radius: 0 6px 6px 0
+        }
+
+        .note strong {
+            color: #b47a00
+        }
+
+        .header-meta {
+            color: #888;
+            font-size: .85rem;
+            margin-bottom: 2rem
+        }
+
+        em {
+            color: #666
+        }
+
+        @media print {
+            body {
+                padding: 1.5rem;
+                font-size: 90%
+            }
+
+            h1 {
+                font-size: 1.5rem
+            }
+
+            h2 {
+                font-size: 1.1rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎬 Hero Intro — Podsumowanie zmian</h1>
+    <p class="header-meta">Raricart.pl &middot; Luty 2026</p>
+
+    <h2>❌ Jak było (przed)</h2>
+    <ul>
+        <li>Napisy pojawiały się <strong>w trakcie scrollowania</strong> — trzeba było scrollować ~1.6× ekranu zanim
+            widać content</li>
+        <li>Tekst był <strong>czarny</strong> na ciemnym filmiku — <strong>słabo widoczny</strong></li>
+        <li>Animacja wejścia: dramatyczny <strong>zoom</strong> — efekt „PowerPoint"</li>
+        <li>Między napisami była <strong>pauza</strong> (pusty ekran)</li>
+        <li>Przy <strong>szybkim scrollu</strong> napisy były niewidoczne</li>
+        <li>Napis „RARICART" — zwykły tekst bez wyróżnienia</li>
+        <li>Intro odtwarzało się <strong>za każdym scrollem</strong> w górę i w dół</li>
+        <li>Znacznik „Przewiń w dół" — znikał razem z logo</li>
+    </ul>
+
+    <h2>✅ Jak jest (po zmianach)</h2>
+
+    <h3>Wygląd</h3>
+    <ul>
+        <li>Tekst <strong>ciepły kremowy</strong> z <strong>złotym cieniem</strong> — dopasowany do filmiku</li>
+        <li>Napis „RARICART" wyróżniony <strong>złotym kolorem</strong> z pulsem heartbeat <span
+                class="badge">GOLD</span></li>
+        <li>Animacja wejścia: <strong>subtelne fade-in</strong> — eleganckie, nie krzykliwe</li>
+        <li>Animacja wyjścia: <strong>slide-up</strong> — naturalny ruch</li>
+        <li>Overlay na filmiku: <strong>gradient</strong> — tekst zawsze czytelny</li>
+        <li>Wielkość tekstu <strong>responsywna</strong> — od mobile do desktop</li>
+        <li>Znacznik „Przewiń w dół" — kremowy z złotym cieniem, spójny z napisami</li>
+    </ul>
+
+    <h3>Zachowanie</h3>
+    <ul>
+        <li><strong>Scroll-lock:</strong> user zaczyna scrollować → scroll się blokuje → napisy odtwarzają się na
+            filmiku</li>
+        <li>Znacznik <strong>„Przewiń w dół" ↓</strong> widoczny przez cały czas intro</li>
+        <li><strong>Jednorazowe:</strong> intro gra <strong>raz na wizytę</strong>. Kolejne scrolle → tylko logo</li>
+        <li>Odświeżenie strony (F5) = intro gra ponownie</li>
+    </ul>
+
+    <h2>⏱️ Szczegóły timingu</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sekcja</th>
+                <th>Czas</th>
+                <th>Opis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Logo na środku</td>
+                <td>—</td>
+                <td>Czeka na interakcję usera</td>
+            </tr>
+            <tr>
+                <td><strong>Napis 1</strong></td>
+                <td><strong>2.0s</strong></td>
+                <td><em>„TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE SIĘ ELEGANCJĄ..."</em></td>
+            </tr>
+            <tr>
+                <td><strong>Napis 2</strong></td>
+                <td><strong>2.5s</strong></td>
+                <td><em>„...TAM ZACZYNA SIĘ RARICART"</em> z złotym pulsem 💫</td>
+            </tr>
+            <tr>
+                <td><strong>Łącznie blokada</strong></td>
+                <td><strong>4.5s</strong></td>
+                <td>Scroll zablokowany na czas obu napisów</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="note">
+        <strong>💡 Czasy można łatwo dostosować</strong> — np. skrócić do 1.5s + 2s = 3.5s łącznie, albo wydłużyć jeśli
+        tekst wymaga więcej czasu na przeczytanie. Wystarczy zmiana jednej wartości w kodzie.
+    </div>
+
+</body>
+
+</html>

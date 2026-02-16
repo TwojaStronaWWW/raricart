@@ -692,14 +692,11 @@
 					document.body.style.overflow = ''
 					sessionStorage.setItem('heroIntroPlayed', '1')
 					window._heroSequenceRunning = false
-					// NOW hide scroll indicator
-					if (ui.scroll) ui.scroll.classList.add('hidden')
 				}, 2500)
 			}, 2000)
 		} else if (!window._heroSequenceRunning) {
 			// SUBSEQUENT SCROLLS — just logo to navbar, no texts
 			if (ui.brand) ui.brand.classList.add('moving')
-			if (ui.scroll) ui.scroll.classList.add('hidden')
 			window._heroSequencePlayed = true
 
 			if (ui.brandText1) {
@@ -718,6 +715,7 @@
 			if (ui.nav) ui.nav.classList.add('visible')
 			if (ui.navBg) ui.navBg.classList.add('visible') // Toggle background
 			if (ui.hamburger) ui.hamburger.classList.add('visible')
+			if (ui.scroll) ui.scroll.classList.add('hidden')
 		} else {
 			if (ui.bg) ui.bg.classList.remove('shrink')
 			if (ui.nav) ui.nav.classList.remove('visible')
