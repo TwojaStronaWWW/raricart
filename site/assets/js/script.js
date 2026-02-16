@@ -636,11 +636,12 @@
 			}
 		}
 
-		// --- HERO SEQUENCE ---
-		if (textProgress <= 0.5) {
-			// Adjusted to 0.5 to avoid conflict with text (starts at 0.6)
+		// --- HERO SCROLL-LOCK SEQUENCE ---
+		// Intro plays ONCE per session. After that, only logo animation.
+		const introPlayed = sessionStorage.getItem('heroIntroPlayed')
 
-			// TOP – stan początkowy
+		if (textProgress <= 0.3 && !window._heroSequenceRunning) {
+			// TOP — logo centered
 			if (ui.brand) ui.brand.classList.remove('moving')
 			if (ui.scroll) ui.scroll.classList.remove('hidden')
 
@@ -648,53 +649,66 @@
 				ui.brandText1.classList.remove('visible')
 				ui.brandText1.classList.add('hidden')
 			}
-
 			if (ui.brandText2) {
 				ui.brandText2.classList.remove('visible')
 				ui.brandText2.classList.add('hidden')
 			}
-		} else {
-			// Logo w headerze
+
+			window._heroSequencePlayed = false
+		} else if (!window._heroSequencePlayed && !introPlayed) {
+			// FIRST VISIT — play full intro with scroll lock
+			window._heroSequencePlayed = true
+			window._heroSequenceRunning = true
+
 			if (ui.brand) ui.brand.classList.add('moving')
-			if (ui.scroll) ui.scroll.classList.add('hidden')
+			// Keep scroll indicator visible during intro!
+
+			// Lock scroll
+			document.body.style.overflow = 'hidden'
 
 			// TEXT 1
-			if (textProgress > 0.6 && textProgress < 1.0) {
-				if (ui.brandText1) {
-					ui.brandText1.classList.remove('hidden')
-					ui.brandText1.classList.add('visible')
-				}
-
-				if (ui.brandText2) {
-					ui.brandText2.classList.remove('visible')
-					ui.brandText2.classList.add('hidden')
-				}
+			if (ui.brandText1) {
+				ui.brandText1.classList.remove('hidden')
+				ui.brandText1.classList.add('visible')
 			}
 
-			// TEXT 2
-			else if (textProgress > 1.1 && textProgress < 1.6) {
+			setTimeout(() => {
 				if (ui.brandText1) {
 					ui.brandText1.classList.remove('visible')
 					ui.brandText1.classList.add('hidden')
 				}
-
 				if (ui.brandText2) {
 					ui.brandText2.classList.remove('hidden')
 					ui.brandText2.classList.add('visible')
 				}
+
+				setTimeout(() => {
+					if (ui.brandText2) {
+						ui.brandText2.classList.remove('visible')
+						ui.brandText2.classList.add('hidden')
+					}
+
+					// Unlock scroll + mark as played for this session
+					document.body.style.overflow = ''
+					sessionStorage.setItem('heroIntroPlayed', '1')
+					window._heroSequenceRunning = false
+					// NOW hide scroll indicator
+					if (ui.scroll) ui.scroll.classList.add('hidden')
+				}, 2500)
+			}, 2000)
+		} else if (!window._heroSequenceRunning) {
+			// SUBSEQUENT SCROLLS — just logo to navbar, no texts
+			if (ui.brand) ui.brand.classList.add('moving')
+			if (ui.scroll) ui.scroll.classList.add('hidden')
+			window._heroSequencePlayed = true
+
+			if (ui.brandText1) {
+				ui.brandText1.classList.remove('visible')
+				ui.brandText1.classList.add('hidden')
 			}
-
-			// Pomiędzy lub po animacji – ukryj teksty
-			else {
-				if (ui.brandText1) {
-					ui.brandText1.classList.remove('visible')
-					ui.brandText1.classList.add('hidden')
-				}
-
-				if (ui.brandText2) {
-					ui.brandText2.classList.remove('visible')
-					ui.brandText2.classList.add('hidden')
-				}
+			if (ui.brandText2) {
+				ui.brandText2.classList.remove('visible')
+				ui.brandText2.classList.add('hidden')
 			}
 		}
 
