@@ -7,7 +7,15 @@ $subjectPrefix = "[Formularz Raricart]";
 // ---------------------
 
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Origin: *");
+
+// CORS: Tylko raricart.pl (nie wildcard)
+$allowedOrigins = ['https://raricart.pl', 'https://www.raricart.pl', 'https://test.raricart.pl'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
+} else {
+    header("Access-Control-Allow-Origin: https://raricart.pl");
+}
 header("Access-Control-Allow-Methods: POST");
 
 $input = file_get_contents("php://input");
@@ -19,8 +27,14 @@ if (!empty($data['website_check'])) {
     exit;
 }
 
+// --- DRAFTS DIR (musi być PRZED pingiem) ---
+$draftsDir = __DIR__ . '/drafts';
+if (!is_dir($draftsDir)) {
+    @mkdir($draftsDir, 0777, true);
+    @file_put_contents($draftsDir . '/.htaccess', "Deny from all"); 
+}
+
 // --- POOR MAN'S CRON TRIGGER ---
-// Pozwala "obudzić" skrypt samym wejściem na stronę
 if (($data['action'] ?? '') === 'ping') {
     processDraftQueue($draftsDir, $toEmail);
     echo json_encode(["status" => "pong"]);
@@ -52,14 +66,32 @@ if (!$isPartial && (empty($name) || empty($email))) {
     exit;
 }
 
+// Twarda walidacja email (backend MUSI walidować niezależnie od frontendu)
+if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(["status" => "error", "message" => "Nieprawidłowy adres email."]);
+    exit;
+}
+
 // Jeśli partial, ale brak kontaktu, też odrzuć po cichu (żeby nie słać pustych)
 if ($isPartial && empty($email) && empty($phone)) {
     // Nie traktujemy tego jako błąd 400, tylko success bez wysyłki (silent ignore)
     echo json_encode(["status" => "success", "message" => "Ignored empty draft"]);
     exit;
 }
+// --- HOT LEAD SCORING ---
+$isHot = false;
+if (!$isPartial) {
+    $budgetNum = (int) preg_replace('/[^0-9]/', '', $budget);
+    $guestsNum = (int) preg_replace('/[^0-9]/', '', $guests);
+    // Hot: budżet >= 5000 PLN lub >= 100 gości
+    if ($budgetNum >= 5000 || $guestsNum >= 100) {
+        $isHot = true;
+    }
+}
 
-$emailSubject = $isPartial ? "⚠️ SZKIC (Porzucony): $name" : "$subjectPrefix Nowe zapytanie od: $name";
+$hotLabel = $isHot ? '🔥 HOT ' : '';
+$emailSubject = $isPartial ? "⚠️ SZKIC (Porzucony): $name" : "{$hotLabel}{$subjectPrefix} Nowe zapytanie od: $name";
 $emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" : "Nowe zapytanie ze strony:\n\n") .
              "👤 Imię: $name\n" .
              "📧 Email: $email\n" .
@@ -72,12 +104,7 @@ $emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" 
              "💬 Wiadomość:\n$message";
 
 // --- LOGIKA SKŁADOWANIA SZKICÓW (DRAFT) ---
-$draftsDir = __DIR__ . '/drafts';
-if (!is_dir($draftsDir)) {
-    @mkdir($draftsDir, 0777, true);
-    // Zabezpiecz katalog przed podglądem
-    @file_put_contents($draftsDir . '/.htaccess', "Deny from all"); 
-}
+// $draftsDir już zdefiniowany wyżej (przed pingiem)
 
 // Unikalny identyfikator użytkownika (Email lub Telefon)
 $userId = $email ? md5($email) : ($phone ? md5($phone) : null);
@@ -85,11 +112,15 @@ $userId = $email ? md5($email) : ($phone ? md5($phone) : null);
 if ($isPartial && $userId) {
     $draftFile = $draftsDir . '/draft_' . $userId . '.json';
     
-    // Oblicz "wynik" wypełnienia (liczba pól)
+    // Oblicz "wynik" wypełnienia (jakość, nie ilość)
     $currentScore = 0;
-    foreach ([$name, $email, $phone, $date, $guests, $budget, $event_type, $stations, $message] as $field) {
+    foreach ([$name, $email, $phone, $date, $guests, $event_type, $stations] as $field) {
         if (!empty(trim($field))) $currentScore++;
     }
+    // Message liczy się tylko jeśli ma sensowną długość
+    if (strlen(trim($message)) >= 3) $currentScore++;
+    // Budżet liczy się tylko jeśli nie pusty/zero
+    if (!empty(trim($budget)) && $budget !== '0' && $budget !== '-') $currentScore++;
 
     $shouldSave = true;
 
@@ -140,12 +171,14 @@ else {
                 // Jeśli plik nowy, dodaj nagłówek (UTF-8 BOM dla Excela)
                 if ($isNew) {
                     fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
-                    fputcsv($fp, ['Data zgłoszenia', 'Imię', 'Email', 'Telefon', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
+                    fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
                 }
                 
                 // Dodaj wiersz
                 fputcsv($fp, [
                     date('Y-m-d H:i:s'),
+                    '✅ WYSŁANY',
+                    'Formularz',
                     $name,
                     $email,
                     $phone,
@@ -170,35 +203,91 @@ else {
 // Na samym końcu skryptu, po próbie wysyłki normalnej:
 processDraftQueue($draftsDir, $toEmail);
 
-// --- FUNKCJA CRON (DEFINICJA) ---
+// --- FUNKCJA CRON: DAILY DIGEST (DEFINICJA) ---
 function processDraftQueue($draftsDir, $toEmail) {
+    if (!$draftsDir || !is_dir($draftsDir)) return;
+    
     $lockFile = $draftsDir . '/last_run.txt';
     $lastRun = file_exists($lockFile) ? (int)file_get_contents($lockFile) : 0;
 
-    if (time() - $lastRun > 600) { // 600 sekund = 10 minut
-        // Zaktualizuj czas (blokada)
+    // Sprawdzaj co 10 min, ale mail digest raz na 24h
+    if (time() - $lastRun > 600) {
         file_put_contents($lockFile, time());
 
         $files = glob($draftsDir . '/draft_*.json');
-        if ($files) {
-            foreach ($files as $file) {
-                $mtime = filemtime($file);
-                // Upewnij się, że mtime jest poprawny (nie false) i minęło 10 minut
-                if ($mtime && (time() - $mtime > 600)) {
-                    $content = json_decode(file_get_contents($file), true);
-                    
-                    if ($content) {
-                        $dSubject = $content['subject'];
-                        $dBody = $content['formattedBody'];
-                        
-                        $cronHeaders = "From: Formularz WWW (Szkic) <kontakt@raricart.pl>\r\n";
-                        $cronHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
-                        
-                        mail($toEmail, $dSubject, $dBody, $cronHeaders);
+        if (!$files) return;
+
+        $digestParts = []; // Zbierz treści do digestu
+        $digestLockFile = $draftsDir . '/last_digest.txt';
+        $lastDigest = file_exists($digestLockFile) ? (int)file_get_contents($digestLockFile) : 0;
+        $shouldSendDigest = (time() - $lastDigest > 86400); // 24h
+
+        foreach ($files as $file) {
+            $mtime = filemtime($file);
+            if (!$mtime || (time() - $mtime < 600)) continue; // Jeszcze za świeży
+
+            $content = json_decode(file_get_contents($file), true);
+            if (!$content) { @unlink($file); continue; }
+
+            // --- ZAWSZE: ZAPIS DO CSV ---
+            $d = $content['data'] ?? [];
+            $csvFile = __DIR__ . '/../admin/leady.csv';
+            $isNew = !file_exists($csvFile);
+            
+            if ($fp = @fopen($csvFile, 'a')) {
+                if (flock($fp, LOCK_EX)) {
+                    if ($isNew) {
+                        fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
+                        fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
                     }
-                    @unlink($file);
+                    
+                    fputcsv($fp, [
+                        date('Y-m-d H:i:s', $mtime),
+                        '⚠️ PORZUCONY',
+                        'Autosave',
+                        $d['name'] ?? '',
+                        $d['email'] ?? '',
+                        $d['phone'] ?? '',
+                        $d['date'] ?? '',
+                        $d['guests'] ?? '',
+                        $d['budget'] ?? '',
+                        $d['event_type'] ?? '',
+                        $d['stations'] ?? '',
+                        $d['message'] ?? ''
+                    ]);
+                    
+                    flock($fp, LOCK_UN);
                 }
+                fclose($fp);
             }
+
+            // --- ZBIERAJ DO DIGESTU (nie wysyłaj osobno) ---
+            if ($shouldSendDigest) {
+                $digestParts[] = $content['formattedBody'] ?? '';
+            }
+
+            @unlink($file);
+        }
+
+        // --- WYŚLIJ 1 ZBIORCZY MAIL (max raz na 24h) ---
+        if ($shouldSendDigest && !empty($digestParts)) {
+            $count = count($digestParts);
+            $digestSubject = "⚠️ [Raricart] Dziś porzucono {$count} formularzy";
+            $digestBody = "=== DAILY DIGEST: PORZUCONE FORMULARZE ===\n";
+            $digestBody .= "Liczba: {$count}\n";
+            $digestBody .= "Data: " . date('Y-m-d H:i') . "\n";
+            $digestBody .= str_repeat('=', 50) . "\n\n";
+
+            foreach ($digestParts as $i => $part) {
+                $digestBody .= "--- Lead #" . ($i + 1) . " ---\n";
+                $digestBody .= $part . "\n\n";
+            }
+
+            $cronHeaders = "From: Formularz WWW (Digest) <kontakt@raricart.pl>\r\n";
+            $cronHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
+            
+            mail($toEmail, $digestSubject, $digestBody, $cronHeaders);
+            file_put_contents($digestLockFile, time());
         }
     }
 }
