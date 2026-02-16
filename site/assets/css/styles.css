@@ -172,15 +172,13 @@ video::-webkit-media-text-track-display {
 	z-index: 31000;
 	font-size: clamp(1.4rem, 4vw, 3.2rem);
 	font-weight: 400;
-	color: #fdf6e3;
+	color: #fff;
 	opacity: 0;
 	transition:
 		opacity 1s cubic-bezier(0.4, 0, 0.2, 1),
 		transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 	text-align: center;
-	text-shadow:
-		0 2px 20px rgba(180, 130, 50, 0.5),
-		0 0 60px rgba(0, 0, 0, 0.4);
+	text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
 	pointer-events: none;
 	visibility: hidden;
 	will-change: opacity, transform;

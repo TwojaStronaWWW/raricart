@@ -693,7 +693,7 @@
 					sessionStorage.setItem('heroIntroPlayed', '1')
 					window._heroSequenceRunning = false
 				}, 2500)
-			}, 2000)
+			}, 3000)
 		} else if (!window._heroSequenceRunning) {
 			// SUBSEQUENT SCROLLS — just logo to navbar, no texts
 			if (ui.brand) ui.brand.classList.add('moving')
