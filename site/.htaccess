@@ -6,6 +6,7 @@
 
 DirectoryIndex index.php
 RewriteEngine On
+RewriteRule ^robots\.txt$ robots.php [L]
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP_HOST} !^localhost
 RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
