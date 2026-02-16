@@ -13,7 +13,12 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://images.unsplash.com https://media.istockphoto.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com;">
 
-
+    <?php
+    $host = strtolower($_SERVER['HTTP_HOST']);
+    if ($host === 'test.raricart.pl') {
+        echo '<meta name="robots" content="noindex, nofollow">';
+    }
+    ?>
 
     <!-- SEO -->
     <title>Raricart - Live Food Station & Catering</title>
@@ -71,7 +76,7 @@
       "email": "kontakt@raricart.pl",
       "priceRange": "$$",
       "servesCuisine": ["BBQ", "Asian", "Desserts"],
-      "url": "https://test.raricart.pl"
+      "url": "https://<?php echo $_SERVER['HTTP_HOST']; ?>"
     }
     </script>
     <script>
