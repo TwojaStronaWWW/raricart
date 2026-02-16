@@ -45,3 +45,5 @@ jobs:
           target: "/home/platne/serwer409986/public_html/pakiety.raricart.pl/"
           strip_components: 1
           overwrite: true
+
+          # force registration
