@@ -2,7 +2,7 @@
 // contact.php
 
 // --- KONFIGURACJA ---
-$toEmail = "pomoc@raricart.pl"; // Poprawione: czysty adres w cudzysłowie
+$toEmail = "kontakt@raricart.pl"; // Poprawione: czysty adres w cudzysłowie
 $subjectPrefix = "[Formularz Raricart]"; 
 // ---------------------
 
