@@ -584,7 +584,14 @@
 	}
 
 	// --- Initial Setup ---
+	// --- Initial Setup ---
 	document.addEventListener('DOMContentLoaded', function () {
+		// Fix: Prevent intro animation on redirects or direct section links
+		const uParams = new URLSearchParams(window.location.search)
+		if (uParams.has('goto') || window.location.hash.length > 1) {
+			sessionStorage.setItem('heroIntroPlayed', '1')
+		}
+
 		cacheElements() // Initialize cache
 		updateLayout() // Initial layout check (safe, no offsets used)
 
