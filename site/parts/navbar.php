@@ -1,37 +1,52 @@
 <?php
 // parts/navbar.php
 
-// Determine context based on Current Working Directory (CWD) name
-// This is robust against URL rewrites and subdirectories.
-$cwd_name = basename(getcwd());
+// Fix 11d: Subdomain Logic
+// Detect protocol and current host
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
+$host = $_SERVER['HTTP_HOST'];
 
-if ($cwd_name === 'site') {
-    // We are in site/index.php (Home)
-    $is_home = true;
-    $assets_path = './assets'; // In site/, assets are just ./assets
-    $base_url = ''; // Anchors work directly
-    $packages_link = '../packages/index.php'; // Go up and to packages
-} elseif ($cwd_name === 'packages') {
-    // We are in packages/index.php
+// Detect if we are on packages subdomain ('test.pakiety' or 'pakiety')
+$on_packages = strpos($host, 'pakiety.') !== false;
+
+if ($on_packages) {
+    // We are on packages subdomain (e.g. test.pakiety.raricart.pl)
     $is_home = false;
-    $assets_path = '../site/assets'; // Go up and to site/assets
-    $base_url = '../site/index.php'; // Go up and to site/index.php
-    $packages_link = '#'; // Active page
+    
+    // Determine Main Domain (e.g. test.raricart.pl)
+    // Remove 'pakiety.' from host
+    $main_host = str_replace('pakiety.', '', $host);
+    
+    // Links (Full URLs)
+    $base_url = $protocol . $main_host . '/'; // Go to main domain root
+    $assets_path = $protocol . $main_host . '/assets'; // Hotlink assets from main domain (assumes main domain points to site/)
+    $packages_link = '#';
 } else {
-    // Fallback (e.g. root)
+    // We are on Main Domain (e.g. test.raricart.pl)
     $is_home = true;
-    $assets_path = './site/assets';
-    $base_url = './site/index.php';
-    $packages_link = './packages/index.php';
+    $main_host = $host;
+    
+    // Links (Local)
+    $base_url = ''; 
+    $assets_path = './assets'; // Local assets
+    
+    // Construct packages URL
+    // Insert 'pakiety.' into subdomain structure
+    if (strpos($host, 'test.') === 0) {
+       $packages_host = 'test.pakiety.' . substr($host, 5);
+    } else {
+       $packages_host = 'pakiety.' . $host;
+    }
+    
+    $packages_link = $protocol . $packages_host . '/';
 }
 
-// Debug info (visible in source only)
-echo '<!-- Fix 11c | Context: ' . $cwd_name . ' | Assets: ' . $assets_path . ' -->';
+
 
 function nav_link($anchor) {
     global $base_url;
-    // Ensure anchor starts with #
-    return $base_url . $anchor;
+    // ensure base_url ends with / if it's a domain, or is empty
+    return $base_url . $anchor; 
 }
 
 // Initial classes for subpages
