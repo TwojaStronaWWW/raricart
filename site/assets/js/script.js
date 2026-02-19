@@ -11,6 +11,7 @@
 				faq: 'FAQ',
 				why_us: 'Co Nas Wyróżnia',
 				contact: 'Kontakt',
+				packages: 'Pakiety',
 			},
 			hero: {
 				title1: 'TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE SIĘ ELEGANCJĄ...',
@@ -195,7 +196,15 @@
 			},
 		},
 		en: {
-			nav: { about: 'About Us', offer: 'Offer', gallery: 'Gallery', faq: 'FAQ', why_us: 'Why Us', contact: 'Contact' },
+			nav: {
+				about: 'About Us',
+				offer: 'Offer',
+				gallery: 'Gallery',
+				faq: 'FAQ',
+				why_us: 'Why Us',
+				contact: 'Contact',
+				packages: 'Packages',
+			},
 			hero: {
 				title1: 'WHERE TASTE MEETS EMOTION AND SIMPLICITY BECOMES ELEGANCE...',
 				title2: '...THAT\'S WHERE <span class="logo-pulse">RARICART</span> BEGINS',
@@ -372,6 +381,7 @@
 				faq: 'FAQ',
 				why_us: 'Por Qué Nosotros',
 				contact: 'Contacto',
+				packages: 'Paquetes',
 			},
 			hero: {
 				title1: 'DONDE EL SABOR SE ENCUENTRA CON LA EMOCIÓN Y LA SIMPLICIDAD SE VUELVE ELEGANCIA...',
@@ -625,10 +635,20 @@
 
 	// --- Scroll & Layout Logic ---
 	function updateLayout(scrollY, vh) {
-		// Optimization: Use cached elements
+		// PERMANENT FIX: If NO video background (subpage), DO NOT touch layout/classes at all.
+		// Let PHP/CSS handle static state.
+		if (!document.getElementById('videoBg')) return
 
+		// Optimization: Use cached elements
 		// Safety check if elements exist (e.g. if script loads before DOM - though we use 'load' event)
 		if (!ui.brand) cacheElements()
+
+		// Null check for subpages without hero
+		if (!ui.brand || !ui.brandText1) {
+			// Subpage logic: navbar is statically visible (handled by PHP/CSS)
+			// Do NOT toggle visibility here to prevent flickering.
+			return
+		}
 
 		// Use passed values or fallback (fallback for direct calls outside loop)
 		scrollY = scrollY !== undefined ? scrollY : window.pageYOffset

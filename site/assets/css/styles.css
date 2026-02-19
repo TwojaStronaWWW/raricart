@@ -276,12 +276,17 @@ video::-webkit-media-text-track-display {
 	opacity: 0;
 	transition: opacity 1.5s ease-in-out;
 	pointer-events: none;
+	font-family: var(--font-primary); /* Force font consistency across pages */
 }
 
 #nav.visible {
 	opacity: 1;
 	pointer-events: all;
 	/* No background here anymore */
+}
+
+.no-transition {
+	transition: none !important;
 }
 
 .nav-side {
@@ -385,6 +390,36 @@ video::-webkit-media-text-track-display {
 
 .nav-side a:hover {
 	opacity: 0.7;
+}
+
+/* Dark Navigation for Light Background Pages */
+.nav-dark .nav-side a {
+	color: #3d4a3a !important; /* var(--color-text-dark) */
+	font-weight: 600;
+}
+
+.nav-dark .nav-side a:hover {
+	color: #a3b59a !important; /* var(--accent) */
+	opacity: 1;
+}
+
+.nav-dark .sep,
+.nav-dark .lang-btn {
+	color: #3d4a3a !important;
+}
+
+.nav-dark .lang-btn.active {
+	font-weight: 700;
+	border-bottom-color: #3d4a3a !important;
+}
+
+.hamburger.nav-dark span {
+	background: #3d4a3a !important;
+}
+
+/* Ensure hamburger inside nav-dark if valid selector */
+.nav-dark .hamburger span {
+	background: #3d4a3a !important;
 }
 
 /* Mobile Nav Styles */
@@ -2422,4 +2457,12 @@ footer {
 	font-weight: 600;
 	color: #f0c040;
 	text-shadow: 0 0 25px rgba(240, 192, 64, 0.4);
+}
+
+@media (max-width: 1024px) {
+	/* Mobile Nav Background for visibility on light pages */
+	.nav-side {
+		background-color: rgba(61, 74, 58, 0.98); /* Sage Dark - ensures white links are visible */
+		backdrop-filter: blur(10px);
+	}
 }
