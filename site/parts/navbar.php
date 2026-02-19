@@ -7,11 +7,13 @@ $current_page = $_SERVER['REQUEST_URI'];
 $is_home = strpos($current_page, '/packages') === false;
 
 // Helpers for paths
-// Helpers for paths
-// Use relative paths to allow hosting in subdirectories
-$assets_path = $is_home ? 'site/assets' : '../site/assets';
+// Use relative paths explicitly with dot slash to allow hosting in subdirectories
+$assets_path = $is_home ? './site/assets' : '../site/assets';
 // Link prefix: if home, anchor only. If subpage, go back to root index.php
 $base_url = $is_home ? '' : '../index.php';
+
+// Debug info (visible in source only)
+echo '<!-- Current Page: ' . $current_page . ' | is_home: ' . ($is_home ? 'YES' : 'NO') . ' | CWD: ' . getcwd() . ' -->';
 
 function nav_link($anchor) {
     global $base_url;
