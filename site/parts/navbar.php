@@ -1,19 +1,32 @@
 <?php
 // parts/navbar.php
 
-// Determine context
-$current_page = $_SERVER['REQUEST_URI'];
-// Assume home unless we are explicitly in /packages (fixes issues with subdirectories like /raricart.pl/)
-$is_home = strpos($current_page, '/packages') === false;
+// Determine context based on Current Working Directory (CWD) name
+// This is robust against URL rewrites and subdirectories.
+$cwd_name = basename(getcwd());
 
-// Helpers for paths
-// Use relative paths explicitly with dot slash to allow hosting in subdirectories
-$assets_path = $is_home ? './site/assets' : '../site/assets';
-// Link prefix: if home, anchor only. If subpage, go back to root index.php
-$base_url = $is_home ? '' : '../index.php';
+if ($cwd_name === 'site') {
+    // We are in site/index.php (Home)
+    $is_home = true;
+    $assets_path = './assets'; // In site/, assets are just ./assets
+    $base_url = ''; // Anchors work directly
+    $packages_link = '../packages/index.php'; // Go up and to packages
+} elseif ($cwd_name === 'packages') {
+    // We are in packages/index.php
+    $is_home = false;
+    $assets_path = '../site/assets'; // Go up and to site/assets
+    $base_url = '../site/index.php'; // Go up and to site/index.php
+    $packages_link = '#'; // Active page
+} else {
+    // Fallback (e.g. root)
+    $is_home = true;
+    $assets_path = './site/assets';
+    $base_url = './site/index.php';
+    $packages_link = './packages/index.php';
+}
 
 // Debug info (visible in source only)
-echo '<!-- Current Page: ' . $current_page . ' | is_home: ' . ($is_home ? 'YES' : 'NO') . ' | CWD: ' . getcwd() . ' -->';
+echo '<!-- Fix 11c | Context: ' . $cwd_name . ' | Assets: ' . $assets_path . ' -->';
 
 function nav_link($anchor) {
     global $base_url;
@@ -82,8 +95,8 @@ $bg_style = $is_home ? '' : 'style="transition: none !important;"';
             <ul class="nav-side nav-right">
                 <li><a href="<?php echo nav_link('#dlaczego'); ?>" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
                         Wyróżnia</a></li>
-                <!-- Relative link to packages -->
-                <li><a href="<?php echo $is_home ? 'packages/index.php' : '#'; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
+                <!-- Dynamic link to packages -->
+                <li><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
                 <li><a href="<?php echo nav_link('#kontakt'); ?>" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
             </ul>
 
