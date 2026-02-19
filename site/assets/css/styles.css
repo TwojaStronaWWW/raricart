@@ -856,6 +856,8 @@ video::-webkit-media-text-track-display {
 	overflow: hidden;
 	z-index: 3;
 	border: 1px solid rgba(255, 255, 255, 0.6);
+	text-align: left; /* Wyrównanie do lewej */
+	text-shadow: none; /* Usunięcie cienia */
 }
 
 .parallax-card:hover {
@@ -869,7 +871,7 @@ video::-webkit-media-text-track-display {
 	color: #2d3a2a;
 	margin-bottom: 1.2rem;
 	font-weight: 600;
-	text-align: center;
+	text-align: left; /* Nagłówek też do lewej */
 	letter-spacing: 1.5px;
 	text-transform: uppercase;
 }

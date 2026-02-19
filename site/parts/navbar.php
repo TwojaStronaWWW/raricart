@@ -33,7 +33,7 @@
         <nav id="nav">
             <ul class="nav-side nav-left">
                 <li><a href="#onas" aria-label="Przejdź do sekcji O Nas" data-i18n="nav.about">O Nas</a></li>
-                <li><a href="#oferta" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
+                <li><a href="#oferta-lista" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
                 <li><a href="#realizacje" aria-label="Przejdź do sekcji Galeria Realizacji"
                         data-i18n="nav.gallery">Galeria</a></li>
             </ul>

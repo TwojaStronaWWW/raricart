@@ -326,9 +326,7 @@ include 'parts/navbar.php';
 
         <!-- Kontakt -->
         <section id="kontakt" class="section">
-            <h2 data-i18n="contact.title">Zapytaj o dostępność terminu<br>i stwórzmy razem strefę smaku,<br>o której
-                Twoi goście długo nie
-                zapomną.</h2>
+            <h2 data-i18n="contact.title.short">Opowiedz nam o swoim wydarzeniu.<br>Przygotujemy indywidualną wycenę.</h2>
             <div class="progress-container">
                 <div id="form-progress"></div>
             </div>
