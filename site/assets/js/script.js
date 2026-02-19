@@ -545,6 +545,9 @@
 
 	const galleryImages = []
 
+	// Intro Animation Timeouts (for cancelation)
+	let introTimeout1, introTimeout2
+
 	// --- Cache Elements (Optimization) ---
 	const ui = {
 		brand: null,
@@ -604,6 +607,20 @@
 		setTimeout(() => {
 			if (ui.videoBg) ui.videoBg.classList.add('visible')
 		}, 100)
+
+		// Scroll Button Logic (Skip Intro + Scroll)
+		const scrollBtn = document.getElementById('scroll')
+		if (scrollBtn) {
+			scrollBtn.addEventListener('click', () => {
+				skipIntro()
+				// Scroll to #onas
+				const onas = document.getElementById('onas')
+				if (onas) {
+					// small timeout to ensure layout unlock is processed
+					setTimeout(() => onas.scrollIntoView({ behavior: 'smooth' }), 10)
+				}
+			})
+		}
 	})
 
 	// --- Scroll & Layout Logic ---
@@ -679,7 +696,7 @@
 				ui.brandText1.classList.add('visible')
 			}
 
-			setTimeout(() => {
+			introTimeout1 = setTimeout(() => {
 				if (ui.brandText1) {
 					ui.brandText1.classList.remove('visible')
 					ui.brandText1.classList.add('hidden')
@@ -689,7 +706,7 @@
 					ui.brandText2.classList.add('visible')
 				}
 
-				setTimeout(() => {
+				introTimeout2 = setTimeout(() => {
 					if (ui.brandText2) {
 						ui.brandText2.classList.remove('visible')
 						ui.brandText2.classList.add('hidden')
@@ -734,6 +751,34 @@
 	}
 
 	// --- Actions ---
+	function skipIntro() {
+		// Clear pending timeouts
+		clearTimeout(introTimeout1)
+		clearTimeout(introTimeout2)
+
+		// Force unlock scroll immediately
+		document.body.style.overflow = ''
+
+		// Hide texts immediately
+		if (ui.brandText1) {
+			ui.brandText1.classList.remove('visible')
+			ui.brandText1.classList.add('hidden')
+		}
+		if (ui.brandText2) {
+			ui.brandText2.classList.remove('visible')
+			ui.brandText2.classList.add('hidden')
+		}
+
+		// Set flags as if intro finished
+		window._heroSequenceRunning = false
+		window._heroSequencePlayed = true
+		sessionStorage.setItem('heroIntroPlayed', '1')
+
+		// Move brand logic (optional, but good for consistency)
+		if (ui.brand) ui.brand.classList.add('moving')
+		if (ui.scroll) ui.scroll.classList.add('hidden')
+	}
+
 	function scrollToTop() {
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
