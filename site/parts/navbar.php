@@ -15,15 +15,15 @@ if ($on_packages) {
     
     // Links (Full URLs)
     $base_url = '/'; // Go to main domain root
-    $assets_path = './assets'; 
+    $assets_path = '/assets'; 
     $packages_link = '#';
 } else {
     // We are on Main Domain (e.g. raricart.pl)
     $is_home = true;
     
     // Links (Local)
-    $base_url = ''; 
-    $assets_path = './assets'; // Local assets
+    $base_url = '/'; 
+    $assets_path = '/assets'; // Absolute assets
     
     $packages_link = '/pakiety';
 }
@@ -34,18 +34,14 @@ function nav_link($anchor) {
     return $base_url . $anchor; 
 }
 
-// Initial classes for subpages
-$nav_init_class = $is_home ? '' : 'visible no-transition';
-$logo_init_class = $is_home ? '' : 'moving no-transition';
-
-// Force final state on subpages + ENABLE POINTER EVENTS
-$nav_style = $is_home ? '' : 'style="opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;"';
-// NO inline transform for logo - let CSS (.hero-logo.moving) handle responsive sizing/positioning
-// .no-transition class prevents animation
-$logo_style = $is_home ? '' : '';
-$bg_style = $is_home ? '' : 'style="transition: none !important;"';
+// Removed forced subpage states to align with homepage dynamic scrolling logic
+$nav_init_class = '';
+$logo_init_class = '';
+$nav_style = '';
+$logo_style = '';
+$bg_style = '';
 ?>
-    <!-- Backgrounds -->
+    <!-- Backgrounds (Empty for subpages, letting script run transition from 0) -->
     <?php if ($is_home): ?>
     <div class="video-background" id="videoBg">
         <video autoplay muted loop playsinline aria-label="Tło wideo przedstawiające przygotowanie potraw">
@@ -54,17 +50,12 @@ $bg_style = $is_home ? '' : 'style="transition: none !important;"';
 
         <div class="video-overlay"></div>
     </div>
-    <?php else: ?>
-    <!-- Static background for subpages -->
-    <div class="nav-bg visible" id="navBg" <?php echo $bg_style; ?>></div>
     <?php endif; ?>
 
 
     <!-- Header Container -->
     <header id="main-header">
-        <?php if ($is_home): ?>
         <div class="nav-bg" id="navBg"></div>
-        <?php endif; ?>
         
         <!-- Branding & Nav -->
         <?php $brand_text_style = $is_home ? '' : 'style="display: none !important;"'; ?>

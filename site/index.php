@@ -69,7 +69,7 @@ include 'parts/navbar.php';
         <section id="onas" class="section-premium">
             <div class="premium-container">
                 <div class="premium-col-image">
-                    <img src="<?php echo get_val('about_image', 'assets/images/about_experience.webp'); ?>"
+                    <img src="<?php echo get_val('about_image', '/assets/images/about_experience.webp'); ?>"
                         alt="Raricart Live Food Experience - Goście cieszący się wydarzeniem" loading="lazy" class="premium-img">
                 </div>
                 <div class="premium-col-text">
@@ -97,7 +97,7 @@ include 'parts/navbar.php';
         <section id="oferta" class="section-offer-intro">
             <div class="premium-overlap-container reverse">
                 <div class="premium-image-box">
-                    <img src="<?php echo get_val('offer_main_image', 'assets/images/offer_main.webp'); ?>"
+                    <img src="<?php echo get_val('offer_main_image', '/assets/images/offer_main.webp'); ?>"
                         alt="Mobilna stacja gastronomiczna Raricart" loading="lazy" class="premium-image">
                 </div>
                 <div class="premium-text-card">
@@ -123,7 +123,7 @@ include 'parts/navbar.php';
             <div class="offer-grid">
                 <article class="offer-card" data-offer="pancakes">
                     <div class="offer-image-wrapper">
-                         <img src="<?php echo get_val('offer_cards.pancakes', 'assets/images/placeholder.webp'); ?>" 
+                         <img src="<?php echo get_val('offer_cards.pancakes', '/assets/images/placeholder.webp'); ?>" 
                               alt="Mini Pancakes" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -134,7 +134,7 @@ include 'parts/navbar.php';
                 </article>
                 <article class="offer-card" data-offer="icecream">
                     <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.icecream', 'assets/images/placeholder.webp'); ?>" 
+                        <img src="<?php echo get_val('offer_cards.icecream', '/assets/images/placeholder.webp'); ?>" 
                              alt="Lody Włoskie" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -145,7 +145,7 @@ include 'parts/navbar.php';
                 </article>
                 <article class="offer-card" data-offer="cheese">
                     <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.cheese', 'assets/images/placeholder.webp'); ?>" 
+                        <img src="<?php echo get_val('offer_cards.cheese', '/assets/images/placeholder.webp'); ?>" 
                              alt="Deska Serów" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">

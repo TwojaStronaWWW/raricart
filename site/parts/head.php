@@ -39,26 +39,26 @@
 
     <!-- Styles & Fonts -->
     <link rel="canonical" href="https://raricart.pl">
-    <link rel="icon" type="image/png" href="<?php echo get_val('favicon', 'assets/images/logo_optimized.png'); ?>">
+    <link rel="icon" type="image/png" href="<?php echo get_val('favicon', '/assets/images/logo_optimized.png'); ?>">
 
     <!-- Critical CSS: Blocking load to prevent Layout Shift (CLS 1.0 fix) -->
-    <link rel="stylesheet" href="assets/css/styles.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="/assets/css/styles.css?v=<?php echo time(); ?>">
 
     <!-- Preload Fonts (Optimized for Critical Chain) -->
     <!-- Comfortaa Light (300) - Main Body Text -->
-    <link rel="preload" href="assets/fonts/Comfortaa-Light.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/assets/fonts/Comfortaa-Light.ttf" as="font" type="font/ttf" crossorigin>
     <!-- Comfortaa Regular (400) -->
-    <link rel="preload" href="assets/fonts/Comfortaa-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/assets/fonts/Comfortaa-Regular.ttf" as="font" type="font/ttf" crossorigin>
     <!-- Comfortaa SemiBold (600) - Navigation & Emphasis -->
-    <link rel="preload" href="assets/fonts/Comfortaa-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/assets/fonts/Comfortaa-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
     
     <!-- Playfair Regular (400) - Intro Branding -->
-    <link rel="preload" href="assets/fonts/Playfair-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/assets/fonts/Playfair-Regular.ttf" as="font" type="font/ttf" crossorigin>
     <!-- Playfair SemiBold (600) - Main Headings -->
-    <link rel="preload" href="assets/fonts/Playfair-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/assets/fonts/Playfair-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
 
     <!-- Preload Critical Image (LCP) -->
-    <link rel="preload" href="assets/images/logo_optimized.png" as="image">
+    <link rel="preload" href="/assets/images/logo_optimized.png" as="image">
 
     <!-- Scripts -->
 
@@ -93,4 +93,7 @@
     </script>
 </head>
 
-<body>
+<?php
+$is_home_page = (strpos($_SERVER['SCRIPT_NAME'], 'pakiety.php') === false && strpos($_SERVER['REQUEST_URI'], '/pakiety') === false);
+?>
+<body <?php echo $is_home_page ? 'class="is-homepage"' : ''; ?>>

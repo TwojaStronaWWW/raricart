@@ -606,27 +606,39 @@
 		}
 
 		cacheElements() // Initialize cache
-		updateLayout() // Initial layout check (safe, no offsets used)
 
-		// Defer expensive layout measurements to avoid forced reflow on load
-		setTimeout(() => {
-			measureLayout()
-		}, 50)
+		// --- ARCHITECTURAL FIX: Subpage Handling ---
+		const isHomePage = document.body.classList.contains('is-homepage')
+		if (!isHomePage) {
+			// Immediately set scrolled state for subpages
+			if (ui.brand) ui.brand.classList.add('moving')
+			if (ui.nav) ui.nav.classList.add('nav-scrolled', 'visible') // Both for compatibility
+			if (ui.bg) ui.bg.classList.add('shrink')
+			if (ui.navBg) ui.navBg.classList.add('visible')
+			if (ui.hamburger) ui.hamburger.classList.add('visible')
+			const header = document.getElementById('main-header')
+			if (header) header.style.pointerEvents = 'auto'
 
-		// Video fade in slightly later to prioritize LCP
-		setTimeout(() => {
-			if (ui.videoBg) ui.videoBg.classList.add('visible')
-		}, 100)
+			// We skip the rest of the homepage-specific initialization
+		} else {
+			updateLayout() // Initial layout check
+
+			setTimeout(() => {
+				measureLayout()
+			}, 50)
+
+			setTimeout(() => {
+				if (ui.videoBg) ui.videoBg.classList.add('visible')
+			}, 100)
+		}
 
 		// Scroll Button Logic (Skip Intro + Scroll)
 		const scrollBtn = document.getElementById('scroll')
 		if (scrollBtn) {
 			scrollBtn.addEventListener('click', () => {
 				skipIntro()
-				// Scroll to #onas
 				const onas = document.getElementById('onas')
 				if (onas) {
-					// small timeout to ensure layout unlock is processed
 					setTimeout(() => onas.scrollIntoView({ behavior: 'smooth' }), 10)
 				}
 			})
@@ -635,9 +647,9 @@
 
 	// --- Scroll & Layout Logic ---
 	function updateLayout(scrollY, vh) {
-		// PERMANENT FIX: If NO video background (subpage), DO NOT touch layout/classes at all.
-		// Let PHP/CSS handle static state.
-		if (!document.getElementById('videoBg')) return
+		// ARCHITECTURAL FIX: Disable hero logic on subpages completely
+		const isHomePage = document.body.classList.contains('is-homepage')
+		if (!isHomePage) return
 
 		// Optimization: Use cached elements
 		// Safety check if elements exist (e.g. if script loads before DOM - though we use 'load' event)

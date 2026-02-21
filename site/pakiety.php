@@ -1,35 +1,4 @@
 <?php
-// === SETUP FILES (Autocopy gallery and css for 1:1 match) ===
-// Ten blok automatycznie skopiuje wymaganą galerię i css przy pierwszym uruchomieniu,
-// a następnie zaprzestanie działania (file_exists). Gwarantuje to 100% zgodność ścieżek bez refaktoru.
-$srcGal = __DIR__ . '/../packages/assets/gallery';
-$dstGal = __DIR__ . '/assets/gallery';
-if (!file_exists($dstGal) && is_dir($srcGal)) {
-    function copy_dir_pakiety($src, $dst) {
-        $dir = @opendir($src);
-        @mkdir($dst, 0777, true);
-        if ($dir) {
-            while(false !== ( $file = readdir($dir)) ) {
-                if (( $file != '.' ) && ( $file != '..' )) {
-                    if ( is_dir($src . '/' . $file) ) {
-                        copy_dir_pakiety($src . '/' . $file, $dst . '/' . $file);
-                    } else {
-                        copy($src . '/' . $file, $dst . '/' . $file);
-                    }
-                }
-            }
-            closedir($dir);
-        }
-    }
-    copy_dir_pakiety($srcGal, $dstGal);
-}
-$srcCss = __DIR__ . '/../packages/assets/css/style.css';
-$dstCss = __DIR__ . '/assets/css/pakiety-style.css';
-if (!file_exists($dstCss) && file_exists($srcCss)) {
-    copy($srcCss, $dstCss);
-}
-// ===========================================
-
 // Security & Production config
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
@@ -73,48 +42,15 @@ include 'parts/head.php';
 ?>
 
 <!-- PAKIETY SPECIFIC CSS -->
-<link rel="stylesheet" href="assets/css/pakiety-style.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="/assets/css/pakiety-style.css?v=<?php echo time(); ?>">
 
 <style>
-    /* Specific overrides for packages page to ensure navbar visibility */
+    /* Spacing for content below the fixed navbar */
     body {
-        padding-top: 0; /* Navbar is fixed/overlay */
+        padding-top: 0;
     }
-    
     main {
-        padding-top: 90px; /* Space for fixed navbar (approx 80px + 10px buffer) */
-    }
-
-    /* FORCE NAVBAR VISIBILITY */
-    #main-header {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        z-index: 10000 !important;
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
-    #nav, .hero-logo, .hamburger {
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        display: block !important; /* Ensure they are not hidden */
-    }
-    
-    /* Ensure logo is visible */
-    .hero-logo img {
-         visibility: visible !important; 
-         opacity: 1 !important;
-    }
-
-    /* Nav background explicit color just in case */
-    .nav-bg {
-         background: rgba(20, 20, 20, 0.95);
-         backdrop-filter: blur(10px);
-         -webkit-backdrop-filter: blur(10px);
+        padding-top: 90px;
     }
 </style>
 
@@ -136,7 +72,7 @@ include 'parts/navbar.php';
 
                 <!-- 1. IDEA MARKI -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/1a-001.webp" alt="Idea Marki Raricart" class="split-card-image"
+                    <img src="/assets/gallery/images/1a-001.webp" alt="Idea Marki Raricart" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -155,7 +91,7 @@ include 'parts/navbar.php';
 
                 <!-- 2. DLA KOGO -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/2a-001.webp" alt="Dla kogo jest Raricart"
+                    <img src="/assets/gallery/images/2a-001.webp" alt="Dla kogo jest Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -175,7 +111,7 @@ include 'parts/navbar.php';
 
                 <!-- 3. JAK TO DZIAŁA -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/3a-000.webp" alt="Jak działa Raricart" class="split-card-image"
+                    <img src="/assets/gallery/images/3a-000.webp" alt="Jak działa Raricart" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -196,7 +132,7 @@ include 'parts/navbar.php';
 
                 <!-- 4. LODY WŁOSKIE (Moved Up) -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/x1-000.webp" alt="Lody włoskie Raricart"
+                    <img src="/assets/gallery/images/x1-000.webp" alt="Lody włoskie Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -215,7 +151,7 @@ include 'parts/navbar.php';
 
                 <!-- 5. MINI PANCAKES (Moved Up) -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/x2-001.webp" alt="Mini pancakes Raricart"
+                    <img src="/assets/gallery/images/x2-001.webp" alt="Mini pancakes Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -235,7 +171,7 @@ include 'parts/navbar.php';
 
                 <!-- 6. DESKI SERÓW (Moved Up) -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/x3-003.webp" alt="Deski serów i wędlin Raricart"
+                    <img src="/assets/gallery/images/x3-003.webp" alt="Deski serów i wędlin Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -254,7 +190,7 @@ include 'parts/navbar.php';
 
                 <!-- 7. DLACZEGO MINI PORCJE (Formerly Row 4) -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/4a-000.webp" alt="Dlaczego mini porcje" class="split-card-image"
+                    <img src="/assets/gallery/images/4a-000.webp" alt="Dlaczego mini porcje" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -273,7 +209,7 @@ include 'parts/navbar.php';
 
                 <!-- 8. CO NAS WYRÓŻNIA (Formerly Row 5) -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/5a-000.webp" alt="Co wyróżnia Raricart" class="split-card-image"
+                    <img src="/assets/gallery/images/5a-000.webp" alt="Co wyróżnia Raricart" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -291,7 +227,7 @@ include 'parts/navbar.php';
 
                 <!-- 9. JAK WYGLĄDA WSPÓŁPRACA (Formerly Row 6) -->
                 <div class="split-card">
-                    <img src="assets/gallery/images/6a-000.webp" alt="Jak wygląda współpraca"
+                    <img src="/assets/gallery/images/6a-000.webp" alt="Jak wygląda współpraca"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">

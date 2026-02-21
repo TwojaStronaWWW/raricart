@@ -84,6 +84,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="assets/js/script.js?v=<?php echo time(); ?>" defer></script>
+    <script src="/assets/js/script.js?v=<?php echo time(); ?>" defer></script>
 </body>
 </html>
