@@ -71,16 +71,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($isImage) {
             // --- IMAGE PROCESSING (Resize & Convert to WebP) ---
             $sourceImage = null;
+            
+            // Fix: Suppress errors during creation, but handle if it fails
             switch ($mimeType) {
-                case 'image/jpeg': $sourceImage = @imagecreatefromjpeg($file['tmp_name']); break;
+                case 'image/jpeg': 
+                    $sourceImage = @imagecreatefromjpeg($file['tmp_name']); 
+                    break;
                 case 'image/png': 
                     $sourceImage = @imagecreatefrompng($file['tmp_name']); 
-                    imagepalettetotruecolor($sourceImage);
-                    imagealphablending($sourceImage, true);
-                    imagesavealpha($sourceImage, true);
+                    if ($sourceImage) {
+                        imagepalettetotruecolor($sourceImage);
+                        imagealphablending($sourceImage, true);
+                        imagesavealpha($sourceImage, true);
+                    }
                     break;
-                case 'image/gif': $sourceImage = @imagecreatefromgif($file['tmp_name']); break;
-                case 'image/webp': $sourceImage = @imagecreatefromwebp($file['tmp_name']); break;
+                case 'image/gif': 
+                    $sourceImage = @imagecreatefromgif($file['tmp_name']); 
+                    break;
+                case 'image/webp': 
+                    $sourceImage = @imagecreatefromwebp($file['tmp_name']); 
+                    break;
             }
 
             if ($sourceImage) {
@@ -92,21 +102,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($width > $maxWidth) {
                     $newWidth = $maxWidth;
                     $newHeight = floor($height * ($maxWidth / $width));
-                    
-                    $newImage = imagecreatetruecolor($newWidth, $newHeight);
-                    
-                    // Handle transparency
-                    if ($mimeType == 'image/png' || $mimeType == 'image/gif' || $mimeType == 'image/webp') {
-                         imagealphablending($newImage, false);
-                         imagesavealpha($newImage, true);
-                         $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
-                         imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
-                    }
-                    
-                    imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-                    imagedestroy($sourceImage);
-                    $sourceImage = $newImage;
+                } else {
+                    $newWidth = $width;
+                    $newHeight = $height;
                 }
+                
+                $newImage = imagecreatetruecolor($newWidth, $newHeight);
+                
+                // Handle transparency for WebP output
+                imagealphablending($newImage, false);
+                imagesavealpha($newImage, true);
+                $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+                imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+                
+                imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                imagedestroy($sourceImage);
+                $sourceImage = $newImage;
 
                 // Save as WebP
                 if (imagewebp($sourceImage, $destination, 85)) { // Quality 85
@@ -117,11 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     imagedestroy($sourceImage);
                     ob_clean();
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to save converted image.']);
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to save converted WebP image.']);
                     exit;
                 }
             } else {
-                 // Fallback if GD fails to open image (e.g. corrupt)
+                 // Fallback if GD fails to open image (e.g. corrupt or unsupported by local GD)
                  if (move_uploaded_file($file['tmp_name'], $destination)) {
                     ob_clean();
                     echo json_encode(['status' => 'success', 'file' => $webPath . $filename, 'type' => 'image', 'warning' => 'Image saved but not optimized (GD error).']);

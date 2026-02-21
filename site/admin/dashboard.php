@@ -510,15 +510,26 @@ async function uploadContent(input, key, type='image') {
     const file = input.files[0];
     if(!file) return;
 
-    const formData = new FormData();
-    formData.append('image', file);
-    formData.append('target', 'content'); // Output to assets/content
-
     const btn = input.parentElement;
     const originalText = btn.innerText;
     btn.innerText = 'Wgrywanie...';
 
     try {
+        let uploadData;
+        
+        // If it's an image, resize it first on client side before sending to PHP
+        if (type === 'image' && file.type.startsWith('image/')) {
+            const resizedBlob = await resizeImage(file);
+            uploadData = resizedBlob;
+        } else {
+            uploadData = file;
+        }
+
+        const formData = new FormData();
+        // Append with original name so PHP pathinfo picks up the right extension
+        formData.append('image', uploadData, file.name || 'upload.jpg');
+        formData.append('target', 'content'); // Output to assets/content
+
         const res = await fetch('upload.php', { 
             method: 'POST', 
             headers: {
@@ -528,7 +539,8 @@ async function uploadContent(input, key, type='image') {
         });
         const text = await res.text();
         let data;
-        try { data = JSON.parse(text); } catch(e) { throw new Error('Invalid Server JSON'); }
+        try { data = JSON.parse(text); } catch(e) { throw new Error('Invalid Server JSON format. Server returned: ' + text); }
+
 
         if(data.status === 'success') {
             // Update State

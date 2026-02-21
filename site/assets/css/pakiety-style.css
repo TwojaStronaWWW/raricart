@@ -526,10 +526,31 @@ footer {
 
 /* --- Split Cards Stack (vertical stack of split-cards) --- */
 .split-cards-stack {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 30px;
 	margin-bottom: 60px;
+	/* Wyrwanie się z wąskiego kontenera (.container ma max-width 600px) i wyśrodkowanie */
+	width: 95vw;
+	max-width: 1600px;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+@media (max-width: 1400px) {
+	.split-cards-stack {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 900px) {
+	.split-cards-stack {
+		grid-template-columns: 1fr;
+		width: 100%;
+		position: static;
+		transform: none;
+	}
 }
 
 /* --- Split Cards Row (full-width container for split-cards) --- */
