@@ -6,42 +6,27 @@
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
 $host = $_SERVER['HTTP_HOST'];
 
-// Detect if we are on packages subdomain ('test.pakiety' or 'pakiety')
-$on_packages = strpos($host, 'pakiety.') !== false;
+// Detect if we are on packages subpage (checking URI for /pakiety, or script name)
+$on_packages = strpos($_SERVER['REQUEST_URI'], '/pakiety') !== false || strpos($_SERVER['SCRIPT_NAME'], 'pakiety.php') !== false;
 
 if ($on_packages) {
-    // We are on packages subdomain (e.g. test.pakiety.raricart.pl)
+    // We are on packages subpage
     $is_home = false;
     
-    // Determine Main Domain (e.g. test.raricart.pl)
-    // Remove 'pakiety.' from host
-    $main_host = str_replace('pakiety.', '', $host);
-    
     // Links (Full URLs)
-    $base_url = $protocol . $main_host . '/'; // Go to main domain root
-    $assets_path = $protocol . $main_host . '/assets'; // Hotlink assets from main domain (assumes main domain points to site/)
+    $base_url = '/'; // Go to main domain root
+    $assets_path = './assets'; 
     $packages_link = '#';
 } else {
-    // We are on Main Domain (e.g. test.raricart.pl)
+    // We are on Main Domain (e.g. raricart.pl)
     $is_home = true;
-    $main_host = $host;
     
     // Links (Local)
     $base_url = ''; 
     $assets_path = './assets'; // Local assets
     
-    // Construct packages URL
-    // Insert 'pakiety.' into subdomain structure
-    if (strpos($host, 'test.') === 0) {
-       $packages_host = 'test.pakiety.' . substr($host, 5);
-    } else {
-       $packages_host = 'pakiety.' . $host;
-    }
-    
-    $packages_link = $protocol . $packages_host . '/';
+    $packages_link = '/pakiety';
 }
-
-
 
 function nav_link($anchor) {
     global $base_url;
