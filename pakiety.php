@@ -61,7 +61,7 @@ include 'parts/navbar.php';
 <div class="bg-decoration dec-1"></div>
 <div class="bg-decoration dec-2"></div>
 
-<div class="container">
+<div class="pakiety-container">
     <main>
         <!-- INDIVIDUAL STATIONS -->
         <section>
