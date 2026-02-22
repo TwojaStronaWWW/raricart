@@ -18,8 +18,8 @@ Thumbs.db
 .env
 .env.local
 .env.production
-site/assets/data/config.json
-site/assets/data/content.json
+assets/data/config.json
+assets/data/content.json
 
 # Exclude existing git history from subfolders if they were not removed
 **/.git/
@@ -28,29 +28,27 @@ site/assets/data/content.json
 composer.phar
 .phpunit.result.cache
 
-# Assets cleanup
-site/assets/data/*.json
-!site/assets/data/*.json.dist
-
-# deploy / runtime
+# deploys / runtime
 .ftp-deploy-sync-state.json
 .htpasswd
 
 # Runtime data
-site/admin/leady.csv
-site/drafts/
-site/api/drafts/
-site/assets/uploads/
+admin/leady.csv
+drafts/
+api/drafts/
+assets/uploads/
 
 # IDE
 .vscode/
 .idea/
 
 # Runtime config
-site/assets/data/*.json
-!site/assets/data/*.json.dist
+assets/data/*.json
+!assets/data/*.json.dist
 
 # Uploads
-site/assets/gallery/
-site/assets/images/
+assets/gallery/
+assets/images/parallax/
+assets/images/gallery/
+uploads/
 
