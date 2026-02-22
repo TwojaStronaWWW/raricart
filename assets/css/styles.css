@@ -838,7 +838,7 @@ video::-webkit-media-text-track-display {
 
 /* Overlay */
 .parallax-why::after,
-#realizacje::after {
+#realizacje-parallax::after {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -947,7 +947,7 @@ video::-webkit-media-text-track-display {
 
 /* --- Gallery --- */
 
-#realizacje {
+#realizacje-parallax {
 	padding: 6rem 2rem;
 	position: relative;
 	background-image: var(--bg-image, url('../images/parallax_bg.jpg')); /* Default */
@@ -958,27 +958,13 @@ video::-webkit-media-text-track-display {
 }
 
 /* Ensure ::before is not just an overlay but the BG now */
-#realizacje::after {
+#realizacje-parallax::after {
 	content: '';
 	position: absolute;
 	inset: 0;
 	background: rgba(0, 0, 0, 0.45); /* Lighter overlay, no blur */
 	z-index: 1;
 	pointer-events: none;
-}
-
-#realizacje h2 {
-	margin-bottom: 3rem;
-	position: relative;
-	z-index: 10;
-	color: var(--color-white);
-	color: var(--color-white);
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-	text-align: center;
-	font-size: 2.8rem;
-	font-weight: 600;
-	letter-spacing: 1px;
-	font-family: var(--font-secondary);
 }
 
 .gallery-grid {
@@ -1489,7 +1475,7 @@ footer {
 
 /* FIX: Parallax sections must not have transform or they break fixed background */
 /* FIX: Parallax sections must not have transform or they break fixed background */
-#realizacje.section,
+#realizacje-parallax.section,
 #dlaczego.section {
 	transform: none; /* Breaks fixed bg if present */
 	opacity: 1;
@@ -1986,7 +1972,7 @@ footer {
 
 	/* 5. Parallax (Why Us) */
 	.parallax-why,
-	#realizacje {
+	#realizacje-parallax {
 		background-attachment: fixed;
 	}
 
@@ -2057,7 +2043,7 @@ footer {
 	/* 8. Unified Section Padding (Override IDs) */
 	#faq,
 	#kontakt,
-	#realizacje {
+	#realizacje-parallax {
 		padding-left: 0.5rem;
 		padding-right: 0.5rem;
 	}

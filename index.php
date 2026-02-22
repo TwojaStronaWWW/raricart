@@ -159,8 +159,11 @@ include 'parts/navbar.php';
         </section>
 
         <!-- Realizacje -->
-        <section id="realizacje" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?>">
-            <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
+        <section id="realizacje" class="section" style="padding-bottom: 2rem;">
+            <h2 data-i18n="gallery.title" style="text-align: center; margin-bottom: 0;">GALERIA REALIZACJI</h2>
+        </section>
+        
+        <section id="realizacje-parallax" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?>">
             <div class="gallery-grid" id="dynamicGalleryGrid">
                 <?php
                 // Dynamic Gallery Rendering (PHP Side)

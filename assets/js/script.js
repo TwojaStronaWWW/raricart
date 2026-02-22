@@ -584,7 +584,7 @@
 		ui.scroll = document.getElementById('scroll')
 		ui.videoBg = document.getElementById('videoBg')
 		ui.onasSection = document.getElementById('onas')
-		ui.gallerySection = document.getElementById('realizacje')
+		ui.gallerySection = document.getElementById('realizacje-parallax')
 		// NOTE: measureLayout() deferred to avoid blocking start-up
 	}
 
@@ -1168,7 +1168,7 @@
 					// Gallery Parallax Background
 					if (content.gallery_bg) {
 						// Update Gallery Section Background directly via CSS Variable
-						const gallerySection = document.getElementById('realizacje')
+						const gallerySection = document.getElementById('realizacje-parallax')
 						if (gallerySection) {
 							gallerySection.style.setProperty('--bg-image', `url('/${content.gallery_bg}?v=${new Date().getTime()}')`)
 						}
