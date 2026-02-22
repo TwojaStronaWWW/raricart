@@ -21,7 +21,6 @@ jobs:
           username: serwer409986
           password: ${{ secrets.FTP_PASSWORD }}
           port: 40022
-          source: 'site/**'
+          source: '**,!.git/**,!.github/**'
           target: '/home/platne/serwer409986/public_html/raricart.pl/'
-          strip_components: 1
           overwrite: true
