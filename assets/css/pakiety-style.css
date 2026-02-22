@@ -29,7 +29,19 @@
 }
 
 body {
+	background-color: var(--bg-light);
+	color: var(--color-text);
+	font-family: var(--font-body);
+	font-weight: 400;
+	line-height: 1.6;
+	overflow-x: hidden;
 	position: relative;
+}
+
+/* Force global footer to use primary minimalist typography instead of body's serif */
+footer {
+	font-family: var(--font-primary) !important;
+	font-weight: 300 !important;
 }
 
 /* Background Decorations */
@@ -377,10 +389,6 @@ h3 {
 }
 
 /* CTA */
-footer {
-	text-align: center;
-	padding: 60px 0;
-}
 
 .cta-btn {
 	display: inline-block;
