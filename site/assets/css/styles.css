@@ -829,7 +829,7 @@ video::-webkit-media-text-track-display {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background-image: url('../images/parallax_bg.webp');
+	background-image: var(--bg-image, url('../images/parallax_bg.webp'));
 	background-attachment: fixed; /* User requested classic fixed background */
 	background-position: center;
 	background-size: cover;
@@ -950,7 +950,7 @@ video::-webkit-media-text-track-display {
 #realizacje {
 	padding: 6rem 2rem;
 	position: relative;
-	background-image: url('../images/parallax_bg.jpg'); /* Default */
+	background-image: var(--bg-image, url('../images/parallax_bg.jpg')); /* Default */
 	background-attachment: fixed;
 	background-position: center;
 	background-size: cover;
