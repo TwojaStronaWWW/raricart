@@ -21,27 +21,7 @@ jobs:
           username: serwer409986
           password: ${{ secrets.FTP_PASSWORD }}
           port: 40022
-          source: "site/**"
-          target: "/home/platne/serwer409986/public_html/test.raricart.pl/"
-          strip_components: 1
-          overwrite: true
-
-  deploy-pakiety:
-    name: 📦 Deploy PAKIETY → test.pakiety.raricart.pl
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v3
-
-      - name: 🚀 Upload pakiety files
-        uses: appleboy/scp-action@master
-        with:
-          host: serwer409986.lh.pl
-          username: serwer409986
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 40022
-          source: "packages/**"
-          target: "/home/platne/serwer409986/public_html/test.pakiety.raricart.pl/"
+          source: 'site/**'
+          target: '/home/platne/serwer409986/public_html/test.raricart.pl/'
           strip_components: 1
           overwrite: true

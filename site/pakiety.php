@@ -372,8 +372,12 @@ include 'parts/navbar.php';
                         <span class="price-label">150 osób</span>
                         <span class="price-value">16 340 zł</span>
                     </div>
-
+                    <div class="price-item">
+                        <span class="price-label">200 osób</span>
+                        <span class="price-value">20 030 zł</span>
+                    </div>
                 </div>
+                <div class="price-note font-cardo" style="font-size: 0.85em; opacity: 0.8; margin-top: 15px; text-align: center;">(ceny końcowe, auto 560 zł liczone raz, rabat -10% uwzględniony)</div>
             </div>
         </section>
 
@@ -407,7 +411,8 @@ include 'parts/navbar.php';
                             zł</span></div>
                     <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">11 240
                             zł</span></div>
-
+                    <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">13 710
+                            zł</span></div>
                 </div>
             </div>
 
@@ -422,7 +427,8 @@ include 'parts/navbar.php';
                             zł</span></div>
                     <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">11 950
                             zł</span></div>
-
+                    <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">14 660
+                            zł</span></div>
                 </div>
             </div>
 
@@ -437,9 +443,12 @@ include 'parts/navbar.php';
                             zł</span></div>
                     <div class="price-item"><span class="price-label">150 os.</span><span class="price-value">11 670
                             zł</span></div>
-
+                    <div class="price-item"><span class="price-label">200 os.</span><span class="price-value">14 280
+                            zł</span></div>
                 </div>
             </div>
+
+            <div class="price-note font-cardo" style="font-size: 0.85em; opacity: 0.8; margin-top: 20px; text-align: center; width: 100%;">(ceny końcowe, auto 560 zł uwzględnione, rabat -5% w środku)</div>
         </section>
 
         <!-- LOGISTICS -->

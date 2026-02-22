@@ -235,8 +235,15 @@ h3 {
 	gap: 12px;
 }
 
+.combo-card .price-grid,
+.hero-card .price-grid {
+	grid-template-columns: repeat(2, 1fr);
+}
+
 @media (max-width: 600px) {
-	.price-grid {
+	.price-grid,
+	.combo-card .price-grid,
+	.hero-card .price-grid {
 		grid-template-columns: 1fr;
 	}
 }
