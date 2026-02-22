@@ -452,10 +452,11 @@ async function handleFiles(files) {
 let siteContent = {};
 
 function loadSiteContent() {
-    fetch('../assets/data/content.json')
+    fetch('../assets/data/content.json?t=' + new Date().getTime())
     .then(r => r.json())
     .then(data => {
-        siteContent = data || {};
+        // Safe merge to avoid wiping out in-flight upload updates
+        siteContent = { ...siteContent, ...(data || {}) };
         renderContentPreviews();
     })
     .catch(() => console.log('No content config found, using defaults'));
@@ -575,6 +576,16 @@ function saveContentState() {
             'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
         },
         body: JSON.stringify(siteContent)
+    })
+    .then(r => r.json())
+    .then(data => {
+        if(data.status !== 'success') {
+            alert('Błąd zapisu stanu galerii: ' + data.message);
+        }
+    })
+    .catch(err => {
+        console.error('Błąd wywołania zapisu:', err);
+        alert('Wystąpił krytyczny błąd podczas zapisu struktury. Zobacz konsolę.');
     });
 }
 
