@@ -418,7 +418,10 @@ include 'parts/navbar.php';
 // 3. FOOTER
 include 'parts/footer.php';
 
-// 4. MODALS (Moved outside// Widżet pływający Zapytaj o wycenę
+// 4. MODALS
+include 'parts/modals.php';
+
+// Widżet pływający Zapytaj o wycenę
 include 'parts/contact-button.php';
 ?>
 <!-- efweg -->
