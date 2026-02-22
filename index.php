@@ -159,11 +159,11 @@ include 'parts/navbar.php';
         </section>
 
         <!-- Realizacje -->
-        <section id="realizacje" class="section" style="padding-bottom: 0;">
-            <h2 data-i18n="gallery.title" style="text-align: center; margin-bottom: 1rem;">GALERIA REALIZACJI</h2>
+        <section id="realizacje" class="section">
+            <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
         </section>
         
-        <section id="realizacje-parallax" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?>">
+        <section id="realizacje-parallax" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?> padding-top: 0;">
             <div class="gallery-grid" id="dynamicGalleryGrid">
                 <?php
                 // Dynamic Gallery Rendering (PHP Side)
@@ -333,7 +333,7 @@ include 'parts/navbar.php';
             <div class="progress-container">
                 <div id="form-progress"></div>
             </div>
-            <p id="progress-text" style="text-align: center; margin-bottom: 1rem; color: #666; font-size: 0.9rem;"
+            <p id="progress-text" style="text-align: center; margin-bottom: 2rem; color: #666; font-size: 0.9rem;"
                 data-i18n="form.progress_text">
                 Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)</p>
             <form id="form" class="contact-form" novalidate>
