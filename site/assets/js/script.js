@@ -1119,7 +1119,7 @@
 				})
 
 			// 1.5 Dynamic Site Content (Hero, Offer, About)
-			fetch('assets/data/content.json?v=' + Date.now())
+			fetch('/assets/data/content.json?v=' + Date.now())
 				.then(r => r.json())
 				.then(content => {
 					if (!content) return
@@ -1167,24 +1167,10 @@
 
 					// Gallery Parallax Background
 					if (content.gallery_bg) {
-						// Assuming #bg or a new element. User said "background behind gallery".
-						// Since there isn't a dedicated bg element for gallery in HTML, we might target .background-overlay
-						// or create a specific CSS rule. Let's assume user refers to the global parallax #bg or similar.
-						// But looking at HTML, #videoBg is fixed. #bg is fixed overlay.
-						// Let's look for .parallax class columns inside #realizacje.
-						// The user likely means the background visible behind the parallax columns.
-						// Actually, usually in this design style, the body/fixed bg acts as the parallax layer.
-						// Let's set the #bg background image if it's meant to be global, OR
-						// set it for the specific section if defined.
-						// Given the request "background behind gallery", let's try setting it to #bg
-						// (but this overrides global video overlay).
-						// ALTERNATIVE: Target `.gallery-column.parallax` or the section itself.
-						// Safe bet: Set it as style on #bg to replace default overlay if desired
-						// OR if user meant the parallax effect specifically.
 						// Update Gallery Section Background directly via CSS Variable
 						const gallerySection = document.getElementById('realizacje')
 						if (gallerySection) {
-							gallerySection.style.setProperty('--bg-image', `url('${content.gallery_bg}?v=${new Date().getTime()}')`)
+							gallerySection.style.setProperty('--bg-image', `url('/${content.gallery_bg}?v=${new Date().getTime()}')`)
 						}
 					}
 
@@ -1192,7 +1178,7 @@
 					if (content.why_us_bg) {
 						const whySection = document.querySelector('.parallax-why')
 						if (whySection) {
-							whySection.style.setProperty('--bg-image', `url('${content.why_us_bg}?v=${new Date().getTime()}')`)
+							whySection.style.setProperty('--bg-image', `url('/${content.why_us_bg}?v=${new Date().getTime()}')`)
 						}
 					}
 				})
