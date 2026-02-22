@@ -421,7 +421,3 @@ include 'parts/footer.php';
 // 4. MODALS (Moved outside// Widżet pływający Zapytaj o wycenę
 include 'parts/contact-button.php';
 ?>
-
-
-
-<!-- tesrooo pt--y>

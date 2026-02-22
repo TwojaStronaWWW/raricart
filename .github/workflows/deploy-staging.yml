@@ -49,6 +49,10 @@ jobs:
             !tests/**,
             !drafts/**,
             !testpkg/**,
+            !assets/data/**,
+            !assets/gallery/**,
+            !assets/images/parallax/**,
+            !assets/uploads/**,
             !*.md
           target: '/home/platne/serwer409986/public_html/test.raricart.pl/'
           overwrite: true
