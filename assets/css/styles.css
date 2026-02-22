@@ -948,8 +948,9 @@ video::-webkit-media-text-track-display {
 /* --- Gallery --- */
 
 #realizacje-parallax {
-	padding: 6rem 2rem;
+	padding: 9rem 2rem; /* Increased padding */
 	position: relative;
+	overflow: hidden; /* Prevent images bleeding into title section */
 	background-image: var(--bg-image, url('../images/parallax_bg.jpg')); /* Default */
 	background-attachment: fixed;
 	background-position: center;
