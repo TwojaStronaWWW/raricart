@@ -2460,9 +2460,9 @@ footer {
 }
 
 @media (max-width: 1024px) {
-	/* Mobile Nav Background for visibility on light pages */
+	/* Mobile Nav Background handled by #nav directly */
 	.nav-side {
-		background-color: rgba(61, 74, 58, 0.98); /* Sage Dark - ensures white links are visible */
-		backdrop-filter: blur(10px);
+		background-color: transparent;
+		backdrop-filter: none;
 	}
 }
