@@ -20,8 +20,8 @@
 			},
 			about: {
 				title: 'Nie tworzymy cateringu, lecz doświadczenie.',
-				p1: 'Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i pełen charakteru</span> element scenografii.',
-				p2: 'Serwujemy lekkie, świeże kompozycje — od puszystych mini pancakes, przez autentyczne włoskie lody, aż po aromatyczne deski serów. Budujemy atmosferę klasy i swobody, w której Twoi goście poczują się wyjątkowo.',
+				p1: 'Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i&nbsp;pełen charakteru</span> element scenografii.',
+				p2: 'Serwujemy lekkie, świeże kompozycje — od puszystych mini pancakes, przez autentyczne włoskie lody, aż po aromatyczne deski serów. Budujemy atmosferę klasy i&nbsp;swobody, w&nbsp;której Twoi goście poczują się wyjątkowo.',
 				stats: {
 					s1: { num: '100%', text: 'Pasji i świeżości – każde danie przygotowujemy na oczach gości.' },
 					s2: {
@@ -35,9 +35,9 @@
 			offer: {
 				title: 'Nasza Oferta',
 				intro_title: 'NIE GOTUJEMY DAŃ, TWORZYMY CHWILE, KTÓRE ŁĄCZĄ LUDZI',
-				p1: 'Nasze stacje stają się miejscem rozmów, uśmiechów i&nbsp;zdjęć, a my dbamy o każdy szczegół, od montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.',
-				p2: 'Obsługujemy eventy firmowe, wesela, gale<br> i&nbsp;prywatne przyjęcia, współpracując zarówno z agencjami, jak i&nbsp;klientami indywidualnymi.',
-				p3: 'W każdym projekcie kierujemy się zasadą, że smak i&nbsp;estetyka mają tę samą wartość, razem tworzą atmosferę, której nikt nie zapomina. Z Raricart zyskujesz nie tylko catering, ale spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak wygląda.',
+				p1: 'Nasze stacje stają się miejscem rozmów, uśmiechów i&nbsp;zdjęć, a&nbsp;my dbamy o&nbsp;każdy szczegół, od montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.',
+				p2: 'Obsługujemy eventy firmowe, wesela, gale<br> i&nbsp;prywatne przyjęcia, współpracując zarówno z&nbsp;agencjami, jak i&nbsp;klientami indywidualnymi.',
+				p3: 'W&nbsp;każdym projekcie kierujemy się zasadą, że smak i&nbsp;estetyka mają tę samą wartość, razem tworzą atmosferę, której nikt nie zapomina. Z&nbsp;Raricart zyskujesz nie tylko catering, ale spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak wygląda.',
 				cards: {
 					pancakes: {
 						title: 'Mini Pancakes',
@@ -55,27 +55,27 @@
 				cards: {
 					1: {
 						title: 'EFEKT „WOW" Z KLASĄ',
-						desc: 'Na oczach gości serwujemy ciepłe pancakes prosto z patelni, nalewamy cremowe lody i komponujemy deski serów - wszystko świeże, personalizowane i dopracowane w detalach. Proces live station przyciąga uwagę, integruje uczestników i tworzy naturalne punkty spotkań, gdzie przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż wydarzenia, łącząc estetykę premium z czystą przyjemnością dla zmysłów.',
+						desc: 'Na oczach gości serwujemy ciepłe pancakes prosto z&nbsp;patelni, nalewamy cremowe lody i&nbsp;komponujemy deski serów - wszystko świeże, personalizowane i&nbsp;dopracowane w&nbsp;detalach. Proces live station przyciąga uwagę, integruje uczestników i&nbsp;tworzy naturalne punkty spotkań, gdzie przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż wydarzenia, łącząc estetykę premium z&nbsp;czystą przyjemnością dla zmysłów.',
 					},
 					2: {
 						title: 'MNIEJ LOGISTYKI, WIĘCEJ SPOKOJU',
-						desc: 'Raricart przejmuje całość: dojazd, montaż stacji, serwowanie podczas eventu, demontaż i perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje działają wszędzie: w loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych. Zespół synchronizuje serwis z harmonogramem, dba o płynny przepływ gości i minimalizuje kolejki.',
+						desc: 'Raricart przejmuje całość: dojazd, montaż stacji, serwowanie podczas eventu, demontaż i&nbsp;perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje działają wszędzie: w&nbsp;loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych. Zespół synchronizuje serwis z&nbsp;harmonogramem, dba o&nbsp;płynny przepływ gości i&nbsp;minimalizuje kolejki.',
 					},
 					3: {
 						title: 'DOŚWIADCZENIE ZAMIAST BUFETU',
-						desc: 'W odróżnieniu od statycznego bufetu, nasze live stations angażują: goście obserwują nalewanie lodów, układanie pancakes i komponowanie desek serów, wybierając dodatki na bieżąco. Wszystko serwowane porcjami „tu i teraz" - świeże, bez marnowania, idealnie dopasowane do liczby i preferencji uczestników. Tematyczne stacje stają się magnesem na gości, budując emocje i niezapomniane wspomnienia.',
+						desc: 'W&nbsp;odróżnieniu od statycznego bufetu, nasze live stations angażują: goście obserwują nalewanie lodów, układanie pancakes i&nbsp;komponowanie desek serów, wybierając dodatki na bieżąco. Wszystko serwowane porcjami „tu i&nbsp;teraz" - świeże, bez marnowania, idealnie dopasowane do liczby i&nbsp;preferencji uczestników. Tematyczne stacje stają się magnesem na gości, budując emocje i&nbsp;niezapomniane wspomnienia.',
 					},
 					4: {
 						title: 'BEZPIECZEŃSTWO, JAKOŚĆ, ESTETYKA',
-						desc: 'Przestrzegamy rygorystycznych standardów higieny i bezpieczeństwa żywności, z naciskiem na świeżość składników i perfekcyjną prezencję. Używamy wyselekcjonowanych produktów serwowanych w optymalnej temperaturze. Każdy detal - od aranżacji stacji, przez zastawę, po pracę zespołu - tworzy spójną scenografię, wzmacniającą wizerunek Twojego wydarzenia.',
+						desc: 'Przestrzegamy rygorystycznych standardów higieny i&nbsp;bezpieczeństwa żywności, z&nbsp;naciskiem na świeżość składników i&nbsp;perfekcyjną prezencję. Używamy wyselekcjonowanych produktów serwowanych w&nbsp;optymalnej temperaturze. Każdy detal - od aranżacji stacji, przez zastawę, po pracę zespołu - tworzy spójną scenografię, wzmacniającą wizerunek Twojego wydarzenia.',
 					},
 					5: {
 						title: 'PARTNER DLA WYMAGAJĄCYCH',
-						desc: 'Agencje eventowe zyskują niezawodnego partnera rozumiejącego timing, layout i dynamikę dużych wydarzeń. Firmy, pary młode i organizatorzy prywatnych imprez otrzymują rozwiązanie premium: efekt „wow", emocje i pełną opiekę nad gośćmi. Właściciele lokali eventowych wzbogacają ofertę o mobilne stacje bez inwestycji w sprzęt – gotowe do działania w dowolnej przestrzeni.',
+						desc: 'Agencje eventowe zyskują niezawodnego partnera rozumiejącego timing, layout i&nbsp;dynamikę dużych wydarzeń. Firmy, pary młode i&nbsp;organizatorzy prywatnych imprez otrzymują rozwiązanie premium: efekt „wow", emocje i&nbsp;pełną opiekę nad gośćmi. Właściciele lokali eventowych wzbogacają ofertę o&nbsp;mobilne stacje bez inwestycji w&nbsp;sprzęt – gotowe do działania w&nbsp;dowolnej przestrzeni.',
 					},
 					6: {
 						title: 'NAPISZ DO NAS',
-						desc: 'Twój event zasługuje na wyjątkowe live food station, które stanie się jego wizytówką. Napisz do nas już dziś - dopasujemy ofertę do Twojej wizji i zapewnimy termin. Razem stworzymy doświadczenie, które goście będą wspominać z zachwytem!',
+						desc: 'Twój event zasługuje na wyjątkowe live food station, które stanie się jego wizytówką. Napisz do nas już dziś - dopasujemy ofertę do Twojej wizji i&nbsp;zapewnimy termin. Razem stworzymy doświadczenie, które goście będą wspominać z&nbsp;zachwytem!',
 					},
 				},
 			},
@@ -99,23 +99,23 @@
 				},
 				q5: {
 					title: 'Co jest potrzebne, by Raricart pojawiło się na Twoim evencie?',
-					desc: 'Tylko miejsce na nasze eleganckie stoisko (ok. 3x3m) i gniazdko prądu. Resztę załatwiamy my: dojazd, montaż, pełną obsługę, demontaż i sprzątanie. Zero zmartwień dla Ciebie.',
+					desc: 'Tylko miejsce na nasze eleganckie stoisko (ok. 3x3m) i&nbsp;gniazdko prądu. Resztę załatwiamy my: dojazd, montaż, pełną obsługę, demontaż i&nbsp;sprzątanie. Zero zmartwień dla Ciebie.',
 				},
 				q6: {
 					title: 'Jakie są ceny usług Raricart?',
-					desc: 'Ceny są elastyczne i zależą od menu, liczby gości oraz czasu trwania – od 150 zł/os. wzwyż dla premium live stations. Wyślij zapytanie, a przygotujemy transparentną wycenę.',
+					desc: 'Ceny są elastyczne i&nbsp;zależą od menu, liczby gości oraz czasu trwania – od 150 zł/os. wzwyż dla premium live stations. Wyślij zapytanie, a&nbsp;przygotujemy transparentną wycenę.',
 				},
 				q7: {
-					title: 'Czy obsługujecie eventy plenerowe i bez kuchni na miejscu?',
-					desc: 'Tak, jesteśmy mobilni na 100%! Dojedziemy wszędzie - na wesela w ogrodzie, firmowe pikniki czy gale pod chmurką. Bez zaplecza kuchennego? Żaden problem, nasze stoiska to kompletna, samodzielna magia kulinarna.',
+					title: 'Czy obsługujecie eventy plenerowe i&nbsp;bez kuchni na miejscu?',
+					desc: 'Tak, jesteśmy mobilni na 100%! Dojedziemy wszędzie - na wesela w&nbsp;ogrodzie, firmowe pikniki czy gale pod chmurką. Bez zaplecza kuchennego? Żaden problem, nasze stoiska to kompletna, samodzielna magia kulinarna.',
 				},
 				q8: {
 					title: 'Ile gości minimalnie obsługujecie?',
-					desc: 'Nie ma minimum – realizujemy zlecenia na każdą skalę! Od kameralnych imprez prywatnych (20+ osób) po duże eventy (500+). Dla mniejszych grup skalujemy jedno eleganckie stoisko z pełnym efektem "wow". Przy większych imprezach zalecamy więcej niż jedno stoisko – to poprawia jakość obsługi, skraca czas oczekiwania i minimalizuje kolejki.',
+					desc: 'Nie ma minimum – realizujemy zlecenia na każdą skalę! Od kameralnych imprez prywatnych (20+ osób) po duże eventy (500+). Dla mniejszych grup skalujemy jedno eleganckie stoisko z&nbsp;pełnym efektem "wow". Przy większych imprezach zalecamy więcej niż jedno stoisko – to poprawia jakość obsługi, skraca czas oczekiwania i&nbsp;minimalizuje kolejki.',
 				},
 				q9: {
-					title: 'Jak zapewniacie higienę i bezpieczeństwo?',
-					desc: 'Jesteśmy certyfikowani (HACCP, Sanepid), z pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i doświadczona obsługa.',
+					title: 'Jak zapewniacie higienę i&nbsp;bezpieczeństwo?',
+					desc: 'Jesteśmy certyfikowani (HACCP, Sanepid), z&nbsp;pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i&nbsp;doświadczona obsługa.',
 				},
 			},
 			contact: {

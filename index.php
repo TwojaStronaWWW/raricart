@@ -77,12 +77,12 @@ include 'parts/navbar.php';
                     
                     <p class="premium-text" data-i18n="about.p1">
                         Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. 
-                        To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i pełen charakteru</span> element scenografii.
+                        To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i&nbsp;pełen charakteru</span> element scenografii.
                     </p>
                     
                     <p class="premium-text" data-i18n="about.p2">
                         Serwujemy lekkie, świeże kompozycje, od puszystych mini pancakes, przez autentyczne włoskie lody, 
-                        aż po aromatyczne deski serów. Budujemy atmosferę klasy i swobody, w której Twoi goście poczują się wyjątkowo.
+                        aż po aromatyczne deski serów. Budujemy atmosferę klasy i&nbsp;swobody, w&nbsp;której Twoi goście poczują się wyjątkowo.
                     </p>
 
                     <div class="premium-footer">
@@ -104,13 +104,13 @@ include 'parts/navbar.php';
                     <h2 data-i18n="offer.intro_title" class="premium-title">NIE GOTUJEMY DAŃ, TWORZYMY CHWILE, KTÓRE ŁĄCZĄ LUDZI</h2>
                     <div class="premium-body">
                         <p data-i18n="offer.p1">
-                            Nasze stacje stają się miejscem rozmów, uśmiechów i zdjęć, a my dbamy o każdy szczegół, od montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.
+                            Nasze stacje stają się miejscem rozmów, uśmiechów i&nbsp;zdjęć, a&nbsp;my dbamy o&nbsp;każdy szczegół, od montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.
                         </p>
                         <p data-i18n="offer.p2">
-                            Obsługujemy eventy firmowe, wesela, gale i prywatne przyjęcia, współpracując zarówno z agencjami, jak i klientami indywidualnymi.
+                            Obsługujemy eventy firmowe, wesela, gale i&nbsp;prywatne przyjęcia, współpracując zarówno z&nbsp;agencjami, jak i&nbsp;klientami indywidualnymi.
                         </p>
                         <p data-i18n="offer.p3">
-                            W każdym projekcie kierujemy się zasadą, że smak i estetyka mają tę samą wartość, razem tworzą atmosferę, której nikt nie zapomina. Z Raricart zyskujesz nie tylko catering, ale spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak wygląda.
+                            W&nbsp;każdym projekcie kierujemy się zasadą, że smak i&nbsp;estetyka mają tę samą wartość, razem tworzą atmosferę, której nikt nie zapomina. Z&nbsp;Raricart zyskujesz nie tylko catering, ale spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak wygląda.
                         </p>
                     </div>
                 </div>
@@ -247,11 +247,11 @@ include 'parts/navbar.php';
             </article>
             <article class="faq-item">
                 <h3 data-i18n="faq.q5.title">Co jest potrzebne, by Raricart pojawiło się na Twoim evencie?</h3>
-                <p data-i18n="faq.q5.desc">Tylko miejsce na nasze eleganckie stoisko (ok. 3x3m) i gniazdko prądu. Resztę załatwiamy my: dojazd, montaż, pełną obsługę, demontaż i sprzątanie. Zero zmartwień dla Ciebie.</p>
+                <p data-i18n="faq.q5.desc">Tylko miejsce na nasze eleganckie stoisko (ok. 3x3m) i&nbsp;gniazdko prądu. Resztę załatwiamy my: dojazd, montaż, pełną obsługę, demontaż i&nbsp;sprzątanie. Zero zmartwień dla Ciebie.</p>
             </article>
             <article class="faq-item">
                 <h3 data-i18n="faq.q6.title">Jakie są ceny usług Raricart?</h3>
-                <p data-i18n="faq.q6.desc">Ceny są elastyczne i zależą od menu, liczby gości oraz czasu trwania – od 150 zł/os. wzwyż dla premium live stations. Wyślij zapytanie, a przygotujemy transparentną wycenę.</p>
+                <p data-i18n="faq.q6.desc">Ceny są elastyczne i&nbsp;zależą od menu, liczby gości oraz czasu trwania – od 150 zł/os. wzwyż dla premium live stations. Wyślij zapytanie, a&nbsp;przygotujemy transparentną wycenę.</p>
             </article>
             <article class="faq-item">
                 <h3 data-i18n="faq.q7.title">Czy obsługujecie eventy plenerowe i bez kuchni na miejscu?</h3>
@@ -262,8 +262,8 @@ include 'parts/navbar.php';
                 <p data-i18n="faq.q8.desc">Nie ma minimum – realizujemy zlecenia na każdą skalę! Od kameralnych imprez prywatnych (20+ osób) po duże eventy (500+). Dla mniejszych grup skalujemy jedno eleganckie stoisko z pełnym efektem "wow". Przy większych imprezach zalecamy więcej niż jedno stoisko – to poprawia jakość obsługi, skraca czas oczekiwania i minimalizuje kolejki.</p>
             </article>
             <article class="faq-item">
-                <h3 data-i18n="faq.q9.title">Jak zapewniacie higienę i bezpieczeństwo?</h3>
-                <p data-i18n="faq.q9.desc">Jesteśmy certyfikowani (HACCP, Sanepid), z pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i doświadczona obsługa.</p>
+                <h3 data-i18n="faq.q9.title">Jak zapewniacie higienę i&nbsp;bezpieczeństwo?</h3>
+                <p data-i18n="faq.q9.desc">Jesteśmy certyfikowani (HACCP, Sanepid), z&nbsp;pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i&nbsp;doświadczona obsługa.</p>
             </article>
         </section>
 
@@ -274,20 +274,20 @@ include 'parts/navbar.php';
                 <div class="parallax-content">
                     <div class="parallax-card">
                         <h3 data-i18n="why.cards.1.title">EFEKT „WOW" Z KLASĄ</h3>
-                        <p data-i18n="why.cards.1.desc">Na oczach gości serwujemy ciepłe pancakes prosto z patelni,
+                        <p data-i18n="why.cards.1.desc">Na oczach gości serwujemy ciepłe pancakes prosto z&nbsp;patelni,
                             nalewamy cremowe lody i
-                            komponujemy deski serów - wszystko świeże, personalizowane i dopracowane w detalach. Proces
-                            live station przyciąga uwagę, integruje uczestników i tworzy naturalne punkty spotkań, gdzie
+                            komponujemy deski serów - wszystko świeże, personalizowane i&nbsp;dopracowane w&nbsp;detalach. Proces
+                            live station przyciąga uwagę, integruje uczestników i&nbsp;tworzy naturalne punkty spotkań, gdzie
                             przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż
-                            wydarzenia, łącząc estetykę premium z czystą przyjemnością dla zmysłów.</p>
+                            wydarzenia, łącząc estetykę premium z&nbsp;czystą przyjemnością dla zmysłów.</p>
                     </div>
                     <div class="parallax-card">
                         <h3 data-i18n="why.cards.2.title">MNIEJ LOGISTYKI, WIĘCEJ SPOKOJU</h3>
                         <p data-i18n="why.cards.2.desc">Raricart przejmuje całość: dojazd, montaż stacji, serwowanie
                             podczas eventu, demontaż i
                             perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje
-                            działają wszędzie: w loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych.
-                            Zespół synchronizuje serwis z harmonogramem, dba o płynny przepływ gości i minimalizuje
+                            działają wszędzie: w&nbsp;loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych.
+                            Zespół synchronizuje serwis z&nbsp;harmonogramem, dba o&nbsp;płynny przepływ gości i&nbsp;minimalizuje
                             kolejki.</p>
                     </div>
                     <div class="parallax-card">
@@ -329,7 +329,7 @@ include 'parts/navbar.php';
 
         <!-- Kontakt -->
         <section id="kontakt" class="section">
-            <h2 data-i18n="contact.title.short">Opowiedz nam o swoim wydarzeniu.<br>Przygotujemy indywidualną wycenę.</h2>
+            <h2 data-i18n="contact.title.short">Opowiedz nam o&nbsp;swoim wydarzeniu.<br>Przygotujemy indywidualną wycenę.</h2>
             <div class="progress-container">
                 <div id="form-progress"></div>
             </div>
