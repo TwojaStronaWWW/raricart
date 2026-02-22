@@ -159,7 +159,7 @@ include 'parts/navbar.php';
         </section>
 
         <!-- Realizacje -->
-        <section id="realizacje" class="section">
+        <section id="realizacje" class="section" style="padding-top: 2rem; padding-bottom: 0;">
             <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
         </section>
         
