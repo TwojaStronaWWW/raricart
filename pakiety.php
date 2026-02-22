@@ -464,36 +464,8 @@ include 'parts/navbar.php';
     </main>
 </div>
 
-<!-- Floating CTA (Packages explicitly had one in its file, though it might be handled in main body...) Wait, I will omit the packages floating CTA script to use the main site logic, or include it if requested? I am copying HTML 1:1, but the floating CTA in packages was outside <main>.  User said: "Poza headerem i stopką, reszta ma być identyczna 1:1". Since I can't put it in main, I'll add the floating CTA here just before footer. -->
-<a href="/#kontakt" class="floating-cta" id="floatingCta" aria-label="Kontakt">
-    <span class="floating-cta-icon">✉</span>
-    <span class="cta-text-desktop">ZAPYTAJ O WYCENĘ</span>
-    <span class="cta-text-mobile">KONTAKT</span>
-</a>
-
-<script>
-    // Show floating CTA after scrolling 300px (packages-specific floating CTA logic)
-    const floatingCta = document.getElementById('floatingCta');
-    let lastScroll = 0;
-
-    window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        if (y > 300) {
-            if(floatingCta) floatingCta.classList.add('visible');
-        } else {
-            if(floatingCta) floatingCta.classList.remove('visible');
-        }
-
-        const footer = document.querySelector('footer');
-        if (footer && floatingCta) {
-            const footerTop = footer.getBoundingClientRect().top;
-            if (footerTop < window.innerHeight) {
-                floatingCta.classList.remove('visible');
-            }
-        }
-        lastScroll = y;
-    });
-</script>
+<!-- Floating CTA -->
+<?php include 'parts/contact-button.php'; ?>
 
 <?php 
 include 'parts/footer.php';

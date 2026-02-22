@@ -415,8 +415,8 @@ include 'parts/navbar.php';
 // 3. FOOTER
 include 'parts/footer.php';
 
-// 4. MODALS (Moved outside footer to ensure top Z-Index)
-include 'parts/modals.php';
+// 4. MODALS (Moved outside// Widżet pływający Zapytaj o wycenę
+include 'parts/contact-button.php';
 ?>
 
 
