@@ -887,18 +887,24 @@
 				const factor = 0.15
 
 				parallaxColumns.forEach((col, index) => {
-					// Odd/Even logic:
-					// If 2 columns (indices 0, 1): 0 is down, 1 is up?
-					// User wants "movement". Let's try simple opposite directions or just downward lag
-					// Standard parallax: Move element slower than scroll (translateY > 0 when scrolling down?)
-
-					// Let's make index 0 (Col 2) go DOWN, index 1 (Col 4) go UP relative to scroll?
-					// Or both have localized shifts.
-
+					// Apply effect to Desktop view (where column acts as a flex container)
+					// On Mobile, columns have display:contents, so we must animate items instead
+					const isMobile = window.innerWidth <= 768
 					const direction = index % 2 === 0 ? -1 : 1
 					const movement = dist * factor * direction
 
-					col.style.transform = `translateY(${movement}px)`
+					if (isMobile) {
+						// Parallax fallback logic for mobile (apply to children dynamically)
+						const items = col.querySelectorAll('.gallery-item')
+						items.forEach(item => {
+							// Override the slow 0.4s intro transition to prevent lag during rapid scroll
+							item.style.transition = 'transform 0.05s linear'
+							item.style.transform = `translateY(${movement * 0.4}px)`
+						})
+					} else {
+						// Desktop normal parallax
+						col.style.transform = `translateY(${movement}px)`
+					}
 				})
 			}
 		}
@@ -1205,6 +1211,19 @@
 
 						// Clear existing static content for replacement
 						columns.forEach(col => (col.innerHTML = ''))
+
+						// Dynamic parallax class restoration (fixes empty gallery.json fallback issues)
+						if (images.length >= 5) {
+							columns.forEach((col, cIdx) => {
+								if (cIdx % 2 !== 0) {
+									col.classList.add('parallax')
+								} else {
+									col.classList.remove('parallax')
+								}
+							})
+						} else {
+							columns.forEach(col => col.classList.remove('parallax'))
+						}
 
 						// Reset gallery array for dynamic items
 						// Note: We'll overwrite existing static entries in the array
