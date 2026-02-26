@@ -24,11 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Read config
     $config_data = json_decode(file_get_contents($config_file), true);
     
-    // Migrate support: If old format, force setup or error (but we handled migration manually)
     if (isset($config_data['users'][$email])) {
-        if (password_verify($password, $config_data['users'][$email])) {
+        $userData = $config_data['users'][$email];
+        $hash = is_array($userData) ? $userData['hash'] : $userData;
+        
+        if (password_verify($password, $hash)) {
             $_SESSION['logged_in'] = true;
             $_SESSION['user_email'] = $email;
+            
+            // Handle forced password change
+            if (is_array($userData) && isset($userData['force_change']) && $userData['force_change'] === true) {
+                $_SESSION['must_change_password'] = true;
+            } else {
+                unset($_SESSION['must_change_password']);
+            }
+            
             header("Location: dashboard.php");
             exit();
         } else {

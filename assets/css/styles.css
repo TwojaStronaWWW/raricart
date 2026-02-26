@@ -142,6 +142,7 @@ video::-webkit-media-text-track-display {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	transform: translateZ(0); /* Force GPU */
 }
 
 .video-overlay,
@@ -181,7 +182,10 @@ video::-webkit-media-text-track-display {
 	text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 	pointer-events: none;
 	visibility: hidden;
-	will-change: opacity, transform;
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: translate3d(-50%, -50%, 0) scale(0.96);
 	font-family: var(--font-primary);
 	line-height: 1.4;
 	max-width: 90%;
@@ -192,14 +196,14 @@ video::-webkit-media-text-track-display {
 
 .new-brand.visible {
 	opacity: 1;
-	transform: translate(-50%, -50%) scale(1);
+	transform: translate3d(-50%, -50%, 0) scale(1);
 	visibility: visible;
 }
 
 .new-brand.hidden {
 	opacity: 0;
 	visibility: hidden;
-	transform: translate(-50%, -50%) translateY(-15px) scale(1);
+	transform: translate3d(-50%, -50%, 0) translateY(-15px) scale(1);
 	transition:
 		opacity 0.6s,
 		transform 0.6s,
@@ -320,22 +324,27 @@ video::-webkit-media-text-track-display {
 	max-width: 70vw;
 	transform: translateX(-50%) translateY(-50%); /* Explicit geometry */
 	z-index: 30000;
-	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	transition:
+		transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+		top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 	pointer-events: auto;
 	will-change: transform, top;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
 }
 
 .hero-logo img {
 	width: 100%;
 	height: auto;
+	transform: translateZ(0);
 }
 
 .hero-logo.moving {
 	top: 40px;
-	transform: translateX(-50%) translateY(-50%) scale(0.243);
+	transform: translate3d(-50%, -50%, 0) scale(0.243);
 	/* 330px * 0.243 ~= 80px visual width */
 	/* translateY(-50%) aligns center of logo to top:40px line */
 }
@@ -834,6 +843,13 @@ video::-webkit-media-text-track-display {
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
+}
+
+@media (max-width: 1024px) {
+	.parallax-why,
+	#realizacje-parallax {
+		background-attachment: scroll !important;
+	}
 }
 
 /* Overlay */
@@ -2453,6 +2469,15 @@ footer {
 	font-weight: 600;
 	color: var(--color-accent);
 	text-shadow: 0 0 20px rgba(163, 181, 154, 0.4);
+	will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.logo-pulse,
+	.floating-cta.visible,
+	.scroll-arrow {
+		animation: none !important;
+	}
 }
 
 @media (max-width: 1024px) {

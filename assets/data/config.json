@@ -1,5 +1,9 @@
 {
-  "users": {
-    "pomoc@raricart.pl": "$2y$12$7.p9MgK5mRrtwi7vxMRn9elAitNZo/jvyA9XPKM2tPQS/oyuBapTm"
-  }
+	"users": {
+		"pomoc@raricart.pl": "$2y$12$7.p9MgK5mRrtwi7vxMRn9elAitNZo/jvyA9XPKM2tPQS/oyuBapTm",
+		"kontakt@raricart.pl": {
+			"hash": "$2y$10$O0p/2.mO/f/X.0L3lQj5A.K5N1D1G0G0G0G0G0G0G0G0G0G0G0G0G",
+			"force_change": true
+		}
+	}
 }

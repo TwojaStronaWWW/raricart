@@ -45,10 +45,18 @@ if (!password_verify($oldPass, $config['users'][$currentUser])) {
 }
 
 // Update Password
-$config['users'][$currentUser] = password_hash($newPass, PASSWORD_DEFAULT);
+$newHash = password_hash($newPass, PASSWORD_DEFAULT);
+
+if (is_array($config['users'][$currentUser])) {
+    $config['users'][$currentUser]['hash'] = $newHash;
+    unset($config['users'][$currentUser]['force_change']);
+} else {
+    $config['users'][$currentUser] = $newHash;
+}
 
 if (file_put_contents($config_file, json_encode($config, JSON_PRETTY_PRINT))) {
-    echo json_encode(['status' => 'success', 'message' => 'Hasło zostało zmienione.']);
+    unset($_SESSION['must_change_password']);
+    echo json_encode(['status' => 'success', 'message' => 'Hasło zostało zmienione. Możesz teraz korzystać z panelu.']);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Błąd zapisu pliku konfiguracji.']);
 }

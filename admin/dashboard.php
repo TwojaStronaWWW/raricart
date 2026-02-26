@@ -32,6 +32,21 @@ if (file_exists($status_file)) {
 </div>
 
 <div class="container">
+    <?php if (isset($_SESSION['must_change_password']) && $_SESSION['must_change_password'] === true): ?>
+        <div class="card" style="border-left: 4px solid #dc3545; max-width: 500px; margin: 2rem auto;">
+            <h2 style="color: #dc3545;">Wymagana zmiana hasła</h2>
+            <p style="margin-bottom: 2rem;">Ze względów bezpieczeństwa musisz zmienić swoje hasło przed uzyskaniem dostępu do reszty panelu.</p>
+            
+            <div class="status-group" style="display:block;">
+                <div style="display:grid; gap:10px;">
+                    <input type="password" id="oldPass" class="status-input" placeholder="Obecne (tymczasowe) hasło">
+                    <input type="password" id="newPass" class="status-input" placeholder="Nowe hasło">
+                    <input type="password" id="confirmPass" class="status-input" placeholder="Potwierdź nowe hasło">
+                    <button class="action-btn" onclick="changePassword()">Zmień i przejdź do panelu</button>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
     <!-- Availability Manager -->
     <div class="card">
         <h2>Zarządzanie Dostępnością</h2>
@@ -210,7 +225,7 @@ if (file_exists($status_file)) {
                 <button class="action-btn" onclick="changePassword()">Zmień Hasło</button>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 </div>
 
 <script>
