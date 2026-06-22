@@ -56,6 +56,7 @@ $guests = htmlspecialchars(strip_tags($data['guests'] ?? ''));
 $budget = htmlspecialchars(strip_tags($data['budget'] ?? ''));
 $event_type = htmlspecialchars(strip_tags($data['event_type'] ?? ''));
 $stations = htmlspecialchars(strip_tags($data['stations'] ?? ''));
+$contact_hours = htmlspecialchars(strip_tags($data['contact_hours'] ?? ''));
 $message = htmlspecialchars(strip_tags($data['message'] ?? ''));
 $isPartial = $data['is_partial'] ?? false;
 
@@ -82,8 +83,9 @@ if ($isPartial && empty($email) && empty($phone)) {
 // --- HOT LEAD SCORING ---
 $isHot = false;
 if (!$isPartial) {
+    // Pola guests i budget są teraz input (nie select) — parsujemy jako int
     $budgetNum = (int) preg_replace('/[^0-9]/', '', $budget);
-    $guestsNum = (int) preg_replace('/[^0-9]/', '', $guests);
+    $guestsNum = (int) $guests;
     // Hot: budżet >= 5000 PLN lub >= 100 gości
     if ($budgetNum >= 5000 || $guestsNum >= 100) {
         $isHot = true;
@@ -95,10 +97,11 @@ $emailSubject = $isPartial ? "⚠️ SZKIC (Porzucony): $name" : "{$hotLabel}{$s
 $emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" : "Nowe zapytanie ze strony:\n\n") .
              "👤 Imię: $name\n" .
              "📧 Email: $email\n" .
-             "📞 Tel: $phone\n\n" .
+             "📞 Tel: $phone\n" .
+             "🕐 Preferowane godziny kontaktu: $contact_hours\n\n" .
              "📅 Data wydarzenia: $date\n" .
              "👥 Liczba gości: $guests\n" .
-             "💰 Budżet: $budget\n" .
+             "💰 Budżet: $budget PLN\n" .
              "🎉 Rodzaj wydarzenia: $event_type\n" .
              "🔥 Interesujące stacje: $stations\n\n" .
              "💬 Wiadomość:\n$message";
@@ -114,7 +117,7 @@ if ($isPartial && $userId) {
     
     // Oblicz "wynik" wypełnienia (jakość, nie ilość)
     $currentScore = 0;
-    foreach ([$name, $email, $phone, $date, $guests, $event_type, $stations] as $field) {
+    foreach ([$name, $email, $phone, $date, $guests, $event_type, $stations, $contact_hours] as $field) {
         if (!empty(trim($field))) $currentScore++;
     }
     // Message liczy się tylko jeśli ma sensowną długość
@@ -171,7 +174,7 @@ else {
                 // Jeśli plik nowy, dodaj nagłówek (UTF-8 BOM dla Excela)
                 if ($isNew) {
                     fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
-                    fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
+                    fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
                 }
                 
                 // Dodaj wiersz
@@ -182,6 +185,7 @@ else {
                     $name,
                     $email,
                     $phone,
+                    $contact_hours,
                     $date,
                     $guests,
                     $budget,
@@ -198,7 +202,6 @@ else {
     }
 }
 
-// ... (Reszta skryptu: Walidacja, Wysyłka itp.) ...
 
 // Na samym końcu skryptu, po próbie wysyłki normalnej:
 processDraftQueue($draftsDir, $toEmail);
@@ -238,7 +241,7 @@ function processDraftQueue($draftsDir, $toEmail) {
                 if (flock($fp, LOCK_EX)) {
                     if ($isNew) {
                         fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
-                        fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
+                        fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
                     }
                     
                     fputcsv($fp, [
@@ -248,6 +251,7 @@ function processDraftQueue($draftsDir, $toEmail) {
                         $d['name'] ?? '',
                         $d['email'] ?? '',
                         $d['phone'] ?? '',
+                        $d['contact_hours'] ?? '',
                         $d['date'] ?? '',
                         $d['guests'] ?? '',
                         $d['budget'] ?? '',

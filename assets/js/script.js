@@ -128,7 +128,9 @@
 				phone: 'Telefon *',
 				date: 'Data Wydarzenia *',
 				guests_label: 'Liczba Gości *',
-				budget: 'Budżet *',
+				guests_placeholder: 'np. 80',
+				budget: 'Budżet (PLN) *',
+				budget_placeholder: 'np. 2000 albo 5000 do 10000',
 				event_type: 'Rodzaj Wydarzenia *',
 				select_placeholder: 'Wybierz...',
 				types: {
@@ -142,6 +144,8 @@
 				st_pancakes: 'Mini Pancakes',
 				st_icecream: 'Lody Włoskie',
 				st_cheese: 'Deska Serów',
+				contact_hours: 'Preferowane godziny kontaktu',
+				contact_hours_placeholder: 'np. 10:00-14:00 lub po 18:00',
 				message: 'Dodatkowe Informacje',
 				submit: 'Wyślij Zapytanie',
 				required: 'To pole jest wymagane',
@@ -150,6 +154,7 @@
 					'Szczegóły zapytania zostały przesłane. Potwierdzamy przyjęcie wiadomości. Skontaktujemy się z Państwem wkrótce w celu omówienia szczegółów.',
 				error_msg: 'Błąd wysyłania. Sprawdź połączenie lub spróbuj później.',
 				stations_error: 'Wybierz przynajmniej jedną stację',
+				email_error: 'Nieprawidłowy adres email',
 				progress_text: 'Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)',
 				message_placeholder: 'Opisz swoje potrzeby, pytania lub preferencje...',
 			},
@@ -309,7 +314,9 @@
 				phone: 'Phone *',
 				date: 'Event Date *',
 				guests_label: 'Number of Guests *',
-				budget: 'Budget *',
+				guests_placeholder: 'e.g. 80',
+				budget: 'Budget (PLN) *',
+				budget_placeholder: 'e.g. 2000 or 5000 to 10000',
 				event_type: 'Event Type *',
 				select_placeholder: 'Choose...',
 				types: {
@@ -323,10 +330,13 @@
 				st_pancakes: 'Mini Pancakes',
 				st_icecream: 'Soft Serve Ice Cream',
 				st_cheese: 'Cheese Board',
+				contact_hours: 'Preferred contact hours',
+				contact_hours_placeholder: 'e.g. 10:00-14:00 or after 18:00',
 				message: 'Additional Information',
 				submit: 'Send Query',
 				required: 'This field is required',
 				stations_error: 'Select at least one station',
+				email_error: 'Invalid email address',
 				sending: 'Sending...',
 				success_msg:
 					'Inquiry details have been sent. We confirm receipt of the message. We will contact you shortly to discuss details.',
@@ -488,7 +498,9 @@
 				phone: 'Teléfono *',
 				date: 'Fecha del Evento *',
 				guests_label: 'Número de Invitados *',
-				budget: 'Presupuesto *',
+				guests_placeholder: 'ej. 80',
+				budget: 'Presupuesto (PLN) *',
+				budget_placeholder: 'ej. 2000 o 5000 a 10000',
 				event_type: 'Tipo de Evento *',
 				select_placeholder: 'Seleccionar...',
 				types: {
@@ -502,10 +514,18 @@
 				st_pancakes: 'Mini Pancakes',
 				st_icecream: 'Helado Suave',
 				st_cheese: 'Tabla de Quesos',
+				contact_hours: 'Horario de contacto preferido',
+				contact_hours_placeholder: 'ej. 10:00-14:00 o después de las 18:00',
 				message: 'Información Adicional',
 				submit: 'Enviar Consulta',
 				progress_text: 'Complete los datos para que podamos preparar una oferta (0%)',
 				message_placeholder: 'Describa sus necesidades, preguntas o preferencias...',
+				email_error: 'Dirección de correo electrónico no válida',
+				stations_error: 'Seleccione al menos una estación',
+				required: 'Este campo es obligatorio',
+				sending: 'Enviando...',
+				success_msg: 'Los detalles de la consulta han sido enviados. Confirmaremos la recepción del mensaje. Nos pondremos en contacto con usted pronto.',
+				error_msg: 'Error al enviar. Verifique su conexión o inténtelo más tarde.',
 			},
 			cookies: {
 				text: 'Este sitio utiliza cookies para garantizar la mejor calidad. Al utilizar el sitio, usted acepta su uso.',
@@ -1549,6 +1569,17 @@
 						f.parentNode.appendChild(msg)
 					}
 
+					// Email format validation (form has novalidate, so HTML5 check is off)
+					if (f.name === 'email' && f.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value.trim())) {
+						isValid = false
+						f.classList.add('input-error')
+
+						const msg = document.createElement('small')
+						msg.className = 'error-message'
+						msg.textContent = translations[currentLang]?.form?.email_error || 'Nieprawidłowy adres email'
+						f.parentNode.appendChild(msg)
+					}
+
 					// Message minlength (prevent single-char spam like ".")
 					if (f.name === 'message' && f.value.trim().length > 0 && f.value.trim().length < 3) {
 						isValid = false
@@ -1602,6 +1633,7 @@
 					budget: form.budget.value,
 					event_type: form.event_type.value,
 					stations: stations,
+					contact_hours: form.contact_hours.value,
 					message: form.message.value || 'Brak dodatkowej wiadomości',
 				}
 

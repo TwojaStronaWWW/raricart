@@ -42,7 +42,7 @@ include 'parts/head.php';
 ?>
 
 <!-- PAKIETY SPECIFIC CSS -->
-<link rel="stylesheet" href="/assets/css/pakiety-style.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="/assets/css/pakiety-style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/pakiety-style.css'); ?>">
 
 <style>
     /* Spacing for content below the fixed navbar */

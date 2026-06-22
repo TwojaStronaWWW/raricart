@@ -42,7 +42,7 @@
     <link rel="icon" type="image/png" href="<?php echo get_val('favicon', '/assets/images/logo_optimized.png'); ?>">
 
     <!-- Critical CSS: Blocking load to prevent Layout Shift (CLS 1.0 fix) -->
-    <link rel="stylesheet" href="/assets/css/styles.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="/assets/css/styles.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/styles.css'); ?>">
 
     <!-- Preload Fonts (Optimized for Critical Chain) -->
     <!-- Comfortaa Light (300) - Main Body Text -->

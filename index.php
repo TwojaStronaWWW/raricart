@@ -362,23 +362,13 @@ include 'parts/navbar.php';
                 </div>
                 <div class="form-group">
                     <label for="guests" data-i18n="form.guests_label">Liczba Gości *</label>
-                    <select id="guests" name="guests" required>
-                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
-                        <option value="20-50">20-50 osób</option>
-                        <option value="50-100">50-100 osób</option>
-                        <option value="100-200">100-200 osób</option>
-                        <option value="200+">Powyżej 200 osób</option>
-                    </select>
+                    <input type="number" id="guests" name="guests" min="1" max="9999"
+                        placeholder="np. 80" data-i18n-placeholder="form.guests_placeholder" required>
                 </div>
                 <div class="form-group">
-                    <label for="budget" data-i18n="form.budget">Budżet *</label>
-                    <select id="budget" name="budget" required>
-                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
-                        <option value="5-10k">5 000 - 10 000 PLN</option>
-                        <option value="10-20k">10 000 - 20 000 PLN</option>
-                        <option value="20-30k">20 000 - 30 000 PLN</option>
-                        <option value="30k+">Powyżej 30 000 PLN</option>
-                    </select>
+                    <label for="budget" data-i18n="form.budget">Budżet (PLN) *</label>
+                    <input type="text" id="budget" name="budget"
+                        placeholder="np. 2000 albo 5000 do 10000" data-i18n-placeholder="form.budget_placeholder" required>
                 </div>
                 <div class="form-group">
                     <label for="event_type" data-i18n="form.event_type">Rodzaj Wydarzenia *</label>
@@ -401,6 +391,11 @@ include 'parts/navbar.php';
                         <div class="checkbox-item"><input type="checkbox" id="s" name="stations" value="sery"><label
                                 for="s" data-i18n="form.st_cheese">Deska Serów</label></div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="contact_hours" data-i18n="form.contact_hours">Preferowane godziny kontaktu</label>
+                    <input type="text" id="contact_hours" name="contact_hours"
+                        placeholder="np. 10:00-14:00 lub po 18:00" data-i18n-placeholder="form.contact_hours_placeholder">
                 </div>
                 <div class="form-group full-width">
                     <label for="message" data-i18n="form.message">Dodatkowe Informacje</label>

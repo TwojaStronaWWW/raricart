@@ -1,1 +1,6 @@
+# Ten katalog jest DEPRECATED. Wszystkie drafty są teraz w /api/drafts/
+# Blokada dostępu (Apache)
 Deny from all
+
+# Nginx: add to server block:
+# location /drafts/ { deny all; return 403; }
