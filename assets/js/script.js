@@ -1496,11 +1496,16 @@
 					...data,
 					stations: stations,
 					is_partial: true,
+					is_abandoned: true,
 				})
 
-				// sendBeacon is the ONLY reliable way to send data during page unload
-				// fetch/XHR get cancelled by the browser when the tab closes
-				navigator.sendBeacon('api/contact.php', new Blob([payload], { type: 'application/json' }))
+				// fetch with keepalive is more reliable than sendBeacon for application/json with CORS
+				fetch('api/contact.php', {
+					method: 'POST',
+					keepalive: true,
+					headers: { 'Content-Type': 'application/json' },
+					body: payload
+				}).catch(() => {})
 			}
 
 			// Fires when user closes tab / navigates away
