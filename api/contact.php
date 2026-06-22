@@ -16,7 +16,13 @@ if (in_array($origin, $allowedOrigins)) {
 } else {
     header("Access-Control-Allow-Origin: https://raricart.pl");
 }
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
@@ -59,6 +65,7 @@ $stations = htmlspecialchars(strip_tags($data['stations'] ?? ''));
 $contact_hours = htmlspecialchars(strip_tags($data['contact_hours'] ?? ''));
 $message = htmlspecialchars(strip_tags($data['message'] ?? ''));
 $isPartial = $data['is_partial'] ?? false;
+$isAbandoned = $data['is_abandoned'] ?? false;
 
 // Walidacja
 if (!$isPartial && (empty($name) || empty($email))) {
@@ -146,6 +153,13 @@ if ($isPartial && $userId) {
         file_put_contents($draftFile, json_encode($payloadToSave));
     }
 
+    if ($isAbandoned) {
+        // Zapisz od razu do CSV i do bufora digestu
+        saveDraftToCsv($data, time());
+        appendDraftToDigest($draftsDir, $emailBody);
+        @unlink($draftFile);
+    }
+
     echo json_encode(["status" => "success", "message" => "Draft saved/updated."]);
 } 
 // --- NORMALNA WYSYŁKA (FINAL SUBMIT) ---
@@ -213,86 +227,100 @@ function processDraftQueue($draftsDir, $toEmail) {
     $lockFile = $draftsDir . '/last_run.txt';
     $lastRun = file_exists($lockFile) ? (int)file_get_contents($lockFile) : 0;
 
-    // Sprawdzaj co 10 min, ale mail digest raz na 24h
+    // Sprawdzaj co 10 min
     if (time() - $lastRun > 600) {
         file_put_contents($lockFile, time());
 
         $files = glob($draftsDir . '/draft_*.json');
-        if (!$files) return;
+        if ($files) {
+            foreach ($files as $file) {
+                $mtime = filemtime($file);
+                if (!$mtime || (time() - $mtime < 600)) continue; // Jeszcze za świeży
 
-        $digestParts = []; // Zbierz treści do digestu
-        $digestLockFile = $draftsDir . '/last_digest.txt';
-        $lastDigest = file_exists($digestLockFile) ? (int)file_get_contents($digestLockFile) : 0;
-        $shouldSendDigest = (time() - $lastDigest > 86400); // 24h
+                $content = json_decode(file_get_contents($file), true);
+                if (!$content) { @unlink($file); continue; }
 
-        foreach ($files as $file) {
-            $mtime = filemtime($file);
-            if (!$mtime || (time() - $mtime < 600)) continue; // Jeszcze za świeży
+                $d = $content['data'] ?? [];
+                saveDraftToCsv($d, $mtime);
+                appendDraftToDigest($draftsDir, $content['formattedBody'] ?? '');
 
-            $content = json_decode(file_get_contents($file), true);
-            if (!$content) { @unlink($file); continue; }
-
-            // --- ZAWSZE: ZAPIS DO CSV ---
-            $d = $content['data'] ?? [];
-            $csvFile = __DIR__ . '/../admin/leady.csv';
-            $isNew = !file_exists($csvFile);
-            
-            if ($fp = @fopen($csvFile, 'a')) {
-                if (flock($fp, LOCK_EX)) {
-                    if ($isNew) {
-                        fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
-                        fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
-                    }
-                    
-                    fputcsv($fp, [
-                        date('Y-m-d H:i:s', $mtime),
-                        '⚠️ PORZUCONY',
-                        'Autosave',
-                        $d['name'] ?? '',
-                        $d['email'] ?? '',
-                        $d['phone'] ?? '',
-                        $d['contact_hours'] ?? '',
-                        $d['date'] ?? '',
-                        $d['guests'] ?? '',
-                        $d['budget'] ?? '',
-                        $d['event_type'] ?? '',
-                        $d['stations'] ?? '',
-                        $d['message'] ?? ''
-                    ]);
-                    
-                    flock($fp, LOCK_UN);
-                }
-                fclose($fp);
+                @unlink($file);
             }
-
-            // --- ZBIERAJ DO DIGESTU (nie wysyłaj osobno) ---
-            if ($shouldSendDigest) {
-                $digestParts[] = $content['formattedBody'] ?? '';
-            }
-
-            @unlink($file);
-        }
-
-        // --- WYŚLIJ 1 ZBIORCZY MAIL (max raz na 24h) ---
-        if ($shouldSendDigest && !empty($digestParts)) {
-            $count = count($digestParts);
-            $digestSubject = "⚠️ [Raricart] Dziś porzucono {$count} formularzy";
-            $digestBody = "=== DAILY DIGEST: PORZUCONE FORMULARZE ===\n";
-            $digestBody .= "Liczba: {$count}\n";
-            $digestBody .= "Data: " . date('Y-m-d H:i') . "\n";
-            $digestBody .= str_repeat('=', 50) . "\n\n";
-
-            foreach ($digestParts as $i => $part) {
-                $digestBody .= "--- Lead #" . ($i + 1) . " ---\n";
-                $digestBody .= $part . "\n\n";
-            }
-
-            $cronHeaders = "From: Formularz WWW (Digest) <kontakt@raricart.pl>\r\n";
-            $cronHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
-            
-            mail($toEmail, $digestSubject, $digestBody, $cronHeaders);
-            file_put_contents($digestLockFile, time());
         }
     }
+
+    // Sprawdzaj wysyłkę digestu raz na 24h
+    $digestLockFile = $draftsDir . '/last_digest.txt';
+    $lastDigest = file_exists($digestLockFile) ? (int)file_get_contents($digestLockFile) : 0;
+    
+    if (time() - $lastDigest > 86400) {
+        $digestBufferFile = $draftsDir . '/digest_buffer.txt';
+        if (file_exists($digestBufferFile)) {
+            $bufferContent = file_get_contents($digestBufferFile);
+            if (!empty(trim($bufferContent))) {
+                // Policz ile leadów jest w buforze
+                $count = substr_count($bufferContent, "=== LEAD START ===");
+                
+                $digestSubject = "⚠️ [Raricart] Dziś porzucono {$count} formularzy";
+                $digestBody = "=== DAILY DIGEST: PORZUCONE FORMULARZE ===\n";
+                $digestBody .= "Liczba: {$count}\n";
+                $digestBody .= "Data: " . date('Y-m-d H:i') . "\n";
+                $digestBody .= str_repeat('=', 50) . "\n\n";
+                
+                // Konwertuj format bufora na czysty tekst
+                $digestBody .= str_replace("=== LEAD START ===\n", "--- Lead ---\n", $bufferContent);
+
+                $cronHeaders = "From: Formularz WWW (Digest) <kontakt@raricart.pl>\r\n";
+                $cronHeaders .= "Content-Type: text/plain; charset=UTF-8\r\n";
+                
+                if (mail($toEmail, $digestSubject, $digestBody, $cronHeaders)) {
+                    @unlink($digestBufferFile);
+                    file_put_contents($digestLockFile, time());
+                }
+            }
+        } else {
+            file_put_contents($digestLockFile, time()); // brak leadów, aktualizuj czas
+        }
+    }
+}
+
+function saveDraftToCsv($d, $timestamp) {
+    $csvFile = __DIR__ . '/../admin/leady.csv';
+    $isNew = !file_exists($csvFile);
+    
+    if ($fp = @fopen($csvFile, 'a')) {
+        if (flock($fp, LOCK_EX)) {
+            if ($isNew) {
+                fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
+                fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
+            }
+            
+            fputcsv($fp, [
+                date('Y-m-d H:i:s', $timestamp),
+                '⚠️ PORZUCONY',
+                'Autosave',
+                $d['name'] ?? '',
+                $d['email'] ?? '',
+                $d['phone'] ?? '',
+                $d['contact_hours'] ?? '',
+                $d['date'] ?? '',
+                $d['guests'] ?? '',
+                $d['budget'] ?? '',
+                $d['event_type'] ?? '',
+                $d['stations'] ?? '',
+                $d['message'] ?? ''
+            ]);
+            
+            flock($fp, LOCK_UN);
+        }
+        fclose($fp);
+    }
+}
+
+function appendDraftToDigest($draftsDir, $body) {
+    if (empty(trim($body))) return;
+    $digestBufferFile = $draftsDir . '/digest_buffer.txt';
+    $entry = "=== LEAD START ===\n" . $body . "\n\n";
+    file_put_contents($digestBufferFile, $entry, FILE_APPEND | LOCK_EX);
 }
 ?>
