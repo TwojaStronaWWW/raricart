@@ -23,7 +23,7 @@
     <!-- SEO -->
     <title>Raricart - Live Food Station & Catering</title>
     <meta name="description"
-        content="Raricart to wyjątkowe mobilne stacje degustacyjne na wesela, eventy firmowe i festiwale. Slow BBQ, azjatycki wok, desery fine dining. Obsługa eventów w całej Polsce.">
+        content="Serwujemy lekkie, świeże kompozycje, od puszystych mini pancakes, przez autentyczne włoskie lody, aż po aromatyczne deski serów. Budujemy atmosferę klasy i swobody, w której Twoi goście poczują się wyjątkowo">
     <meta name="keywords"
         content="catering eventowy, mobilne stacje gastronomiczne, live cooking, BBQ na event, catering na wesele, food truck, live food station">
     <meta name="author" content="Raricart">
