@@ -58,6 +58,7 @@ $name = htmlspecialchars(strip_tags($data['name'] ?? ''));
 $email = filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $phone = htmlspecialchars(strip_tags($data['phone'] ?? ''));
 $date = htmlspecialchars(strip_tags($data['date'] ?? ''));
+$location = htmlspecialchars(strip_tags($data['location'] ?? ''));
 $guests = htmlspecialchars(strip_tags($data['guests'] ?? ''));
 $budget = htmlspecialchars(strip_tags($data['budget'] ?? ''));
 $event_type = htmlspecialchars(strip_tags($data['event_type'] ?? ''));
@@ -107,6 +108,7 @@ $emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" 
              "📞 Tel: $phone\n" .
              "🕐 Preferowane godziny kontaktu: $contact_hours\n\n" .
              "📅 Data wydarzenia: $date\n" .
+             "📍 Lokalizacja: $location\n" .
              "👥 Liczba gości: $guests\n" .
              "💰 Budżet: $budget PLN\n" .
              "🎉 Rodzaj wydarzenia: $event_type\n" .
@@ -124,7 +126,7 @@ if ($isPartial && $userId) {
     
     // Oblicz "wynik" wypełnienia (jakość, nie ilość)
     $currentScore = 0;
-    foreach ([$name, $email, $phone, $date, $guests, $event_type, $stations, $contact_hours] as $field) {
+    foreach ([$name, $email, $phone, $date, $location, $guests, $event_type, $stations, $contact_hours] as $field) {
         if (!empty(trim($field))) $currentScore++;
     }
     // Message liczy się tylko jeśli ma sensowną długość
@@ -188,7 +190,7 @@ else {
                 // Jeśli plik nowy, dodaj nagłówek (UTF-8 BOM dla Excela)
                 if ($isNew) {
                     fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
-                    fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
+                    fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Lokalizacja', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
                 }
                 
                 // Dodaj wiersz
@@ -201,6 +203,7 @@ else {
                     $phone,
                     $contact_hours,
                     $date,
+                    $location,
                     $guests,
                     $budget,
                     $event_type,
@@ -292,7 +295,7 @@ function saveDraftToCsv($d, $timestamp) {
         if (flock($fp, LOCK_EX)) {
             if ($isNew) {
                 fprintf($fp, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
-                fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
+                fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Lokalizacja', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
             }
             
             fputcsv($fp, [
@@ -304,6 +307,7 @@ function saveDraftToCsv($d, $timestamp) {
                 $d['phone'] ?? '',
                 $d['contact_hours'] ?? '',
                 $d['date'] ?? '',
+                $d['location'] ?? '',
                 $d['guests'] ?? '',
                 $d['budget'] ?? '',
                 $d['event_type'] ?? '',

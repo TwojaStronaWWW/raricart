@@ -361,6 +361,11 @@ include 'parts/navbar.php';
                     <input type="date" id="date" name="date" required>
                 </div>
                 <div class="form-group">
+                    <label for="location" data-i18n="form.location">Lokalizacja Wydarzenia *</label>
+                    <input type="text" id="location" name="location"
+                        placeholder="np. Warszawa, Hotel Marriott" data-i18n-placeholder="form.location_placeholder" required>
+                </div>
+                <div class="form-group">
                     <label for="guests" data-i18n="form.guests_label">Liczba Gości *</label>
                     <input type="number" id="guests" name="guests" min="1" max="9999"
                         placeholder="np. 80" data-i18n-placeholder="form.guests_placeholder" required>
