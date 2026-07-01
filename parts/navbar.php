@@ -80,14 +80,14 @@ $bg_style = '';
                 <li><a href="<?php echo nav_link('#oferta-lista'); ?>" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
                 <li><a href="<?php echo nav_link('#realizacje'); ?>" aria-label="Przejdź do sekcji Galeria Realizacji"
                         data-i18n="nav.gallery">Galeria</a></li>
-                <li><a href="<?php echo nav_link('#faq'); ?>" aria-label="Przejdź do sekcji FAQ" data-i18n="nav.faq">FAQ</a></li>
             </ul>
 
             <ul class="nav-side nav-right">
+                <li><a href="<?php echo nav_link('#faq'); ?>" aria-label="Przejdź do sekcji FAQ" data-i18n="nav.faq">FAQ</a></li>
                 <li><a href="<?php echo nav_link('#dlaczego'); ?>" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
                         Wyróżnia</a></li>
-                <!-- Dynamic link to packages -->
-                <li><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
+                <!-- Pakiety: ukryte z nawigacji, link zachowany w kodzie na przyszłość -->
+                <li style="display:none;"><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
                 <li><a href="<?php echo nav_link('#kontakt'); ?>" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
             </ul>
 
