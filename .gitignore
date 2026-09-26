@@ -18,8 +18,10 @@ Thumbs.db
 .env
 .env.local
 .env.production
+config/secrets.php
 assets/data/config.json
 assets/data/content.json
+
 
 # Exclude existing git history from subfolders if they were not removed
 **/.git/
@@ -50,5 +52,15 @@ assets/data/*.json
 assets/gallery/
 assets/images/parallax/
 assets/images/gallery/
+assets/images/img_*
+assets/img/migration_source/
+assets/video/
+*.mp4
+*.MP4
 uploads/
+
+# Legacy subfolder
+site/
+testpkg/
+
 

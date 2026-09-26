@@ -188,8 +188,8 @@ include 'parts/navbar.php';
                     $src = '';
                     if (is_string($item)) {
                         $src = $item;
-                    } elseif (is_array($item) && isset($item['src'])) {
-                        $src = $item['src'];
+                    } elseif (is_array($item)) {
+                        $src = $item['url'] ?? $item['src'] ?? '';
                     }
 
                     if (!empty($src)) {

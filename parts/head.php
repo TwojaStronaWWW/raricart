@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Security: CSP & Honeypot setup -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' https://images.unsplash.com https://media.istockphoto.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com;">
+        content="default-src 'self' https://media.raricart.pl https://images.unsplash.com https://media.istockphoto.com; media-src 'self' https://media.raricart.pl data: blob:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://media.raricart.pl https://www.google-analytics.com;">
 
     <?php
     $host = strtolower($_SERVER['HTTP_HOST']);
