@@ -653,7 +653,17 @@
 			}, 50)
 
 			setTimeout(() => {
-				if (ui.videoBg) ui.videoBg.classList.add('visible')
+				if (ui.videoBg) {
+					ui.videoBg.classList.add('visible')
+					const vid = ui.videoBg.querySelector('video')
+					if (vid) {
+						vid.muted = true
+						const playPromise = vid.play()
+						if (playPromise !== undefined) {
+							playPromise.catch(() => {})
+						}
+					}
+				}
 			}, 100)
 		}
 
@@ -1155,53 +1165,74 @@
 				.then(content => {
 					if (!content) return
 
+					// Helper to format background and media URLs safely without prepending extra slashes to absolute URLs
+					const getSafeMediaUrl = (url) => {
+						if (!url || typeof url !== 'string') return ''
+						const cleanUrl = url.trim()
+						if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) {
+							return cleanUrl
+						}
+						return '/' + cleanUrl.replace(/^\/+/, '')
+					}
+
 					// Hero Video
 					if (content.hero_video) {
-						const vid = document.querySelector('#videoBg video source')
-						if (vid) {
-							// Only update if changed prevents flickering usually, but simple src swap is fine
-							if (!vid.src.includes(content.hero_video)) {
-								vid.src = content.hero_video
-								vid.parentElement.load()
+						const video = document.querySelector('#videoBg video')
+						if (video) {
+							const targetVidUrl = getSafeMediaUrl(content.hero_video)
+							const source = video.querySelector('source')
+							if (source && (!source.src || !source.src.includes(targetVidUrl))) {
+								source.src = targetVidUrl
+								video.src = targetVidUrl
+								video.load()
+								video.play().catch(() => {})
+							} else if (!video.src || !video.src.includes(targetVidUrl)) {
+								video.src = targetVidUrl
+								video.load()
+								video.play().catch(() => {})
+							} else if (video.paused) {
+								video.play().catch(() => {})
 							}
 						}
 					}
 
 					// About Image
 					if (content.about_image) {
-						const img = document.querySelector('#onas .premium-image')
-						if (img) img.src = content.about_image + '?v=' + Date.now()
+						const img = document.querySelector('#onas .premium-image, #onas .premium-img')
+						if (img) img.src = getSafeMediaUrl(content.about_image)
 					}
 
 					// Offer Main Image
 					if (content.offer_main_image) {
-						const img = document.querySelector('#oferta .premium-image')
-						if (img) img.src = content.offer_main_image + '?v=' + Date.now()
+						const img = document.querySelector('#oferta .premium-image, #oferta .premium-img')
+						if (img) img.src = getSafeMediaUrl(content.offer_main_image)
 					}
 
 					// Offer Cards
 					if (content.offer_cards) {
-						const setCardBg = (type, url) => {
-							const card = document.querySelector(`.offer-card[data-offer="${type}"] .offer-image`)
-							if (card && url) {
-								card.style.backgroundImage = `url('${url}')`
-
-								// Also update the modal trigger data if needed, or we just handle it in openOfferModal
-								// Actually, we should store this global config to be used by openOfferModal
-								window.siteContentConfig = content
+						window.siteContentConfig = content
+						const setCardImg = (type, url) => {
+							const safeUrl = getSafeMediaUrl(url)
+							if (!safeUrl) return
+							const cardImg = document.querySelector(`.offer-card[data-offer="${type}"] .offer-image-img`)
+							if (cardImg) {
+								cardImg.src = safeUrl
+							}
+							const cardBg = document.querySelector(`.offer-card[data-offer="${type}"] .offer-image`)
+							if (cardBg) {
+								cardBg.style.backgroundImage = `url('${safeUrl}')`
 							}
 						}
-						setCardBg('pancakes', content.offer_cards.pancakes)
-						setCardBg('icecream', content.offer_cards.icecream)
-						setCardBg('cheese', content.offer_cards.cheese)
+						setCardImg('pancakes', content.offer_cards.pancakes)
+						setCardImg('icecream', content.offer_cards.icecream)
+						setCardImg('cheese', content.offer_cards.cheese)
 					}
 
 					// Gallery Parallax Background
 					if (content.gallery_bg) {
-						// Update Gallery Section Background directly via CSS Variable
 						const gallerySection = document.getElementById('realizacje-parallax')
 						if (gallerySection) {
-							gallerySection.style.setProperty('--bg-image', `url('/${content.gallery_bg}?v=${new Date().getTime()}')`)
+							gallerySection.style.setProperty('--bg-image', `url('${getSafeMediaUrl(content.gallery_bg)}')`)
 						}
 					}
 
@@ -1209,7 +1240,7 @@
 					if (content.why_us_bg) {
 						const whySection = document.querySelector('.parallax-why')
 						if (whySection) {
-							whySection.style.setProperty('--bg-image', `url('/${content.why_us_bg}?v=${new Date().getTime()}')`)
+							whySection.style.setProperty('--bg-image', `url('${getSafeMediaUrl(content.why_us_bg)}')`)
 						}
 					}
 				})
