@@ -1,4 +1,0 @@
-# AuthType Basic
-# AuthName "Staging – dostęp tylko dla uprawnionych"
-# AuthUserFile /home/serverXXXX/.htpasswd
-# Require valid-user

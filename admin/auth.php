@@ -11,7 +11,9 @@ session_set_cookie_params([
     'samesite' => 'Strict'
 ]);
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Configuration File Path
 $config_file = __DIR__ . '/../assets/data/config.json';

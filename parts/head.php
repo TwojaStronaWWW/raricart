@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Security: CSP & Honeypot setup -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' https://images.unsplash.com https://media.istockphoto.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://www.google-analytics.com;">
+        content="default-src 'self' https://media.raricart.pl https://images.unsplash.com https://media.istockphoto.com; media-src 'self' https://media.raricart.pl data: blob:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://media.raricart.pl https://www.google-analytics.com;">
 
     <?php
     $host = strtolower($_SERVER['HTTP_HOST']);
@@ -35,11 +35,11 @@
         content="Tam, gdzie smak spotyka emocje, a prostota staje się elegancją. Tworzymy doświadczenie kulinarne, które zostaje w pamięci.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://raricart.pl">
-    <meta property="og:image" content="https://raricart.pl/Logo.png">
+    <meta property="og:image" content="https://media.raricart.pl/images/Logo.png">
 
     <!-- Styles & Fonts -->
     <link rel="canonical" href="https://raricart.pl">
-    <link rel="icon" type="image/png" href="<?php echo get_val('favicon', '/assets/images/logo_optimized.png'); ?>">
+    <link rel="icon" type="image/png" href="<?php echo get_val('favicon', 'https://media.raricart.pl/images/logo_optimized.png'); ?>">
 
     <!-- Critical CSS: Blocking load to prevent Layout Shift (CLS 1.0 fix) -->
     <link rel="stylesheet" href="/assets/css/styles.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/styles.css'); ?>">
@@ -58,7 +58,7 @@
     <link rel="preload" href="/assets/fonts/Playfair-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
 
     <!-- Preload Critical Image (LCP) -->
-    <link rel="preload" href="/assets/images/logo_optimized.png" as="image">
+    <link rel="preload" href="https://media.raricart.pl/images/logo_optimized.png" as="image">
 
     <!-- Scripts -->
 

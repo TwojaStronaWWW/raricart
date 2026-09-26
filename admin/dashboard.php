@@ -32,6 +32,12 @@ if (file_exists($status_file)) {
 </div>
 
 <div class="container">
+    <?php if (!empty($_GET['msg'])): ?>
+        <div class="card" style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 14px 20px; margin-bottom: 20px; color: #1b5e20; font-weight: 500; display: flex; align-items: center; justify-content: space-between;">
+            <span><?php echo htmlspecialchars((string)$_GET['msg']); ?></span>
+            <button onclick="this.parentElement.remove()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#1b5e20;">&times;</button>
+        </div>
+    <?php endif; ?>
     <?php if (isset($_SESSION['must_change_password']) && $_SESSION['must_change_password'] === true): ?>
         <div class="card" style="border-left: 4px solid #dc3545; max-width: 500px; margin: 2rem auto;">
             <h2 style="color: #dc3545;">Wymagana zmiana hasła</h2>
@@ -200,14 +206,23 @@ if (file_exists($status_file)) {
 
     <!-- Leads Management -->
     <div class="card" style="border-left: 4px solid #28a745;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
             <div>
                 <h2 style="margin:0; padding:0; border:none; margin-bottom:0.5rem;">Baza Klientów (Excel)</h2>
-                <p style="color:#666; font-size:0.9rem; margin:0;">Pobierz listę wszystkich zgłoszeń z formularza.</p>
+                <p style="color:#666; font-size:0.9rem; margin:0;">Zarządzaj zgłoszeniami z formularza kontaktowego.</p>
+                <div style="margin-top: 8px; font-size: 0.85rem; color: #2e7d32; display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 1.1rem;">🛡️</span>
+                    <span>Prywatny magazyn Cloudflare R2: <strong>raricart-private</strong> (Automatyczna kopia zapasowa)</span>
+                </div>
             </div>
-            <a href="download_leads.php" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:8px; background:#28a745; font-weight:600;">
-                <span>📥</span> Pobierz .CSV
-            </a>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <a href="sync_leads.php" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:8px; background:#0284c7; font-weight:600; padding: 10px 18px; border-radius: 6px; color: #fff;" title="Wykonaj natychmiastową synchronizację z prywatnym R2">
+                    <span>🔄</span> Synchronizuj z R2
+                </a>
+                <a href="download_leads.php" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:8px; background:#28a745; font-weight:600; padding: 10px 18px; border-radius: 6px; color: #fff;">
+                    <span>📥</span> Pobierz .CSV
+                </a>
+            </div>
         </div>
     </div>
 
@@ -288,7 +303,7 @@ function saveStatus() {
 let galleryImages = [];
 
 function loadGallery() {
-    fetch('../api/gallery.php')
+    fetch('../api/get_gallery.php')
     .then(r => r.json())
     .then(images => {
         galleryImages = images; // Store state
@@ -299,11 +314,13 @@ function loadGallery() {
 function renderGallery() {
     const grid = document.getElementById('galleryList');
     grid.innerHTML = '';
-    galleryImages.forEach((src, index) => {
+    galleryImages.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'gallery-item';
-        div.setAttribute('data-src', src); // Ważne dla SortableJS
+        div.setAttribute('data-index', index);
+        div.setAttribute('data-item', typeof item === 'object' ? JSON.stringify(item) : item);
         
+        const src = typeof item === 'string' ? item : (item.url || item.src || '');
         let displaySrc;
         if (src.startsWith('http') || src.startsWith('//')) {
              displaySrc = src;
@@ -313,7 +330,7 @@ function renderGallery() {
         }
         
         div.innerHTML = `
-            <img src="${displaySrc}" loading="lazy">
+            <img src="${displaySrc}" loading="lazy" alt="Realizacja ${index + 1}">
             <button class="delete-btn" onclick="deleteImageInGrid(${index})" title="Usuń">×</button>
         `;
         grid.appendChild(div);
@@ -331,8 +348,13 @@ function initDragAndDrop() {
         ghostClass: 'sortable-ghost',
         onEnd: function () {
             const newOrder = [];
-            document.querySelectorAll('#galleryList .gallery-item').forEach(item => {
-                newOrder.push(item.getAttribute('data-src'));
+            document.querySelectorAll('#galleryList .gallery-item').forEach(itemEl => {
+                const raw = itemEl.getAttribute('data-item');
+                try {
+                    newOrder.push(JSON.parse(raw));
+                } catch {
+                    newOrder.push(raw);
+                }
             });
 
             galleryImages = newOrder;
@@ -360,22 +382,23 @@ function saveGalleryState() {
 function deleteImageInGrid(index) {
     if(!confirm('Czy na pewno usunąć to zdjęcie?')) return;
     
-    const imagePath = galleryImages[index];
+    const item = galleryImages[index];
+    const fileToDelete = typeof item === 'string' ? item : (item.url || item.path || '');
     
     // 1. Remove from state
     galleryImages.splice(index, 1);
     renderGallery();
     saveGalleryState();
     
-    // 2. If it's a local file, try to delete securely
-    if (!imagePath.startsWith('http')) {
+    // 2. Delete from storage (Cloudflare R2 or local disk)
+    if (fileToDelete) {
         fetch('delete.php', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({ file: imagePath })
+            body: JSON.stringify({ file: fileToDelete })
         });
     }
 }
@@ -434,7 +457,15 @@ async function handleFiles(files) {
             }
             
             if (result.status === 'success') {
-                newImages.push(result.file);
+                const item = {
+                    id: Math.random().toString(16).substring(2, 18),
+                    url: result.file,
+                    src: result.file,
+                    path: result.path || result.file,
+                    created_at: new Date().toISOString(),
+                    original_name: file.name
+                };
+                newImages.push(item);
             } else {
                 alert('Błąd: ' + result.message);
             }
@@ -447,11 +478,9 @@ async function handleFiles(files) {
         }
     }
     
-    // Add new images to start of gallery (Avoid Duplicates)
+    // Add new images to start of gallery
     if (newImages.length > 0) {
         galleryImages = [...newImages, ...galleryImages];
-        // Remove duplicates just in case
-        galleryImages = [...new Set(galleryImages)];
         saveGalleryState();
     }
     
@@ -655,6 +684,7 @@ function resizeImage(file) {
 function uploadFile(blob, filename) {
     const formData = new FormData();
     formData.append('image', blob, filename);
+    formData.append('target', 'gallery');
     
     return fetch('upload.php', {
         method: 'POST',
