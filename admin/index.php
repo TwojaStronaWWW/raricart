@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/auth.php';
 
 $config_file = __DIR__ . '/../assets/data/config.json';
 

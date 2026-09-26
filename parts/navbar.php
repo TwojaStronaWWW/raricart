@@ -44,8 +44,14 @@ $bg_style = '';
     <!-- Backgrounds (Empty for subpages, letting script run transition from 0) -->
     <?php if ($is_home): ?>
     <div class="video-background" id="videoBg">
-        <video autoplay muted loop playsinline aria-label="Tło wideo przedstawiające przygotowanie potraw">
-            <source src="<?php echo $assets_path; ?>/video/hero.mp4" type="video/mp4">
+        <?php 
+            $hero_vid = function_exists('get_val') ? get_val('hero_video', $assets_path . '/video/hero.mp4') : $assets_path . '/video/hero.mp4';
+            if ($hero_vid && !str_starts_with($hero_vid, '/') && !str_starts_with($hero_vid, 'http')) {
+                $hero_vid = '/' . $hero_vid;
+            }
+        ?>
+        <video autoplay muted loop playsinline preload="auto" src="<?php echo htmlspecialchars($hero_vid); ?>" aria-label="Tło wideo przedstawiające przygotowanie potraw">
+            <source src="<?php echo htmlspecialchars($hero_vid); ?>" type="video/mp4">
         </video>
 
         <div class="video-overlay"></div>

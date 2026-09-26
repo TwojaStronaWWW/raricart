@@ -72,7 +72,7 @@ include 'parts/navbar.php';
 
                 <!-- 1. IDEA MARKI -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/1a-001.webp" alt="Idea Marki Raricart" class="split-card-image"
+                    <img src="https://media.raricart.pl/gallery/38c6be611e4284a2_migrated.webp" alt="Idea Marki Raricart" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -91,7 +91,7 @@ include 'parts/navbar.php';
 
                 <!-- 2. DLA KOGO -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/2a-001.webp" alt="Dla kogo jest Raricart"
+                    <img src="https://media.raricart.pl/gallery/a9ae2e00346fe06e_migrated.webp" alt="Dla kogo jest Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -111,7 +111,7 @@ include 'parts/navbar.php';
 
                 <!-- 3. JAK TO DZIAŁA -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/3a-000.webp" alt="Jak działa Raricart" class="split-card-image"
+                    <img src="https://media.raricart.pl/gallery/6cbe2209a35aa868_migrated.webp" alt="Jak działa Raricart" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -132,7 +132,7 @@ include 'parts/navbar.php';
 
                 <!-- 4. LODY WŁOSKIE (Moved Up) -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/x1-000.webp" alt="Lody włoskie Raricart"
+                    <img src="https://media.raricart.pl/gallery/b14dac8e7ede23e8_migrated.webp" alt="Lody włoskie Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -151,7 +151,7 @@ include 'parts/navbar.php';
 
                 <!-- 5. MINI PANCAKES (Moved Up) -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/x2-001.webp" alt="Mini pancakes Raricart"
+                    <img src="https://media.raricart.pl/gallery/3f70c5db49a6c47e_migrated.webp" alt="Mini pancakes Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -171,7 +171,7 @@ include 'parts/navbar.php';
 
                 <!-- 6. DESKI SERÓW (Moved Up) -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/x3-003.webp" alt="Deski serów i wędlin Raricart"
+                    <img src="https://media.raricart.pl/gallery/99ed0a98fdca4f14_migrated.webp" alt="Deski serów i wędlin Raricart"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -190,7 +190,7 @@ include 'parts/navbar.php';
 
                 <!-- 7. DLACZEGO MINI PORCJE (Formerly Row 4) -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/4a-000.webp" alt="Dlaczego mini porcje" class="split-card-image"
+                    <img src="https://media.raricart.pl/gallery/8d71bde2ad4ec84c_migrated.webp" alt="Dlaczego mini porcje" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -209,7 +209,7 @@ include 'parts/navbar.php';
 
                 <!-- 8. CO NAS WYRÓŻNIA (Formerly Row 5) -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/5a-000.webp" alt="Co wyróżnia Raricart" class="split-card-image"
+                    <img src="https://media.raricart.pl/gallery/62d15841684cc15b_migrated.webp" alt="Co wyróżnia Raricart" class="split-card-image"
                          loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">
@@ -227,7 +227,7 @@ include 'parts/navbar.php';
 
                 <!-- 9. JAK WYGLĄDA WSPÓŁPRACA (Formerly Row 6) -->
                 <div class="split-card">
-                    <img src="/assets/gallery/images/6a-000.webp" alt="Jak wygląda współpraca"
+                    <img src="https://media.raricart.pl/gallery/51d144f4ebceb88c_migrated.webp" alt="Jak wygląda współpraca"
                          class="split-card-image" loading="lazy">
                     <div class="split-card-text">
                         <div class="split-card-text-inner">

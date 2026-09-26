@@ -215,6 +215,15 @@ else {
                 flock($fp, LOCK_UN);
             }
             fclose($fp);
+
+            // Cichy, bezpieczny backup do prywatnego bucketa Cloudflare R2
+            try {
+                require_once __DIR__ . '/PrivateStorageService.php';
+                $privateStorage = new \Raricart\Api\PrivateStorageService();
+                $privateStorage->backupLeads($csvFile);
+            } catch (\Throwable $e) {
+                error_log("Błąd backupu leadów do R2: " . $e->getMessage());
+            }
         }
     }
 }
@@ -318,6 +327,14 @@ function saveDraftToCsv($d, $timestamp) {
             flock($fp, LOCK_UN);
         }
         fclose($fp);
+
+        try {
+            require_once __DIR__ . '/PrivateStorageService.php';
+            $privateStorage = new \Raricart\Api\PrivateStorageService();
+            $privateStorage->backupLeads($csvFile);
+        } catch (\Throwable $e) {
+            error_log("Błąd backupu szkicu do R2: " . $e->getMessage());
+        }
     }
 }
 
