@@ -24,7 +24,48 @@ include 'parts/navbar.php';
 
     <main class="content">
 
-        <!-- O Nas -->
+        <!-- Hero Section (Nowa) -->
+        <section id="hero" class="section" style="padding-top: 150px;">
+            <div class="dlaczego-warto-container"> <!-- using a flex container that already exists in CSS or creating custom -->
+                <div class="hero-left-col">
+                    <p class="hero-tagline">Premium Live Food Station</p>
+                    <h1 class="hero-main-title">Tam, gdzie smak spotyka emocje.</h1>
+                    <p class="hero-sub-desc">Nie gotujemy dań. Tworzymy mobilne stacje degustacyjne, które stają się sercem Twojego wydarzenia i angażują gości w niezapomniany sposób.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="#kontakt" class="hero-cta">Sprawdź termin i wycenę</a>
+                        <p class="hero-note">Współpracujemy z agencjami i klientami indywidualnymi.</p>
+                    </div>
+                </div>
+                <div class="hero-right-col">
+                    <?php 
+                        $default_hero_vid = 'https://media.raricart.pl/content/hero.mp4';
+                        $hero_vid = function_exists('get_val') ? get_val('hero_video', $default_hero_vid) : $default_hero_vid;
+                    ?>
+                    <video class="hero-video-bg" autoplay muted loop playsinline preload="auto">
+                        <source src="<?php echo htmlspecialchars($hero_vid); ?>" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Badges -->
+        <section class="section-trust">
+            <div class="trust-container">
+                <div class="trust-item-new">
+                    <svg class="trust-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Świeże składniki
+                </div>
+                <div class="trust-item-new">
+                    <svg class="trust-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Pełna obsługa od A do Z
+                </div>
+                <div class="trust-item-new">
+                    <svg class="trust-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    Eleganckie stacje mobilne
+                </div>
+            </div>
+        </section>
+
         <!-- O Nas -->
         <section id="onas" class="section-premium">
             <div class="premium-container">
@@ -227,65 +268,82 @@ include 'parts/navbar.php';
             </article>
         </section>
 
-        <!-- Dlaczego My -->
-        <section id="dlaczego" class="section section-fullwidth">
-            <div class="parallax-why" style="<?php if($why_us_bg) echo "--bg-image: url('$why_us_bg');"; ?>">
-                <h2 data-i18n="why.title">SZTUKA KULINARNYCH DOŚWIADCZEŃ</h2>
-                <div class="parallax-content">
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.1.title">EFEKT „WOW" Z KLASĄ</h3>
-                        <p data-i18n="why.cards.1.desc">Na oczach gości serwujemy ciepłe pancakes prosto z&nbsp;patelni,
-                            nalewamy cremowe lody i
-                            komponujemy deski serów - wszystko świeże, personalizowane i&nbsp;dopracowane w&nbsp;detalach. Proces
-                            live station przyciąga uwagę, integruje uczestników i&nbsp;tworzy naturalne punkty spotkań, gdzie
-                            przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż
-                            wydarzenia, łącząc estetykę premium z&nbsp;czystą przyjemnością dla zmysłów.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.2.title">MNIEJ LOGISTYKI, WIĘCEJ SPOKOJU</h3>
-                        <p data-i18n="why.cards.2.desc">Raricart przejmuje całość: dojazd, montaż stacji, serwowanie
-                            podczas eventu, demontaż i
-                            perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje
-                            działają wszędzie: w&nbsp;loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych.
-                            Zespół synchronizuje serwis z&nbsp;harmonogramem, dba o&nbsp;płynny przepływ gości i&nbsp;minimalizuje
-                            kolejki.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.3.title">DOŚWIADCZENIE ZAMIAST BUFETU</h3>
-                        <p data-i18n="why.cards.3.desc">W odróżnieniu od statycznego bufetu, nasze live stations
-                            angażują: goście obserwują nalewanie
-                            lodów, układanie pancakes i komponowanie desek serów, wybierając dodatki na bieżąco.
-                            Wszystko serwowane porcjami „tu i teraz" - świeże, bez marnowania, idealnie dopasowane do
-                            liczby i preferencji uczestników. Tematyczne stacje stają się magnesem na gości, budując
-                            emocje i niezapomniane wspomnienia.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.4.title">BEZPIECZEŃSTWO, JAKOŚĆ, ESTETYKA</h3>
-                        <p data-i18n="why.cards.4.desc">Przestrzegamy rygorystycznych standardów higieny i
-                            bezpieczeństwa żywności, z naciskiem na
-                            świeżość składników i perfekcyjną prezencję. Używamy wyselekcjonowanych produktów
-                            serwowanych w optymalnej temperaturze. Każdy detal - od aranżacji stacji, przez zastawę, po
-                            pracę zespołu - tworzy spójną scenografię, wzmacniającą wizerunek Twojego wydarzenia.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.5.title">PARTNER DLA WYMAGAJĄCYCH</h3>
-                        <p data-i18n="why.cards.5.desc">Agencje eventowe zyskują niezawodnego partnera rozumiejącego
-                            timing, layout i dynamikę dużych
-                            wydarzeń. Firmy, pary młode i organizatorzy prywatnych imprez otrzymują rozwiązanie premium:
-                            efekt „wow", emocje i pełną opiekę nad gośćmi. Właściciele lokali eventowych wzbogacają
-                            ofertę o mobilne stacje bez inwestycji w sprzęt – gotowe do działania w dowolnej
-                            przestrzeni.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.6.title">NAPISZ DO NAS</h3>
-                        <p data-i18n="why.cards.6.desc">Twój event zasługuje na wyjątkowe live food station, które
-                            stanie się jego wizytówką. Napisz
-                            do nas już dziś - dopasujemy ofertę do Twojej wizji i zapewnimy termin. Razem stworzymy
-                            doświadczenie, które goście będą wspominać z zachwytem!</p>
-                    </div>
+        <!-- Dlaczego Warto -->
+        <section id="dlaczego" class="section-dlaczego-warto">
+            <div class="dlaczego-warto-container">
+                <div class="dlaczego-warto-col">
+                    <img src="<?php echo get_val('why_us_bg', 'https://media.raricart.pl/images/placeholder.webp'); ?>" alt="Dlaczego my" loading="lazy" class="dlaczego-warto-img">
+                </div>
+                <div class="dlaczego-warto-col">
+                    <h2 class="dlaczego-warto-title">To nie jest zwykły catering. To strefa doświadczeń.</h2>
+                    <p class="dlaczego-warto-desc">
+                        W odróżnieniu od klasycznego bufetu, Raricart wprowadza dynamikę. Na żywo przygotowujemy pancakes, nalewamy lody, a to wszystko z dbałością o każdy detal.
+                    </p>
+                    <p class="dlaczego-warto-desc">
+                        Goście wybierają, komponują, rozmawiają. Mobilna stacja staje się naturalnym miejscem spotkań i atrakcją, która podnosi estetykę każdego wydarzenia.
+                    </p>
+                    <p class="dlaczego-warto-desc">
+                        My zajmujemy się kompleksową obsługą, od dojazdu po sprzątanie, a Ty cieszysz się spokojem.
+                    </p>
                 </div>
             </div>
         </section>
+
+        <!-- Proces / Jak to działa -->
+        <section id="proces" class="section-proces">
+            <h2 class="dlaczego-warto-title">Jak pracujemy? (Krok po kroku)</h2>
+            <div class="proces-grid">
+                <div class="proces-step">
+                    <div class="proces-num">1</div>
+                    <h3 class="proces-heading">Wycena</h3>
+                    <p class="proces-desc">Ustalasz z nami szczegóły. Otrzymujesz przejrzystą ofertę pod Twoje wydarzenie.</p>
+                </div>
+                <div class="proces-step">
+                    <div class="proces-num">2</div>
+                    <h3 class="proces-heading">Logistyka</h3>
+                    <p class="proces-desc">Dojeżdżamy na miejsce i estetycznie ustawiamy mobilną stację. Bez angażowania Ciebie.</p>
+                </div>
+                <div class="proces-step">
+                    <div class="proces-num">3</div>
+                    <h3 class="proces-heading">Serwis live</h3>
+                    <p class="proces-desc">Serwujemy pyszności na żywo dla Twoich gości w ustalonym bloku czasowym.</p>
+                </div>
+                <div class="proces-step">
+                    <div class="proces-num">4</div>
+                    <h3 class="proces-heading">Demontaż</h3>
+                    <p class="proces-desc">Składamy sprzęt i zostawiamy idealny porządek. Ty wracasz do swoich spraw.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dla Kogo -->
+        <section id="dlakogo" class="section-dlakogo">
+            <div class="dlakogo-container">
+                <h2 class="dlakogo-title">Z kim współpracujemy najczęściej?</h2>
+                <div class="dlakogo-grid">
+                    <div class="dlakogo-item">
+                        <h3 class="dlakogo-heading">Wesela</h3>
+                        <p class="dlakogo-desc">Dla par, które chcą zastąpić standardowy wiejski stół lub słodki kącik nową, atrakcyjniejszą formą z obsługą, która olśni gości.</p>
+                    </div>
+                    <div class="dlakogo-item">
+                        <h3 class="dlakogo-heading">Wydarzenia Firmowe</h3>
+                        <p class="dlakogo-desc">Bale, integracje, otwarcia i targi. Raricart staje się świetnym sposobem na poczęstunek oraz angażowanie pracowników w przerwie.</p>
+                    </div>
+                    <div class="dlakogo-item">
+                        <h3 class="dlakogo-heading">Agencje Eventowe</h3>
+                        <p class="dlakogo-desc">Kompleksowo realizujemy zlecenia podwykonawcze dla Waszych wymagających klientów, ułatwiając Wam logistykę i podnosząc jakość usług.</p>
+                    </div>
+                    <div class="dlakogo-item">
+                        <h3 class="dlakogo-heading">Przyjęcia Prywatne</h3>
+                        <p class="dlakogo-desc">Chrzciny, komunie, okrągłe jubileusze – to stacja z jedzeniem, która pasuje równie dobrze na salę jak i do ogrodu (Garden Party).</p>
+                    </div>
+                </div>
+                <div class="dlakogo-footer">
+                    Szukasz czegoś innego? <a href="#kontakt" class="dlakogo-btn">Napisz do nas. Odpowiadamy błyskawicznie.</a>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Kontakt -->
         <section id="kontakt" class="section">
