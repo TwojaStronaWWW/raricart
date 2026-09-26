@@ -66,34 +66,6 @@ include 'parts/navbar.php';
             </div>
         </section>
 
-        <!-- O Nas -->
-        <section id="onas" class="section-premium">
-            <div class="premium-container">
-                <div class="premium-col-image">
-                    <img src="<?php echo get_val('about_image', 'https://media.raricart.pl/images/placeholder.webp'); ?>"
-                        alt="Raricart Live Food Experience - Goście cieszący się wydarzeniem" loading="lazy" class="premium-img">
-                </div>
-                <div class="premium-col-text">
-                    <h2 data-i18n="about.title" class="premium-title">Nie tworzymy cateringu, lecz doświadczenie.</h2>
-                    
-                    <p class="premium-text" data-i18n="about.p1">
-                        Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. 
-                        To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i&nbsp;pełen charakteru</span> element scenografii.
-                    </p>
-                    
-                    <p class="premium-text" data-i18n="about.p2">
-                        Serwujemy lekkie, świeże kompozycje, od puszystych mini pancakes, przez autentyczne włoskie lody, 
-                        aż po aromatyczne deski serów. Budujemy atmosferę klasy i&nbsp;swobody, w&nbsp;której Twoi goście poczują się wyjątkowo.
-                    </p>
-
-                    <div class="premium-footer">
-                        <span class="premium-line"></span>
-                        <span class="premium-label">Live Food Station</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Oferta Intro -->
         <section id="oferta" class="section-offer-intro">
             <div class="premium-overlap-container reverse">
@@ -227,47 +199,6 @@ include 'parts/navbar.php';
             </div>
         </section>
 
-        <!-- FAQ -->
-        <section id="faq" class="section">
-            <h2 data-i18n="faq.title">FAQ - Najczęściej Zadawane Pytania</h2>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q1.title">Czy jest ograniczona ilość porcji na osobę?</h3>
-                <p data-i18n="faq.q1.desc">Nie, nie ma żadnych limitów! Goście mogą sięgać po świeże porcje ile tylko chcą. Nasze live food station to obfitość smaków przygotowywanych na żywo.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q2.title">Czy można przedłużyć czas trwania usługi?</h3>
-                <p data-i18n="faq.q2.desc">Oczywiście! Elastyczność to nasza specjalność. Możesz przedłużyć usługę wcześniej, ustalając szczegóły, lub spontanicznie w trakcie eventu.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q3.title">W którym momencie wydarzenia najlepiej skorzystać ze stoiska Raricart?</h3>
-                <p data-i18n="faq.q3.desc">Wybór należy do Ciebie - my idealnie się dopasujemy! Najczęściej stawiamy stoiska jako atrakcję na początek, podczas przerwy koktajlowej lub na deserowy finisz.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q4.title">Jak zarezerwować usługę Raricart?</h3>
-                <p data-i18n="faq.q4.desc">To proste: skontaktuj się z nami przez formularz na stronie, e-mail lub telefon. Opowiedz o evencie, a w 24h prześlemy spersonalizowaną ofertę z menu i dostępnością. Rezerwacja z lekkim sercem!</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q5.title">Co jest potrzebne, by Raricart pojawiło się na Twoim evencie?</h3>
-                <p data-i18n="faq.q5.desc">Tylko miejsce na nasze eleganckie stoisko (ok. 3x3m) i&nbsp;gniazdko prądu. Resztę załatwiamy my: dojazd, montaż, pełną obsługę, demontaż i&nbsp;sprzątanie. Zero zmartwień dla Ciebie.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q6.title">Jakie są ceny usług Raricart?</h3>
-                <p data-i18n="faq.q6.desc">Ceny są elastyczne i&nbsp;zależą od menu, liczby gości oraz czasu trwania – od 150 zł/os. wzwyż dla premium live stations. Wyślij zapytanie, a&nbsp;przygotujemy transparentną wycenę.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q7.title">Czy obsługujecie eventy plenerowe i bez kuchni na miejscu?</h3>
-                <p data-i18n="faq.q7.desc">Tak, jesteśmy mobilni na 100%! Dojedziemy wszędzie - na wesela w ogrodzie, firmowe pikniki czy gale pod chmurką. Bez zaplecza kuchennego? Żaden problem, nasze stoiska to kompletna, samodzielna magia kulinarna.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q8.title">Ile gości minimalnie obsługujecie?</h3>
-                <p data-i18n="faq.q8.desc">Nie ma minimum – realizujemy zlecenia na każdą skalę! Od kameralnych imprez prywatnych (20+ osób) po duże eventy (500+). Dla mniejszych grup skalujemy jedno eleganckie stoisko z pełnym efektem "wow". Przy większych imprezach zalecamy więcej niż jedno stoisko – to poprawia jakość obsługi, skraca czas oczekiwania i minimalizuje kolejki.</p>
-            </article>
-            <article class="faq-item">
-                <h3 data-i18n="faq.q9.title">Jak zapewniacie higienę i&nbsp;bezpieczeństwo?</h3>
-                <p data-i18n="faq.q9.desc">Jesteśmy certyfikowani (HACCP, Sanepid), z&nbsp;pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i&nbsp;doświadczona obsługa.</p>
-            </article>
-        </section>
-
         <!-- Dlaczego Warto -->
         <section id="dlaczego" class="section-dlaczego-warto">
             <div class="dlaczego-warto-container">
@@ -344,6 +275,55 @@ include 'parts/navbar.php';
             </div>
         </section>
 
+
+        <!-- O Nas -->
+        <section id="onas" class="section-premium">
+            <div class="premium-container">
+                <div class="premium-col-image">
+                    <img src="<?php echo get_val('about_image', 'https://media.raricart.pl/images/placeholder.webp'); ?>"
+                        alt="Raricart Live Food Experience - Goście cieszący się wydarzeniem" loading="lazy" class="premium-img">
+                </div>
+                <div class="premium-col-text">
+                    <h2 data-i18n="about.title" class="premium-title">Cześć, tu Raricart.</h2>
+                    
+                    <p class="premium-text" data-i18n="about.p1">
+                        Nie tworzymy cateringu, lecz doświadczenie. Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. 
+                        To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i&nbsp;pełen charakteru</span> element scenografii.
+                    </p>
+                    
+                    <p class="premium-text" data-i18n="about.p2">
+                        Serwujemy lekkie, świeże kompozycje, od puszystych mini pancakes, przez autentyczne włoskie lody, 
+                        aż po aromatyczne deski serów. Budujemy atmosferę klasy i&nbsp;swobody, w&nbsp;której Twoi goście poczują się wyjątkowo.
+                    </p>
+
+                    <div class="premium-footer">
+                        <span class="premium-line"></span>
+                        <span class="premium-label">Premium Live Food</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="section">
+            <h2 data-i18n="faq.title">Najczęściej Zadawane Pytania</h2>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q1.title">Czy jest ograniczona ilość porcji na osobę?</h3>
+                <p data-i18n="faq.q1.desc">Nie, nie ma limitów! W opcji nielimitowanej goście mogą sięgać po świeże porcje ile tylko chcą przez określony czas serwisu.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q2.title">Czy obsługujecie eventy bez zaplecza kuchennego?</h3>
+                <p data-i18n="faq.q2.desc">Tak, nasze mobilne stacje są w pełni samowystarczalne. Potrzebujemy zazwyczaj jedynie miejsca i gniazdka prądu.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q3.title">Jak wygląda wycena i co zawiera?</h3>
+                <p data-i18n="faq.q3.desc">Wycena jest indywidualna, zależy od menu, czasu i liczby gości. Zawsze zawiera kompleksową usługę: dojazd, montaż, sprzęt, serwis i sprzątanie.</p>
+            </article>
+            <article class="faq-item">
+                <h3 data-i18n="faq.q4.title">Czy można połączyć kilka różnych stacji?</h3>
+                <p data-i18n="faq.q4.desc">Zdecydowanie! Często łączymy słodkie lody lub pancakes ze słoną deską serów, tworząc kompleksową strefę gastronomiczną dla Twoich gości.</p>
+            </article>
+        </section>
 
         <!-- Kontakt -->
         <section id="kontakt" class="section">
