@@ -76,7 +76,7 @@ if (file_exists($status_file)) {
         <div class="media-grid">
             <!-- Hero Video -->
             <div class="media-item">
-                <h4>Wideo w tle (Hero)</h4>
+                <h4>Wideo obok tekstu (Sekcja Główna)</h4>
                 <div class="media-preview video-preview" id="preview-hero_video">
                     <span>Brak wideo</span>
                 </div>
@@ -98,7 +98,7 @@ if (file_exists($status_file)) {
 
             <!-- Offer Main Image -->
             <div class="media-item">
-                <h4>Oferta (Tło Główne)</h4>
+                <h4>Wstęp do Oferty (Zdjęcie)</h4>
                 <div class="media-preview" id="preview-offer_main_image"></div>
                 <label class="btn btn-secondary upload-btn">
                     Wgraj zdjęcie

@@ -21,11 +21,11 @@
     ?>
 
     <!-- SEO -->
-    <title>Raricart - Live Food Station & Catering</title>
+    <title>Raricart | Mobilne Live Food Station na wesela i eventy</title>
     <meta name="description"
-        content="Serwujemy lekkie, świeże kompozycje, od puszystych mini pancakes, przez autentyczne włoskie lody, aż po aromatyczne deski serów. Budujemy atmosferę klasy i swobody, w której Twoi goście poczują się wyjątkowo">
+        content="Mobilne stacje gastronomiczne na wesela, eventy firmowe i przyjęcia. Mini pancakes, lody włoskie i deski serów przygotowywane na żywo. Sprawdź dostępność terminu.">
     <meta name="keywords"
-        content="catering eventowy, mobilne stacje gastronomiczne, live cooking, BBQ na event, catering na wesele, food truck, live food station">
+        content="live food station, mobilne stacje gastronomiczne, stacja gastronomiczna na wesele, atrakcje na wesele, catering na wesele, mini pancakes na wesele, lody włoskie na wesele, stacja z lodami, słodki stół alternatywa, catering na event firmowy, atrakcje na event firmowy, mobilny catering, food station na event, stacje gastronomiczne na eventy">
     <meta name="author" content="Raricart">
 
 
