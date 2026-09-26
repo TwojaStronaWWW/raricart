@@ -6,12 +6,19 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
 $jsonFile = __DIR__ . '/../assets/data/gallery.json';
+$distFile = __DIR__ . '/../assets/data/gallery.json.dist';
 $images = [];
 $useJson = false;
 
-if (file_exists($jsonFile)) {
-    $raw = file_get_contents($jsonFile);
-    $decoded = json_decode((string)$raw, true);
+$raw = '';
+if (file_exists($jsonFile) && filesize($jsonFile) > 10) {
+    $raw = (string)file_get_contents($jsonFile);
+} elseif (file_exists($distFile) && filesize($distFile) > 10) {
+    $raw = (string)file_get_contents($distFile);
+}
+
+if ($raw !== '') {
+    $decoded = json_decode($raw, true);
     if (is_array($decoded) && !empty($decoded)) {
         foreach ($decoded as $item) {
             if (is_string($item)) {
