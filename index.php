@@ -25,13 +25,13 @@ include 'parts/navbar.php';
     <main class="content">
 
         <!-- Hero Section (Nowa) -->
-        <section id="hero" class="section" style="padding-top: 150px;">
+        <section id="hero" class="section section-hero">
             <div class="dlaczego-warto-container"> <!-- using a flex container that already exists in CSS or creating custom -->
                 <div class="hero-left-col">
                     <p class="hero-tagline">Premium Live Food Station</p>
                     <h1 class="hero-main-title">Tam, gdzie smak spotyka emocje.</h1>
                     <p class="hero-sub-desc">Nie gotujemy dań. Tworzymy mobilne stacje degustacyjne, które stają się sercem Twojego wydarzenia i angażują gości w niezapomniany sposób.</p>
-                    <div style="margin-top: 1rem;">
+                    <div class="hero-cta-wrapper">
                         <a href="#kontakt" class="hero-cta">Sprawdź termin i wycenę</a>
                         <p class="hero-note">Współpracujemy z agencjami i klientami indywidualnymi.</p>
                     </div>
@@ -132,11 +132,11 @@ include 'parts/navbar.php';
         </section>
 
         <!-- Realizacje -->
-        <section id="realizacje" class="section" style="padding-top: 2rem; padding-bottom: 0;">
+        <section id="realizacje" class="section section-gallery-header">
             <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
         </section>
         
-        <section id="realizacje-parallax" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?> padding-top: 0;">
+        <section id="realizacje-parallax" class="section section-gallery-parallax" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?>">
             <div class="gallery-grid" id="dynamicGalleryGrid">
                 <?php
                 // Dynamic Gallery Rendering (PHP Side)
@@ -331,13 +331,12 @@ include 'parts/navbar.php';
             <div class="progress-container">
                 <div id="form-progress"></div>
             </div>
-            <p id="progress-text" style="text-align: center; margin-bottom: 2rem; color: #666; font-size: 0.9rem;"
-                data-i18n="form.progress_text">
+            <p id="progress-text" class="form-progress-text" data-i18n="form.progress_text">
                 Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)</p>
             <form id="form" class="contact-form" novalidate>
                 <div id="availability-notice" class="availability-notice" style="display:none"></div>
                 <!-- Honeypot for bots -->
-                <input type="text" name="website_check" style="display:none !important" tabindex="-1"
+                <input type="text" name="website_check" class="honeypot-input" tabindex="-1"
                     autocomplete="off">
 
                 <div class="form-row">
