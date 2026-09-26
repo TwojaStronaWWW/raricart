@@ -20,11 +20,17 @@ $jsonFile = __DIR__ . '/assets/data/gallery.json';
 
 // Load dynamic content on server side to prevent flickering
 $content_file = __DIR__ . '/assets/data/content.json';
+$content_dist = __DIR__ . '/assets/data/content.json.dist';
 $content = [];
-if (file_exists($content_file)) {
-    $content = json_decode(file_get_contents($content_file), true);
-    if (!is_array($content)) $content = [];
+if (file_exists($content_file) && filesize($content_file) > 10) {
+    $content = json_decode((string)file_get_contents($content_file), true);
 }
+if (!is_array($content) || empty($content)) {
+    if (file_exists($content_dist) && filesize($content_dist) > 10) {
+        $content = json_decode((string)file_get_contents($content_dist), true);
+    }
+}
+if (!is_array($content)) $content = [];
 
 function get_val($key, $default) {
     global $content;

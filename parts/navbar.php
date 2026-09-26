@@ -45,8 +45,12 @@ $bg_style = '';
     <?php if ($is_home): ?>
     <div class="video-background" id="videoBg">
         <?php 
-            $hero_vid = function_exists('get_val') ? get_val('hero_video', $assets_path . '/video/hero.mp4') : $assets_path . '/video/hero.mp4';
-            if ($hero_vid && !str_starts_with($hero_vid, '/') && !str_starts_with($hero_vid, 'http')) {
+            $default_hero_vid = 'https://media.raricart.pl/content/hero.mp4';
+            $hero_vid = function_exists('get_val') ? get_val('hero_video', $default_hero_vid) : $default_hero_vid;
+            $root_dir = defined('BASE_DIR') ? BASE_DIR : dirname(__DIR__);
+            if ($hero_vid && !str_starts_with($hero_vid, 'http') && !file_exists($root_dir . '/' . ltrim($hero_vid, '/'))) {
+                $hero_vid = $default_hero_vid;
+            } elseif ($hero_vid && !str_starts_with($hero_vid, '/') && !str_starts_with($hero_vid, 'http')) {
                 $hero_vid = '/' . $hero_vid;
             }
         ?>
