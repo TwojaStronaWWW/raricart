@@ -80,7 +80,7 @@ $bg_style = '';
         </div>
 
         <div class="hero-logo <?php echo $logo_init_class; ?>" id="brand" <?php echo $logo_style; ?>>
-            <img src="<?php echo $assets_path; ?>/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
+            <img src="https://media.raricart.pl/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
                 width="342" height="250" style="cursor:pointer" fetchpriority="high">
         </div>
 

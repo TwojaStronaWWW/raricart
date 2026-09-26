@@ -303,7 +303,7 @@ function saveStatus() {
 let galleryImages = [];
 
 function loadGallery() {
-    fetch('../api/gallery.php')
+    fetch('../api/get_gallery.php')
     .then(r => r.json())
     .then(images => {
         galleryImages = images; // Store state
