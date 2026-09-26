@@ -1672,12 +1672,12 @@
 					phone: form.phone.value,
 					date: form.date.value,
 					location: form.location.value,
-					guests: form.guests.value,
-					budget: form.budget.value,
-					event_type: form.event_type.value,
+					guests: form.guests ? form.guests.value : '',
+					budget: '', // Usunięte z formularza dla lepszej konwersji
+					event_type: form.event_type ? form.event_type.value : '',
 					stations: stations,
-					contact_hours: form.contact_hours.value,
-					message: form.message.value || 'Brak dodatkowej wiadomości',
+					contact_hours: '', // Usunięte z formularza
+					message: form.message ? (form.message.value || 'Brak dodatkowej wiadomości') : 'Brak dodatkowej wiadomości',
 				}
 
 				const submitBtn = form.querySelector('.cta-primary')

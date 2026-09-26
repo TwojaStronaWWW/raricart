@@ -41,67 +41,63 @@ $nav_style = '';
 $logo_style = '';
 $bg_style = '';
 ?>
-    <!-- Backgrounds (Empty for subpages, letting script run transition from 0) -->
-    <?php if ($is_home): ?>
-    <div class="video-background" id="videoBg">
-        <?php 
-            $default_hero_vid = 'https://media.raricart.pl/content/hero.mp4';
-            $hero_vid = function_exists('get_val') ? get_val('hero_video', $default_hero_vid) : $default_hero_vid;
-            $root_dir = defined('BASE_DIR') ? BASE_DIR : dirname(__DIR__);
-            if ($hero_vid && !str_starts_with($hero_vid, 'http') && !file_exists($root_dir . '/' . ltrim($hero_vid, '/'))) {
-                $hero_vid = $default_hero_vid;
-            } elseif ($hero_vid && !str_starts_with($hero_vid, '/') && !str_starts_with($hero_vid, 'http')) {
-                $hero_vid = '/' . $hero_vid;
-            }
-        ?>
-        <video autoplay muted loop playsinline preload="auto" src="<?php echo htmlspecialchars($hero_vid); ?>" aria-label="Tło wideo przedstawiające przygotowanie potraw">
-            <source src="<?php echo htmlspecialchars($hero_vid); ?>" type="video/mp4">
-        </video>
-
-        <div class="video-overlay"></div>
-    </div>
-    <?php endif; ?>
-
+    <style>
+        /* Zapobiega zlewaniu się ciemnego tekstu z szałwiowym tłem przy najechaniu */
+        .nav-dark .nav-side a:hover {
+            color: #ffffff !important;
+        }
+        
+        /* Skalowanie odstępów i czcionek, by linki NIGDY nie najechały na logo przy zwężaniu okna */
+        @media (max-width: 1400px) {
+            #nav { padding: 0 15px !important; }
+            .nav-side { gap: 15px !important; }
+            .nav-side a { font-size: 0.85rem !important; letter-spacing: 0px !important; }
+            .cta-nav { padding: 8px 12px !important; }
+        }
+        
+        @media (max-width: 1150px) {
+            .nav-side { gap: 8px !important; }
+            .nav-side a { font-size: 0.75rem !important; }
+        }
+    </style>
 
     <!-- Header Container -->
-    <header id="main-header">
-        <div class="nav-bg" id="navBg"></div>
+    <header id="main-header" class="new-header">
+        <div class="new-header-bg"></div>
+        <div class="nav-bg" id="navBg" style="display:none;"></div>
         
-        <!-- Branding & Nav -->
-        <?php $brand_text_style = $is_home ? '' : 'style="display: none !important;"'; ?>
-        <h1 class="new-brand" id="brandText1" data-i18n="hero.title1" <?php echo $brand_text_style; ?>>TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE
-            SIĘ ELEGANCJĄ...</h1>
-        <div class="new-brand" id="brandText2" data-i18n="hero.title2" <?php echo $brand_text_style; ?>>...TAM ZACZYNA SIĘ <span class="logo-pulse">RARICART</span></div>
-
         <div class="hamburger <?php echo $nav_init_class; ?>" id="hamburger">
             <span></span>
             <span></span>
             <span></span>
         </div>
 
-        <div class="hero-logo <?php echo $logo_init_class; ?>" id="brand" <?php echo $logo_style; ?>>
-            <img src="https://media.raricart.pl/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
-                width="342" height="250" style="cursor:pointer" fetchpriority="high">
-        </div>
-
-        <nav id="nav" class="<?php echo $nav_init_class; ?>" <?php echo $nav_style; ?>>
+        <nav id="nav" class="navbar-new visible nav-dark">
             <ul class="nav-side nav-left">
-                <li><a href="<?php echo nav_link('#onas'); ?>" aria-label="Przejdź do sekcji O Nas" data-i18n="nav.about">O Nas</a></li>
-                <li><a href="<?php echo nav_link('#oferta-lista'); ?>" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
-                <li><a href="<?php echo nav_link('#realizacje'); ?>" aria-label="Przejdź do sekcji Galeria Realizacji"
-                        data-i18n="nav.gallery">Galeria</a></li>
-                <li><a href="<?php echo nav_link('#faq'); ?>" aria-label="Przejdź do sekcji FAQ" data-i18n="nav.faq">FAQ</a></li>
+                <li><a href="<?php echo nav_link('#hero'); ?>" aria-label="Strona główna">RARICART</a></li>
+                <li><a href="<?php echo nav_link('#oferta'); ?>" aria-label="Oferta">OFERTA</a></li>
+                <li><a href="<?php echo nav_link('#proces'); ?>" aria-label="Jak to działa">JAK TO DZIAŁA</a></li>
+                <li><a href="<?php echo nav_link('#dlakogo'); ?>" aria-label="Dla kogo">DLA KOGO</a></li>
             </ul>
+
+            <div class="<?php echo $logo_init_class; ?> navbar-new-brand" id="nav-brand">
+                <img src="https://media.raricart.pl/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
+                    style="cursor:pointer;" fetchpriority="high">
+            </div>
 
             <ul class="nav-side nav-right">
-                <li><a href="<?php echo nav_link('#dlaczego'); ?>" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
-                        Wyróżnia</a></li>
-                <!-- Dynamic link to packages -->
-                <li><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
-                <li><a href="<?php echo nav_link('#kontakt'); ?>" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
+                <li><a href="<?php echo nav_link('#onas'); ?>" aria-label="O nas">O NAS</a></li>
+                <li><a href="<?php echo nav_link('#realizacje'); ?>" aria-label="Realizacje">REALIZACJE</a></li>
+                <li><a href="<?php echo nav_link('#faq'); ?>" aria-label="FAQ">FAQ</a></li>
+                <li>
+                    <a href="<?php echo nav_link('#kontakt'); ?>" class="cta-nav" aria-label="Sprawdź termin">
+                        SPRAWDŹ TERMIN
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </li>
             </ul>
 
-            <div class="lang-switch">
+            <div class="lang-switch" style="display: none;">
                 <button class="lang-btn active" data-lang="pl">PL</button>
                 <span class="sep">|</span>
                 <button class="lang-btn" data-lang="en">EN</button>
@@ -109,12 +105,7 @@ $bg_style = '';
                 <button class="lang-btn" data-lang="es">ES</button>
             </div>
         </nav>
-
-        <?php if ($is_home): ?>
-        <div class="scroll-indicator" id="scroll"><span data-i18n="hero.scroll">Przewiń w dół</span><span
-                class="scroll-arrow">↓</span></div>
-        <?php endif; ?>
     </header>
-    <?php if ($is_home): ?>
-    <div class="spacer"></div>
-    <?php endif; ?>
+    <!-- Spacer for fixed header -->
+    <div style="height: 100px;"></div>
+
