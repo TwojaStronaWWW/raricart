@@ -3015,3 +3015,10 @@ section {
     align-items: center;
     gap: 8px;
 }
+/* --- Inline Cleanups --- */
+.section-hero { padding-top: 150px; }
+.hero-cta-wrapper { margin-top: 1rem; }
+.section-gallery-header { padding-top: 2rem; padding-bottom: 0; }
+.section-gallery-parallax { padding-top: 0; }
+.form-progress-text { text-align: center; margin-bottom: 2rem; color: #666; font-size: 0.9rem; }
+.honeypot-input { display: none !important; }
