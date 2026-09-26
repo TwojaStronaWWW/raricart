@@ -1,39 +1,7 @@
 <?php
-// Security & Production config
-ini_set('display_errors', 0);
-error_reporting(E_ALL);
-header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: SAMEORIGIN");
-header("X-XSS-Protection: 1; mode=block");
+require_once __DIR__ . '/api/core.php';
 
-clearstatcache();
 $jsonFile = __DIR__ . '/assets/data/gallery.json';
-$content_file = __DIR__ . '/assets/data/content.json';
-$content = [];
-if (file_exists($content_file)) {
-    $content = json_decode(file_get_contents($content_file), true);
-    if (!is_array($content)) $content = [];
-}
-
-function get_val($key, $default) {
-    global $content;
-    $keys = explode('.', $key);
-    $val = $content;
-    foreach ($keys as $k) {
-        if (is_array($val) && isset($val[$k])) {
-            $val = $val[$k];
-        } else {
-            return $default;
-        }
-    }
-    if ($val !== $default && strpos($val, '?') === false) {
-        $local_path = __DIR__ . '/' . ltrim($val, '/');
-        if (file_exists($local_path)) {
-            $val .= '?v=' . filemtime($local_path);
-        }
-    }
-    return $val;
-}
 
 // Ensure navbar knows it's the packages page
 $_SERVER['SCRIPT_NAME'] = '/pakiety.php';

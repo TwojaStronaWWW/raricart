@@ -1,19 +1,5 @@
 <?php
-// polityka-prywatnosci.php
-ini_set('display_errors', 0);
-error_reporting(E_ALL);
-
-// Load dynamic content for consistency
-$content_file = __DIR__ . '/assets/data/content.json';
-$content = [];
-if (file_exists($content_file)) {
-    $content = json_decode(file_get_contents($content_file), true);
-}
-
-function get_val($key, $default) {
-    global $content;
-    return $content[$key] ?? $default;
-}
+require_once __DIR__ . '/api/core.php';
 
 include 'parts/head.php';
 ?>

@@ -1,10 +1,5 @@
 <?php
-// Security & Production config
-ini_set('display_errors', 0);
-error_reporting(E_ALL);
-header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: SAMEORIGIN");
-header("X-XSS-Protection: 1; mode=block");
+require_once __DIR__ . '/api/core.php';
 
 // Prevent PHP / LiteSpeed Caching - USUNIĘTE DLA OPTYMALIZACJI
 // header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -14,48 +9,7 @@ header("X-XSS-Protection: 1; mode=block");
 // header("X-LiteSpeed-Cache-Control: no-cache"); 
 // header("Clear-Site-Data: \"cache\"");
 
-clearstatcache();
-
 $jsonFile = __DIR__ . '/assets/data/gallery.json';
-
-// Load dynamic content on server side to prevent flickering
-$content_file = __DIR__ . '/assets/data/content.json';
-$content_dist = __DIR__ . '/assets/data/content.json.dist';
-$content = [];
-if (file_exists($content_file) && filesize($content_file) > 10) {
-    $content = json_decode((string)file_get_contents($content_file), true);
-}
-if (!is_array($content) || empty($content)) {
-    if (file_exists($content_dist) && filesize($content_dist) > 10) {
-        $content = json_decode((string)file_get_contents($content_dist), true);
-    }
-}
-if (!is_array($content)) $content = [];
-
-function get_val($key, $default) {
-    global $content;
-    
-    // Obsługa zagnieżdżonych kluczy (np. offer_cards.pancakes)
-    $keys = explode('.', $key);
-    $val = $content;
-    
-    foreach ($keys as $k) {
-        if (is_array($val) && isset($val[$k])) {
-            $val = $val[$k];
-        } else {
-            return $default;
-        }
-    }
-    
-    // Cache busting oparty na czasie modyfikacji pliku lokalnego
-    if ($val !== $default && strpos($val, '?') === false) {
-        $local_path = __DIR__ . '/' . ltrim($val, '/');
-        if (file_exists($local_path)) {
-            $val .= '?v=' . filemtime($local_path);
-        }
-    }
-    return $val;
-}
 
 // Parallax backgrounds (CSS injection)
 $gallery_bg = get_val('gallery_bg', '');
@@ -75,7 +29,7 @@ include 'parts/navbar.php';
         <section id="onas" class="section-premium">
             <div class="premium-container">
                 <div class="premium-col-image">
-                    <img src="<?php echo get_val('about_image', '/assets/images/about_experience.webp'); ?>"
+                    <img src="<?php echo get_val('about_image', 'https://media.raricart.pl/images/placeholder.webp'); ?>"
                         alt="Raricart Live Food Experience - Goście cieszący się wydarzeniem" loading="lazy" class="premium-img">
                 </div>
                 <div class="premium-col-text">
@@ -103,7 +57,7 @@ include 'parts/navbar.php';
         <section id="oferta" class="section-offer-intro">
             <div class="premium-overlap-container reverse">
                 <div class="premium-image-box">
-                    <img src="<?php echo get_val('offer_main_image', '/assets/images/offer_main.webp'); ?>"
+                    <img src="<?php echo get_val('offer_main_image', 'https://media.raricart.pl/images/placeholder.webp'); ?>"
                         alt="Mobilna stacja gastronomiczna Raricart" loading="lazy" class="premium-image">
                 </div>
                 <div class="premium-text-card">
@@ -129,7 +83,7 @@ include 'parts/navbar.php';
             <div class="offer-grid">
                 <article class="offer-card" data-offer="pancakes">
                     <div class="offer-image-wrapper">
-                         <img src="<?php echo get_val('offer_cards.pancakes', '/assets/images/placeholder.webp'); ?>" 
+                         <img src="<?php echo get_val('offer_cards.pancakes', 'https://media.raricart.pl/images/placeholder.webp'); ?>" 
                               alt="Mini Pancakes" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -140,7 +94,7 @@ include 'parts/navbar.php';
                 </article>
                 <article class="offer-card" data-offer="icecream">
                     <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.icecream', '/assets/images/placeholder.webp'); ?>" 
+                        <img src="<?php echo get_val('offer_cards.icecream', 'https://media.raricart.pl/images/placeholder.webp'); ?>" 
                              alt="Lody Włoskie" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
@@ -151,7 +105,7 @@ include 'parts/navbar.php';
                 </article>
                 <article class="offer-card" data-offer="cheese">
                     <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.cheese', '/assets/images/placeholder.webp'); ?>" 
+                        <img src="<?php echo get_val('offer_cards.cheese', 'https://media.raricart.pl/images/placeholder.webp'); ?>" 
                              alt="Deska Serów" loading="lazy" class="offer-image-img">
                     </div>
                     <div class="offer-content">
