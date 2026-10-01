@@ -7,7 +7,7 @@
 
 ## 📋 Status Realizacji Krok po Kroku
 
-- [ ] **KROK 1: SEO, Tagi Meta & Nagłówek H1** (Sekcja 16)
+- [x] **KROK 1: SEO, Tagi Meta & Open Graph** (Sekcja 16) — *UKOŃCZONE*
 - [ ] **KROK 2: Menu i Nawigacja z trwałym CTA** (Sekcja 14)
 - [ ] **KROK 3: Nowa Sekcja Hero (Split: Treść + Zdjęcie/Wideo)** (Sekcja 1)
 - [ ] **KROK 4: Mini Sekcja Zaufania (Trust Bar - 4 filary)** (Sekcja 2)
