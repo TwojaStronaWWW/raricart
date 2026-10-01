@@ -6,7 +6,7 @@
 
 DirectoryIndex index.php
 RewriteEngine On
-RewriteRule ^robots\.txt$ robots.php [L]
+RewriteRule ^robots\.txt$ api/robots.php [L]
 RewriteRule ^pakiety/?$ pakiety.php [L]
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP_HOST} !^localhost
@@ -14,7 +14,7 @@ RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
 RewriteCond %{HTTP_HOST} !\.test$
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-ErrorDocument 404 /404.html
+ErrorDocument 404 /parts/404.html
 
 <IfModule mod_expires.c>
     ExpiresActive On
