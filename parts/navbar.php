@@ -99,7 +99,7 @@ $bg_style = '';
                         Wyróżnia</a></li>
                 <!-- Pakiety: ukryte z nawigacji, link zachowany w kodzie na przyszłość -->
                 <li class="nav-item-hidden"><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
-                <li><a href="<?php echo nav_link('#kontakt'); ?>" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
+                <li class="nav-cta-item"><a href="<?php echo nav_link('#kontakt'); ?>" class="nav-cta-btn" aria-label="Sprawdź termin" data-i18n="nav.check_date">Sprawdź termin</a></li>
             </ul>
 
             <div class="lang-switch">
