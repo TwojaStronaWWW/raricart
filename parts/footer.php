@@ -74,11 +74,11 @@
 
 
     <!-- Footer Bottom -->
-        <div class="footer-bottom" style="text-align: center; padding: 2rem 0; border-top: 1px solid rgba(0,0,0,0.05); font-size: 0.85rem; color: #666; background: var(--color-bg); position: relative; z-index: 25;">
+        <div class="footer-bottom">
             <div class="container">
                 <p>&copy; <?php echo date('Y'); ?> Raricart. Wszystkie prawa zastrzeżone.</p>
-                <p><a href="polityka-prywatnosci.php" style="color: inherit; text-decoration: underline;">Polityka Prywatności</a></p>
-                <p style="margin-top: 1rem; opacity: 0.8;">Stworzona przez <a href="https://twojastronawww.pl/" target="_blank" style="color: inherit; font-weight: bold;">TwojaStronaWWW</a></p>
+                <p><a href="polityka-prywatnosci.php">Polityka Prywatności</a></p>
+                <p class="footer-bottom-creator">Stworzona przez <a href="https://twojastronawww.pl/" target="_blank">TwojaStronaWWW</a></p>
             </div>
         </div>
     </footer>

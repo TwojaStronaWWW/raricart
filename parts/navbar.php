@@ -68,10 +68,11 @@ $bg_style = '';
         <div class="nav-bg" id="navBg"></div>
         
         <!-- Branding & Nav -->
-        <?php $brand_text_style = $is_home ? '' : 'style="display: none !important;"'; ?>
-        <h1 class="new-brand" id="brandText1" data-i18n="hero.title1" <?php echo $brand_text_style; ?>>TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE
+        <?php if ($is_home): ?>
+        <h1 class="new-brand" id="brandText1" data-i18n="hero.title1">TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE
             SIĘ ELEGANCJĄ...</h1>
-        <div class="new-brand" id="brandText2" data-i18n="hero.title2" <?php echo $brand_text_style; ?>>...TAM ZACZYNA SIĘ <span class="logo-pulse">RARICART</span></div>
+        <div class="new-brand" id="brandText2" data-i18n="hero.title2">...TAM ZACZYNA SIĘ <span class="logo-pulse">RARICART</span></div>
+        <?php endif; ?>
 
         <div class="hamburger <?php echo $nav_init_class; ?>" id="hamburger">
             <span></span>
@@ -81,7 +82,7 @@ $bg_style = '';
 
         <div class="hero-logo <?php echo $logo_init_class; ?>" id="brand" <?php echo $logo_style; ?>>
             <img src="https://media.raricart.pl/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
-                width="342" height="250" style="cursor:pointer" fetchpriority="high">
+                width="342" height="250" fetchpriority="high">
         </div>
 
         <nav id="nav" class="<?php echo $nav_init_class; ?>" <?php echo $nav_style; ?>>
@@ -97,7 +98,7 @@ $bg_style = '';
                 <li><a href="<?php echo nav_link('#dlaczego'); ?>" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
                         Wyróżnia</a></li>
                 <!-- Pakiety: ukryte z nawigacji, link zachowany w kodzie na przyszłość -->
-                <li style="display:none;"><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
+                <li class="nav-item-hidden"><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
                 <li><a href="<?php echo nav_link('#kontakt'); ?>" aria-label="Przejdź do sekcji Kontakt" data-i18n="nav.contact">Kontakt</a></li>
             </ul>
 

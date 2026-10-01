@@ -402,33 +402,29 @@ video::-webkit-media-text-track-display {
 }
 
 /* Dark Navigation for Light Background Pages */
-.nav-dark .nav-side a {
-	color: #3d4a3a !important; /* var(--color-text-dark) */
+#nav.nav-dark .nav-side a {
+	color: var(--color-text-dark);
 	font-weight: 600;
 }
 
-.nav-dark .nav-side a:hover {
-	color: #a3b59a !important; /* var(--accent) */
+#nav.nav-dark .nav-side a:hover {
+	color: var(--color-accent);
 	opacity: 1;
 }
 
-.nav-dark .sep,
-.nav-dark .lang-btn {
-	color: #3d4a3a !important;
+#nav.nav-dark .sep,
+#nav.nav-dark .lang-btn {
+	color: var(--color-text-dark);
 }
 
-.nav-dark .lang-btn.active {
+#nav.nav-dark .lang-btn.active {
 	font-weight: 700;
-	border-bottom-color: #3d4a3a !important;
+	border-bottom-color: var(--color-text-dark);
 }
 
-.hamburger.nav-dark span {
-	background: #3d4a3a !important;
-}
-
-/* Ensure hamburger inside nav-dark if valid selector */
-.nav-dark .hamburger span {
-	background: #3d4a3a !important;
+#hamburger.nav-dark span,
+.nav-dark #hamburger span {
+	background: var(--color-text-dark);
 }
 
 /* Mobile Nav Styles */
@@ -567,13 +563,118 @@ video::-webkit-media-text-track-display {
 	font-weight: 400;
 }
 
-/* --- Premium Overlap Sections (O Nas & Oferta) --- */
+/* --- Premium About Section (O Nas) --- */
 .section-premium {
-	background: #faf8f5;
-	padding: 10rem 2rem;
-	overflow: visible;
+	background-color: #fafafa;
+	padding: 8rem 2rem;
+	position: relative;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+
+	/* Reveal Animation */
+	opacity: 0;
+	transform: translateY(30px);
+	transition:
+		opacity 1s ease-out,
+		transform 1s ease-out;
+	will-change: opacity, transform;
 }
 
+.section-premium.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.premium-container {
+	max-width: 1320px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 4rem;
+}
+
+.premium-col-image {
+	flex: 0 0 60%;
+	position: relative;
+}
+
+.premium-col-text {
+	flex: 1;
+	padding-right: 1rem;
+}
+
+.premium-img {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 16px;
+	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+	transition:
+		transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+		opacity 0.8s ease;
+	max-height: 700px;
+	object-fit: cover;
+}
+
+.premium-text {
+	font-family: var(--font-primary);
+	font-size: 1.1rem;
+	line-height: 1.75;
+	color: #4a4a4a;
+	margin-bottom: 2rem;
+	font-weight: 300;
+}
+
+.premium-text .highlight {
+	font-weight: 500;
+	color: var(--color-accent);
+}
+
+.premium-footer {
+	margin-top: 3.5rem;
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	opacity: 0.8;
+}
+
+.premium-line {
+	height: 3px;
+	width: 60px;
+	background-color: var(--color-accent);
+}
+
+.premium-label {
+	font-family: var(--font-secondary);
+	font-size: 0.85rem;
+	color: #888;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	transform: translateY(1px);
+}
+
+@media (max-width: 1024px) {
+	.premium-container {
+		flex-direction: column;
+		gap: 3rem;
+		max-width: 600px;
+	}
+
+	.section-premium {
+		padding: 5rem 1.5rem;
+	}
+
+	.premium-col-image {
+		order: 1;
+		width: 100%;
+	}
+
+	.premium-col-text {
+		order: 2;
+		padding: 0;
+	}
+}
+
+/* --- Premium Overlap Section (Oferta Intro) --- */
 .section-offer-intro {
 	background: #faf8f5;
 	padding: 10rem 2rem 2rem 2rem;
@@ -1046,6 +1147,100 @@ body.lightbox-open {
 
 .gallery-item:hover img {
 	transform: scale(1.1);
+}
+
+/* --- View Utility Classes --- */
+.section-gallery-title {
+	padding-top: 2rem;
+	padding-bottom: 0;
+}
+
+.section-gallery-parallax {
+	padding-top: 0;
+}
+
+.progress-text {
+	text-align: center;
+	margin-bottom: 2rem;
+	color: var(--color-text);
+	font-size: 0.9rem;
+}
+
+.honeypot-field,
+.nav-item-hidden {
+	display: none !important;
+}
+
+body:not(.is-homepage) .new-brand {
+	display: none !important;
+}
+
+.brand-logo {
+	cursor: pointer;
+}
+
+.footer-bottom {
+	text-align: center;
+	padding: 2rem 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+	font-size: 0.85rem;
+	color: var(--color-text);
+	background: var(--color-bg);
+	position: relative;
+	z-index: 25;
+}
+
+.footer-bottom a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.footer-bottom-creator {
+	margin-top: 1rem;
+	opacity: 0.8;
+}
+
+.footer-bottom-creator a {
+	font-weight: 700;
+}
+
+/* --- Availability Notice (Contact Form) --- */
+.availability-notice {
+	display: none;
+	background-color: rgba(163, 181, 154, 0.15);
+	border: 1px solid var(--color-accent);
+	color: var(--color-text-dark);
+	padding: 1rem 1.2rem;
+	margin-bottom: 2rem;
+	border-radius: 12px;
+	font-size: 1rem;
+	font-weight: 500;
+	align-items: center;
+	gap: 1rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+	animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notice-icon {
+	flex-shrink: 0;
+	color: var(--color-accent);
+	width: 24px;
+	height: 24px;
+}
+
+.availability-notice span {
+	line-height: 1.4;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 /* --- Contact Form --- */
@@ -2135,47 +2330,6 @@ footer {
 	transition: opacity 0.2s ease;
 }
 
-/* --- Raricart Stats (Boutique) --- */
-.stats-grid {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 3rem;
-	margin-top: 1rem;
-	padding-top: 1rem;
-}
-
-.stat-item {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-}
-
-.stat-number {
-	font-family: var(--font-secondary);
-	font-size: 3.5rem;
-	color: var(--color-accent);
-	line-height: 1;
-	font-weight: 700;
-}
-
-.stat-desc {
-	font-size: 0.95rem;
-	color: var(--color-text-dark);
-	line-height: 1.6;
-}
-
-/* Mobile Tweak for Stats */
-@media (max-width: 600px) {
-	.stats-grid {
-		grid-template-columns: 1fr; /* Stack vertically on small screens */
-		gap: 2rem;
-	}
-
-	.stat-number {
-		font-size: 2.8rem;
-	}
-}
-
 /* --- Footer Enhanced --- */
 
 .footer-socials.vertical {
@@ -2273,177 +2427,6 @@ footer {
 	transform: translateX(5px); /* Move text AND arrow together */
 }
 
-/* --- Status Notice (Contact Form) --- */
-/* --- Status Notice (Contact Form) --- */
-.availability-notice {
-	background-color: rgba(163, 181, 154, 0.15); /* Soft accent */
-	border: 1px solid var(--color-accent);
-	/* border-left: 4px solid var(--color-accent); */
-	color: var(--color-text-dark);
-	padding: 1rem 1.2rem;
-	margin-bottom: 2rem;
-	border-radius: 12px;
-	font-size: 1rem;
-	font-weight: 500;
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-	animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.notice-icon {
-	flex-shrink: 0;
-	color: var(--color-accent);
-	width: 24px;
-	height: 24px;
-}
-.availability-notice span {
-	line-height: 1.4;
-}
-
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-}
-
-/* --- Premium About Section --- */
-.section-premium {
-	background-color: #fafafa;
-	padding: 8rem 2rem;
-	position: relative;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-
-	/* Reveal Animation */
-	opacity: 0;
-	transform: translateY(30px);
-	transition:
-		opacity 1s ease-out,
-		transform 1s ease-out;
-	will-change: opacity, transform;
-}
-
-.section-premium.visible {
-	opacity: 1;
-	transform: translateY(0);
-}
-
-.premium-container {
-	max-width: 1320px;
-	margin: 0 auto;
-	display: flex;
-	align-items: center; /* Vertical Center */
-	gap: 4rem; /* Adjusted spacing for larger image */
-}
-
-/* Columns */
-/* Columns */
-.premium-col-image {
-	flex: 0 0 60%; /* Increased from 55% */
-	position: relative;
-}
-
-.premium-col-text {
-	flex: 1;
-	padding-right: 1rem;
-}
-
-/* Image */
-.premium-img {
-	width: 100%;
-	height: auto;
-	display: block;
-	border-radius: 16px;
-	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06); /* Very subtle, high-end shadow */
-	transition:
-		transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
-		opacity 0.8s ease;
-	/* Initial state for animation handled by JS/Observer ideally, or just static for now if no JS changes */
-	/* Assuming existing scroll logic might need update, or I can add a simple animation class */
-	max-height: 700px;
-	object-fit: cover;
-}
-
-/* Typography */
-.premium-title {
-	font-family: var(--font-secondary);
-	font-size: 3rem;
-	line-height: 1.15;
-	color: #1a1a1a;
-	margin-bottom: 2.5rem;
-	font-weight: 500;
-	text-align: left;
-	letter-spacing: -0.02em;
-}
-
-.premium-text {
-	font-family: var(--font-primary);
-	font-size: 1.1rem;
-	line-height: 1.75;
-	color: #4a4a4a; /* Off-black for softness */
-	margin-bottom: 2rem;
-	font-weight: 300;
-}
-
-.premium-text .highlight {
-	font-weight: 500;
-	color: var(--color-accent);
-}
-
-/* Premium Footer / Accent */
-.premium-footer {
-	margin-top: 3.5rem;
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-	opacity: 0.8;
-}
-
-.premium-line {
-	height: 3px;
-	width: 60px;
-	background-color: var(--color-accent);
-}
-
-.premium-label {
-	font-family: var(--font-secondary);
-	font-size: 0.85rem;
-	color: #888;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-	transform: translateY(1px); /* Optical alignment */
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-	.premium-container {
-		flex-direction: column;
-		gap: 3rem;
-		max-width: 600px; /* Readability on tablet/mobile */
-	}
-
-	.section-premium {
-		padding: 5rem 1.5rem;
-	}
-
-	.premium-title {
-		font-size: 2.4rem;
-		margin-bottom: 1.5rem;
-		text-align: left;
-	}
-
-	.premium-col-image {
-		order: 1; /* Image Top */
-		width: 100%;
-	}
-
-	.premium-col-text {
-		order: 2; /* Text Bottom */
-		padding: 0;
-	}
-}
-
 /* --- Logo Pulse Animation (Heartbeat) --- */
 @keyframes logoPulse {
 	0% {
@@ -2518,7 +2501,7 @@ footer {
 
 .floating-cta.visible {
 	visibility: visible;
-	opacity: 1 !important;
+	opacity: 1;
 	transform: translateY(0) scale(1);
 	pointer-events: auto;
 }
