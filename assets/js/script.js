@@ -727,91 +727,32 @@
 			}
 		}
 
-		// --- HERO SCROLL-LOCK SEQUENCE ---
-		// Intro plays ONCE per session. After that, only logo animation.
-		const introPlayed = sessionStorage.getItem('heroIntroPlayed')
-
-		if (textProgress <= 0.3 && !window._heroSequenceRunning) {
-			// TOP — logo centered
-			if (ui.brand) ui.brand.classList.remove('moving')
-			if (ui.scroll) ui.scroll.classList.remove('hidden')
-
-			if (ui.brandText1) {
-				ui.brandText1.classList.remove('visible')
-				ui.brandText1.classList.add('hidden')
-			}
-			if (ui.brandText2) {
-				ui.brandText2.classList.remove('visible')
-				ui.brandText2.classList.add('hidden')
-			}
-
-			window._heroSequencePlayed = false
-		} else if (!window._heroSequencePlayed && !introPlayed) {
-			// FIRST VISIT — play full intro with scroll lock
-			window._heroSequencePlayed = true
-			window._heroSequenceRunning = true
-
-			if (ui.brand) ui.brand.classList.add('moving')
-			// Keep scroll indicator visible during intro!
-
-			// Scroll lock removed - fluid native interaction
-			document.body.style.overflow = ''
-
-			// TEXT 1
-			if (ui.brandText1) {
-				ui.brandText1.classList.remove('hidden')
-				ui.brandText1.classList.add('visible')
-			}
-
-			introTimeout1 = setTimeout(() => {
-				if (ui.brandText1) {
-					ui.brandText1.classList.remove('visible')
-					ui.brandText1.classList.add('hidden')
-				}
-				if (ui.brandText2) {
-					ui.brandText2.classList.remove('hidden')
-					ui.brandText2.classList.add('visible')
-				}
-
-				introTimeout2 = setTimeout(() => {
-					if (ui.brandText2) {
-						ui.brandText2.classList.remove('visible')
-						ui.brandText2.classList.add('hidden')
-					}
-
-					// Unlock scroll + mark as played for this session
-					document.body.style.overflow = ''
-					sessionStorage.setItem('heroIntroPlayed', '1')
-					window._heroSequenceRunning = false
-				}, 2500)
-			}, 3000)
-		} else if (!window._heroSequenceRunning) {
-			// SUBSEQUENT SCROLLS — just logo to navbar, no texts
-			if (ui.brand) ui.brand.classList.add('moving')
-			window._heroSequencePlayed = true
-
-			if (ui.brandText1) {
-				ui.brandText1.classList.remove('visible')
-				ui.brandText1.classList.add('hidden')
-			}
-			if (ui.brandText2) {
-				ui.brandText2.classList.remove('visible')
-				ui.brandText2.classList.add('hidden')
-			}
+		// --- STATIC NAVBAR & LOGO (Lejek 2026 - Zagnieżdżony w pasku) ---
+		if (ui.brand) ui.brand.classList.add('moving')
+		if (ui.scroll) ui.scroll.classList.add('hidden')
+		if (ui.brandText1) {
+			ui.brandText1.classList.remove('visible')
+			ui.brandText1.classList.add('hidden')
 		}
+		if (ui.brandText2) {
+			ui.brandText2.classList.remove('visible')
+			ui.brandText2.classList.add('hidden')
+		}
+		window._heroSequenceRunning = false
+		window._heroSequencePlayed = true
 
-		// --- Navbar State Apply ---
-		if (shouldShowNavbar) {
-			if (ui.bg) ui.bg.classList.add('shrink')
-			if (ui.nav) ui.nav.classList.add('visible')
-			if (ui.navBg) ui.navBg.classList.add('visible') // Toggle background
-			if (ui.hamburger) ui.hamburger.classList.add('visible')
-			if (ui.scroll) ui.scroll.classList.add('hidden')
+		// Always show navbar & nav background, add scrolled class on scroll
+		if (ui.nav) ui.nav.classList.add('visible')
+		if (ui.navBg) ui.navBg.classList.add('visible')
+		if (ui.hamburger) ui.hamburger.classList.add('visible')
+		if (ui.bg) ui.bg.classList.add('shrink')
+
+		if (scrollY > 30) {
+			if (ui.nav) ui.nav.classList.add('nav-scrolled')
+			if (ui.navBg) ui.navBg.classList.add('nav-scrolled')
 		} else {
-			if (ui.bg) ui.bg.classList.remove('shrink')
-			if (ui.nav) ui.nav.classList.remove('visible')
-			if (ui.navBg) ui.navBg.classList.remove('visible') // Toggle background
-			if (ui.hamburger) ui.hamburger.classList.remove('visible')
+			if (ui.nav) ui.nav.classList.remove('nav-scrolled')
+			if (ui.navBg) ui.navBg.classList.remove('nav-scrolled')
 		}
 
 		tick = false

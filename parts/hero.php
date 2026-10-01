@@ -1,6 +1,14 @@
 <?php
-// parts/hero.php - Sekcja Hero (Split-Screen) zgodna ze specyfikacją 2026
-$hero_img = function_exists('get_val') ? get_val('hero_image', 'https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp') : 'https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp';
+// parts/hero.php - Sekcja Hero (Split-Screen) z wideo Live Food Station
+$default_hero_vid = 'https://media.raricart.pl/content/hero.mp4';
+$hero_vid = function_exists('get_val') ? get_val('hero_video', $default_hero_vid) : $default_hero_vid;
+$root_dir = defined('BASE_DIR') ? BASE_DIR : dirname(__DIR__);
+if ($hero_vid && !str_starts_with($hero_vid, 'http') && !file_exists($root_dir . '/' . ltrim($hero_vid, '/'))) {
+    $hero_vid = $default_hero_vid;
+} elseif ($hero_vid && !str_starts_with($hero_vid, '/') && !str_starts_with($hero_vid, 'http')) {
+    $hero_vid = '/' . $hero_vid;
+}
+$hero_poster = function_exists('get_val') ? get_val('hero_image', 'https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp') : 'https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp';
 ?>
 <section id="hero" class="hero-split">
     <div class="hero-container container">
@@ -28,14 +36,21 @@ $hero_img = function_exists('get_val') ? get_val('hero_image', 'https://media.ra
         </div>
 
         <div class="hero-visual">
-            <div class="hero-image-wrapper">
-                <img src="<?php echo htmlspecialchars($hero_img); ?>" 
-                     alt="Raricart Live Food Station z gośćmi i świeżymi deserami" 
-                     class="hero-img"
-                     fetchpriority="high"
-                     loading="eager"
-                     width="800"
-                     height="600">
+            <div class="hero-video-wrapper">
+                <video class="hero-video" 
+                       autoplay 
+                       muted 
+                       loop 
+                       playsinline 
+                       preload="auto" 
+                       poster="<?php echo htmlspecialchars($hero_poster); ?>" 
+                       aria-label="Prezentacja mobilnej stacji kulinarnej Raricart na żywo">
+                    <source src="<?php echo htmlspecialchars($hero_vid); ?>" type="video/mp4">
+                </video>
+                <div class="hero-video-badge">
+                    <span class="hero-video-badge-dot"></span>
+                    <span>LIVE PREPARATION</span>
+                </div>
             </div>
         </div>
     </div>
