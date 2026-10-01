@@ -119,11 +119,11 @@ include 'parts/navbar.php';
         </section>
 
         <!-- Realizacje -->
-        <section id="realizacje" class="section" style="padding-top: 2rem; padding-bottom: 0;">
+        <section id="realizacje" class="section section-gallery-title">
             <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
         </section>
         
-        <section id="realizacje-parallax" class="section" style="<?php if($gallery_bg) echo "--bg-image: url('$gallery_bg');"; ?> padding-top: 0;">
+        <section id="realizacje-parallax" class="section section-gallery-parallax" <?php if($gallery_bg): ?>style="--bg-image: url('<?php echo htmlspecialchars($gallery_bg); ?>');"<?php endif; ?>>
             <div class="gallery-grid" id="dynamicGalleryGrid">
                 <?php
                 // Dynamic Gallery Rendering (PHP Side)
@@ -293,13 +293,13 @@ include 'parts/navbar.php';
             <div class="progress-container">
                 <div id="form-progress"></div>
             </div>
-            <p id="progress-text" style="text-align: center; margin-bottom: 2rem; color: #666; font-size: 0.9rem;"
+            <p id="progress-text" class="progress-text"
                 data-i18n="form.progress_text">
                 Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)</p>
             <form id="form" class="contact-form" novalidate>
-                <div id="availability-notice" class="availability-notice" style="display:none"></div>
+                <div id="availability-notice" class="availability-notice"></div>
                 <!-- Honeypot for bots -->
-                <input type="text" name="website_check" style="display:none !important" tabindex="-1"
+                <input type="text" name="website_check" class="honeypot-field" tabindex="-1"
                     autocomplete="off">
 
                 <div class="form-row">
@@ -384,4 +384,3 @@ include 'parts/modals.php';
 // Widżet pływający Zapytaj o wycenę
 include 'parts/contact-button.php';
 ?>
-<!-- efweg -->

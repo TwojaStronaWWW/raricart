@@ -20,7 +20,7 @@
     </div>
 
     <!-- Cookie Banner -->
-    <div id="cookie-banner" class="cookie-banner" style="display: none;">
+    <div id="cookie-banner" class="cookie-banner">
         <div class="cookie-content">
             <p data-i18n="cookies.text">
                 Ta strona używa plików cookies, aby zapewnić najlepszą jakość. Korzystając ze strony, zgadzasz

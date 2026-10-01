@@ -1895,4 +1895,24 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 		})
 	}
+
+	// 6. Floating CTA Button Visibility Handler
+	const floatingCta = document.getElementById('floatingCta');
+	if (floatingCta) {
+		const footer = document.querySelector('footer');
+		window.addEventListener('scroll', () => {
+			const y = window.scrollY;
+			if (y > 300) {
+				floatingCta.classList.add('visible');
+			} else {
+				floatingCta.classList.remove('visible');
+			}
+			if (footer) {
+				const footerTop = footer.getBoundingClientRect().top;
+				if (footerTop < window.innerHeight) {
+					floatingCta.classList.remove('visible');
+				}
+			}
+		}, { passive: true });
+	}
 })
