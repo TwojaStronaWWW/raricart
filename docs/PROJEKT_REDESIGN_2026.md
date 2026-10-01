@@ -9,7 +9,7 @@
 
 - [x] **KROK 1: SEO, Tagi Meta & Open Graph** (Sekcja 16) — *UKOŃCZONE*
 - [x] **KROK 2: Menu i Nawigacja z trwałym CTA (Sprawdź termin)** (Sekcja 14) — *UKOŃCZONE*
-- [ ] **KROK 3: Nowa Sekcja Hero (Split: Treść + Zdjęcie/Wideo)** (Sekcja 1)
+- [x] **KROK 3: Nowa Sekcja Hero (Split: Treść + Zdjęcie/Wideo)** (Sekcja 1) — *UKOŃCZONE*
 - [ ] **KROK 4: Mini Sekcja Zaufania (Trust Bar - 4 filary)** (Sekcja 2)
 - [ ] **KROK 5: Prezentacja Stacji (Pancakes, Lody, Deski Serów)** (Sekcja 3)
 - [ ] **KROK 6: Główna Sekcja Sprzedażowa (Dlaczego stacja zamiast cateringu)** (Sekcja 4)

@@ -24,7 +24,9 @@ include 'parts/navbar.php';
 
     <main class="content">
 
-        <!-- O Nas -->
+        <!-- 1. HERO SECTION (Split-Screen Lejek 2026) -->
+        <?php include 'parts/hero.php'; ?>
+
         <!-- O Nas -->
         <section id="onas" class="section-premium">
             <div class="premium-container">

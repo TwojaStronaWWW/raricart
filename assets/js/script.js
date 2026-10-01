@@ -627,11 +627,8 @@
 	// --- Initial Setup ---
 	// --- Initial Setup ---
 	document.addEventListener('DOMContentLoaded', function () {
-		// Fix: Prevent intro animation on redirects or direct section links
-		const uParams = new URLSearchParams(window.location.search)
-		if (uParams.has('goto') || window.location.hash.length > 1) {
-			sessionStorage.setItem('heroIntroPlayed', '1')
-		}
+		// Architectural Fix: Instant interactive readiness (no frozen intro)
+		sessionStorage.setItem('heroIntroPlayed', '1')
 
 		cacheElements() // Initialize cache
 
@@ -757,8 +754,8 @@
 			if (ui.brand) ui.brand.classList.add('moving')
 			// Keep scroll indicator visible during intro!
 
-			// Lock scroll
-			document.body.style.overflow = 'hidden'
+			// Scroll lock removed - fluid native interaction
+			document.body.style.overflow = ''
 
 			// TEXT 1
 			if (ui.brandText1) {
