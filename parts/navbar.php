@@ -41,37 +41,19 @@ $nav_style = '';
 $logo_style = '';
 $bg_style = '';
 ?>
-    <!-- Backgrounds (Empty for subpages, letting script run transition from 0) -->
+    <!-- Backgrounds compatibility placeholder (hero video is now inside hero split-screen) -->
     <?php if ($is_home): ?>
-    <div class="video-background" id="videoBg">
-        <?php 
-            $default_hero_vid = 'https://media.raricart.pl/content/hero.mp4';
-            $hero_vid = function_exists('get_val') ? get_val('hero_video', $default_hero_vid) : $default_hero_vid;
-            $root_dir = defined('BASE_DIR') ? BASE_DIR : dirname(__DIR__);
-            if ($hero_vid && !str_starts_with($hero_vid, 'http') && !file_exists($root_dir . '/' . ltrim($hero_vid, '/'))) {
-                $hero_vid = $default_hero_vid;
-            } elseif ($hero_vid && !str_starts_with($hero_vid, '/') && !str_starts_with($hero_vid, 'http')) {
-                $hero_vid = '/' . $hero_vid;
-            }
-        ?>
-        <video autoplay muted loop playsinline preload="auto" src="<?php echo htmlspecialchars($hero_vid); ?>" aria-label="Tło wideo przedstawiające przygotowanie potraw">
-            <source src="<?php echo htmlspecialchars($hero_vid); ?>" type="video/mp4">
-        </video>
-
-        <div class="video-overlay"></div>
-    </div>
+    <div class="video-background sr-only" id="videoBg" aria-hidden="true"></div>
     <?php endif; ?>
-
 
     <!-- Header Container -->
     <header id="main-header">
         <div class="nav-bg" id="navBg"></div>
         
-        <!-- Branding & Nav -->
+        <!-- Branding placeholders for DOM/i18n compatibility -->
         <?php if ($is_home): ?>
-        <h1 class="new-brand" id="brandText1" data-i18n="hero.title1">TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE
-            SIĘ ELEGANCJĄ...</h1>
-        <div class="new-brand" id="brandText2" data-i18n="hero.title2">...TAM ZACZYNA SIĘ <span class="logo-pulse">RARICART</span></div>
+        <h1 class="new-brand sr-only" id="brandText1" data-i18n="hero.title1">TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE SIĘ ELEGANCJĄ...</h1>
+        <div class="new-brand sr-only" id="brandText2" data-i18n="hero.title2">...TAM ZACZYNA SIĘ <span class="logo-pulse">RARICART</span></div>
         <?php endif; ?>
 
         <div class="hamburger <?php echo $nav_init_class; ?>" id="hamburger">
@@ -80,9 +62,11 @@ $bg_style = '';
             <span></span>
         </div>
 
-        <div class="hero-logo <?php echo $logo_init_class; ?>" id="brand" <?php echo $logo_style; ?>>
-            <img src="https://media.raricart.pl/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
-                width="342" height="250" fetchpriority="high">
+        <div class="hero-logo moving" id="brand">
+            <a href="<?php echo $base_url; ?>" class="brand-link" aria-label="Raricart - Strona główna">
+                <img src="https://media.raricart.pl/images/logo_optimized.png" class="brand-logo" alt="Raricart Live Food Station Logo"
+                    width="342" height="250" fetchpriority="high">
+            </a>
         </div>
 
         <nav id="nav" class="<?php echo $nav_init_class; ?>" <?php echo $nav_style; ?>>
