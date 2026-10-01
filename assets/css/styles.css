@@ -209,7 +209,148 @@ video::-webkit-media-text-track-display {
 	height: 100%;
 }
 
-/* .background-overlay removed - Refactored to #nav */
+/* --- [03_HERO] Split-Screen Hero Section (Lejek Sprzedażowy 2026) --- */
+.hero-split {
+	position: relative;
+	min-height: calc(100vh - 80px);
+	display: flex;
+	align-items: center;
+	padding: 120px 0 60px 0;
+	background: var(--color-bg);
+	overflow: hidden;
+}
+
+.hero-container {
+	display: grid;
+	grid-template-columns: 1.15fr 0.85fr;
+	gap: 4rem;
+	align-items: center;
+}
+
+.hero-content {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.hero-badge {
+	font-family: var(--font-secondary);
+	font-size: 1.05rem;
+	font-style: italic;
+	color: var(--color-accent-dark);
+	margin-bottom: 1.2rem;
+	letter-spacing: 1px;
+}
+
+.hero-title {
+	font-family: var(--font-secondary);
+	font-size: clamp(2.3rem, 4.5vw, 3.8rem);
+	color: var(--color-text-dark);
+	line-height: 1.15;
+	font-weight: 700;
+	margin-bottom: 1.4rem;
+	text-transform: none;
+	letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+	font-family: var(--font-primary);
+	font-size: 1.15rem;
+	line-height: 1.7;
+	color: var(--color-text);
+	margin-bottom: 2rem;
+	max-width: 580px;
+}
+
+.hero-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6rem;
+	margin-bottom: 2.5rem;
+}
+
+.hero-tag {
+	background: rgba(163, 181, 154, 0.22);
+	color: var(--color-text-dark);
+	padding: 7px 16px;
+	border-radius: var(--radius-pill);
+	font-size: 0.88rem;
+	font-weight: 600;
+	letter-spacing: 0.3px;
+	border: 1px solid rgba(163, 181, 154, 0.3);
+}
+
+.hero-tag-sep {
+	color: var(--color-accent);
+	font-size: 0.75rem;
+}
+
+.hero-action {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.9rem;
+	width: 100%;
+}
+
+.hero-cta-btn {
+	background: linear-gradient(135deg, var(--color-text-dark), var(--color-accent-dark));
+	color: #ffffff !important;
+	padding: 18px 38px;
+	border-radius: var(--radius-pill);
+	font-family: var(--font-primary);
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.8px;
+	text-decoration: none;
+	box-shadow: var(--shadow-floating);
+	transition: var(--transition-fast);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.hero-cta-btn:hover {
+	transform: translateY(-3px) scale(1.02);
+	box-shadow: 0 12px 35px rgba(61, 74, 58, 0.4);
+	background: linear-gradient(135deg, var(--color-accent-dark), var(--color-text-dark));
+}
+
+.hero-microcopy {
+	font-size: 0.88rem;
+	color: var(--color-text-muted);
+	font-style: italic;
+	margin: 0;
+}
+
+.hero-visual {
+	position: relative;
+	width: 100%;
+}
+
+.hero-image-wrapper {
+	position: relative;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: var(--shadow-premium);
+	aspect-ratio: 4 / 3;
+	border: 1px solid var(--color-border-glass);
+}
+
+.hero-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.8s ease;
+}
+
+.hero-image-wrapper:hover .hero-img {
+	transform: scale(1.03);
+}
 
 /* --- [04_NAV] Header & Navigation --- */
 
@@ -562,7 +703,8 @@ video::-webkit-media-text-track-display {
 }
 
 .spacer {
-	height: 300vh;
+	display: none;
+	height: 0;
 	pointer-events: none;
 }
 
@@ -2302,6 +2444,40 @@ footer {
 		width: auto;
 	}
 
+	/* Hero Split Responsive */
+	.hero-split {
+		padding: 100px 0 40px 0;
+		min-height: auto;
+	}
+
+	.hero-container {
+		grid-template-columns: 1fr;
+		gap: 2.5rem;
+		text-align: center;
+	}
+
+	.hero-content {
+		align-items: center;
+	}
+
+	.hero-tags {
+		justify-content: center;
+	}
+
+	.hero-action {
+		align-items: center;
+	}
+
+	.hero-cta-btn {
+		width: 100%;
+		max-width: 380px;
+	}
+
+	.hero-image-wrapper {
+		max-width: 550px;
+		margin: 0 auto;
+	}
+
 	/* 3. Offer Sections (Layout Reset) */
 	.offer-image-text-fullwidth {
 		grid-template-columns: 1fr;
@@ -2472,6 +2648,24 @@ footer {
 
 	.section h2 {
 		font-size: 1.8rem;
+	}
+
+	.hero-title {
+		font-size: 1.9rem;
+	}
+
+	.hero-subtitle {
+		font-size: 1rem;
+	}
+
+	.hero-tag {
+		font-size: 0.8rem;
+		padding: 5px 12px;
+	}
+
+	.hero-cta-btn {
+		padding: 15px 22px;
+		font-size: 0.9rem;
 	}
 
 	/* Brand Logo Tweak */

@@ -34,9 +34,9 @@ function nav_link($anchor) {
     return $base_url . $anchor; 
 }
 
-// Removed forced subpage states to align with homepage dynamic scrolling logic
-$nav_init_class = '';
-$logo_init_class = '';
+// Navbar and Logo visible and ready from start
+$nav_init_class = 'visible nav-dark';
+$logo_init_class = 'moving';
 $nav_style = '';
 $logo_style = '';
 $bg_style = '';
@@ -110,12 +110,5 @@ $bg_style = '';
                 <button class="lang-btn" data-lang="es">ES</button>
             </div>
         </nav>
-
-        <?php if ($is_home): ?>
-        <div class="scroll-indicator" id="scroll"><span data-i18n="hero.scroll">Przewiń w dół</span><span
-                class="scroll-arrow">↓</span></div>
-        <?php endif; ?>
+        <div id="scroll" class="sr-only" aria-hidden="true"></div>
     </header>
-    <?php if ($is_home): ?>
-    <div class="spacer"></div>
-    <?php endif; ?>
