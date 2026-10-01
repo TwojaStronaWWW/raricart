@@ -1,5 +1,5 @@
 <?php
-// purge_cache.php - Nuclear option for LiteSpeed
+// bin/purge_cache.php - Narzędzie czyszczenia pamięci podręcznej LiteSpeed i OPcache
 header("X-LiteSpeed-Purge: *");
 header("X-LiteSpeed-Cache-Control: no-cache");
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -17,4 +17,3 @@ clearstatcache();
 echo "3. Stat cache cleared.\n";
 
 echo "\nGOTOWE. Odśwież teraz stronę główną.\n";
-?>

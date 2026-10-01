@@ -1,5 +1,5 @@
 <?php
-// debug.php - Narzędzie diagnostyczne
+// bin/debug.php - Narzędzie diagnostyczne
 header("Content-Type: text/plain; charset=UTF-8");
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 
@@ -8,6 +8,7 @@ echo "Server Time: " . date("Y-m-d H:i:s") . " (" . time() . ")\n";
 echo "PHP Version: " . PHP_VERSION . "\n";
 echo "SAPI: " . php_sapi_name() . "\n\n";
 
+$rootDir = dirname(__DIR__);
 $files = [
     'index.php',
     '.htaccess',
@@ -21,11 +22,12 @@ $files = [
 clearstatcache();
 echo "--- STATUS PLIKÓW ---\n";
 foreach ($files as $file) {
-    if (file_exists($file)) {
+    $fullPath = $rootDir . '/' . $file;
+    if (file_exists($fullPath)) {
         echo sprintf("%-30s | Mtime: %s | Size: %d bytes\n", 
             $file, 
-            date("Y-m-d H:i:s", filemtime($file)),
-            filesize($file)
+            date("Y-m-d H:i:s", filemtime($fullPath)),
+            filesize($fullPath)
         );
     } else {
         echo sprintf("%-30s | NIE ISTNIEJE\n", $file);
@@ -59,4 +61,3 @@ if (isset($_SERVER['HTTP_CF_RAY'])) {
 
 echo "\n--- LITESPEED? ---\n";
 echo isset($_SERVER['LSWWS_LOGID']) ? "YES (LiteSpeed detected)" : "UNKNOWN (not detected via \$_SERVER)";
-?>
