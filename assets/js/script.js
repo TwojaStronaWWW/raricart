@@ -11,6 +11,7 @@
 				faq: 'FAQ',
 				why_us: 'Co Nas Wyróżnia',
 				contact: 'Kontakt',
+				check_date: 'Sprawdź termin',
 				packages: 'Pakiety',
 			},
 			hero: {
@@ -209,6 +210,7 @@
 				faq: 'FAQ',
 				why_us: 'Why Us',
 				contact: 'Contact',
+				check_date: 'Check Date',
 				packages: 'Packages',
 			},
 			hero: {
@@ -394,6 +396,7 @@
 				faq: 'FAQ',
 				why_us: 'Por Qué Nosotros',
 				contact: 'Contacto',
+				check_date: 'Consultar Fecha',
 				packages: 'Paquetes',
 			},
 			hero: {

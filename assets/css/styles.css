@@ -449,6 +449,42 @@ video::-webkit-media-text-track-display {
 	opacity: 0.7;
 }
 
+/* Header CTA Button (Sprawdź Termin) */
+.nav-cta-btn {
+	background: var(--color-accent);
+	color: #ffffff !important;
+	padding: 8px 18px;
+	border-radius: var(--radius-pill);
+	font-size: 0.82rem !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.5px !important;
+	text-transform: uppercase;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-fast);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+	white-space: nowrap;
+}
+
+.nav-cta-btn:hover {
+	background: var(--color-accent-dark);
+	color: #ffffff !important;
+	opacity: 1 !important;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(163, 181, 154, 0.45);
+}
+
+#nav.nav-dark .nav-cta-btn {
+	background: var(--color-accent);
+	color: #ffffff !important;
+}
+
+#nav.nav-dark .nav-cta-btn:hover {
+	background: var(--color-accent-dark);
+	color: #ffffff !important;
+}
+
 /* Dark Navigation for Light Background Pages */
 #nav.nav-dark .nav-side a {
 	color: var(--color-text-dark);
@@ -2242,6 +2278,12 @@ footer {
 	.nav-side a {
 		font-size: 1.5rem;
 		color: #fff;
+	}
+
+	.nav-side .nav-cta-btn {
+		font-size: 1.1rem !important;
+		padding: 12px 28px !important;
+		margin-top: 0.5rem;
 	}
 
 	/* Language Switcher Mobile */
