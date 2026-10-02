@@ -44,3 +44,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 7. Przewijanie do sekcji i pływające CTA
 	initScrollFeatures();
 });
+// v2026.10.02.instant-modals
+
