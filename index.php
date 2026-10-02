@@ -27,98 +27,24 @@ include 'parts/navbar.php';
         <!-- 1. HERO SECTION (Split-Screen Lejek 2026) -->
         <?php include 'parts/hero.php'; ?>
 
-        <!-- O Nas -->
-        <section id="onas" class="section-premium">
-            <div class="premium-container">
-                <div class="premium-col-image">
-                    <img src="<?php echo get_val('about_image', 'https://media.raricart.pl/images/placeholder.webp'); ?>"
-                        alt="Raricart Live Food Experience - Goście cieszący się wydarzeniem" loading="lazy" class="premium-img">
-                </div>
-                <div class="premium-col-text">
-                    <h2 data-i18n="about.title" class="premium-title">Nie tworzymy cateringu, lecz doświadczenie.</h2>
-                    
-                    <p class="premium-text" data-i18n="about.p1">
-                        Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. 
-                        To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i&nbsp;pełen charakteru</span> element scenografii.
-                    </p>
-                    
-                    <p class="premium-text" data-i18n="about.p2">
-                        Serwujemy lekkie, świeże kompozycje, od puszystych mini pancakes, przez autentyczne włoskie lody, 
-                        aż po aromatyczne deski serów. Budujemy atmosferę klasy i&nbsp;swobody, w&nbsp;której Twoi goście poczują się wyjątkowo.
-                    </p>
+        <!-- 2. TRUST BAR (Mini Sekcja Zaufania - Lejek 2026) -->
+        <?php include 'parts/trust-bar.php'; ?>
 
-                    <div class="premium-footer">
-                        <span class="premium-line"></span>
-                        <span class="premium-label">Live Food Station</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- 3. STACJE („Co właściwie oferujemy?” - Lejek 2026) -->
+        <?php include 'parts/stations.php'; ?>
 
-        <!-- Oferta Intro -->
-        <section id="oferta" class="section-offer-intro">
-            <div class="premium-overlap-container reverse">
-                <div class="premium-image-box">
-                    <img src="<?php echo get_val('offer_main_image', 'https://media.raricart.pl/images/placeholder.webp'); ?>"
-                        alt="Mobilna stacja gastronomiczna Raricart" loading="lazy" class="premium-image">
-                </div>
-                <div class="premium-text-card">
-                    <h2 data-i18n="offer.intro_title" class="premium-title">NIE GOTUJEMY DAŃ, TWORZYMY CHWILE, KTÓRE ŁĄCZĄ LUDZI</h2>
-                    <div class="premium-body">
-                        <p data-i18n="offer.p1">
-                            Nasze stacje stają się miejscem rozmów, uśmiechów i&nbsp;zdjęć, a&nbsp;my dbamy o&nbsp;każdy szczegół, od montażu po ostatni serwis, abyś mógł cieszyć się wydarzeniem tak samo jak Twoi goście.
-                        </p>
-                        <p data-i18n="offer.p2">
-                            Obsługujemy eventy firmowe, wesela, gale i&nbsp;prywatne przyjęcia, współpracując zarówno z&nbsp;agencjami, jak i&nbsp;klientami indywidualnymi.
-                        </p>
-                        <p data-i18n="offer.p3">
-                            W&nbsp;każdym projekcie kierujemy się zasadą, że smak i&nbsp;estetyka mają tę samą wartość, razem tworzą atmosferę, której nikt nie zapomina. Z&nbsp;Raricart zyskujesz nie tylko catering, ale spójny, piękny element scenografii Twojego wydarzenia, który smakuje tak dobrze, jak wygląda.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- 4. GŁÓWNA SEKCJA SPRZEDAŻOWA (Dlaczego stacja zamiast cateringu? - Lejek 2026) -->
+        <?php include 'parts/why-station.php'; ?>
 
-        <!-- Oferta Grid -->
-        <section id="oferta-lista" class="section">
-            <h2 data-i18n="offer.title">Nasza Oferta</h2>
-            <div class="offer-grid">
-                <article class="offer-card" data-offer="pancakes">
-                    <div class="offer-image-wrapper">
-                         <img src="<?php echo get_val('offer_cards.pancakes', 'https://media.raricart.pl/images/placeholder.webp'); ?>" 
-                              alt="Mini Pancakes" loading="lazy" class="offer-image-img">
-                    </div>
-                    <div class="offer-content">
-                        <h3 data-i18n="offer.cards.pancakes.title">Mini Pancakes</h3>
-                        <p data-i18n="offer.cards.pancakes.desc">Słodka stacja, która angażuje gości i&nbsp;staje
-                            się sercem wydarzenia.</p>
-                    </div>
-                </article>
-                <article class="offer-card" data-offer="icecream">
-                    <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.icecream', 'https://media.raricart.pl/images/placeholder.webp'); ?>" 
-                             alt="Lody Włoskie" loading="lazy" class="offer-image-img">
-                    </div>
-                    <div class="offer-content">
-                        <h3 data-i18n="offer.cards.icecream.title">Lody Włoskie</h3>
-                        <p data-i18n="offer.cards.icecream.desc">Orzeźwiająca stacja, która zachwyca gości
-                            i&nbsp;buduje atmosferę.</p>
-                    </div>
-                </article>
-                <article class="offer-card" data-offer="cheese">
-                    <div class="offer-image-wrapper">
-                        <img src="<?php echo get_val('offer_cards.cheese', 'https://media.raricart.pl/images/placeholder.webp'); ?>" 
-                             alt="Deska Serów" loading="lazy" class="offer-image-img">
-                    </div>
-                    <div class="offer-content">
-                        <h3 data-i18n="offer.cards.cheese.title">Deska Serów</h3>
-                        <p data-i18n="offer.cards.cheese.desc">Fascynująca strefa smaku z&nbsp;włoskimi serami
-                            i&nbsp;wędlinami.</p>
-                    </div>
-                </article>
-            </div>
+        <!-- 5. PROCES („Jak to wygląda?” - 5 kroków współpracy - Lejek 2026) -->
+        <?php include 'parts/process.php'; ?>
 
-        </section>
+        <!-- 6. DLA KOGO? (Segmentacja wydarzeń - Lejek 2026) -->
+        <?php include 'parts/audiences.php'; ?>
+
+        <!-- 7. DLACZEGO RARICART? (6 esencjonalnych argumentów - Lejek 2026) -->
+        <?php include 'parts/why-raricart.php'; ?>
+
 
         <!-- Realizacje -->
         <section id="realizacje" class="section section-gallery-title">
@@ -227,66 +153,6 @@ include 'parts/navbar.php';
                 <h3 data-i18n="faq.q9.title">Jak zapewniacie higienę i&nbsp;bezpieczeństwo?</h3>
                 <p data-i18n="faq.q9.desc">Jesteśmy certyfikowani (HACCP, Sanepid), z&nbsp;pełnym protokołem higieny na żywo. Świeże składniki, sterylne narzędzia i&nbsp;doświadczona obsługa.</p>
             </article>
-        </section>
-
-        <!-- Dlaczego My -->
-        <section id="dlaczego" class="section section-fullwidth">
-            <div class="parallax-why" style="<?php if($why_us_bg) echo "--bg-image: url('$why_us_bg');"; ?>">
-                <h2 data-i18n="why.title">SZTUKA KULINARNYCH DOŚWIADCZEŃ</h2>
-                <div class="parallax-content">
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.1.title">EFEKT „WOW" Z KLASĄ</h3>
-                        <p data-i18n="why.cards.1.desc">Na oczach gości serwujemy ciepłe pancakes prosto z&nbsp;patelni,
-                            nalewamy cremowe lody i
-                            komponujemy deski serów - wszystko świeże, personalizowane i&nbsp;dopracowane w&nbsp;detalach. Proces
-                            live station przyciąga uwagę, integruje uczestników i&nbsp;tworzy naturalne punkty spotkań, gdzie
-                            przy apetycznym widoku rodzą się rozmowy. Elegancki, mobilny design stacji podnosi prestiż
-                            wydarzenia, łącząc estetykę premium z&nbsp;czystą przyjemnością dla zmysłów.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.2.title">MNIEJ LOGISTYKI, WIĘCEJ SPOKOJU</h3>
-                        <p data-i18n="why.cards.2.desc">Raricart przejmuje całość: dojazd, montaż stacji, serwowanie
-                            podczas eventu, demontaż i
-                            perfekcyjny porządek po zakończeniu. Nie wymagamy zaplecza kuchennego - mobilne stacje
-                            działają wszędzie: w&nbsp;loftach, ogrodach, halach czy nietypowych przestrzeniach eventowych.
-                            Zespół synchronizuje serwis z&nbsp;harmonogramem, dba o&nbsp;płynny przepływ gości i&nbsp;minimalizuje
-                            kolejki.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.3.title">DOŚWIADCZENIE ZAMIAST BUFETU</h3>
-                        <p data-i18n="why.cards.3.desc">W odróżnieniu od statycznego bufetu, nasze live stations
-                            angażują: goście obserwują nalewanie
-                            lodów, układanie pancakes i komponowanie desek serów, wybierając dodatki na bieżąco.
-                            Wszystko serwowane porcjami „tu i teraz" - świeże, bez marnowania, idealnie dopasowane do
-                            liczby i preferencji uczestników. Tematyczne stacje stają się magnesem na gości, budując
-                            emocje i niezapomniane wspomnienia.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.4.title">BEZPIECZEŃSTWO, JAKOŚĆ, ESTETYKA</h3>
-                        <p data-i18n="why.cards.4.desc">Przestrzegamy rygorystycznych standardów higieny i
-                            bezpieczeństwa żywności, z naciskiem na
-                            świeżość składników i perfekcyjną prezencję. Używamy wyselekcjonowanych produktów
-                            serwowanych w optymalnej temperaturze. Każdy detal - od aranżacji stacji, przez zastawę, po
-                            pracę zespołu - tworzy spójną scenografię, wzmacniającą wizerunek Twojego wydarzenia.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.5.title">PARTNER DLA WYMAGAJĄCYCH</h3>
-                        <p data-i18n="why.cards.5.desc">Agencje eventowe zyskują niezawodnego partnera rozumiejącego
-                            timing, layout i dynamikę dużych
-                            wydarzeń. Firmy, pary młode i organizatorzy prywatnych imprez otrzymują rozwiązanie premium:
-                            efekt „wow", emocje i pełną opiekę nad gośćmi. Właściciele lokali eventowych wzbogacają
-                            ofertę o mobilne stacje bez inwestycji w sprzęt – gotowe do działania w dowolnej
-                            przestrzeni.</p>
-                    </div>
-                    <div class="parallax-card">
-                        <h3 data-i18n="why.cards.6.title">NAPISZ DO NAS</h3>
-                        <p data-i18n="why.cards.6.desc">Twój event zasługuje na wyjątkowe live food station, które
-                            stanie się jego wizytówką. Napisz
-                            do nas już dziś - dopasujemy ofertę do Twojej wizji i zapewnimy termin. Razem stworzymy
-                            doświadczenie, które goście będą wspominać z zachwytem!</p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- Kontakt -->

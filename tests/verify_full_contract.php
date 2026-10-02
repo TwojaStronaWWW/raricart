@@ -71,6 +71,27 @@ foreach ($uniqueSelectors as $sel) {
     }
 }
 
+// D. Weryfikacja sekcji Lejka 2026 w HTML
+$lejekSections = [
+    'hero' => 'hero-split',
+    'trust-bar' => 'trust-bar',
+    'stations' => 'stations-section',
+    'why-station' => 'why-station-section',
+    'proces' => 'process-section',
+    'audiences' => 'audiences-section',
+    'why-raricart' => 'section-why-raricart'
+];
+
+echo "\n4. Weryfikacja obecności sekcji Lejka 2026 w HTML:\n";
+foreach ($lejekSections as $name => $cls) {
+    if (strpos($html, $cls) !== false) {
+        echo "  [OK] Sekcja {$name} (.{$cls}) - poprawnie wyrenderowana\n";
+    } else {
+        echo "  [BLAD] Sekcja {$name} (.{$cls}) - BRAK w wyrenderowanym HTML!\n";
+        $missingCss[] = $cls;
+    }
+}
+
 echo "\n=== PODSUMOWANIE AUDYTU ===\n";
 if (empty($missingIds) && empty($missingCss)) {
     echo "WYNIK: PERFEKCYJNA SPÓJNOŚĆ! Wszystkie punkty styku HTML <-> CSS <-> JS są zachowane.\n";
