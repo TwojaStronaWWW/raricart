@@ -203,16 +203,36 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ---
 
+- **KROK 15 (Sekcja 12): Ostatnie CTA Przed Formularzem** ✅ UKOŃCZONE
+  - Utworzono modułowy komponent `parts/pre-form-cta.php` osadzony bezpośrednio przed sekcją `#kontakt`.
+  - Zbudowano klimatyczne tło z ciemnym radialnym gradientem, szkłem i subtelnym rozmyciem, zapewniając silny kontrast wizualny i wysoki współczynnik klikalności (CTR).
+  - Wdrożono perswazyjne copy: *„Masz wydarzenie? Zróbmy na nim coś pysznego. Podaj nam datę, miejsce i liczbę gości...”*.
+  - Główny przycisk `[SPRAWDŹ DOSTĘPNOŚĆ TERMINU]` z natywnym płynnym scrollem do formularza oraz auto-focusem na pierwszym polu tekstowym (`#name`).
+  - Dodano microcopy znoszące lęk decyzyjny: *„⏱️ Odpowiemy z informacją o dostępności i propozycją dopasowaną do Twojego wydarzenia.”*.
+
+- **KROK 16 (Sekcja 13): Odchudzony Formularz Kontaktowy (High-Converting Funnel)** ✅ UKOŃCZONE
+  - Wydzielono formularz do dedykowanego modułu `parts/contact.php`, zastępując stary kod inline w `index.php`.
+  - Usunięto barierę wejścia:
+    - Wyeliminowano wymóg podawania sztywnego budżetu na starcie (budżet kwalifikowany później w rozmowie).
+    - Usunięto pole preferowanych godzin kontaktu oraz skomplikowany brief.
+  - Wprowadzono nową, zoptymalizowaną siatkę pól (`.form-grid`):
+    - `Imię i Nazwisko *`, `Email *`, `Telefon (opcjonalny, ułatwiający szybki kontakt)`, `Data Wydarzenia *`, `Miejsce Wydarzenia *`, `Liczba Gości *`, `Rodzaj Wydarzenia *` (select).
+    - Rozszerzono checkboxy wyboru stacji o 4. opcję: *„Jeszcze nie wiem / do ustalenia”*, pozwalającą klientom na kontakt nawet jeśli nie podjęli ostatecznej decyzji co do menu.
+    - Zwięzłe pole *„Dodatkowe Informacje (opcjonalnie)”*.
+  - Zaktualizowano przycisk wysyłki na dynamiczny CTA: `[SPRAWDŹ DOSTĘPNOŚĆ I OTRZYMAJ WYCENĘ]`.
+  - Dodano odznakę bezpieczeństwa danych: *„🔒 Twoje dane są bezpieczne. Otrzymasz bezpłatną, niezobowiązującą wycenę w ciągu 24h.”*.
+  - Zabezpieczono kod JavaScript przed błędami `TypeError` przy odczytywaniu wartości pól oraz zachowano 100% integracji z mechanizmem porzuconych leadów (abandoned drafts) i regułą `🔥 HOT` lead (>= 100 gości).
+  - Dodano pełne wsparcie wielojęzyczności w słownikach `pre_cta`, `contact` i `form` dla języków PL, EN i ES.
+
+---
+
 ## 🚀 Najbliższy Krok do Wykonania
 
-### 👉 **KROK 15: Ostatnie CTA Przed Formularzem (Sekcja 12 specyfikacji)**
-- **Lokalizacja:** Komponent `parts/pre-form-cta.php` bezpośrednio przed sekcją `#kontakt`.
-- **Format:**
-  - Duże, klimatyczne tło stacji w akcji z ciemnym filtrem.
-  - Nagłówek: *„Masz wydarzenie? Zróbmy na nim coś pysznego.”*
-  - Podtytuł: *„Podaj nam datę, miejsce i liczbę gości. Sprawdzimy dostępność i przygotujemy dla Ciebie indywidualną ofertę.”*
-  - Wyróżniony przycisk: `[SPRAWDŹ DOSTĘPNOŚĆ TERMINU]` (płynny scroll do pól formularza z auto-focusem).
-  - Microcopy znoszące lęk decyzyjny: *„Odpowiemy z informacją o dostępności i propozycją dopasowaną do Twojego wydarzenia.”*
+### 👉 **KROK 17: Ostateczny Szlif Responsywności & Audyt Jakościowy (Sekcja 15 specyfikacji)**
+- **Zakres:**
+  - Weryfikacja wizualna na wszystkich breakpointach (iPhone/Android, iPad/tablet, Desktop 4K).
+  - Weryfikacja działania nawigacji mobilnej, modali i galerii.
+  - Audyt wydajności i bezpieczeństwa w architekturze PHP Native + LiteSpeed.
 
 ---
 
@@ -232,13 +252,13 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 - [x] **12. Zoptymalizowany FAQ (7 kluczowych pytań z akordeonem)** *(Sekcja 10)*
 - [x] **13. O Nas (Ludzka historia założycielki)** *(Sekcja 11)*
 - [x] **14. Usunięcie "od 150 zł/os." + Transparentna wycena** *(Sekcja 17 - zrealizowane w Kroku 12)*
-- [ ] **15. Przedformularzowe CTA** *(Sekcja 12)*
-- [ ] **16. Uproszczony formularz wyceny (bez briefu/budżetu)** *(Sekcja 13)*
+- [x] **15. Przedformularzowe CTA** *(Sekcja 12)*
+- [x] **16. Uproszczony formularz wyceny (bez briefu/budżetu)** *(Sekcja 13)*
 - [ ] **17. Szlif responsywności (Mobile/Tablet/Desktop) & Testy** *(Sekcja 15)*
 
 ---
 
 ## 💡 Jak Wznowić Pracę w Kolejnej Sesji?
 Wystarczy wpisać w czacie:  
-> **"Lecimy z Krokiem 15 (Przedformularzowe CTA)"**  
-Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/about-story.php`.
+> **"Lecimy z Krokiem 17 (Szlif responsywności i audyt końcowy)"**  
+Agent automatycznie przeprowadzi ostateczną weryfikację i podsumuje cały zrealizowany lejek sprzedażowy 2026.

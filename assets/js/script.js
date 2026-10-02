@@ -246,47 +246,57 @@
 				help_desc: 'Chętnie podpowiemy, która stacja sprawdzi się najlepiej na Twoim wydarzeniu.',
 				help_cta: 'ZAPYTAJ W FORMULARZU',
 			},
+			pre_cta: {
+				badge: 'GOTOWI NA KULINARNE WRAŻENIA?',
+				title: 'Masz wydarzenie? Zróbmy na nim coś pysznego.',
+				subtitle:
+					'Podaj nam datę, miejsce i liczbę gości. Sprawdzimy dostępność i przygotujemy dla Ciebie indywidualną ofertę.',
+				btn: 'SPRAWDŹ DOSTĘPNOŚĆ TERMINU',
+				microcopy: 'Odpowiemy z informacją o dostępności i propozycją dopasowaną do Twojego wydarzenia.',
+			},
 			contact: {
-				title:
-					'Zapytaj o dostępność terminu<br>i stwórzmy razem strefę smaku,<br>o której Twoi goście długo nie zapomną.',
+				badge: 'REZERWACJA & WYCENA',
+				title: 'Opowiedz nam o swoim wydarzeniu.<br>Przygotujemy indywidualną wycenę.',
+				subtitle:
+					'Wypełnij poniższe pola — sprawdzimy nasz kalendarz i wrócimy z precyzyjną kalkulacją w ciągu 24h.',
 			},
 			form: {
 				name: 'Imię i Nazwisko *',
 				email: 'Email *',
-				phone: 'Telefon *',
+				phone: 'Telefon (ułatwia szybki kontakt)',
 				date: 'Data Wydarzenia *',
-				location: 'Lokalizacja Wydarzenia *',
-				location_placeholder: 'np. Warszawa, Hotel Marriott',
+				location: 'Miejsce Wydarzenia *',
+				location_placeholder: 'np. Katowice, Hotel Monopol / plener',
 				guests_label: 'Liczba Gości *',
 				guests_placeholder: 'np. 80',
-				budget: 'Budżet (PLN) *',
+				budget: 'Budżet (PLN)',
 				budget_placeholder: 'np. 2000 albo 5000 do 10000',
 				event_type: 'Rodzaj Wydarzenia *',
-				select_placeholder: 'Wybierz...',
+				select_placeholder: 'Wybierz rodzaj wydarzenia...',
 				types: {
-					wedding: 'Wesele',
-					corporate: 'Event Firmowy',
-					festival: 'Festiwal/Piknik',
-					private: 'Przyjęcie Prywatne',
-					other: 'Inne',
+					wedding: 'Wesele / Poprawiny',
+					corporate: 'Event Firmowy / Gala',
+					festival: 'Festiwal / Piknik / Plener',
+					private: 'Przyjęcie Prywatne (Urodziny, Ogród)',
+					other: 'Inne wydarzenie',
 				},
-				stations: 'Interesujące Stacje *',
+				stations: 'Która stacja Cię interesuje? *',
 				st_pancakes: 'Mini Pancakes',
 				st_icecream: 'Lody Włoskie',
 				st_cheese: 'Deska Serów',
-				contact_hours: 'Preferowane godziny kontaktu',
-				contact_hours_placeholder: 'np. 10:00-14:00 lub po 18:00',
-				message: 'Dodatkowe Informacje',
-				submit: 'Wyślij Zapytanie',
+				st_unsure: 'Jeszcze nie wiem / do ustalenia',
+				message: 'Dodatkowe Informacje (opcjonalnie)',
+				submit: 'SPRAWDŹ DOSTĘPNOŚĆ I OTRZYMAJ WYCENĘ',
+				privacy_note: '🔒 Twoje dane są bezpieczne. Otrzymasz bezpłatną, niezobowiązującą wycenę w ciągu 24h.',
 				required: 'To pole jest wymagane',
-				sending: 'Wysyłanie...',
+				sending: 'Sprawdzanie dostępności...',
 				success_msg:
 					'Szczegóły zapytania zostały przesłane. Potwierdzamy przyjęcie wiadomości. Skontaktujemy się z Państwem wkrótce w celu omówienia szczegółów.',
 				error_msg: 'Błąd wysyłania. Sprawdź połączenie lub spróbuj później.',
-				stations_error: 'Wybierz przynajmniej jedną stację',
+				stations_error: 'Wybierz przynajmniej jedną opcję',
 				email_error: 'Nieprawidłowy adres email',
 				progress_text: 'Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)',
-				message_placeholder: 'Opisz swoje potrzeby, pytania lub preferencje...',
+				message_placeholder: 'Styl przyjęcia, preferowane godziny serwisu lub dodatkowe pytania...',
 			},
 			cookies: {
 				text: 'Ta strona używa plików cookies, aby zapewnić najlepszą jakość. Korzystając ze strony, zgadzasz się na ich użycie.',
@@ -581,46 +591,57 @@
 				help_desc: 'We would love to advise which station format suits your event best.',
 				help_cta: 'ASK IN THE FORM',
 			},
+			pre_cta: {
+				badge: 'READY FOR A CULINARY EXPERIENCE?',
+				title: 'Planning an event? Let’s make it unforgettable.',
+				subtitle:
+					'Share your date, venue, and guest count. We will check availability and prepare a personalized proposal for you.',
+				btn: 'CHECK DATE AVAILABILITY',
+				microcopy: 'We’ll reply quickly with availability and a tailored offer for your celebration.',
+			},
 			contact: {
-				title: "Ask for availability<br>and let's create a taste zone together<br>that your guests will not forget.",
+				badge: 'RESERVATION & PRICING',
+				title: 'Tell us about your celebration.<br>We will craft a tailored proposal.',
+				subtitle:
+					'Fill in the fields below — we’ll verify date availability and return with a precise proposal within 24 hours.',
 			},
 			form: {
 				name: 'Name & Surname *',
 				email: 'Email *',
-				phone: 'Phone *',
+				phone: 'Phone (for faster coordination)',
 				date: 'Event Date *',
 				location: 'Event Location *',
-				location_placeholder: 'e.g. Warsaw, Marriott Hotel',
+				location_placeholder: 'e.g. Warsaw, Marriott Hotel / garden',
 				guests_label: 'Number of Guests *',
 				guests_placeholder: 'e.g. 80',
-				budget: 'Budget (PLN) *',
+				budget: 'Budget (PLN)',
 				budget_placeholder: 'e.g. 2000 or 5000 to 10000',
 				event_type: 'Event Type *',
-				select_placeholder: 'Choose...',
+				select_placeholder: 'Choose event type...',
 				types: {
-					wedding: 'Wedding',
-					corporate: 'Corporate Event',
-					festival: 'Festival/Picnic',
-					private: 'Private Party',
-					other: 'Other',
+					wedding: 'Wedding / Next-day party',
+					corporate: 'Corporate Event / Gala',
+					festival: 'Festival / Picnic / Outdoor',
+					private: 'Private Party (Birthday, Garden)',
+					other: 'Other event',
 				},
-				stations: 'Interested Stations *',
+				stations: 'Which station are you interested in? *',
 				st_pancakes: 'Mini Pancakes',
 				st_icecream: 'Soft Serve Ice Cream',
 				st_cheese: 'Cheese Board',
-				contact_hours: 'Preferred contact hours',
-				contact_hours_placeholder: 'e.g. 10:00-14:00 or after 18:00',
-				message: 'Additional Information',
-				submit: 'Send Query',
+				st_unsure: 'Not sure yet / to be decided',
+				message: 'Additional Information (optional)',
+				submit: 'CHECK AVAILABILITY & GET A QUOTE',
+				privacy_note: '🔒 Your details are secure. You will receive a free, no-obligation quote within 24h.',
 				required: 'This field is required',
-				stations_error: 'Select at least one station',
+				stations_error: 'Select at least one option',
 				email_error: 'Invalid email address',
-				sending: 'Sending...',
+				sending: 'Checking availability...',
 				success_msg:
 					'Inquiry details have been sent. We confirm receipt of the message. We will contact you shortly to discuss details.',
 				error_msg: 'Error sending. Check your connection or try again later.',
 				progress_text: 'Complete the data so we can prepare an offer (0%)',
-				message_placeholder: 'Describe your needs, questions or preferences...',
+				message_placeholder: 'Event style, preferred service hours, or any specific requests...',
 			},
 			cookies: {
 				text: 'This site uses cookies to ensure the best quality. By using the site, you agree to their use.',
@@ -913,45 +934,57 @@
 				help_desc: 'Estaremos encantados de asesorarte sobre la mejor opción para tu evento.',
 				help_cta: 'CONSULTAR EN EL FORMULARIO',
 			},
+			pre_cta: {
+				badge: '¿LISTO PARA UNA EXPERIENCIA GASTRONÓMICA?',
+				title: '¿Tienes un evento? Creemos algo delicioso juntos.',
+				subtitle:
+					'Indícanos la fecha, el lugar y el número de invitados. Comprobaremos disponibilidad y prepararemos una oferta a medida.',
+				btn: 'CONSULTAR DISPONIBILIDAD DE FECHA',
+				microcopy: 'Responderemos con la disponibilidad y una propuesta adaptada a tu celebración.',
+			},
 			contact: {
-				title: 'Pregunte por disponibilidad<br>y creemos juntos una zona de sabor<br>que sus invitados no olvidarán.',
+				badge: 'RESERVA Y PRESUPUESTO',
+				title: 'Cuéntanos sobre tu evento.<br>Prepararemos un presupuesto personalizado.',
+				subtitle:
+					'Completa los campos a continuación: comprobaremos nuestro calendario y te responderemos con una propuesta precisa en 24h.',
 			},
 			form: {
 				name: 'Nombre y Apellidos *',
 				email: 'Email *',
-				phone: 'Teléfono *',
+				phone: 'Teléfono (facilita contacto rápido)',
 				date: 'Fecha del Evento *',
 				location: 'Ubicación del Evento *',
-				location_placeholder: 'ej. Varsovia, Hotel Marriott',
+				location_placeholder: 'ej. Varsovia, Hotel Marriott / jardín',
 				guests_label: 'Número de Invitados *',
 				guests_placeholder: 'ej. 80',
-				budget: 'Presupuesto (PLN) *',
+				budget: 'Presupuesto (PLN)',
 				budget_placeholder: 'ej. 2000 o 5000 a 10000',
 				event_type: 'Tipo de Evento *',
-				select_placeholder: 'Seleccionar...',
+				select_placeholder: 'Selecciona tipo de evento...',
 				types: {
-					wedding: 'Boda',
-					corporate: 'Evento Corporativo',
-					festival: 'Festival/Picnic',
-					private: 'Fiesta Privada',
-					other: 'Otro',
+					wedding: 'Boda / Tornaboda',
+					corporate: 'Evento Corporativo / Gala',
+					festival: 'Festival / Picnic / Aire libre',
+					private: 'Fiesta Privada (Cumpleaños, Jardín)',
+					other: 'Otro evento',
 				},
-				stations: 'Estaciones de Interés *',
+				stations: '¿Qué estación te interesa? *',
 				st_pancakes: 'Mini Pancakes',
 				st_icecream: 'Helado Suave',
 				st_cheese: 'Tabla de Quesos',
-				contact_hours: 'Horario de contacto preferido',
-				contact_hours_placeholder: 'ej. 10:00-14:00 o después de las 18:00',
-				message: 'Información Adicional',
-				submit: 'Enviar Consulta',
-				progress_text: 'Complete los datos para que podamos preparar una oferta (0%)',
-				message_placeholder: 'Describa sus necesidades, preguntas o preferencias...',
-				email_error: 'Dirección de correo electrónico no válida',
-				stations_error: 'Seleccione al menos una estación',
+				st_unsure: 'Aún no lo sé / por definir',
+				message: 'Información Adicional (opcional)',
+				submit: 'CONSULTAR DISPONIBILIDAD Y RECIBIR PRESUPUESTO',
+				privacy_note: '🔒 Tus datos están protegidos. Recibirás una propuesta gratuita y sin compromiso en 24h.',
 				required: 'Este campo es obligatorio',
-				sending: 'Enviando...',
-				success_msg: 'Los detalles de la consulta han sido enviados. Confirmaremos la recepción del mensaje. Nos pondremos en contacto con usted pronto.',
-				error_msg: 'Error al enviar. Verifique su conexión o inténtelo más tarde.',
+				stations_error: 'Selecciona al menos una opción',
+				email_error: 'Dirección de correo no válida',
+				sending: 'Comprobando disponibilidad...',
+				success_msg:
+					'Los detalles de la consulta han sido enviados. Nos pondremos en contacto contigo pronto para coordinar los detalles.',
+				error_msg: 'Error al enviar. Comprueba tu conexión o inténtalo más tarde.',
+				progress_text: 'Completa los datos para preparar una oferta (0%)',
+				message_placeholder: 'Estilo de la fiesta, horario preferido de servicio o dudas particulares...',
 			},
 			cookies: {
 				text: 'Este sitio utiliza cookies para garantizar la mejor calidad. Al utilizar el sitio, usted acepta su uso.',
@@ -2069,18 +2102,18 @@
 					.join(', ') // Use label text directly
 
 				const formData = {
-					website_check: form.website_check.value, // Antispam
-					name: form.name.value,
-					email: form.email.value,
-					phone: form.phone.value,
-					date: form.date.value,
-					location: form.location.value,
-					guests: form.guests.value,
-					budget: form.budget.value,
-					event_type: form.event_type.value,
+					website_check: form.website_check ? form.website_check.value : '', // Antispam
+					name: form.name ? form.name.value : '',
+					email: form.email ? form.email.value : '',
+					phone: form.phone ? form.phone.value : '',
+					date: form.date ? form.date.value : '',
+					location: form.location ? form.location.value : '',
+					guests: form.guests ? form.guests.value : '',
+					budget: form.budget ? form.budget.value : '',
+					event_type: form.event_type ? form.event_type.value : '',
 					stations: stations,
-					contact_hours: form.contact_hours.value,
-					message: form.message.value || 'Brak dodatkowej wiadomości',
+					contact_hours: form.contact_hours ? form.contact_hours.value : '',
+					message: form.message ? form.message.value : 'Brak dodatkowej wiadomości',
 				}
 
 				const submitBtn = form.querySelector('.cta-primary')
@@ -2120,6 +2153,22 @@
 						submitBtn.textContent = translations[currentLang]?.form?.submit || originalText
 						submitBtn.disabled = false
 					})
+			})
+		}
+
+		// Pre-CTA Check Availability Smooth Scroll & Focus
+		const preCtaBtn = document.getElementById('preCtaCheckBtn')
+		if (preCtaBtn) {
+			preCtaBtn.addEventListener('click', e => {
+				const contactSec = document.getElementById('kontakt')
+				if (contactSec) {
+					e.preventDefault()
+					contactSec.scrollIntoView({ behavior: 'smooth' })
+					setTimeout(() => {
+						const nameInput = document.getElementById('name')
+						if (nameInput) nameInput.focus()
+					}, 600)
+				}
 			})
 		}
 
