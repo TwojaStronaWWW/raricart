@@ -296,14 +296,17 @@
 				see_more: 'ZOBACZ WIĘCEJ REALIZACJI',
 			},
 			reviews: {
-				badge: 'SOCIAL PROOF & REFERENCJE',
+				badge: 'GOOGLE REVIEWS &bull; 100% ZWERYFIKOWANE',
 				title: 'Co mówią goście i organizatorzy?',
 				subtitle: 'Prawdziwe emocje, puste talerzyki i spokój organizatora. Zobacz, jak wspominają stację Raricart pary młode, firmy i gospodarze przyjęć.',
 				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Ponad 120 zrealizowanych wydarzeń &bull; 100% zachwyconych gości',
+				google_verified_meta: 'Wizytówka Google &bull; Ponad 120 obsłużonych wydarzeń',
+				see_google_maps: 'Sprawdź w Google Maps',
 				verified: 'Zweryfikowana realizacja',
 				cta_title: 'Chcesz, aby Twoi goście również tak wspominali Twoje wydarzenie?',
 				cta_desc: 'Napisz do nas lub zadzwoń. Sprawdzimy dostępność wybranej stacji w Twoim terminie w mniej niż 24 godziny.',
-				cta_btn: 'ZAPYTAJ O WOLNY TERMIN'
+				cta_btn: 'ZAPYTAJ O WOLNY TERMIN',
+				cta_google: 'OPINIE W GOOGLE MAPS'
 			},
 			modals: {
 				pancakes: {
@@ -618,14 +621,17 @@
 				see_more: 'VIEW FULL GALLERY',
 			},
 			reviews: {
-				badge: 'SOCIAL PROOF & TESTIMONIALS',
+				badge: 'GOOGLE REVIEWS &bull; 100% VERIFIED',
 				title: 'What guests and event hosts say',
 				subtitle: 'Authentic excitement, empty plates, and total peace of mind for the organizer. Here is how couples, corporate managers, and private hosts recall Raricart.',
 				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Over 120 events hosted &bull; 100% delighted guests',
+				google_verified_meta: 'Google Business Profile &bull; Over 120 events hosted',
+				see_google_maps: 'Check on Google Maps',
 				verified: 'Verified booking',
 				cta_title: 'Want your guests to remember your event like this?',
 				cta_desc: 'Get in touch. We will verify station availability for your date in under 24 hours.',
-				cta_btn: 'CHECK DATE AVAILABILITY'
+				cta_btn: 'CHECK DATE AVAILABILITY',
+				cta_google: 'REVIEWS ON GOOGLE MAPS'
 			},
 			modals: {
 				pancakes: {
@@ -937,14 +943,17 @@
 				see_more: 'VER MÁS FOTOGRAFÍAS',
 			},
 			reviews: {
-				badge: 'TESTIMONIOS REALES',
+				badge: 'GOOGLE REVIEWS &bull; 100% VERIFICADO',
 				title: 'Lo que dicen invitados y organizadores',
 				subtitle: 'Emoción genuina, platos vacíos y tranquilidad para el anfitrión. Así recuerdan Raricart parejas, empresas y celebraciones privadas.',
 				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Más de 120 eventos realizados &bull; 100% clientes satisfechos',
+				google_verified_meta: 'Perfil de Google &bull; Más de 120 eventos realizados',
+				see_google_maps: 'Ver en Google Maps',
 				verified: 'Reserva verificada',
 				cta_title: '¿Quieres que tus invitados recuerden tu evento así?',
 				cta_desc: 'Escríbenos o llámanos. Comprobaremos la disponibilidad de la estación para tu fecha en menos de 24 horas.',
-				cta_btn: 'CONSULTAR DISPONIBILIDAD'
+				cta_btn: 'CONSULTAR DISPONIBILIDAD',
+				cta_google: 'OPINIONES EN GOOGLE MAPS'
 			},
 			modals: {
 				pancakes: {
