@@ -436,6 +436,6 @@ include 'parts/navbar.php';
 <?php include 'parts/contact-button.php'; ?>
 
 <?php 
-include 'parts/footer.php';
 include 'parts/modals.php';
+include 'parts/footer.php';
 ?>

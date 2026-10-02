@@ -67,12 +67,12 @@ include 'parts/navbar.php';
     </main>
 
 <?php
-// 3. FOOTER
-include 'parts/footer.php';
-
-// 4. MODALS
+// 3. MODALS
 include 'parts/modals.php';
 
-// Widżet pływający Zapytaj o wycenę
+// 4. Widżet pływający Zapytaj o wycenę
 include 'parts/contact-button.php';
+
+// 5. FOOTER (zawiera stopkę, skrypty oraz zamknięcie body i html)
+include 'parts/footer.php';
 ?>
