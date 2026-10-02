@@ -82,6 +82,7 @@ $lejekSections = [
     'why-raricart' => 'section-why-raricart',
     'realizacje' => 'section-realizations',
     'reviews' => 'section-reviews',
+    'about-story' => 'section-about-story',
     'faq' => 'section-faq'
 ];
 
