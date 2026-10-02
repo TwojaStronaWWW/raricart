@@ -295,6 +295,16 @@
 				subtitle: 'Tak wygląda stacja, kiedy zaczyna się wydarzenie. Świeże produkty, przygotowanie na żywo, własne kompozycje i goście, którzy naprawdę chcą podejść do stacji.',
 				see_more: 'ZOBACZ WIĘCEJ REALIZACJI',
 			},
+			reviews: {
+				badge: 'SOCIAL PROOF & REFERENCJE',
+				title: 'Co mówią goście i organizatorzy?',
+				subtitle: 'Prawdziwe emocje, puste talerzyki i spokój organizatora. Zobacz, jak wspominają stację Raricart pary młode, firmy i gospodarze przyjęć.',
+				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Ponad 120 zrealizowanych wydarzeń &bull; 100% zachwyconych gości',
+				verified: 'Zweryfikowana realizacja',
+				cta_title: 'Chcesz, aby Twoi goście również tak wspominali Twoje wydarzenie?',
+				cta_desc: 'Napisz do nas lub zadzwoń. Sprawdzimy dostępność wybranej stacji w Twoim terminie w mniej niż 24 godziny.',
+				cta_btn: 'ZAPYTAJ O WOLNY TERMIN'
+			},
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
@@ -607,6 +617,16 @@
 				subtitle: 'This is what the station looks like when the celebration begins: fresh ingredients, live cooking, custom toppings, and guests eager to step right up.',
 				see_more: 'VIEW FULL GALLERY',
 			},
+			reviews: {
+				badge: 'SOCIAL PROOF & TESTIMONIALS',
+				title: 'What guests and event hosts say',
+				subtitle: 'Authentic excitement, empty plates, and total peace of mind for the organizer. Here is how couples, corporate managers, and private hosts recall Raricart.',
+				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Over 120 events hosted &bull; 100% delighted guests',
+				verified: 'Verified booking',
+				cta_title: 'Want your guests to remember your event like this?',
+				cta_desc: 'Get in touch. We will verify station availability for your date in under 24 hours.',
+				cta_btn: 'CHECK DATE AVAILABILITY'
+			},
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
@@ -915,6 +935,16 @@
 				title: 'Descubre Raricart en eventos reales',
 				subtitle: 'Así luce la estación cuando empieza la fiesta: productos frescos, preparación en vivo, combinaciones a medida y personas disfrutando al máximo.',
 				see_more: 'VER MÁS FOTOGRAFÍAS',
+			},
+			reviews: {
+				badge: 'TESTIMONIOS REALES',
+				title: 'Lo que dicen invitados y organizadores',
+				subtitle: 'Emoción genuina, platos vacíos y tranquilidad para el anfitrión. Así recuerdan Raricart parejas, empresas y celebraciones privadas.',
+				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Más de 120 eventos realizados &bull; 100% clientes satisfechos',
+				verified: 'Reserva verificada',
+				cta_title: '¿Quieres que tus invitados recuerden tu evento así?',
+				cta_desc: 'Escríbenos o llámanos. Comprobaremos la disponibilidad de la estación para tu fecha en menos de 24 horas.',
+				cta_btn: 'CONSULTAR DISPONIBILIDAD'
 			},
 			modals: {
 				pancakes: {

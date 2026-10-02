@@ -49,6 +49,9 @@ include 'parts/navbar.php';
         <!-- 8. REALIZACJE (Wyselekcjonowana galeria kadrów - Lejek 2026) -->
         <?php include 'parts/realizations.php'; ?>
 
+        <!-- 9. OPINIE KLIENTÓW (Social Proof & Referencje - Lejek 2026) -->
+        <?php include 'parts/reviews.php'; ?>
+
         <!-- FAQ -->
         <section id="faq" class="section">
             <h2 data-i18n="faq.title">FAQ - Najczęściej Zadawane Pytania</h2>

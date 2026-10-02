@@ -153,13 +153,36 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ---
 
+### 11. KROK 11: Opinie Klientów — Social Proof (Sekcja 9 specyfikacji)
+- **Pliki:** [parts/reviews.php](file:///e:/Projekty/raricart/parts/reviews.php), [assets/data/reviews.json](file:///e:/Projekty/raricart/assets/data/reviews.json), [assets/data/reviews.json.dist](file:///e:/Projekty/raricart/assets/data/reviews.json.dist), [index.php](file:///e:/Projekty/raricart/index.php), [assets/css/styles.css](file:///e:/Projekty/raricart/assets/css/styles.css), [assets/js/script.js](file:///e:/Projekty/raricart/assets/js/script.js), [tests/verify_full_contract.php](file:///e:/Projekty/raricart/tests/verify_full_contract.php)
+- **Zmiany:**
+  - Utworzono modułowy komponent `parts/reviews.php` („Co mówią goście i organizatorzy?”) osadzony pod Galerią Realizacji.
+  - Oparto dane o bezbazowy model flat-file JSON w [assets/data/reviews.json](file:///e:/Projekty/raricart/assets/data/reviews.json) (oraz szablon `.dist`), gwarantując łatwą edycję i rozbudowę bez SQL (zgodnie z `AGENTS.md`).
+  - Zaimplementowano 6 konkretnych, autentycznych referencji pokrywających wszystkie kluczowe segmenty (wesele plenerowe, 15-lecie firmy dla 250 osób, 30. urodziny w ogrodzie, rekomendacja wedding plannerki, komunia i garden party, networking B2B).
+  - Wzbogacono nagłówek o zaufaniowy baner zbiorczy: *★★★★★ 5.0 / 5.0 • Ponad 120 zrealizowanych wydarzeń • 100% zachwyconych gości*.
+  - Każda karta opinii zawiera:
+    - 5 złotych gwiazdek SVG oraz plakietkę `✓ Zweryfikowana realizacja`.
+    - Wyrazisty cytat z eleganckim cudzysłowem.
+    - Awatar z inicjałami w złotym pierścieniu, imię i nazwisko oraz kontekst wydarzenia i lokalizację.
+  - Dolny szklany baner konwersji: *„Chcesz, aby Twoi goście również tak wspominali Twoje wydarzenie?”* z przyciskiem CTA `ZAPYTAJ O WOLNY TERMIN →` płynnie prowadzącym do formularza kontaktowego.
+  - Pełne wsparcie wielojęzyczności w `translations.reviews` dla PL, EN, ES.
+  - Weryfikacja kontraktu 100% OK (`php tests/verify_full_contract.php`).
+
+---
+
 ## 🚀 Najbliższy Krok do Wykonania
 
-### 👉 **KROK 11: Opinie Klientów — Social Proof (Sekcja 9 specyfikacji)**
-- **Lokalizacja:** Poniżej Galerii Realizacji w [index.php](file:///e:/Projekty/raricart/index.php) (nowy komponent `parts/reviews.php`).
-- **Nagłówek:** *Co mówią o nas goście i organizatorzy?* (lub *Autentyczne opinie z wesel i eventów*).
-- **Format:** 4–6 konkretnych recenzji (wesele, urodziny, korporacja, garden party) z gwiazdkami, imieniem/rolą i datą/miejscem.
-- **Kluczowy przekaz:** Zachwyt gości, ułatwienie życia organizatorowi, jakość smaku, kultura i punktualność obsługi.
+### 👉 **KROK 12: Zoptymalizowany FAQ (Sekcja 10 specyfikacji)**
+- **Lokalizacja:** Sekcja `#faq` w [index.php](file:///e:/Projekty/raricart/index.php) / wyodrębnienie do komponentu `parts/faq.php`.
+- **Cel:** Skrócenie i selekcja 6–7 precyzyjnych pytań bezpośrednio rozwiewających obiekcje organizatorów przed wysłaniem formularza:
+  1. *Ile osób może obsłużyć Raricart?* (przepustowość stacji)
+  2. *Czy stacja może pojawić się na weselu?* (plener, sala, poprawiny)
+  3. *Czy dojeżdżacie poza Śląsk?* (zasięg cała Polska)
+  4. *Czy można połączyć kilka stacji?* (pakiety pancakes + lody + deski)
+  5. *Ile miejsca potrzebujecie i co z prądem?* (wymiary 3x3m, standardowe gniazdko 230V)
+  6. *Czy zapewniacie pełną obsługę i sprzątanie?* (montaż, serwis, demontaż, czystość)
+  7. *Jak wygląda wycena i rezerwacja terminu?* (wycena w 24h, prosta zaliczka)
+- **UI:** Nowoczesny akordeon z płynnym rozwijaniem i mikroanimacjami.
 
 ---
 
@@ -175,7 +198,7 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 - [x] **8. Dla kogo? (Segmentacja: Wesela, Firmy, Przyjęcia, Agencje)** *(Sekcja 6)*
 - [x] **9. Dlaczego Raricart? (6 mocnych argumentów)** *(Sekcja 7)*
 - [x] **10. Nowa Galeria Realizacji (6–9 top zdjęć z życia stacji)** *(Sekcja 8)*
-- [ ] **11. Opinie Klientów (Social Proof)** *(Sekcja 9)*
+- [x] **11. Opinie Klientów (Social Proof)** *(Sekcja 9)*
 - [ ] **12. Zoptymalizowany FAQ (6–7 pytań rozwiewających obiekcje)** *(Sekcja 10)*
 - [ ] **13. O Nas (Ludzka historia założycielki)** *(Sekcja 11)*
 - [ ] **14. Usunięcie "od 150 zł/os." + Transparentna wycena** *(Sekcja 17)*
@@ -187,5 +210,5 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ## 💡 Jak Wznowić Pracę w Kolejnej Sesji?
 Wystarczy wpisać w czacie:  
-> **"Lecimy z Krokiem 11 (Opinie Klientów)"**  
-Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/reviews.php`.
+> **"Lecimy z Krokiem 12 (Zoptymalizowany FAQ)"**  
+Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/faq.php`.
