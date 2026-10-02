@@ -71,19 +71,18 @@ $bg_style = '';
 
         <nav id="nav" class="<?php echo $nav_init_class; ?>" <?php echo $nav_style; ?>>
             <ul class="nav-side nav-left">
-                <li><a href="<?php echo nav_link('#onas'); ?>" aria-label="Przejdź do sekcji O Nas" data-i18n="nav.about">O Nas</a></li>
                 <li><a href="<?php echo nav_link('#oferta-lista'); ?>" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
-                <li><a href="<?php echo nav_link('#realizacje'); ?>" aria-label="Przejdź do sekcji Galeria Realizacji"
-                        data-i18n="nav.gallery">Galeria</a></li>
+                <li><a href="<?php echo nav_link('#proces'); ?>" aria-label="Przejdź do sekcji Jak to działa" data-i18n="nav.process">Jak to działa</a></li>
+                <li><a href="<?php echo nav_link('#dla-kogo'); ?>" aria-label="Przejdź do sekcji Dla kogo" data-i18n="nav.audiences">Dla kogo</a></li>
             </ul>
 
             <ul class="nav-side nav-right">
+                <li><a href="<?php echo nav_link('#onas'); ?>" aria-label="Przejdź do sekcji O Nas" data-i18n="nav.about">O Nas</a></li>
+                <li><a href="<?php echo nav_link('#realizacje'); ?>" aria-label="Przejdź do sekcji Realizacje" data-i18n="nav.realizations">Realizacje</a></li>
                 <li><a href="<?php echo nav_link('#faq'); ?>" aria-label="Przejdź do sekcji FAQ" data-i18n="nav.faq">FAQ</a></li>
-                <li><a href="<?php echo nav_link('#dlaczego'); ?>" aria-label="Przejdź do sekcji Co Nas Wyróżnia" data-i18n="nav.why_us">Co Nas
-                        Wyróżnia</a></li>
                 <!-- Pakiety: ukryte z nawigacji, link zachowany w kodzie na przyszłość -->
                 <li class="nav-item-hidden"><a href="<?php echo $packages_link; ?>" aria-label="Zobacz Pakiety" data-i18n="nav.packages">Pakiety</a></li>
-                <li class="nav-cta-item"><a href="<?php echo nav_link('#kontakt'); ?>" class="nav-cta-btn" aria-label="Sprawdź termin" data-i18n="nav.check_date">Sprawdź termin</a></li>
+                <li class="nav-cta-item"><a href="<?php echo nav_link('#kontakt'); ?>" class="nav-cta-btn" aria-label="Sprawdź termin" data-i18n="nav.check_date">Sprawdź termin →</a></li>
             </ul>
 
             <div class="lang-switch">

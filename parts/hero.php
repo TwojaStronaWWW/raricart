@@ -13,25 +13,25 @@ $hero_poster = function_exists('get_val') ? get_val('hero_image', 'https://media
 <section id="hero" class="hero-split">
     <div class="hero-container container">
         <div class="hero-content">
-            <span class="hero-badge">Tam, gdzie smak spotyka emocje</span>
-            <h1 class="hero-title">Mobilne Live Food Station na Twoje wydarzenie</h1>
-            <p class="hero-subtitle">Świeże desery i przekąski przygotowywane na żywo — z pełną obsługą i efektem WOW.</p>
+            <span class="hero-badge" data-i18n="hero.badge">Tam, gdzie smak spotyka emocje</span>
+            <h1 class="hero-title" data-i18n="hero.title">Mobilne Live Food Station na Twoje wydarzenie</h1>
+            <p class="hero-subtitle" data-i18n="hero.subtitle">Świeże desery i przekąski przygotowywane na żywo — z pełną obsługą i efektem WOW.</p>
             
             <div class="hero-tags">
-                <span class="hero-tag">Wesela</span>
+                <span class="hero-tag" data-i18n="hero.tag_weddings">Wesela</span>
                 <span class="hero-tag-sep">•</span>
-                <span class="hero-tag">Eventy firmowe</span>
+                <span class="hero-tag" data-i18n="hero.tag_corporate">Eventy firmowe</span>
                 <span class="hero-tag-sep">•</span>
-                <span class="hero-tag">Przyjęcia</span>
+                <span class="hero-tag" data-i18n="hero.tag_private">Przyjęcia</span>
                 <span class="hero-tag-sep">•</span>
-                <span class="hero-tag">Eventy plenerowe</span>
+                <span class="hero-tag" data-i18n="hero.tag_outdoor">Eventy plenerowe</span>
             </div>
 
             <div class="hero-action">
-                <a href="#kontakt" class="hero-cta-btn" aria-label="Sprawdź dostępność terminu">
+                <a href="#kontakt" class="hero-cta-btn" aria-label="Sprawdź dostępność terminu" data-i18n="hero.cta">
                     SPRAWDŹ DOSTĘPNOŚĆ TERMINU
                 </a>
-                <p class="hero-microcopy">Podaj datę, miejsce i liczbę gości — przygotujemy indywidualną ofertę.</p>
+                <p class="hero-microcopy" data-i18n="hero.microcopy">Podaj datę, miejsce i liczbę gości — przygotujemy indywidualną ofertę.</p>
             </div>
         </div>
 
