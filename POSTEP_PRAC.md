@@ -170,19 +170,36 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ---
 
+### 12. KROK 12: Zoptymalizowany FAQ & Eliminacja "od 150 zł/os." (Sekcje 10 & 17 specyfikacji)
+- **Pliki:** [parts/faq.php](file:///e:/Projekty/raricart/parts/faq.php), [index.php](file:///e:/Projekty/raricart/index.php), [assets/css/styles.css](file:///e:/Projekty/raricart/assets/css/styles.css), [assets/js/script.js](file:///e:/Projekty/raricart/assets/js/script.js), [tests/verify_full_contract.php](file:///e:/Projekty/raricart/tests/verify_full_contract.php)
+- **Zmiany:**
+  - Utworzono modułowy komponent `parts/faq.php` („Wszystko, co chcesz wiedzieć przed rezerwacją stacji”) osadzony pod Opiniami Klientów.
+  - Zastąpiono dawny, 9-elementowy statyczny blok tekstu wyselekcjonowanymi 7 esencjonalnymi pytaniami i odpowiedziami bezpośrednio rozwiewającymi obiekcje klienta przed wysłaniem formularza:
+    1. `01: Ile osób może obsłużyć stacja Raricart?` — skala od 20–30 do 500+ gości, wysoka wydajność płyt gastronomicznych, opcja 2–3 stacji równolegle.
+    2. `02: Czy stacja może pojawić się na weselu lub poprawinach?` — słodki stół live, strefa relaksu, atrakcja po torcie, orzeźwienie na poprawinach.
+    3. `03: Czy dojeżdżacie poza Śląsk i Małopolskę?` — cała Polska (Kraków, Wrocław, Warszawa, Poznań i mniejsze miejscowości).
+    4. `04: Czy można połączyć kilka stacji na jednym wydarzeniu?` — łączenie pancakes + lody + deski w jednym spójnym serwisie.
+    5. `05: Ile miejsca potrzebujecie i jakie warunki techniczne są wymagane?` — równe 2x2m lub 3x3m oraz zwykłe gniazdko 230V; brak konieczności kuchni czy bieżącej wody na stanowisku (100% samowystarczalności).
+    6. `06: Czy zapewniacie pełną obsługę, zastawę i sprzątanie?` — turnkey A do Z (transport, montaż, obsługa w fartuchach, ekologiczne naczynia, demontaż i idealny porządek).
+    7. `07: Jak wygląda wycena i proces rezerwacji terminu?` — całościowa wycena bez mylących stawek "od osoby", oferta w 24h, zaliczka.
+  - **Usunięto odstraszający komunikat "od 150 zł/os."** (Sekcja 17 specyfikacji) z polskiej, angielskiej i hiszpańskiej wersji językowej, wprowadzając transparentny model całościowej wyceny.
+  - Zbudowano nowoczesny, natywny akordeon bazujący na semantycznych `<details name="raricart-faq">` i `<summary>`:
+    - Wyraziste numeratory `01`–`07` i tagi kategorii.
+    - Automatyczne zamykanie pozostałych pozycji (`exclusive accordion`), z pierwszym pytaniem otwartym domyślnie.
+    - Mikroanimacje rotacji strzałki (180deg) oraz płynne pojawianie się treści (`faqFadeIn`).
+  - Dodano dolny baner wsparcia: *„Masz inne pytanie przed rezerwacją?”* z bezpośrednim przyciskiem CTA do formularza oraz klikalnym numerem telefonu `+48 883 392 688`.
+  - Weryfikacja kontraktu 100% OK (`php tests/verify_full_contract.php`).
+
+---
+
 ## 🚀 Najbliższy Krok do Wykonania
 
-### 👉 **KROK 12: Zoptymalizowany FAQ (Sekcja 10 specyfikacji)**
-- **Lokalizacja:** Sekcja `#faq` w [index.php](file:///e:/Projekty/raricart/index.php) / wyodrębnienie do komponentu `parts/faq.php`.
-- **Cel:** Skrócenie i selekcja 6–7 precyzyjnych pytań bezpośrednio rozwiewających obiekcje organizatorów przed wysłaniem formularza:
-  1. *Ile osób może obsłużyć Raricart?* (przepustowość stacji)
-  2. *Czy stacja może pojawić się na weselu?* (plener, sala, poprawiny)
-  3. *Czy dojeżdżacie poza Śląsk?* (zasięg cała Polska)
-  4. *Czy można połączyć kilka stacji?* (pakiety pancakes + lody + deski)
-  5. *Ile miejsca potrzebujecie i co z prądem?* (wymiary 3x3m, standardowe gniazdko 230V)
-  6. *Czy zapewniacie pełną obsługę i sprzątanie?* (montaż, serwis, demontaż, czystość)
-  7. *Jak wygląda wycena i rezerwacja terminu?* (wycena w 24h, prosta zaliczka)
-- **UI:** Nowoczesny akordeon z płynnym rozwijaniem i mikroanimacjami.
+### 👉 **KROK 13: O Nas — Autentyczna Historia Założycielki (Sekcja 11 specyfikacji)**
+- **Lokalizacja:** Sekcja `#o-nas` (lub komponent `parts/about-story.php` przed formularzem kontaktowym / pod FAQ).
+- **Format:** Autentyczny, osobisty styl storytellingu:
+  - Zdjęcie założycielki przy mobilnej stacji (pasja, dbałość o detal, uśmiech, estetyka).
+  - Krótka, ludzka historia: dlaczego powstał Raricart? (zamiast nudnych, odgrzewanych bemarów cateringowych — żywe gotowanie, zapach świeżego ciasta i radosne spotkanie przy stoisku).
+  - Bezpośredni podpis i zaproszenie do rozmowy.
 
 ---
 
@@ -198,10 +215,10 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 - [x] **8. Dla kogo? (Segmentacja: Wesela, Firmy, Przyjęcia, Agencje)** *(Sekcja 6)*
 - [x] **9. Dlaczego Raricart? (6 mocnych argumentów)** *(Sekcja 7)*
 - [x] **10. Nowa Galeria Realizacji (6–9 top zdjęć z życia stacji)** *(Sekcja 8)*
-- [x] **11. Opinie Klientów (Social Proof)** *(Sekcja 9)*
-- [ ] **12. Zoptymalizowany FAQ (6–7 pytań rozwiewających obiekcje)** *(Sekcja 10)*
+- [x] **11. Opinie Klientów (Social Proof & Google Reviews)** *(Sekcja 9)*
+- [x] **12. Zoptymalizowany FAQ (7 kluczowych pytań z akordeonem)** *(Sekcja 10)*
 - [ ] **13. O Nas (Ludzka historia założycielki)** *(Sekcja 11)*
-- [ ] **14. Usunięcie "od 150 zł/os." + Transparentna wycena** *(Sekcja 17)*
+- [x] **14. Usunięcie "od 150 zł/os." + Transparentna wycena** *(Sekcja 17 - zrealizowane w Kroku 12)*
 - [ ] **15. Przedformularzowe CTA** *(Sekcja 12)*
 - [ ] **16. Uproszczony formularz wyceny (bez briefu/budżetu)** *(Sekcja 13)*
 - [ ] **17. Szlif responsywności (Mobile/Tablet/Desktop) & Testy** *(Sekcja 15)*
@@ -210,5 +227,5 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ## 💡 Jak Wznowić Pracę w Kolejnej Sesji?
 Wystarczy wpisać w czacie:  
-> **"Lecimy z Krokiem 12 (Zoptymalizowany FAQ)"**  
-Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/faq.php`.
+> **"Lecimy z Krokiem 13 (O Nas)"**  
+Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/about-story.php`.
