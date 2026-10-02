@@ -98,9 +98,35 @@ foreach ($lejekSections as $name => $cls) {
     }
 }
 
+// E. Weryfikacja hierarchii DOM (Semantyka W3C: sekcje -> modale -> stopka -> skrypty -> zamknięcie body)
+$bodyEndPos = strpos($html, '</body>');
+$htmlEndPos = strpos($html, '</html>');
+$footerPos = strpos($html, '<footer');
+$modalPos = strpos($html, 'id="modal"');
+$scriptPos = strpos($html, '/assets/js/script.js');
+
+echo "\n5. Weryfikacja poprawności hierarchii DOM (W3C):\n";
+if ($modalPos !== false && $footerPos !== false && $modalPos < $footerPos) {
+    echo "  [OK] Modale wyrenderowane przed stopką wewnątrz body\n";
+} else {
+    echo "  [BLAD] Modale wyrenderowane w niewłaściwej pozycji DOM\n";
+}
+
+if ($footerPos !== false && $bodyEndPos !== false && $footerPos < $bodyEndPos) {
+    echo "  [OK] Stopka znajduje się wewnątrz tagu body\n";
+} else {
+    echo "  [BLAD] Stopka poza tagiem body\n";
+}
+
+if ($scriptPos !== false && $bodyEndPos !== false && $scriptPos < $bodyEndPos) {
+    echo "  [OK] Skrypt script.js ładowany przed zamknięciem body\n";
+} else {
+    echo "  [BLAD] Skrypt script.js poza body\n";
+}
+
 echo "\n=== PODSUMOWANIE AUDYTU ===\n";
-if (empty($missingIds) && empty($missingCss)) {
-    echo "WYNIK: PERFEKCYJNA SPÓJNOŚĆ! Wszystkie punkty styku HTML <-> CSS <-> JS są zachowane.\n";
+if (empty($missingIds) && empty($missingCss) && $modalPos < $footerPos && $footerPos < $bodyEndPos) {
+    echo "WYNIK: PERFEKCYJNA SPÓJNOŚĆ! Wszystkie punkty styku HTML <-> CSS <-> JS oraz struktura DOM są wzorcowe.\n";
 } else {
     echo "WYNIK: Znaleziono niespójności:\n";
     if (!empty($missingIds)) echo "Brakujące ID: " . implode(', ', $missingIds) . "\n";
