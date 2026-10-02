@@ -268,5 +268,24 @@ Wszystkie 17 punktów specyfikacji techniczno-sprzedażowej [PROJEKT_REDESIGN_20
 
 ---
 
+## ⚡ REFAKTORYZACJA JAVASCRIPT: PEŁNA MODULARYZACJA ES6+ (OPCJA B)
+
+- **Problem wyjściowy:** Plik [assets/js/script.js](file:///e:/Projekty/raricart/assets/js/script.js) rozrósł się do ponad 2400 linii (~128 KB), z czego ponad 45% (1076 linii) stanowiły zagnieżdżone słowniki tłumaczeń.
+- **Kopia bezpieczeństwa (Save Point):** Utworzono nienaruszalny backup [assets/js/script.legacy.js](file:///e:/Projekty/raricart/assets/js/script.legacy.js).
+- **Architektura modułowa (`assets/js/modules/`):**
+  1. `translations.js` — Czysta baza danych słowników (PL / EN / ES).
+  2. `i18n.js` — Lekki silnik podmiany `data-i18n` i `data-i18n-placeholder`.
+  3. `nav.js` — Sticky header, responsywne menu mobilne, blokada scrolla.
+  4. `modals.js` — Obsługa okien modalnych stacji live food z History API (`#offer-*`).
+  5. `gallery.js` — Dynamiczna siatka realizacji, preload SSR i pełny lightbox.
+  6. `contact.js` — Walidacja formularza, cichy autozapis leadów, `beforeunload` beacon i toasty.
+  7. `cookies.js` — Zgoda na pliki cookies (RODO) i opóźnione ładowanie GA4.
+  8. `scroll.js` — Obsługa deep-linków (`?goto=` / `#`), widżet pływający CTA oraz IntersectionObserver.
+- **Główny orkiestrator:** [assets/js/script.js](file:///e:/Projekty/raricart/assets/js/script.js) zredukowany z 2407 linii do zaledwie 35 czytelnych linii natywnego importu ES6+.
+- **Weryfikacja:** Skrypt [tests/verify_full_contract.php](file:///e:/Projekty/raricart/tests/verify_full_contract.php) zaktualizowany i przeszedł w 100%. Wszystkie endpointy HTTP 200.
+
+---
+
 ## 🚀 Kolejny Krok Organizacyjny:
-Strona jest w pełni gotowa do produkcyjnego merge'a i wdrożenia na serwer produkcyjny z obsługą LiteSpeed Cache (`X-LiteSpeed-Purge: *`).
+Strona jest w pełni zoptymalizowana, modularna i gotowa do produkcyjnego merge'a oraz wdrożenia na serwer produkcyjny z obsługą LiteSpeed Cache (`X-LiteSpeed-Purge: *`).
+
