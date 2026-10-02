@@ -15,6 +15,12 @@ $html = ob_get_clean();
 
 $css = file_get_contents(__DIR__ . '/../assets/css/styles.css');
 $js = file_get_contents(__DIR__ . '/../assets/js/script.js');
+$moduleFiles = glob(__DIR__ . '/../assets/js/modules/*.js');
+if (!empty($moduleFiles)) {
+    foreach ($moduleFiles as $mf) {
+        $js .= "\n" . file_get_contents($mf);
+    }
+}
 
 echo "=== RAPORT SPÓJNOŚCI FRONTENDU (HTML, CSS, JS) ===\n\n";
 
