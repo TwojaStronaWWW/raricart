@@ -19,21 +19,45 @@ export function initStationModals(translations) {
 		}
 	}
 
+	// Preload cache for all station modal images (0ms display latency)
+	const preloadedImages = new Map();
+	const preloadImage = (url) => {
+		if (!url || preloadedImages.has(url)) return;
+		const p = new Image();
+		p.src = url;
+		preloadedImages.set(url, p);
+	};
+
+	const preloadAllModalImages = () => {
+		const modals = window.siteContentConfig?.offer_modals || {};
+		const cards = window.siteContentConfig?.offer_cards || {};
+		['pancakes', 'icecream', 'cheese'].forEach(type => {
+			if (modals[type]) preloadImage(modals[type]);
+			if (cards[type]) preloadImage(cards[type]);
+		});
+	};
+
+	if ('requestIdleCallback' in window) {
+		requestIdleCallback(preloadAllModalImages, { timeout: 1500 });
+	} else {
+		setTimeout(preloadAllModalImages, 150);
+	}
+
 	function openOfferModal(type) {
 		if (!modal) return;
 		const lang = getCurrentLang();
 		const data = translations?.[lang]?.modals?.[type];
 
 		if (data) {
-			let imgSrc = data.image;
+			let targetImgSrc = '';
 
-			// 1. Try Specific Modal Image from Config
+			// 1. Try Specific Modal Image from Config (No cache-busting timestamp!)
 			if (
 				window.siteContentConfig &&
 				window.siteContentConfig.offer_modals &&
 				window.siteContentConfig.offer_modals[type]
 			) {
-				imgSrc = window.siteContentConfig.offer_modals[type] + '?v=' + Date.now();
+				targetImgSrc = window.siteContentConfig.offer_modals[type];
 			}
 			// 2. Fallback to Card Image from Config
 			else if (
@@ -41,12 +65,38 @@ export function initStationModals(translations) {
 				window.siteContentConfig.offer_cards &&
 				window.siteContentConfig.offer_cards[type]
 			) {
-				imgSrc = window.siteContentConfig.offer_cards[type] + '?v=' + Date.now();
+				targetImgSrc = window.siteContentConfig.offer_cards[type];
 			}
 
+			// 3. Fallback: Current card image already rendered in DOM (zero network delay)
+			const card = document.querySelector(`.offer-card[data-offer="${type}"]`);
+			const cardImg = card ? card.querySelector('.offer-image-img') : null;
+			const cardImgSrc = cardImg ? cardImg.src : '';
+
+			const finalSrc = targetImgSrc || cardImgSrc || data.image || '';
+
 			if (img) {
-				img.src = imgSrc || '';
 				img.alt = data.title || 'Stacja live food Raricart';
+
+				// If already in browser cache or same src, set directly
+				if (cardImgSrc && targetImgSrc && targetImgSrc !== cardImgSrc) {
+					// Show the card image instantly while checking if target image is decoded
+					const cached = preloadedImages.get(targetImgSrc);
+					if (cached && cached.complete && cached.naturalWidth > 0) {
+						img.src = targetImgSrc;
+					} else {
+						img.src = cardImgSrc; // Instant 0ms preview from card!
+						const hiRes = new Image();
+						hiRes.onload = () => {
+							if (modal.classList.contains('active')) {
+								img.src = targetImgSrc;
+							}
+						};
+						hiRes.src = targetImgSrc;
+					}
+				} else {
+					img.src = finalSrc;
+				}
 			}
 			if (title) {
 				title.textContent = data.title || '';
@@ -73,10 +123,19 @@ export function initStationModals(translations) {
 		}
 	}
 
-	// Click on offer cards
+	// Click & Hover Preload on offer cards
 	document.querySelectorAll('.offer-card').forEach(card => {
+		const type = card.getAttribute('data-offer');
+
+		// Preload on mouse hover or touch start (starts download 200-500ms before click!)
+		const warmUp = () => {
+			const target = window.siteContentConfig?.offer_modals?.[type] || window.siteContentConfig?.offer_cards?.[type];
+			if (target) preloadImage(target);
+		};
+		card.addEventListener('pointerenter', warmUp, { once: true, passive: true });
+		card.addEventListener('touchstart', warmUp, { once: true, passive: true });
+
 		card.addEventListener('click', () => {
-			const type = card.getAttribute('data-offer');
 			if (type) openOfferModal(type);
 		});
 	});

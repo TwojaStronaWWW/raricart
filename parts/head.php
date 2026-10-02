@@ -59,6 +59,11 @@
     <!-- Preload Critical Image (LCP) -->
     <link rel="preload" href="https://media.raricart.pl/images/logo_optimized.png" as="image">
 
+    <!-- Prefetch Station Modal Images (Instant 0ms modal reveal) -->
+    <link rel="prefetch" href="<?php echo get_val('offer_modals.pancakes', 'https://media.raricart.pl/gallery/6d13d603eaeb8d57_migrated.webp'); ?>" as="image">
+    <link rel="prefetch" href="<?php echo get_val('offer_modals.icecream', 'https://media.raricart.pl/gallery/9b9579c8c4ed20b2_migrated.webp'); ?>" as="image">
+    <link rel="prefetch" href="<?php echo get_val('offer_modals.cheese', 'https://media.raricart.pl/gallery/cdd87e53948f5762_migrated.webp'); ?>" as="image">
+
     <!-- Scripts -->
 
     <script type="application/ld+json">
