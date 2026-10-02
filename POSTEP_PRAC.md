@@ -190,16 +190,29 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
   - Dodano dolny baner wsparcia: *„Masz inne pytanie przed rezerwacją?”* z bezpośrednim przyciskiem CTA do formularza oraz klikalnym numerem telefonu `+48 883 392 688`.
   - Weryfikacja kontraktu 100% OK (`php tests/verify_full_contract.php`).
 
+- **KROK 13 (Sekcja 11): O Nas — Autentyczna Historia Założycielki** ✅ UKOŃCZONE
+  - Utworzono modułowy komponent `parts/about-story.php` i osadzono go w `index.php` w naturalnym układzie lejka (pomiędzy Opiniami a FAQ).
+  - Skonfigurowano unikalny identyfikator sekcji `id="onas"` (przenosząc sekcję korzyści do `id="dlaczego-stacja"`), dzięki czemu link w menu `navbar.php` i `footer.php` precyzyjnie przenosi gościa do autentycznej opowieści o marce.
+  - Zbudowano elegancki, dwukolumnowy układ (split grid):
+    - **Kolumna wizualna:** Autentyczne zdjęcie założycielki przy stacji z pływającą kartą misji (*„Pasja do detalu • Każdy event traktujemy indywidualnie”*) na półprzezroczystym szkle (glassmorphism).
+    - **Kolumna treści:** Osobista narracja z tekstem wiernie odpowiadającym specyfikacji: geneza Raricart, alternatywa dla bemarów cateringowych, radość gości i wyeksponowany cytat z misją (*„A moim celem za każdym razem jest ten sam: żeby Twoi goście powiedzieli: «Wow, ale to było dobre».”*).
+    - **Podpis i akcja:** Personalna wizytówka założycielki (*„Katarzyna — Założycielka Raricart & Pasjonatka Estetyki Kulinariów”*) oraz przycisk CTA `[POZNAJ RARICART →]`.
+  - Pełna integracja z panelem administracyjnym przez dynamiczny selektor `#onas .about-story-img, #onas .premium-img` podpinający `content.about_image`.
+  - Dodano pełne wsparcie wielojęzyczności w słowniku `translations.about_story` dla języków PL, EN i ES.
+  - Zaktualizowano test spójności frontendowej `tests/verify_full_contract.php` (11/11 sekcji lejka wyrenderowanych poprawnie, 100% spójności ID i klas).
+
 ---
 
 ## 🚀 Najbliższy Krok do Wykonania
 
-### 👉 **KROK 13: O Nas — Autentyczna Historia Założycielki (Sekcja 11 specyfikacji)**
-- **Lokalizacja:** Sekcja `#o-nas` (lub komponent `parts/about-story.php` przed formularzem kontaktowym / pod FAQ).
-- **Format:** Autentyczny, osobisty styl storytellingu:
-  - Zdjęcie założycielki przy mobilnej stacji (pasja, dbałość o detal, uśmiech, estetyka).
-  - Krótka, ludzka historia: dlaczego powstał Raricart? (zamiast nudnych, odgrzewanych bemarów cateringowych — żywe gotowanie, zapach świeżego ciasta i radosne spotkanie przy stoisku).
-  - Bezpośredni podpis i zaproszenie do rozmowy.
+### 👉 **KROK 15: Ostatnie CTA Przed Formularzem (Sekcja 12 specyfikacji)**
+- **Lokalizacja:** Komponent `parts/pre-form-cta.php` bezpośrednio przed sekcją `#kontakt`.
+- **Format:**
+  - Duże, klimatyczne tło stacji w akcji z ciemnym filtrem.
+  - Nagłówek: *„Masz wydarzenie? Zróbmy na nim coś pysznego.”*
+  - Podtytuł: *„Podaj nam datę, miejsce i liczbę gości. Sprawdzimy dostępność i przygotujemy dla Ciebie indywidualną ofertę.”*
+  - Wyróżniony przycisk: `[SPRAWDŹ DOSTĘPNOŚĆ TERMINU]` (płynny scroll do pól formularza z auto-focusem).
+  - Microcopy znoszące lęk decyzyjny: *„Odpowiemy z informacją o dostępności i propozycją dopasowaną do Twojego wydarzenia.”*
 
 ---
 
@@ -217,7 +230,7 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 - [x] **10. Nowa Galeria Realizacji (6–9 top zdjęć z życia stacji)** *(Sekcja 8)*
 - [x] **11. Opinie Klientów (Social Proof & Google Reviews)** *(Sekcja 9)*
 - [x] **12. Zoptymalizowany FAQ (7 kluczowych pytań z akordeonem)** *(Sekcja 10)*
-- [ ] **13. O Nas (Ludzka historia założycielki)** *(Sekcja 11)*
+- [x] **13. O Nas (Ludzka historia założycielki)** *(Sekcja 11)*
 - [x] **14. Usunięcie "od 150 zł/os." + Transparentna wycena** *(Sekcja 17 - zrealizowane w Kroku 12)*
 - [ ] **15. Przedformularzowe CTA** *(Sekcja 12)*
 - [ ] **16. Uproszczony formularz wyceny (bez briefu/budżetu)** *(Sekcja 13)*
@@ -227,5 +240,5 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ## 💡 Jak Wznowić Pracę w Kolejnej Sesji?
 Wystarczy wpisać w czacie:  
-> **"Lecimy z Krokiem 13 (O Nas)"**  
+> **"Lecimy z Krokiem 15 (Przedformularzowe CTA)"**  
 Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/about-story.php`.

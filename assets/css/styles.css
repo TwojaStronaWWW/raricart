@@ -3367,6 +3367,271 @@ body.lightbox-open {
 	}
 }
 
+/* --- [05e_ABOUT_STORY] O Nas — Autentyczna Historia Założycielki (Lejek 2026) --- */
+.section-about-story {
+	padding: 7rem 1.5rem;
+	background: linear-gradient(180deg, #faf7f2 0%, #ffffff 100%);
+	position: relative;
+	overflow: hidden;
+}
+
+.about-story-container {
+	max-width: 1240px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 1fr 1.15fr;
+	gap: 4.5rem;
+	align-items: center;
+}
+
+/* Visual Column */
+.about-story-visual {
+	position: relative;
+}
+
+.about-story-img-wrapper {
+	position: relative;
+	border-radius: 24px;
+	overflow: hidden;
+	box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12), 0 6px 18px rgba(0, 0, 0, 0.06);
+	border: 1px solid rgba(201, 147, 63, 0.25);
+	aspect-ratio: 4 / 5;
+	background: #111;
+}
+
+.about-story-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-story-img-wrapper:hover .about-story-img {
+	transform: scale(1.03);
+}
+
+.about-story-floating-card {
+	position: absolute;
+	bottom: 24px;
+	left: 24px;
+	right: 24px;
+	background: rgba(18, 24, 16, 0.85);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 16px;
+	padding: 1.15rem 1.35rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.about-floating-icon {
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	background: rgba(201, 147, 63, 0.2);
+	border: 1px solid rgba(201, 147, 63, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-accent, #c9933f);
+	flex-shrink: 0;
+}
+
+.about-floating-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.about-floating-title {
+	font-family: var(--font-primary);
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: #ffffff;
+}
+
+.about-floating-desc {
+	font-family: var(--font-primary);
+	font-size: 0.78rem;
+	color: rgba(255, 255, 255, 0.75);
+	margin-top: 2px;
+}
+
+/* Content Column */
+.about-story-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.about-story-badge {
+	align-self: flex-start;
+	font-family: var(--font-primary);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-accent, #c9933f);
+	background: rgba(201, 147, 63, 0.08);
+	border: 1px solid rgba(201, 147, 63, 0.25);
+	padding: 0.35rem 1.15rem;
+	border-radius: 999px;
+	margin-bottom: 1.25rem;
+}
+
+.about-story-title {
+	font-family: var(--font-secondary);
+	font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+	font-weight: 800;
+	color: var(--color-text, #1a1a1a);
+	line-height: 1.2;
+	margin-bottom: 1.5rem;
+}
+
+.about-story-text {
+	font-family: var(--font-primary);
+	font-size: 1.05rem;
+	line-height: 1.7;
+	color: #444444;
+	display: flex;
+	flex-direction: column;
+	gap: 1.15rem;
+	margin-bottom: 2rem;
+}
+
+.about-story-text .about-lead {
+	font-size: 1.2rem;
+	font-weight: 600;
+	color: #1a1a1a;
+	line-height: 1.55;
+}
+
+.about-story-quote {
+	margin: 0.5rem 0;
+	padding: 1.25rem 1.5rem;
+	background: rgba(201, 147, 63, 0.06);
+	border-left: 4px solid var(--color-accent, #c9933f);
+	border-radius: 0 14px 14px 0;
+	font-family: var(--font-secondary);
+	font-style: italic;
+	font-size: 1.15rem;
+	color: #222222;
+	line-height: 1.55;
+}
+
+.about-story-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid rgba(0, 0, 0, 0.08);
+	flex-wrap: wrap;
+}
+
+.about-founder-profile {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.about-founder-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.about-founder-name {
+	font-family: var(--font-secondary);
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #1a1a1a;
+}
+
+.about-founder-role {
+	font-family: var(--font-primary);
+	font-size: 0.82rem;
+	color: #666666;
+	margin-top: 2px;
+}
+
+.btn-about-story {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	background: var(--color-accent, #c9933f);
+	color: #111111;
+	font-family: var(--font-primary);
+	font-size: 0.92rem;
+	font-weight: 700;
+	padding: 0.9rem 1.75rem;
+	border-radius: 999px;
+	text-decoration: none;
+	box-shadow: 0 6px 20px rgba(201, 147, 63, 0.25);
+	transition: all 0.3s ease;
+}
+
+.btn-about-story:hover {
+	background: #d6a24e;
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px rgba(201, 147, 63, 0.38);
+	color: #000000;
+}
+
+.btn-about-story svg {
+	transition: transform 0.25s ease;
+}
+
+.btn-about-story:hover svg {
+	transform: translateX(4px);
+}
+
+@media (max-width: 992px) {
+	.about-story-container {
+		grid-template-columns: 1fr;
+		gap: 3rem;
+	}
+
+	.about-story-visual {
+		max-width: 540px;
+		margin: 0 auto;
+		width: 100%;
+	}
+
+	.about-story-img-wrapper {
+		aspect-ratio: 16 / 11;
+	}
+
+	.section-about-story {
+		padding: 5rem 1.25rem;
+	}
+}
+
+@media (max-width: 576px) {
+	.about-story-img-wrapper {
+		aspect-ratio: 4 / 3;
+	}
+
+	.about-story-floating-card {
+		bottom: 14px;
+		left: 14px;
+		right: 14px;
+		padding: 0.85rem 1rem;
+	}
+
+	.about-story-footer {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.25rem;
+	}
+
+	.btn-about-story {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
 /* --- View Utility Classes --- */
 .section-gallery-title {
 	padding-top: 2rem;

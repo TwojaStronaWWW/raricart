@@ -137,6 +137,18 @@
 				card6_desc: 'Jedna stacja czy pakiet kilku smaków? Dopasowujemy ofertę, godziny serwisu i menu do charakteru przyjęcia — od 20 do ponad 500 gości.',
 				cta_btn: 'SPRAWDŹ DOSTĘPNOŚĆ NA SWOJE WYDARZENIE',
 			},
+			about_story: {
+				badge: 'LUDZIE ZA STACJĄ',
+				title: 'Cześć, tu Raricart.',
+				lead: 'Raricart powstało z prostego pomysłu: żeby jedzenie podczas wydarzenia było czymś więcej niż tylko poczęstunkiem.',
+				p1: 'Chciałam stworzyć stacje, które przyciągają ludzi, dają im możliwość wyboru i jednocześnie pięknie wpisują się w charakter wydarzenia.',
+				p2: 'Dlatego każdą realizację traktuję jako połączenie dobrego jedzenia, estetyki i świetnej obsługi. Dziś Raricart pojawia się na weselach, eventach firmowych i prywatnych przyjęciach.',
+				quote: '„A moim celem za każdym razem jest ten sam: żeby Twoi goście powiedzieli: «Wow, ale to było dobre».”',
+				floating_title: 'Pasja do detalu',
+				floating_desc: 'Każdy event traktujemy indywidualnie',
+				role: 'Założycielka Raricart & Pasjonatka Estetyki Kulinariów',
+				cta: 'Poznaj Raricart',
+			},
 			about: {
 				title: 'Nie tworzymy cateringu, lecz doświadczenie.',
 				p1: 'Tworzymy mobilne stacje degustacyjne, które stają się ozdobą każdego wydarzenia. To nie tylko jedzenie, to <span class="highlight">subtelny, dopracowany i&nbsp;pełen charakteru</span> element scenografii.',
@@ -469,6 +481,18 @@
 				card6_desc: 'A single station or a multi-station tasting package? We adapt menus, service timing, and setup to any event scale from 20 to 500+ guests.',
 				cta_btn: 'CHECK AVAILABILITY FOR YOUR EVENT',
 			},
+			about_story: {
+				badge: 'PEOPLE BEHIND THE STATION',
+				title: 'Hi, we are Raricart.',
+				lead: 'Raricart was born from a simple idea: that event food should be something much more than just a buffet meal.',
+				p1: 'I wanted to design live stations that captivate guests, offer freedom of choice, and integrate harmoniously into the aesthetic of every celebration.',
+				p2: 'That is why every event is crafted as a bespoke union of exquisite taste, visual elegance, and attentive service. Today, Raricart shines at weddings, corporate galas, and private celebrations.',
+				quote: '“And my goal each and every time remains the same: that your guests say: ‘Wow, that was extraordinary!’”',
+				floating_title: 'Passion for Detail',
+				floating_desc: 'Crafted with personal care for every event',
+				role: 'Founder of Raricart & Culinary Aesthetics Enthusiast',
+				cta: 'Discover Raricart',
+			},
 			about: {
 				title: "We don't create catering, but an experience.",
 				p1: 'We create mobile tasting stations that become the highlight of every event. It\'s not just food, it\'s a <span class="highlight">subtle, refined, and full of character</span> scenic element.',
@@ -787,6 +811,18 @@
 				card6_title: 'Flexibilidad total',
 				card6_desc: '¿Una estación o un paquete combinado? Adaptamos la propuesta, horarios y capacidades para eventos desde 20 hasta más de 500 personas.',
 				cta_btn: 'CONSULTAR DISPONIBILIDAD PARA TU EVENTO',
+			},
+			about_story: {
+				badge: 'PERSONAS DETRÁS DE LA ESTACIÓN',
+				title: 'Hola, somos Raricart.',
+				lead: 'Raricart nació de una idea sencilla: que la comida en un evento debe ser algo mucho más que un simple refrigerio.',
+				p1: 'Quise crear estaciones que atraigan a la gente, les brinden libertad de elección y se integren con elegancia en la atmósfera de cada celebración.',
+				p2: 'Por eso trato cada evento como una unión de alta calidad culinaria, estética impecable y un servicio cercano. Hoy Raricart acompaña bodas, galas de empresa y fiestas privadas.',
+				quote: '«Y mi objetivo es siempre el mismo: que tus invitados digan: “¡Guau, qué delicia!”»',
+				floating_title: 'Pasión por el detalle',
+				floating_desc: 'Cada evento tratado con dedicación única',
+				role: 'Fundadora de Raricart y Apasionada de la Estética Gastronómica',
+				cta: 'Conoce Raricart',
 			},
 			about: {
 				title:
@@ -1107,7 +1143,7 @@
 		let shouldShowNavbar = false
 
 		// User Request: Trigger when approaching "NIE TWORZYMY CATERINGU..."
-		const onasHeadline = document.querySelector('#onas h2')
+		const onasHeadline = document.querySelector('#dlaczego-stacja h2, #onas h2')
 		if (onasHeadline) {
 			const headlineRect = onasHeadline.getBoundingClientRect()
 			// Trigger when the headline is getting close to the center/top of viewport
@@ -1567,7 +1603,7 @@
 
 					// About Image
 					if (content.about_image) {
-						const img = document.querySelector('#onas .premium-image, #onas .premium-img')
+						const img = document.querySelector('#onas .premium-image, #onas .premium-img, #onas .about-story-img')
 						if (img) img.src = getSafeMediaUrl(content.about_image)
 					}
 

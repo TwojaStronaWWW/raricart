@@ -52,7 +52,10 @@ include 'parts/navbar.php';
         <!-- 9. OPINIE KLIENTÓW (Social Proof & Referencje - Lejek 2026) -->
         <?php include 'parts/reviews.php'; ?>
 
-        <!-- 10. FAQ (Zoptymalizowane 7 pytań - Lejek 2026) -->
+        <!-- 10. O NAS (Autentyczna Historia Założycielki - Lejek 2026) -->
+        <?php include 'parts/about-story.php'; ?>
+
+        <!-- 11. FAQ (Zoptymalizowane 7 pytań - Lejek 2026) -->
         <?php include 'parts/faq.php'; ?>
 
         <!-- Kontakt -->
