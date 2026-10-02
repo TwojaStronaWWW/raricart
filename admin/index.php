@@ -17,35 +17,79 @@ if (!file_exists($config_file)) {
 
 $error = '';
 
+// Brute-force protection: rate-limit per IP
+$attemptsFile = __DIR__ . '/../assets/data/login_attempts.json';
+$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+$ipKey = md5($ip);
+$maxAttempts = 5;
+$lockoutSeconds = 900; // 15 min
+
+$attempts = [];
+if (file_exists($attemptsFile)) {
+    $attempts = json_decode((string)file_get_contents($attemptsFile), true) ?: [];
+}
+
+// Clean expired entries (older than lockout period)
+$now = time();
+foreach ($attempts as $k => $v) {
+    if (($v['time'] ?? 0) < $now - $lockoutSeconds) {
+        unset($attempts[$k]);
+    }
+}
+
+$isLocked = isset($attempts[$ipKey]) && ($attempts[$ipKey]['count'] ?? 0) >= $maxAttempts;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    
-    // Read config
-    $config_data = json_decode(file_get_contents($config_file), true);
-    
-    if (isset($config_data['users'][$email])) {
-        $userData = $config_data['users'][$email];
-        $hash = is_array($userData) ? $userData['hash'] : $userData;
-        
-        if (password_verify($password, $hash)) {
-            $_SESSION['logged_in'] = true;
-            $_SESSION['user_email'] = $email;
-            
-            // Handle forced password change
-            if (is_array($userData) && isset($userData['force_change']) && $userData['force_change'] === true) {
-                $_SESSION['must_change_password'] = true;
-            } else {
-                unset($_SESSION['must_change_password']);
-            }
-            
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $error = "Nieprawidłowe hasło.";
-        }
+    // CSRF protection
+    $csrfToken = $_POST['csrf_token'] ?? '';
+    if (empty($csrfToken) || !hash_equals($_SESSION['csrf_token'] ?? '', $csrfToken)) {
+        $error = "Nieprawidłowy token zabezpieczający. Odśwież stronę.";
+    } elseif ($isLocked) {
+        $error = "Zbyt wiele nieudanych prób logowania. Spróbuj ponownie za 15 minut.";
     } else {
-        $error = "Nieznany użytkownik.";
+        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        
+        // Read config
+        $config_data = json_decode(file_get_contents($config_file), true);
+        
+        if (isset($config_data['users'][$email])) {
+            $userData = $config_data['users'][$email];
+            $hash = is_array($userData) ? $userData['hash'] : $userData;
+            
+            if (password_verify($password, $hash)) {
+                // Success: clear attempts for this IP
+                unset($attempts[$ipKey]);
+                file_put_contents($attemptsFile, json_encode($attempts, JSON_PRETTY_PRINT), LOCK_EX);
+
+                $_SESSION['logged_in'] = true;
+                $_SESSION['user_email'] = $email;
+                
+                // Handle forced password change
+                if (is_array($userData) && isset($userData['force_change']) && $userData['force_change'] === true) {
+                    $_SESSION['must_change_password'] = true;
+                } else {
+                    unset($_SESSION['must_change_password']);
+                }
+                
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                $error = "Nieprawidłowe hasło.";
+            }
+        } else {
+            $error = "Nieznany użytkownik.";
+        }
+
+        // Record failed attempt
+        if ($error) {
+            if (!isset($attempts[$ipKey])) {
+                $attempts[$ipKey] = ['count' => 0, 'time' => $now];
+            }
+            $attempts[$ipKey]['count']++;
+            $attempts[$ipKey]['time'] = $now;
+            file_put_contents($attemptsFile, json_encode($attempts, JSON_PRETTY_PRINT), LOCK_EX);
+        }
     }
 }
 ?>
@@ -56,21 +100,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logowanie - Raricart Admin</title>
     <link rel="stylesheet" href="admin.css"> <!-- Use admin.css for consistency -->
-    <style>
-        body { background: #f4f7f6; }
-        .login-box { margin: auto; padding: 3rem; max-width: 400px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: #3d4a3a; margin-bottom: 2rem; }
-    </style>
 </head>
-<body>
-    <div class="login-box" style="text-align: center;">
+<body class="auth-page">
+    <div class="login-box">
         <div class="logo">Raricart Admin</div>
         <?php if ($error): ?>
-            <div class="error" style="color:red; margin-bottom:1rem;"><?php echo htmlspecialchars($error); ?></div>
+            <div class="auth-msg error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         <form method="POST">
-            <input type="email" name="email" placeholder="E-mail (np. kontakt@raricart.pl)" required autofocus class="status-input" style="width:100%; box-sizing:border-box; margin-bottom:1rem;">
-            <input type="password" name="password" placeholder="Hasło" required class="status-input" style="width:100%; box-sizing:border-box; margin-bottom:1.5rem;">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? ''); ?>">
+            <input type="email" name="email" placeholder="E-mail (np. kontakt@raricart.pl)" required autofocus class="status-input" style="margin-bottom:1rem;">
+            <input type="password" name="password" placeholder="Hasło" required class="status-input" style="margin-bottom:1.5rem;">
             <button type="submit" class="action-btn" style="width:100%;">Zaloguj się</button>
         </form>
         <p style="margin-top:1.5rem; font-size:0.9rem;">

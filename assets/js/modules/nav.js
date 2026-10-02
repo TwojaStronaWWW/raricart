@@ -61,7 +61,7 @@ export function initNav() {
 	// Sticky Navbar Scroll Handler (Passive for performance)
 	let ticking = false;
 	const onScroll = () => {
-		const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+		const scrollY = window.scrollY ?? document.documentElement.scrollTop;
 		if (scrollY > 30) {
 			if (nav) nav.classList.add('nav-scrolled');
 			if (navBg) navBg.classList.add('nav-scrolled');

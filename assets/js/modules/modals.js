@@ -3,6 +3,7 @@
  */
 
 import { getCurrentLang } from './i18n.js';
+import { toggleBodyScroll } from './utils.js';
 
 export function initStationModals(translations) {
 	const modal = document.getElementById('modal');
@@ -10,21 +11,8 @@ export function initStationModals(translations) {
 	const title = document.getElementById('modalTitle');
 	const text = document.getElementById('modalText');
 
-	function toggleBodyScroll(lock) {
-		if (lock) {
-			document.body.classList.add('lightbox-open');
-		} else {
-			document.body.style.overflow = 'auto';
-			document.body.classList.remove('lightbox-open');
-		}
-	}
-
-	// Immediate in-memory preloading for 0ms modal reveal on desktop & mobile
-	const modalImageUrls = {
-		pancakes: 'https://media.raricart.pl/gallery/6d13d603eaeb8d57_migrated.webp',
-		icecream: 'https://media.raricart.pl/gallery/9b9579c8c4ed20b2_migrated.webp',
-		cheese: 'https://media.raricart.pl/gallery/cdd87e53948f5762_migrated.webp',
-	};
+	// Dynamic modal image URLs from SSR config (admin-managed via dashboard)
+	const modalImageUrls = window.siteContentConfig?.offer_modals || {};
 
 	const preloadedImages = new Map();
 	const preloadImage = (url) => {

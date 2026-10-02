@@ -1,5 +1,15 @@
-# Protect config.json from direct access
+# Protect sensitive JSON files from direct access
 <Files "config.json">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "reset_tokens.json">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "login_attempts.json">
     Order Deny,Allow
     Deny from all
 </Files>

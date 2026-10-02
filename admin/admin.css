@@ -261,3 +261,11 @@ input:checked + .slider:before { transform: translateX(24px); }
     color: white; 
     transform: scale(1.1);
 }
+
+/* Auth Pages */
+body.auth-page { background: #f4f7f6; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+.login-box { background: white; padding: 2.5rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; box-sizing: border-box; }
+.login-box .logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: #3d4a3a; margin-bottom: 2rem; }
+.auth-msg { padding: 10px; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; }
+.auth-msg.error { background: #ffebee; color: #c62828; }
+.auth-msg.success { background: #e8f5e9; color: #2e7d32; }

@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'enabled' => (bool)$data['enabled']
         ];
         
-        if (file_put_contents($file, json_encode($status)) !== false) {
+        if (file_put_contents($file, json_encode($status, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX) !== false) {
+            header("X-LiteSpeed-Purge: *");
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Write failed']);

@@ -49,7 +49,7 @@ $hero_poster = function_exists('get_val') ? get_val('hero_image', 'https://media
                 </video>
                 <div class="hero-video-badge">
                     <span class="hero-video-badge-dot"></span>
-                    <span>LIVE PREPARATION</span>
+                    <span data-i18n="hero.live_badge">LIVE PREPARATION</span>
                 </div>
             </div>
         </div>

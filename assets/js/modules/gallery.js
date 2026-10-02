@@ -2,6 +2,8 @@
  * modules/gallery.js - Moduł galerii realizacji, lightboxa i efektu parallax (Lejek 2026)
  */
 
+import { toggleBodyScroll } from './utils.js';
+
 export function initGallery() {
 	const galleryModal = document.getElementById('galleryModal');
 	const galleryModalImg = document.getElementById('galleryModalImg');
@@ -11,15 +13,6 @@ export function initGallery() {
 
 	const galleryImages = [];
 	let currentGalleryIndex = 0;
-
-	function toggleBodyScroll(lock) {
-		if (lock) {
-			document.body.classList.add('lightbox-open');
-		} else {
-			document.body.style.overflow = 'auto';
-			document.body.classList.remove('lightbox-open');
-		}
-	}
 
 	function openGalleryModal(index) {
 		if (!galleryModal || !galleryModalImg || galleryImages.length === 0) return;
@@ -204,15 +197,20 @@ export function initGallery() {
 			.then(data => {
 				const notice = document.getElementById('availability-notice');
 				if (data && data.enabled && data.text && notice) {
-					notice.innerHTML = `
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" class="notice-icon" style="stroke: var(--color-accent); min-width: 20px;">
-							<rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5"></line>
-							<line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5"></line>
-							<line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"></line>
-						</svg>
-						<span>${data.text}</span>
-					`;
+					notice.textContent = '';
+					const svgNS = 'http://www.w3.org/2000/svg';
+					const svg = document.createElementNS(svgNS, 'svg');
+					svg.setAttribute('width', '20');
+					svg.setAttribute('height', '20');
+					svg.setAttribute('viewBox', '0 0 24 24');
+					svg.setAttribute('fill', 'none');
+					svg.classList.add('notice-icon');
+					svg.style.cssText = 'stroke: var(--color-accent); min-width: 20px;';
+					svg.innerHTML = '<rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/>';
+					const span = document.createElement('span');
+					span.textContent = data.text;
+					notice.appendChild(svg);
+					notice.appendChild(span);
 					notice.style.display = 'flex';
 				}
 			})

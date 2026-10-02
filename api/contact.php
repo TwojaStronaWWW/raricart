@@ -27,17 +27,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
-// Anti-Spam
-if (!empty($data['website_check'])) {
-    echo json_encode(["status" => "success", "message" => "Wiadomość została wysłana!"]);
-    exit;
-}
-
-// --- DRAFTS DIR (musi być PRZED pingiem) ---
+// --- DRAFTS DIR ---
 $draftsDir = __DIR__ . '/drafts';
 if (!is_dir($draftsDir)) {
     @mkdir($draftsDir, 0777, true);
     @file_put_contents($draftsDir . '/.htaccess', "Deny from all"); 
+}
+
+// Rate Limiting (15 requests per 10 minutes per IP)
+$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+$rateFile = $draftsDir . '/rate_' . md5($ip) . '.json';
+$rateData = [];
+if (file_exists($rateFile)) {
+    $rateData = json_decode(file_get_contents($rateFile), true) ?: [];
+}
+$now = time();
+$rateData = array_filter($rateData, function($time) use ($now) {
+    return $time > $now - 600;
+});
+if (count($rateData) >= 15) {
+    http_response_code(429);
+    echo json_encode(["status" => "error", "message" => "Zbyt wiele zapytań. Spróbuj ponownie za kilka minut."]);
+    exit;
+}
+$rateData[] = $now;
+file_put_contents($rateFile, json_encode(array_values($rateData)), LOCK_EX);
+
+// Anti-Spam
+if (!empty($data['website_check'])) {
+    echo json_encode(["status" => "success", "message" => "Wiadomość została wysłana!"]);
+    exit;
 }
 
 // --- POOR MAN'S CRON TRIGGER ---
@@ -101,7 +120,8 @@ if (!$isPartial) {
 }
 
 $hotLabel = $isHot ? '🔥 HOT ' : '';
-$emailSubject = $isPartial ? "⚠️ SZKIC (Porzucony): $name" : "{$hotLabel}{$subjectPrefix} Nowe zapytanie od: $name";
+$rawSubject = $isPartial ? "⚠️ SZKIC (Porzucony): $name" : "{$hotLabel}{$subjectPrefix} Nowe zapytanie od: $name";
+$emailSubject = '=?UTF-8?B?' . base64_encode($rawSubject) . '?=';
 $emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" : "Nowe zapytanie ze strony:\n\n") .
              "👤 Imię: $name\n" .
              "📧 Email: $email\n" .
@@ -273,7 +293,8 @@ function processDraftQueue($draftsDir, $toEmail) {
                 // Policz ile leadów jest w buforze
                 $count = substr_count($bufferContent, "=== LEAD START ===");
                 
-                $digestSubject = "⚠️ [Raricart] Dziś porzucono {$count} formularzy";
+                $rawDigestSubject = "⚠️ [Raricart] Dziś porzucono {$count} formularzy";
+                $digestSubject = '=?UTF-8?B?' . base64_encode($rawDigestSubject) . '?=';
                 $digestBody = "=== DAILY DIGEST: PORZUCONE FORMULARZE ===\n";
                 $digestBody .= "Liczba: {$count}\n";
                 $digestBody .= "Data: " . date('Y-m-d H:i') . "\n";
