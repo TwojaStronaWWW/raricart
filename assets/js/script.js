@@ -289,7 +289,12 @@
 				phone: 'Telefon: <a href="tel:+48883392688" class="phone-link">+48 883 392 688</a>',
 				quick_links: 'Szybkie Linki',
 			},
-			gallery: { title: 'GALERIA REALIZACJI' },
+			gallery: {
+				badge: 'AUTENTYCZNE KADRY',
+				title: 'Zobacz Raricart podczas wydarzeń',
+				subtitle: 'Tak wygląda stacja, kiedy zaczyna się wydarzenie. Świeże produkty, przygotowanie na żywo, własne kompozycje i goście, którzy naprawdę chcą podejść do stacji.',
+				see_more: 'ZOBACZ WIĘCEJ REALIZACJI',
+			},
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
@@ -596,7 +601,12 @@
 				phone: 'Phone: <a href="tel:+48883392688" class="phone-link">+48 883 392 688</a>',
 				quick_links: 'Quick Links',
 			},
-			gallery: { title: 'GALLERY' },
+			gallery: {
+				badge: 'AUTHENTIC MOMENTS',
+				title: 'See Raricart in action at real events',
+				subtitle: 'This is what the station looks like when the celebration begins: fresh ingredients, live cooking, custom toppings, and guests eager to step right up.',
+				see_more: 'VIEW FULL GALLERY',
+			},
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
@@ -900,7 +910,12 @@
 				phone: 'Teléfono: <a href="tel:+48883392688" class="phone-link">+48 883 392 688</a>',
 				quick_links: 'Enlaces Rápidos',
 			},
-			gallery: { title: 'GALERÍA' },
+			gallery: {
+				badge: 'MOMENTOS REALES',
+				title: 'Descubre Raricart en eventos reales',
+				subtitle: 'Así luce la estación cuando empieza la fiesta: productos frescos, preparación en vivo, combinaciones a medida y personas disfrutando al máximo.',
+				see_more: 'VER MÁS FOTOGRAFÍAS',
+			},
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
@@ -1401,13 +1416,42 @@
 			card.addEventListener('click', () => openOfferModal(card.getAttribute('data-offer')))
 		})
 
-		// Gallery Items
+		// Initial Gallery Preload from SSR Data
+		const galleryDataEl = document.getElementById('galleryInitialData')
+		if (galleryDataEl) {
+			try {
+				const preloaded = JSON.parse(galleryDataEl.textContent)
+				if (Array.isArray(preloaded) && preloaded.length > 0) {
+					preloaded.forEach((src, idx) => {
+						galleryImages[idx] = src
+					})
+				}
+			} catch (e) {
+				console.warn('Initial gallery data parse error', e)
+			}
+		}
+
+		// Gallery Items (SSR elements)
 		document.querySelectorAll('.gallery-item').forEach(item => {
 			const img = item.querySelector('img')
 			const index = parseInt(item.getAttribute('data-index'))
-			galleryImages[index] = img.src
+			if (img && !isNaN(index) && !galleryImages[index]) {
+				galleryImages[index] = img.src
+			}
 			item.addEventListener('click', () => openGalleryModal(index))
+			item.addEventListener('keydown', e => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault()
+					openGalleryModal(index)
+				}
+			})
 		})
+
+		// Full Gallery Button
+		const openFullBtn = document.getElementById('openFullGalleryBtn') || document.querySelector('.realizations-more-btn')
+		if (openFullBtn) {
+			openFullBtn.addEventListener('click', () => openGalleryModal(0))
+		}
 
 		// --- Dynamic Content Loaders ---
 
@@ -1576,28 +1620,34 @@
 							columns.forEach(col => col.classList.remove('parallax'))
 						}
 
-						// Reset gallery array for dynamic items
-						// Note: We'll overwrite existing static entries in the array
-						// as we rebuild indices starting from 0.
+						// Populate ALL images into lightbox array for complete fullscreen viewing
+						galleryImages.length = 0
+						images.forEach((src, idx) => {
+							galleryImages[idx] = src
+						})
 
-						let globalIndex = 0
+						// Update count badge if present
+						const countBadge = document.querySelector('.realizations-count')
+						if (countBadge) {
+							countBadge.textContent = `(${images.length})`
+						}
 
-						images.forEach((src, i) => {
+						// Render top curated images in grid (max 8)
+						const maxDisplay = 8
+						const displayImages = images.slice(0, maxDisplay)
+
+						displayImages.forEach((src, i) => {
 							const colIndex = i % columns.length
 							const col = columns[colIndex]
 
 							const div = document.createElement('div')
-							div.className = 'gallery-item'
-							div.setAttribute('data-index', globalIndex)
+							div.className = 'gallery-item in-view'
+							div.setAttribute('data-index', i)
 
 							const img = document.createElement('img')
-							// The API returns 'assets/gallery/filename.jpg' or full URL.
-							// Since this script runs on index.html, relative paths are correct.
 							img.src = src
 							img.loading = 'lazy'
-							img.alt = 'Realizacja ' + (globalIndex + 1)
-
-							// Styling fix to ensure visibility
+							img.alt = 'Realizacja Raricart ' + (i + 1)
 							img.style.width = '100%'
 							img.style.display = 'block'
 
@@ -1607,17 +1657,9 @@
 							// Observe for animation
 							galleryObserver.observe(div)
 
-							// Add to lightbox array
-							galleryImages[globalIndex] = src
-
 							// Add Click Listener
-							const idx = globalIndex
+							const idx = i
 							div.addEventListener('click', () => openGalleryModal(idx))
-
-							// Add to observer
-							galleryObserver.observe(div)
-
-							globalIndex++
 						})
 					})
 					.catch(err => {

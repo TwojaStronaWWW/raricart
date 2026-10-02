@@ -2497,9 +2497,9 @@ video::-webkit-media-text-track-display {
 
 .gallery-grid {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	gap: 1.5rem;
-	max-width: 1600px;
+	max-width: 1400px;
 	margin: 0 auto;
 	position: relative;
 	z-index: 5; /* Ensure above overlay */
@@ -2557,6 +2557,99 @@ body.lightbox-open {
 
 .gallery-item:hover img {
 	transform: scale(1.1);
+}
+
+/* --- Sekcja 8: Realizacje (Lejek 2026) --- */
+.section-realizations {
+	padding: 5rem 1.5rem 4rem;
+	background: var(--color-bg);
+	position: relative;
+}
+
+.realizations-header-box {
+	max-width: 800px;
+	margin: 0 auto 3rem auto;
+	text-align: center;
+}
+
+.realizations-badge {
+	display: inline-block;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-accent, #c9933f);
+	background: rgba(201, 147, 63, 0.08);
+	border: 1px solid rgba(201, 147, 63, 0.25);
+	padding: 0.35rem 1.1rem;
+	border-radius: 999px;
+	margin-bottom: 1rem;
+}
+
+.realizations-title {
+	font-size: clamp(2rem, 3.5vw, 2.75rem);
+	font-weight: 800;
+	color: var(--color-text, #1a1a1a);
+	line-height: 1.2;
+	margin-bottom: 1rem;
+}
+
+.realizations-subtitle {
+	font-size: clamp(1rem, 1.3vw, 1.125rem);
+	color: var(--color-text-muted, #555);
+	line-height: 1.6;
+	max-width: 680px;
+	margin: 0 auto;
+}
+
+.realizations-action {
+	text-align: center;
+	margin-top: 3.5rem;
+	position: relative;
+	z-index: 10;
+}
+
+.realizations-more-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: #111111;
+	color: #ffffff;
+	border: 1.5px solid rgba(201, 147, 63, 0.5);
+	padding: 1rem 2.25rem;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.95rem;
+	letter-spacing: 0.05em;
+	cursor: pointer;
+	transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.realizations-more-btn:hover {
+	background: #000000;
+	border-color: var(--color-accent, #c9933f);
+	transform: translateY(-3px);
+	box-shadow: 0 12px 30px rgba(201, 147, 63, 0.28);
+}
+
+.realizations-more-btn:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 3px;
+}
+
+.realizations-count {
+	color: var(--color-accent, #c9933f);
+	font-weight: 800;
+}
+
+.realizations-more-btn .btn-arrow {
+	display: inline-block;
+	transition: transform 0.3s ease;
+}
+
+.realizations-more-btn:hover .btn-arrow {
+	transform: translateX(4px);
 }
 
 /* --- View Utility Classes --- */
