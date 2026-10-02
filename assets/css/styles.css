@@ -4203,6 +4203,8 @@ footer {
 	object-fit: contain;
 	border-radius: var(--radius-ui);
 	display: block;
+	background-color: var(--color-bg-card, #f9f8f5);
+	transition: opacity 0.2s ease-in-out;
 }
 
 /* Updated Close Button */
