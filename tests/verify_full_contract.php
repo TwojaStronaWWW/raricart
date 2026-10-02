@@ -79,7 +79,8 @@ $lejekSections = [
     'why-station' => 'why-station-section',
     'proces' => 'process-section',
     'audiences' => 'audiences-section',
-    'why-raricart' => 'section-why-raricart'
+    'why-raricart' => 'section-why-raricart',
+    'realizacje' => 'section-realizations'
 ];
 
 echo "\n4. Weryfikacja obecności sekcji Lejka 2026 w HTML:\n";

@@ -135,14 +135,31 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ---
 
+### 10. KROK 10: Nowa Galeria Realizacji (Sekcja 8 specyfikacji)
+- **Pliki:** [parts/realizations.php](file:///e:/Projekty/raricart/parts/realizations.php), [index.php](file:///e:/Projekty/raricart/index.php), [assets/css/styles.css](file:///e:/Projekty/raricart/assets/css/styles.css), [assets/js/script.js](file:///e:/Projekty/raricart/assets/js/script.js), [tests/verify_full_contract.php](file:///e:/Projekty/raricart/tests/verify_full_contract.php)
+- **Zmiany:**
+  - Utworzono modułowy komponent `parts/realizations.php` („Zobacz Raricart podczas wydarzeń”) osadzony pod Sekcją „Dlaczego Raricart?”.
+  - Zastąpiono dawny, przeładowany grid (generujący 43–86 ciężkich węzłów DOM i przeciążający mobile) wyselekcjonowaną siatką 8 najlepszych, autentycznych kadrów w układzie 4x2 na desktopie oraz 2x4 na urządzeniach mobilnych.
+  - **100% zachowania kontraktów JavaScript i mechanizmów systemowych:**
+    - Identyfikator kotwicy menu `#realizacje` oraz kontener paralaksy `#realizacje-parallax`.
+    - Kontener grid `#dynamicGalleryGrid` oraz dynamiczne kolumny `.gallery-column` i `.gallery-column.parallax`.
+    - Obserwator scrolla i animacji `galleryObserver` z klasą `.gallery-item.in-view`.
+    - Pełny lightbox `#galleryModal`, `#galleryModalImg`, nawigacja strzałkami klawiatury i przyciskami `.gallery-prev` / `.gallery-next`, zamykanie `.gallery-modal-close`.
+    - Tablica `galleryImages` jest natychmiast zasilana kompletem wszystkich 43 zdjęć już przy renderze SSR (`#galleryInitialData`), a następnie synchronizowana z endpointem `/api/get_gallery.php`.
+    - Użytkownik widzi na stronie 8 estetycznych kadrów, ale po kliknięciu dowolnego zdjęcia lub przycisku `[ZOBACZ WIĘCEJ REALIZACJI (43) →]` przegląda pełną kolekcję w trybie pełnoekranowym bez przeładowania.
+  - Wyeliminowano wszystkie inline'owe zdarzenia `onclick` z HTML, przypisując listenery czysto z poziomu `script.js` (zgodnie z regułą SoC: ZERO inline JS).
+  - Dodano pełne tłumaczenia wielojęzyczne (PL, EN, ES) dla nagłówka, badge'a, podtytułu i przycisku w `script.js`.
+  - Weryfikacja kontraktu 100% OK (`php tests/verify_full_contract.php`).
+
+---
+
 ## 🚀 Najbliższy Krok do Wykonania
 
-### 👉 **KROK 10: Nowa Galeria Realizacji (Sekcja 8 specyfikacji)**
-- **Lokalizacja:** Poniżej Sekcji „Dlaczego Raricart?” w [index.php](file:///e:/Projekty/raricart/index.php) (modernizacja sekcji `#realizacje` / nowy komponent `parts/realizations.php`).
-- **Nagłówek:** *Zobacz Raricart podczas wydarzeń*
-- **Podpis / Kontekst:** *Tak wygląda stacja, kiedy zaczyna się wydarzenie. Świeże produkty, przygotowanie na żywo, własne kompozycje i goście, którzy naprawdę chcą podejść do stacji.*
-- **Struktura:** Wyselekcjonowane 6–9 najlepszych, zróżnicowanych ujęć (zamiast powtarzalnych kilkudziesięciu kadrów w ciężkich kolumnach).
-- **CTA:** `[ZOBACZ WIĘCEJ REALIZACJI →]` (link do pełnej galerii / modal).
+### 👉 **KROK 11: Opinie Klientów — Social Proof (Sekcja 9 specyfikacji)**
+- **Lokalizacja:** Poniżej Galerii Realizacji w [index.php](file:///e:/Projekty/raricart/index.php) (nowy komponent `parts/reviews.php`).
+- **Nagłówek:** *Co mówią o nas goście i organizatorzy?* (lub *Autentyczne opinie z wesel i eventów*).
+- **Format:** 4–6 konkretnych recenzji (wesele, urodziny, korporacja, garden party) z gwiazdkami, imieniem/rolą i datą/miejscem.
+- **Kluczowy przekaz:** Zachwyt gości, ułatwienie życia organizatorowi, jakość smaku, kultura i punktualność obsługi.
 
 ---
 
@@ -157,7 +174,7 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 - [x] **7. Jak to działa? (5 przejrzystych kroków procesu)** *(Sekcja 5)*
 - [x] **8. Dla kogo? (Segmentacja: Wesela, Firmy, Przyjęcia, Agencje)** *(Sekcja 6)*
 - [x] **9. Dlaczego Raricart? (6 mocnych argumentów)** *(Sekcja 7)*
-- [ ] **10. Nowa Galeria Realizacji (6–9 top zdjęć z życia stacji)** *(Sekcja 8)*
+- [x] **10. Nowa Galeria Realizacji (6–9 top zdjęć z życia stacji)** *(Sekcja 8)*
 - [ ] **11. Opinie Klientów (Social Proof)** *(Sekcja 9)*
 - [ ] **12. Zoptymalizowany FAQ (6–7 pytań rozwiewających obiekcje)** *(Sekcja 10)*
 - [ ] **13. O Nas (Ludzka historia założycielki)** *(Sekcja 11)*
@@ -170,5 +187,5 @@ Zgodnie z założeniem: **W ciągu pierwszych sekund klient ma wiedzieć: Co rob
 
 ## 💡 Jak Wznowić Pracę w Kolejnej Sesji?
 Wystarczy wpisać w czacie:  
-> **"Lecimy z Krokiem 4 (Trust Bar)"**  
-Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/trust-bar.php`.
+> **"Lecimy z Krokiem 11 (Opinie Klientów)"**  
+Agent automatycznie odczyta ten plik oraz specyfikację i przejdzie do bezpiecznej implementacji komponentu `parts/reviews.php`.

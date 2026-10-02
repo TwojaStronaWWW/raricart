@@ -46,73 +46,8 @@ include 'parts/navbar.php';
         <?php include 'parts/why-raricart.php'; ?>
 
 
-        <!-- Realizacje -->
-        <section id="realizacje" class="section section-gallery-title">
-            <h2 data-i18n="gallery.title">GALERIA REALIZACJI</h2>
-        </section>
-        
-        <section id="realizacje-parallax" class="section section-gallery-parallax" <?php if($gallery_bg): ?>style="--bg-image: url('<?php echo htmlspecialchars($gallery_bg); ?>');"<?php endif; ?>>
-            <div class="gallery-grid" id="dynamicGalleryGrid">
-                <?php
-                // Dynamic Gallery Rendering (PHP Side)
-                $galleryFiles = [];
-                if (file_exists($jsonFile)) {
-                    $galleryFiles = json_decode(file_get_contents($jsonFile), true);
-                    if (!is_array($galleryFiles)) $galleryFiles = [];
-                }
-                
-                // Fallback removed - JSON is the single source of truth
-
-                // Dynamic Columns Logic: Adapt to content size
-                $totalImages = count($galleryFiles);
-                // If few images, use fewer columns. Max 5.
-                $colsCount = ($totalImages > 0) ? max(1, min(5, $totalImages)) : 5;
-                
-                // Disable parallax effect for small galleries to prevent glitches
-                $enableParallax = ($totalImages >= 5);
-
-                $columns = array_fill(0, $colsCount, []);
-                foreach ($galleryFiles as $idx => $item) {
-                    $src = '';
-                    if (is_string($item)) {
-                        $src = $item;
-                    } elseif (is_array($item)) {
-                        $src = $item['url'] ?? $item['src'] ?? '';
-                    }
-
-                    if (!empty($src)) {
-                        // Distribute among columns
-                        $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
-                    }
-                }
-
-                foreach ($columns as $cIdx => $colItems):
-                    // Add parallax class only if enough content
-                    $parallaxClass = ($enableParallax && $cIdx % 2 !== 0) ? 'parallax' : '';
-                    ?>
-                    <div class="gallery-column <?php echo $parallaxClass; ?>">
-                        <?php foreach ($colItems as $item): ?>
-                            <img src="<?php echo htmlspecialchars($item['src']); ?>" 
-                                 onclick="openGalleryModal(<?php echo $item['index']; ?>)" 
-                                 loading="lazy" 
-                                 alt="Realizacja Raricart">
-                        <?php endforeach; ?>
-                        
-                        <?php 
-                        // Duplicate content for infinite scroll ONLY if parallax is active
-                        if ($enableParallax): 
-                            foreach ($colItems as $item): ?>
-                            <img src="<?php echo htmlspecialchars($item['src']); ?>" 
-                                 onclick="openGalleryModal(<?php echo $item['index']; ?>)" 
-                                 loading="lazy" 
-                                 alt="Realizacja Raricart" aria-hidden="true">
-                        <?php endforeach; 
-                        endif; 
-                        ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </section>
+        <!-- 8. REALIZACJE (Wyselekcjonowana galeria kadrów - Lejek 2026) -->
+        <?php include 'parts/realizations.php'; ?>
 
         <!-- FAQ -->
         <section id="faq" class="section">
