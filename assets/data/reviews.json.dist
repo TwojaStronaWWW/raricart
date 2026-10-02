@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "author": "Karolina & Michał",
+    "role": "Wesele plenerowe",
+    "location": "Katowice / Śląsk",
+    "rating": 5,
+    "category": "wedding",
+    "text": "Stacja mini pancakes była absolutnym strzałem w dziesiątkę! Po północy, kiedy goście mieli już dość ciężkich potraw, świeże pancakes ze świeżymi owocami i nutellą zrobiły prawdziwą furorę. Kolejka nie malała, a zapach przyciągał każdego. Pełen profesjonalizm i kultura obsługi!",
+    "avatar_initials": "KM",
+    "verified": true
+  },
+  {
+    "id": 2,
+    "author": "Tomasz B.",
+    "role": "Dyrektor Marketingu, TechCorp",
+    "location": "Jubileusz 15-lecia firmy (250 osób)",
+    "rating": 5,
+    "category": "business",
+    "text": "Wynajęliśmy stację lodów włoskich i deski serów na nasz letni bankiet jubileuszowy. Przepustowość i tempo serwowania przy ponad 200 gościach przeszły nasze oczekiwania – zero zatorów, wszystko płynnie i z najwyższą klasą. Nienaganna faktura VAT i terminowość na minutę.",
+    "avatar_initials": "TB",
+    "verified": true
+  },
+  {
+    "id": 3,
+    "author": "Ewelina K.",
+    "role": "30. Urodziny w ogrodzie",
+    "location": "Bielsko-Biała",
+    "rating": 5,
+    "category": "private",
+    "text": "Najlepsza decyzja eventowa tego roku! Nie musiałam martwić się o deser, nakładanie czy sprzątanie. Ekipa Raricart przyjechała, rozłożyła się bezszelestnie, a goście byli oczarowani smakiem ciepłych pancakes z pistacją. Na koniec taras lśnił czystością.",
+    "avatar_initials": "EK",
+    "verified": true
+  },
+  {
+    "id": 4,
+    "author": "Aleksandra W.",
+    "role": "Wedding Plannerka",
+    "location": "Kraków / Małopolska",
+    "rating": 5,
+    "category": "b2b",
+    "text": "Współpracuję z wieloma podwykonawcami, ale Raricart to rzadki wzór spokoju dla koordynatora. Żelazna punktualność, estetyka wózków idealnie wpisująca się w eleganckie wesela i goście dziękujący za 'najfajniejszą atrakcję wieczoru'. Polecam każdej parze.",
+    "avatar_initials": "AW",
+    "verified": true
+  },
+  {
+    "id": 5,
+    "author": "Piotr & Marta S.",
+    "role": "Przyjęcie komunijne i garden party",
+    "location": "Tychy",
+    "rating": 5,
+    "category": "private",
+    "text": "Dzieci były zachwycone lodami włoskimi z polewami, a dorośli nie mogli oderwać się od deski serów. To niesamowite, jak mobilna stacja potrafi zintegrować dwa pokolenia gości w jednym miejscu. Na pewno wrócimy przy kolejnej rodzinnej okazji!",
+    "avatar_initials": "PM",
+    "verified": true
+  },
+  {
+    "id": 6,
+    "author": "Magdalena R.",
+    "role": "Event Manager",
+    "location": "Spotkanie integracyjne B2B",
+    "rating": 5,
+    "category": "business",
+    "text": "Stacja Raricart stała się naturalnym centrum rozmów i networkingu. Zapach świeżo wypiekanych mini naleśniczków i uśmiechnięta obsługa stworzyły niesamowicie ciepłą atmosferę. Wszyscy pytali o kontakt do kolejnych realizacji.",
+    "avatar_initials": "MR",
+    "verified": true
+  }
+]

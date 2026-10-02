@@ -2652,6 +2652,292 @@ body.lightbox-open {
 	transform: translateX(4px);
 }
 
+/* --- Sekcja 9: Opinie Klientów (Social Proof - Lejek 2026) --- */
+.section-reviews {
+	padding: 5.5rem 1.5rem 5rem;
+	background: linear-gradient(180deg, #161616 0%, #0e0e0e 100%);
+	color: #ffffff;
+	position: relative;
+	overflow: hidden;
+	border-top: 1px solid rgba(255, 255, 255, 0.05);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.reviews-container {
+	max-width: 1300px;
+	margin: 0 auto;
+	position: relative;
+	z-index: 5;
+}
+
+.reviews-header-box {
+	text-align: center;
+	max-width: 820px;
+	margin: 0 auto 3.5rem auto;
+}
+
+.reviews-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--color-accent, #c9933f);
+	background: rgba(201, 147, 63, 0.1);
+	border: 1px solid rgba(201, 147, 63, 0.3);
+	padding: 0.4rem 1.15rem;
+	border-radius: 999px;
+	margin-bottom: 1.25rem;
+}
+
+.reviews-badge-star {
+	color: var(--color-accent, #c9933f);
+}
+
+.reviews-title {
+	font-size: clamp(2rem, 3.5vw, 2.75rem);
+	font-weight: 800;
+	color: #ffffff;
+	line-height: 1.2;
+	margin-bottom: 1rem;
+}
+
+.reviews-subtitle {
+	font-size: clamp(1rem, 1.3vw, 1.125rem);
+	color: rgba(255, 255, 255, 0.72);
+	line-height: 1.6;
+	max-width: 680px;
+	margin: 0 auto 1.5rem auto;
+}
+
+.reviews-trust-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	padding: 0.5rem 1.35rem;
+	border-radius: 999px;
+	font-size: 0.88rem;
+	color: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.reviews-trust-stars {
+	display: flex;
+	gap: 3px;
+	color: var(--color-accent, #c9933f);
+}
+
+.reviews-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.75rem;
+	margin-bottom: 3.5rem;
+}
+
+.review-card {
+	background: rgba(255, 255, 255, 0.035);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 16px;
+	padding: 2rem 1.75rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+	position: relative;
+	backdrop-filter: blur(8px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.review-card:hover {
+	transform: translateY(-5px);
+	border-color: rgba(201, 147, 63, 0.45);
+	box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(201, 147, 63, 0.12);
+	background: rgba(255, 255, 255, 0.055);
+}
+
+.review-card-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1.25rem;
+}
+
+.review-stars {
+	display: flex;
+	gap: 2px;
+	color: var(--color-accent, #c9933f);
+}
+
+.review-verified-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	font-size: 0.72rem;
+	font-weight: 600;
+	color: #4ade80;
+	background: rgba(74, 222, 128, 0.08);
+	border: 1px solid rgba(74, 222, 128, 0.25);
+	padding: 0.2rem 0.65rem;
+	border-radius: 999px;
+}
+
+.review-quote-wrapper {
+	position: relative;
+	margin-bottom: 1.5rem;
+	flex-grow: 1;
+}
+
+.review-quote-icon {
+	color: rgba(201, 147, 63, 0.25);
+	margin-bottom: 0.75rem;
+	display: block;
+}
+
+.review-quote-text {
+	font-size: 0.95rem;
+	line-height: 1.65;
+	color: rgba(255, 255, 255, 0.88);
+	font-style: normal;
+	margin: 0;
+}
+
+.review-card-footer {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.review-avatar {
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, rgba(201, 147, 63, 0.25), rgba(201, 147, 63, 0.05));
+	border: 1.5px solid var(--color-accent, #c9933f);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	font-size: 0.88rem;
+	color: var(--color-accent, #c9933f);
+	flex-shrink: 0;
+}
+
+.review-author-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.review-author-name {
+	font-size: 0.98rem;
+	font-weight: 700;
+	color: #ffffff;
+	font-style: normal;
+}
+
+.review-author-meta {
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.55);
+	margin-top: 2px;
+}
+
+.reviews-cta-banner {
+	background: linear-gradient(135deg, rgba(201, 147, 63, 0.12) 0%, rgba(20, 20, 20, 0.6) 100%);
+	border: 1px solid rgba(201, 147, 63, 0.35);
+	border-radius: 18px;
+	padding: 2.25rem 2.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.reviews-cta-title {
+	font-size: 1.35rem;
+	font-weight: 700;
+	color: #ffffff;
+	margin-bottom: 0.4rem;
+}
+
+.reviews-cta-desc {
+	font-size: 0.92rem;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 0;
+}
+
+.reviews-cta-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: var(--color-accent, #c9933f);
+	color: #111111;
+	font-weight: 800;
+	font-size: 0.92rem;
+	letter-spacing: 0.05em;
+	padding: 0.95rem 2rem;
+	border-radius: 999px;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: all 0.3s ease;
+	box-shadow: 0 6px 20px rgba(201, 147, 63, 0.3);
+}
+
+.reviews-cta-btn:hover {
+	background: #d6a24e;
+	transform: translateY(-2px);
+	box-shadow: 0 10px 26px rgba(201, 147, 63, 0.45);
+	color: #000000;
+}
+
+.reviews-cta-btn .btn-arrow {
+	display: inline-block;
+	transition: transform 0.3s ease;
+}
+
+.reviews-cta-btn:hover .btn-arrow {
+	transform: translateX(4px);
+}
+
+@media (max-width: 992px) {
+	.reviews-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.25rem;
+	}
+
+	.reviews-cta-banner {
+		flex-direction: column;
+		text-align: center;
+		padding: 2rem 1.5rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.reviews-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.reviews-trust-pill {
+		flex-direction: column;
+		gap: 0.4rem;
+		border-radius: 16px;
+		padding: 0.75rem 1rem;
+	}
+
+	.reviews-cta-banner {
+		padding: 1.75rem 1.25rem;
+	}
+
+	.reviews-cta-title {
+		font-size: 1.15rem;
+	}
+}
+
 /* --- View Utility Classes --- */
 .section-gallery-title {
 	padding-top: 2rem;
