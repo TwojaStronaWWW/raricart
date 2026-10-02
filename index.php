@@ -58,90 +58,11 @@ include 'parts/navbar.php';
         <!-- 11. FAQ (Zoptymalizowane 7 pytań - Lejek 2026) -->
         <?php include 'parts/faq.php'; ?>
 
-        <!-- Kontakt -->
-        <section id="kontakt" class="section">
-            <h2 data-i18n="contact.title.short">Opowiedz nam o&nbsp;swoim wydarzeniu.<br>Przygotujemy indywidualną wycenę.</h2>
-            <div class="progress-container">
-                <div id="form-progress"></div>
-            </div>
-            <p id="progress-text" class="progress-text"
-                data-i18n="form.progress_text">
-                Uzupełnij dane, abyśmy mogli przygotować ofertę (0%)</p>
-            <form id="form" class="contact-form" novalidate>
-                <div id="availability-notice" class="availability-notice"></div>
-                <!-- Honeypot for bots -->
-                <input type="text" name="website_check" class="honeypot-field" tabindex="-1"
-                    autocomplete="off">
+        <!-- 12. OSTATNIE CTA PRZED FORMULARZEM (Lejek 2026) -->
+        <?php include 'parts/pre-form-cta.php'; ?>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name" data-i18n="form.name">Imię i Nazwisko *</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" data-i18n="form.email">Email *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="phone" data-i18n="form.phone">Telefon *</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
-                    <label for="date" data-i18n="form.date">Data Wydarzenia *</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-                <div class="form-group">
-                    <label for="location" data-i18n="form.location">Lokalizacja Wydarzenia *</label>
-                    <input type="text" id="location" name="location"
-                        placeholder="np. Warszawa, Hotel Marriott" data-i18n-placeholder="form.location_placeholder" required>
-                </div>
-                <div class="form-group">
-                    <label for="guests" data-i18n="form.guests_label">Liczba Gości *</label>
-                    <input type="number" id="guests" name="guests" min="1" max="9999"
-                        placeholder="np. 80" data-i18n-placeholder="form.guests_placeholder" required>
-                </div>
-                <div class="form-group">
-                    <label for="budget" data-i18n="form.budget">Budżet (PLN) *</label>
-                    <input type="text" id="budget" name="budget"
-                        placeholder="np. 2000 albo 5000 do 10000" data-i18n-placeholder="form.budget_placeholder" required>
-                </div>
-                <div class="form-group">
-                    <label for="event_type" data-i18n="form.event_type">Rodzaj Wydarzenia *</label>
-                    <select id="event_type" name="event_type" required>
-                        <option value="" data-i18n="form.select_placeholder">Wybierz...</option>
-                        <option value="wedding" data-i18n="form.types.wedding">Wesele</option>
-                        <option value="corporate" data-i18n="form.types.corporate">Event Firmowy</option>
-                        <option value="festival" data-i18n="form.types.festival">Festiwal/Piknik</option>
-                        <option value="private" data-i18n="form.types.private">Przyjęcie Prywatne</option>
-                <option value="other" data-i18n="form.types.other">Inne</option>
-                    </select>
-                </div>
-                <div class="form-group full-width">
-                    <label data-i18n="form.stations">Interesujące Stacje *</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item"><input type="checkbox" id="p" name="stations" value="pancakes"><label
-                                for="p" data-i18n="form.st_pancakes">Mini Pancakes</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="l" name="stations" value="lody"><label
-                                for="l" data-i18n="form.st_icecream">Lody Włoskie</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="s" name="stations" value="sery"><label
-                                for="s" data-i18n="form.st_cheese">Deska Serów</label></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="contact_hours" data-i18n="form.contact_hours">Preferowane godziny kontaktu</label>
-                    <input type="text" id="contact_hours" name="contact_hours"
-                        placeholder="np. 10:00-14:00 lub po 18:00" data-i18n-placeholder="form.contact_hours_placeholder">
-                </div>
-                <div class="form-group full-width">
-                    <label for="message" data-i18n="form.message">Dodatkowe Informacje</label>
-                    <textarea id="message" name="message" rows="4"
-                        placeholder="Opisz swoje potrzeby, pytania lub preferencje..."
-                        data-i18n-placeholder="form.message_placeholder"></textarea>
-                </div>
-                <button type="submit" class="cta-primary" data-i18n="form.submit">Wyślij Zapytanie</button>
-            </form>
-        </section>
+        <!-- 13. FORMULARZ KONTAKTOWY (Skoncentrowany na konwersji - Lejek 2026) -->
+        <?php include 'parts/contact.php'; ?>
 
     </main>
 
