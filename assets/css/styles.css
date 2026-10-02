@@ -2725,6 +2725,110 @@ body.lightbox-open {
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* Google Trust Pill */
+.reviews-google-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 1.25rem;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	padding: 0.65rem 1.4rem;
+	border-radius: 999px;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(8px);
+}
+
+.reviews-google-left {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.reviews-google-rating {
+	font-size: 1.15rem;
+	font-weight: 800;
+	color: #ffffff;
+	letter-spacing: -0.02em;
+}
+
+.reviews-google-divider {
+	width: 1px;
+	height: 24px;
+	background: rgba(255, 255, 255, 0.15);
+}
+
+.reviews-google-right {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.reviews-google-meta {
+	font-size: 0.84rem;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.reviews-google-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	background: rgba(66, 133, 244, 0.12);
+	border: 1px solid rgba(66, 133, 244, 0.35);
+	color: #60a5fa;
+	font-size: 0.78rem;
+	font-weight: 700;
+	padding: 0.35rem 0.85rem;
+	border-radius: 999px;
+	text-decoration: none;
+	transition: all 0.25s ease;
+}
+
+.reviews-google-btn:hover {
+	background: #4285f4;
+	color: #ffffff;
+	border-color: #4285f4;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(66, 133, 244, 0.35);
+}
+
+.review-google-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.72rem;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.85);
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	padding: 0.25rem 0.65rem;
+	border-radius: 999px;
+	text-decoration: none;
+	transition: all 0.25s ease;
+}
+
+.review-google-badge:hover {
+	background: rgba(66, 133, 244, 0.15);
+	border-color: rgba(66, 133, 244, 0.4);
+	color: #93c5fd;
+	transform: translateY(-1px);
+}
+
+.review-google-badge .badge-arrow {
+	font-size: 0.8rem;
+	transition: transform 0.2s ease;
+}
+
+.review-google-badge:hover .badge-arrow {
+	transform: translate(2px, -2px);
+}
+
+.reviews-cta-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
 .reviews-trust-stars {
 	display: flex;
 	gap: 3px;
@@ -2875,8 +2979,6 @@ body.lightbox-open {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.75rem;
-	background: var(--color-accent, #c9933f);
-	color: #111111;
 	font-weight: 800;
 	font-size: 0.92rem;
 	letter-spacing: 0.05em;
@@ -2885,14 +2987,34 @@ body.lightbox-open {
 	text-decoration: none;
 	white-space: nowrap;
 	transition: all 0.3s ease;
+}
+
+.reviews-cta-btn.primary {
+	background: var(--color-accent, #c9933f);
+	color: #111111;
 	box-shadow: 0 6px 20px rgba(201, 147, 63, 0.3);
 }
 
-.reviews-cta-btn:hover {
+.reviews-cta-btn.primary:hover {
 	background: #d6a24e;
 	transform: translateY(-2px);
 	box-shadow: 0 10px 26px rgba(201, 147, 63, 0.45);
 	color: #000000;
+}
+
+.reviews-cta-btn.secondary {
+	background: rgba(255, 255, 255, 0.06);
+	color: #ffffff;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	box-shadow: none;
+}
+
+.reviews-cta-btn.secondary:hover {
+	background: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.35);
+	color: #ffffff;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
 .reviews-cta-btn .btn-arrow {
@@ -2915,6 +3037,10 @@ body.lightbox-open {
 		text-align: center;
 		padding: 2rem 1.5rem;
 	}
+
+	.reviews-cta-actions {
+		justify-content: center;
+	}
 }
 
 @media (max-width: 640px) {
@@ -2922,11 +3048,21 @@ body.lightbox-open {
 		grid-template-columns: 1fr;
 	}
 
-	.reviews-trust-pill {
+	.reviews-google-pill {
 		flex-direction: column;
-		gap: 0.4rem;
-		border-radius: 16px;
-		padding: 0.75rem 1rem;
+		gap: 0.75rem;
+		border-radius: 20px;
+		padding: 1rem 1.25rem;
+	}
+
+	.reviews-google-divider {
+		display: none;
+	}
+
+	.reviews-google-right {
+		flex-direction: column;
+		gap: 0.5rem;
+		text-align: center;
 	}
 
 	.reviews-cta-banner {
@@ -2935,6 +3071,16 @@ body.lightbox-open {
 
 	.reviews-cta-title {
 		font-size: 1.15rem;
+	}
+
+	.reviews-cta-actions {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.reviews-cta-btn {
+		width: 100%;
+		justify-content: center;
 	}
 }
 
