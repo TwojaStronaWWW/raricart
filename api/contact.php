@@ -172,7 +172,7 @@ if ($isPartial && $userId) {
             'formattedBody' => $emailBody,
             'subject' => $emailSubject
         ];
-        file_put_contents($draftFile, json_encode($payloadToSave));
+        file_put_contents($draftFile, json_encode($payloadToSave), LOCK_EX);
     }
 
     if ($isAbandoned) {
@@ -261,7 +261,7 @@ function processDraftQueue($draftsDir, $toEmail) {
 
     // Sprawdzaj co 10 min
     if (time() - $lastRun > 600) {
-        file_put_contents($lockFile, time());
+        file_put_contents($lockFile, (string)time(), LOCK_EX);
 
         $files = glob($draftsDir . '/draft_*.json');
         if ($files) {
@@ -318,11 +318,11 @@ function processDraftQueue($draftsDir, $toEmail) {
                 
                 if (mail($toEmail, $digestSubject, $digestBody, $cronHeaders)) {
                     @unlink($digestBufferFile);
-                    file_put_contents($digestLockFile, time());
+                    file_put_contents($digestLockFile, (string)time(), LOCK_EX);
                 }
             }
         } else {
-            file_put_contents($digestLockFile, time()); // brak leadów, aktualizuj czas
+            file_put_contents($digestLockFile, (string)time(), LOCK_EX); // brak leadów, aktualizuj czas
         }
     }
 }

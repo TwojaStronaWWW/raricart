@@ -30,7 +30,7 @@ copy($configFile, $configFile . '.bak');
 
 // Save new config which REPLACES old structure completely regarding Auth
 // We might want to keep other settings if any exists, but currently config.json is just auth.
-file_put_contents($configFile, json_encode($newConfig, JSON_PRETTY_PRINT));
+file_put_contents($configFile, json_encode($newConfig, JSON_PRETTY_PRINT), LOCK_EX);
 
 echo "Migration successful! Users 'kontakt@raricart.pl' and 'pomoc@raricart.pl' created.";
 ?>

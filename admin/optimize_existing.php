@@ -127,7 +127,7 @@ foreach ($jsonFiles as $jsonFile) {
         if ($content !== $originalContent) {
             // Zrób kopię zapasową
             copy($jsonFile, $jsonFile . '.bak');
-            file_put_contents($jsonFile, $content);
+            file_put_contents($jsonFile, $content, LOCK_EX);
             logMsg("Zaktualizowano plik: " . basename($jsonFile));
         }
     }

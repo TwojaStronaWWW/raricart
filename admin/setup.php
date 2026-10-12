@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'setup_date' => date('Y-m-d H:i:s')
         ];
         
-        if (file_put_contents($config_file, json_encode($config))) {
+        if (file_put_contents($config_file, json_encode($config, JSON_PRETTY_PRINT), LOCK_EX) !== false) {
             $success = "Hasło ustawione pomyślnie! Przekierowanie do logowania...";
             header("Refresh: 2; url=index.php");
         } else {

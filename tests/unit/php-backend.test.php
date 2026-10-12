@@ -140,6 +140,21 @@ foreach ($adminSaveScripts as $script) {
     });
 }
 
+it('wszystkie krytyczne operacje zapisu plików stanu w systemie muszą używać LOCK_EX', function() {
+    $criticalFiles = [
+        'api/contact.php' => ['draftFile', 'lockFile', 'digestBufferFile'],
+        'admin/change_password.php' => ['config_file'],
+        'admin/setup.php' => ['config_file'],
+        'admin/delete.php' => ['galleryFile'],
+        'admin/index.php' => ['attemptsFile']
+    ];
+
+    foreach ($criticalFiles as $file => $targets) {
+        $code = file_get_contents(__DIR__ . '/../../' . $file);
+        assert_true(strpos($code, 'LOCK_EX') !== false, "Plik $file nie zawiera wymaganej blokady LOCK_EX!");
+    }
+});
+
 // --- 5. PODSUMOWANIE ---
 echo "\n=== PODSUMOWANIE TESTÓW PHP ===\n";
 echo "Zaliczone: $testsPassed\n";

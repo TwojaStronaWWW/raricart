@@ -54,7 +54,7 @@ if (is_array($config['users'][$currentUser])) {
     $config['users'][$currentUser] = $newHash;
 }
 
-if (file_put_contents($config_file, json_encode($config, JSON_PRETTY_PRINT))) {
+if (file_put_contents($config_file, json_encode($config, JSON_PRETTY_PRINT), LOCK_EX) !== false) {
     unset($_SESSION['must_change_password']);
     echo json_encode(['status' => 'success', 'message' => 'Hasło zostało zmienione. Możesz teraz korzystać z panelu.']);
 } else {
