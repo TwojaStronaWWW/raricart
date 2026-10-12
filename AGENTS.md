@@ -9,6 +9,7 @@ Architecture & Constraints:
 4. Leads (`/api/contact.php`): Support partial drafts. Mark `🔥 HOT` (budget >= 5000 PLN or pax >= 100). Write CSV with UTF-8 BOM (`\xEF\xBB\xBF`) & `flock(LOCK_EX)`.
 5. Media: Strict MIME check. Force WebP conversion (max 1920px, Q85, hashed names). Respect dynamic `target` dir.
 6. Cache: Emit `header("X-LiteSpeed-Purge: *");` instantly after JSON mutation.
+7. Testing & Quality Gate: ALWAYS write or update unit tests in `tests/unit/` (Node.js & PHP) whenever modifying views, JS modules, or API endpoints. Validate with `npm run check` BEFORE completing the task. Maintain >= 90% coverage.
 
 Output Rules:
 1. Language: ALWAYS reply in POLISH.
