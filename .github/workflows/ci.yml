@@ -20,25 +20,60 @@ jobs:
       - name: 1. Pobranie kodu repozytorium
         uses: actions/checkout@v4
 
-      - name: 2. Konfiguracja środowiska PHP 8.2
+      - name: 2. Weryfikacja obecności pliku wejściowego index.php
+        run: |
+          if [ ! -f index.php ]; then
+            echo "❌ Brak pliku wejściowego index.php!"
+            exit 1
+          fi
+
+      - name: 3. Ochrona przed wyciekiem plików sekretów (.env, secrets.php)
+        run: |
+          if git ls-files | grep -E "(\.env|config/secrets\.php|\.htpasswd)$"; then
+            echo "❌ Wykryto plik z wrażliwymi danymi w repozytorium!"
+            exit 1
+          fi
+
+      - name: 4. Konfiguracja środowiska PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: gd, fileinfo, json, mbstring, curl
 
-      - name: 3. Weryfikacja składni PHP (PHP Lint)
+      - name: 5. Weryfikacja składni PHP (PHP Lint na wszystkich plikach)
         run: php tests/lint_php.php
 
-      - name: 4. Konfiguracja środowiska Node.js
+      - name: 6. Konfiguracja środowiska Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: 5. Weryfikacja poprawności składniowej JavaScript
+      - name: 7. Weryfikacja poprawności składniowej JavaScript
         run: npm run check:syntax
 
-      - name: 6. Uruchomienie testów jednostkowych PHP Backend
+      - name: 8. Uruchomienie testów jednostkowych PHP Backend
         run: npm run test:php
 
-      - name: 7. Uruchomienie testów jednostkowych Node.js (Repo Hygiene, HTML, CSS, JS) & Coverage
+      - name: 9. Uruchomienie testów jednostkowych Node.js & Raport pokrycia (Coverage)
         run: npm run test:coverage
+
+  lighthouse:
+    name: 🚦 Audyt Lighthouse CI (a11y, SEO, Best Practices)
+    needs: quality-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Pobranie kodu repozytorium
+        uses: actions/checkout@v4
+
+      - name: 2. Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 3. Audyt jakościowy Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: './.lighthouserc.json'

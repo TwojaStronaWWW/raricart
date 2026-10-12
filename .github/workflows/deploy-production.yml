@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
   ci:
     name: 🧪 Run CI checks
@@ -18,13 +22,15 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          extensions: gd, fileinfo, json, mbstring, curl
 
-      - name: 🔍 PHP Lint
-        run: |
-          find . -type f -name "*.php" \
-          -not -path "./vendor/*" \
-          -not -path "./tests/*" \
-          -print0 | xargs -0 -n1 php -l
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 🛡️ Full Quality Gate (PHP Lint + Syntax + Unit Tests)
+        run: npm run check
 
   deploy:
     name: 🌐 Deploy → raricart.pl
@@ -68,3 +74,11 @@ jobs:
             !*.md
           target: '/home/platne/serwer409986/public_html/raricart.pl/'
           overwrite: true
+
+      - name: 🏷️ Automatyczne tagowanie wydania produkcyjnego (Git Release Tag)
+        run: |
+          TAG_NAME="v$(date +'%Y.%m.%d')-${GITHUB_SHA::7}"
+          git tag "$TAG_NAME"
+          git push origin "$TAG_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

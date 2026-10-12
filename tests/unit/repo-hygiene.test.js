@@ -77,6 +77,26 @@ describe('Higiena repozytorium (Repo Hygiene wzorowane na Gal Anonim i _site-tem
     assert.ok(content.includes('npm run check'), 'Hook pre-commit nie wywołuje komendy npm run check');
   });
 
+  it('git hook (.githooks/commit-msg) powinien weryfikować format Conventional Commits (jak w Gal Anonim)', () => {
+    const hookPath = path.join(ROOT_DIR, '.githooks', 'commit-msg');
+    assert.ok(fs.existsSync(hookPath), 'Brak .githooks/commit-msg');
+    const content = fs.readFileSync(hookPath, 'utf-8');
+    const firstLine = content.split(/\r?\n/)[0];
+
+    assert.match(firstLine, /^#!\/(usr\/bin\/env bash|bin\/bash)\s*$/, 'Hook commit-msg nie posiada poprawnego shebangu bash');
+    assert.match(content, /build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test/i);
+    assert.match(content, /Conventional Commits/i);
+  });
+
+  it('plik .gitattributes powinien normalizować końce linii LF dla skryptów i hooków', () => {
+    const gitAttrPath = path.join(ROOT_DIR, '.gitattributes');
+    assert.ok(fs.existsSync(gitAttrPath), 'Brak .gitattributes');
+    const content = fs.readFileSync(gitAttrPath, 'utf-8');
+
+    assert.match(content, /\* text=auto eol=lf/i);
+    assert.match(content, /\.githooks\/\* text eol=lf/i);
+  });
+
   it('konfiguracja audytu Lighthouse CI (.lighthouserc.json) powinna istnieć i definiować asercje jakościowe', () => {
     const lhciPath = path.join(ROOT_DIR, '.lighthouserc.json');
     assert.ok(fs.existsSync(lhciPath), 'Brak .lighthouserc.json');
