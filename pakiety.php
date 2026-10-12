@@ -5,6 +5,7 @@ $jsonFile = __DIR__ . '/assets/data/gallery.json';
 
 // Ensure navbar knows it's the packages page
 $_SERVER['SCRIPT_NAME'] = '/pakiety.php';
+$pageTitle = 'Pakiety i Oferta | Raricart - Mobilne Live Food Stations';
 
 include 'parts/head.php';
 ?>

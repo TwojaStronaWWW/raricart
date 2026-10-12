@@ -1,0 +1,44 @@
+name: 🧪 CI Quality Gate & Automated Tests
+
+on:
+  push:
+    branches: [ main, staging ]
+  pull_request:
+    branches: [ main, staging ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  quality-gate:
+    name: 🛡️ Quality Gate & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Pobranie kodu repozytorium
+        uses: actions/checkout@v4
+
+      - name: 2. Konfiguracja środowiska PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: gd, fileinfo, json, mbstring, curl
+
+      - name: 3. Weryfikacja składni PHP (PHP Lint)
+        run: php tests/lint_php.php
+
+      - name: 4. Konfiguracja środowiska Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 5. Weryfikacja poprawności składniowej JavaScript
+        run: npm run check:syntax
+
+      - name: 6. Uruchomienie testów jednostkowych PHP Backend
+        run: npm run test:php
+
+      - name: 7. Uruchomienie testów jednostkowych Node.js (Repo Hygiene, HTML, CSS, JS) & Coverage
+        run: npm run test:coverage

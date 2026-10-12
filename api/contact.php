@@ -216,7 +216,7 @@ else {
                 // Dodaj wiersz
                 fputcsv($fp, [
                     date('Y-m-d H:i:s'),
-                    '✅ WYSŁANY',
+                    $isHot ? '🔥 HOT' : '✅ WYSŁANY',
                     'Formularz',
                     $name,
                     $email,
@@ -279,6 +279,16 @@ function processDraftQueue($draftsDir, $toEmail) {
                 @unlink($file);
             }
         }
+
+        // Czyść przedawnione pliki blokad rate limitera (starsze niż 1h)
+        $rateFiles = glob($draftsDir . '/rate_*.json');
+        if ($rateFiles) {
+            foreach ($rateFiles as $rf) {
+                if (file_exists($rf) && (time() - filemtime($rf) > 3600)) {
+                    @unlink($rf);
+                }
+            }
+        }
     }
 
     // Sprawdzaj wysyłkę digestu raz na 24h
@@ -328,9 +338,13 @@ function saveDraftToCsv($d, $timestamp) {
                 fputcsv($fp, ['Data zgłoszenia', 'Status', 'Źródło', 'Imię', 'Email', 'Telefon', 'Godz. kontaktu', 'Data wydarzenia', 'Lokalizacja', 'Goście', 'Budżet', 'Typ', 'Stacje', 'Wiadomość']);
             }
             
+            $draftBudget = (int)preg_replace('/[^0-9]/', '', (string)($d['budget'] ?? ''));
+            $draftGuests = (int)($d['guests'] ?? 0);
+            $draftStatus = ($draftBudget >= 5000 || $draftGuests >= 100) ? '🔥 HOT (SZKIC)' : '⚠️ PORZUCONY';
+            
             fputcsv($fp, [
                 date('Y-m-d H:i:s', $timestamp),
-                '⚠️ PORZUCONY',
+                $draftStatus,
                 'Autosave',
                 $d['name'] ?? '',
                 $d['email'] ?? '',

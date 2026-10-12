@@ -4,10 +4,12 @@
 // Fix 11d: Subdomain Logic
 // Detect protocol and current host
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-$host = $_SERVER['HTTP_HOST'];
+$host = $_SERVER['HTTP_HOST'] ?? 'raricart.pl';
 
 // Detect if we are on packages subpage (checking URI for /pakiety, or script name)
-$on_packages = strpos($_SERVER['REQUEST_URI'], '/pakiety') !== false || strpos($_SERVER['SCRIPT_NAME'], 'pakiety.php') !== false;
+$reqUri = $_SERVER['REQUEST_URI'] ?? '';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$on_packages = strpos($reqUri, '/pakiety') !== false || strpos($scriptName, 'pakiety.php') !== false;
 
 if ($on_packages) {
     // We are on packages subpage
@@ -28,10 +30,12 @@ if ($on_packages) {
     $packages_link = '/pakiety';
 }
 
-function nav_link($anchor) {
-    global $base_url;
-    // ensure base_url ends with / if it's a domain, or is empty
-    return $base_url . $anchor; 
+if (!function_exists('nav_link')) {
+    function nav_link($anchor) {
+        global $base_url;
+        // ensure base_url ends with / if it's a domain, or is empty
+        return $base_url . $anchor; 
+    }
 }
 
 // Navbar and Logo visible and ready from start

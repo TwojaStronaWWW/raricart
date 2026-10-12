@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
     $pass = $_POST['password'] ?? '';
     $confirm = $_POST['confirm'] ?? '';
     
-    if (strlen($pass) < 5) {
-        $error = "Hasło za krótkie (min 5 znaków).";
+    if (strlen($pass) < 8) {
+        $error = "Hasło za krótkie (min 8 znaków).";
     } elseif ($pass !== $confirm) {
         $error = "Hasła nie są identyczne.";
     } else {
@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
         unset($tokens[$token]);
         file_put_contents($tokens_file, json_encode($tokens, JSON_PRETTY_PRINT), LOCK_EX);
         
+        session_regenerate_id(true);
         $success = "Hasło zmienione pomyślnie! <br><a href='index.php'>Zaloguj się teraz</a>";
     }
     }

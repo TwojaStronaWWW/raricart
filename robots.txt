@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /drafts/
+Disallow: /bin/
+Disallow: /config/
+
+Sitemap: https://raricart.pl/sitemap.xml

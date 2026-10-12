@@ -1,0 +1,16 @@
+# Konfiguracja Dependabot dla repozytorium Raricart.pl
+# Wzorowana na standardach projektu Gal Anonim i _site-template
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5

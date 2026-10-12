@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://raricart.pl/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://media.raricart.pl/content/hero-main.webp</image:loc>
+      <image:title>Raricart - Mobilne Live Food Stations</image:title>
+      <image:caption>Catering live cooking i stacje deserowe na wesela oraz eventy firmowe</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://raricart.pl/pakiety</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://media.raricart.pl/content/stacje-pakiety.webp</image:loc>
+      <image:title>Pakiety i Oferta Stacji Raricart</image:title>
+      <image:caption>Mini pancakes, lody włoskie, deski serów na eventy</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://raricart.pl/polityka-prywatnosci</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

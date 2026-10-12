@@ -14,14 +14,15 @@
         content="default-src 'self' https://media.raricart.pl https://images.unsplash.com https://media.istockphoto.com; media-src 'self' https://media.raricart.pl data: blob:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data: blob:; connect-src 'self' https://media.raricart.pl https://www.google-analytics.com; frame-ancestors 'self';">
 
     <?php
-    $host = strtolower($_SERVER['HTTP_HOST']);
+    $host = strtolower($_SERVER['HTTP_HOST'] ?? '');
     if ($host === 'test.raricart.pl') {
         echo '<meta name="robots" content="noindex, nofollow">';
     }
+    $titleToDisplay = $pageTitle ?? 'Raricart | Mobilne Live Food Station na wesela i eventy';
     ?>
 
     <!-- SEO -->
-    <title>Raricart | Mobilne Live Food Station na wesela i eventy</title>
+    <title><?php echo htmlspecialchars($titleToDisplay); ?></title>
     <meta name="description"
         content="Mobilne stacje gastronomiczne na wesela, eventy firmowe i przyjęcia. Mini pancakes, lody włoskie i deski serów przygotowywane na żywo. Sprawdź dostępność terminu.">
     <meta name="keywords"
@@ -35,6 +36,17 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://raricart.pl">
     <meta property="og:image" content="https://media.raricart.pl/images/Logo.png">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Raricart | Mobilne Live Food Station na wesela i eventy">
+    <meta name="twitter:description" content="Mobilne stacje gastronomiczne na wesela, eventy firmowe i przyjęcia. Mini pancakes, lody włoskie i deski serów przygotowywane na żywo. Sprawdź dostępność terminu.">
+    <meta name="twitter:image" content="https://media.raricart.pl/images/Logo.png">
+
+    <!-- PWA & Mobile Chrome Tinting -->
+    <meta name="theme-color" content="#f5f1eb">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="<?php echo get_val('favicon', 'https://media.raricart.pl/images/logo_optimized.png'); ?>">
 
     <!-- Styles & Fonts -->
     <link rel="canonical" href="https://raricart.pl">
@@ -80,7 +92,7 @@
       "email": "kontakt@raricart.pl",
       "priceRange": "$$",
       "servesCuisine": ["Desserts", "Ice Cream", "Pancakes", "Cheese Boards"],
-      "url": "https://<?php echo $_SERVER['HTTP_HOST']; ?>"
+      "url": "https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'] ?? 'raricart.pl'); ?>"
     }
     </script>
     <script>
@@ -98,6 +110,8 @@
 </head>
 
 <?php
-$is_home_page = (strpos($_SERVER['SCRIPT_NAME'], 'pakiety.php') === false && strpos($_SERVER['REQUEST_URI'], '/pakiety') === false);
+$reqUri = $_SERVER['REQUEST_URI'] ?? '';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$is_home_page = (strpos($scriptName, 'pakiety.php') === false && strpos($reqUri, '/pakiety') === false);
 ?>
 <body <?php echo $is_home_page ? 'class="is-homepage"' : ''; ?>>

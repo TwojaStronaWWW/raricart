@@ -1,0 +1,21 @@
+{
+  "name": "Raricart - Mobilne Live Food Stations",
+  "short_name": "Raricart",
+  "description": "Mobilne stacje gastronomiczne live cooking na wesela i eventy firmowe",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f1eb",
+  "theme_color": "#f5f1eb",
+  "icons": [
+    {
+      "src": "https://media.raricart.pl/images/logo_optimized.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://media.raricart.pl/images/Logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

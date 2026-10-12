@@ -4,8 +4,16 @@
 # public_html/.htpasswd
 # Require valid-user
 
+# Wyłączenie indeksowania katalogów (ochrona przed przeglądaniem plików)
+Options -Indexes
+
 DirectoryIndex index.php
 RewriteEngine On
+
+# Blokada bezpośredniego dostępu HTTP do katalogów wewnętrznych i plików wrażliwych
+RewriteRule ^(bin|config|\.git|\.github|tests|drafts)/ - [F,L]
+RewriteRule ^(composer\.(json|lock)|package\.json|\.env.*) - [F,L]
+
 RewriteRule ^robots\.txt$ api/robots.php [L]
 RewriteRule ^pakiety/?$ pakiety.php [L]
 RewriteCond %{HTTPS} !=on
@@ -50,8 +58,14 @@ ErrorDocument 404 /parts/404.html
 
 # Wymuszenie nagłówków cache w HTTP (naprawa "no-cache")
 <IfModule mod_headers.c>
+    # Globalne nagłówki bezpieczeństwa HTTP (OWASP / Best Practices)
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
     # Cache Control dla plików statycznych (1 rok)
-    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|js|css|swf)$">
+    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|js|css|swf|webmanifest)$">
         Header set Cache-Control "max-age=31536000, public"
     </FilesMatch>
     
