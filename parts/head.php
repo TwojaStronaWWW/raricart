@@ -50,6 +50,7 @@
 
     <!-- Styles & Fonts -->
     <link rel="canonical" href="https://raricart.pl">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" href="<?php echo get_val('favicon', 'https://media.raricart.pl/images/logo_optimized.png'); ?>">
 
     <!-- Critical CSS: Blocking load to prevent Layout Shift (CLS 1.0 fix) -->

@@ -88,7 +88,10 @@ describe('Higiena repozytorium (Repo Hygiene wzorowane na Gal Anonim i _site-tem
     assert.ok(config.ci.assert.assertions['categories:seo']);
   });
 
-  it('pliki robots.txt i sitemap.xml powinny istnieć i definiować poprawne reguły indeksowania dla domeny raricart.pl', () => {
+  it('pliki robots.txt, sitemap.xml, site.webmanifest oraz favicon.ico powinny istnieć i definiować poprawne reguły', () => {
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'favicon.ico')), 'Brak favicon.ico');
+    assert.ok(fs.existsSync(path.join(ROOT_DIR, 'site.webmanifest')), 'Brak site.webmanifest');
+
     const robotsPath = path.join(ROOT_DIR, 'robots.txt');
     assert.ok(fs.existsSync(robotsPath), 'Brak robots.txt');
     const robotsContent = fs.readFileSync(robotsPath, 'utf-8');

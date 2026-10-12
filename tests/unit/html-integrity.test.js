@@ -62,6 +62,12 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.match(indexHtml, /<meta\s+name="twitter:description"\s+content="[^"]+">/i);
       assert.match(indexHtml, /<meta\s+name="twitter:image"\s+content="[^"]+">/i);
     });
+
+    it('powinien zawierać odnośniki do favicon, manifestu oraz meta theme-color', () => {
+      assert.match(indexHtml, /<meta\s+name="theme-color"\s+content="#[a-fA-F0-9]{6}">/i);
+      assert.match(indexHtml, /<link\s+rel="manifest"\s+href="\/site\.webmanifest">/i);
+      assert.match(indexHtml, /<link\s+rel="icon"[^>]*href="\/favicon\.ico"/i);
+    });
   });
 
   describe('Architektura sekcji Lejka 2026', () => {
