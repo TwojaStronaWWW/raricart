@@ -1,23 +1,36 @@
-# Raricart — Live Food Station & Mobilne Stacje Degustacyjne na Wesela i Eventy
+# Raricart — Mobilne Live Food Stations na Wesela, Eventy Firmowe i Przyjęcia
 
-> Raricart (https://raricart.pl/) to marka premium oferująca mobilne stacje kulinarne i degustacyjne (Live Food Station / Finger Food / Grazing Tables) na wesela, eventy firmowe, konferencje, targi i przyjęcia prywatne w całej Polsce.
+> Raricart (https://raricart.pl/) to koncept mobilnych stacji gastronomicznych i degustacyjnych (Live Food Stations), w których jedzenie przygotowywane jest na żywo na oczach gości. Stanowi nowoczesną, interaktywną alternatywę dla klasycznego cateringu i słodkiego stołu na weselach, eventach firmowych, galach, jubileuszach i przyjęciach plenerowych.
 
-## Stacje kulinarne i oferta Raricart
+## Oferowane stanowiska Live Food (https://raricart.pl/pakiety)
+1. **Lody Włoskie Live Station** — kremowe lody włoskie serwowane na bieżąco z wyborem dodatków (świeże owoce, sosy owocowe i czekoladowe, chrupiące posypki, orzechy, mini ciasteczka):
+   - 50 osób: `3 000 zł`
+   - 100 osób: `4 250 zł`
+   - 150 osób: `5 550 zł`
+2. **Mini Pancakes Live Station** — ciepłe, złociste mini naleśniczki wypiekane na miejscu z dodatkami (świeże owoce, kremy czekoladowe, polewy, posypki, chrupiące ciasteczka):
+   - 50 osób: `3 150 zł`
+   - 100 osób: `4 500 zł`
+   - 150 osób: `5 850 zł`
+3. **Deska Serów Live Station** — strefa degustacyjna obejmująca 12 wyselekcjonowanych pozycji włoskich serów i dojrzewających wędlin premium z wytrawnymi dodatkami i sosami do samodzielnego komponowania mini desek:
+   - 50 osób: `3 250 zł`
+   - 100 osób: `4 750 zł`
+   - 150 osób: `6 300 zł`
 
-- **Mobilne Stacje Degustacyjne (Live Food Station):** Autorskie, estetyczne wózki i stoły degustacyjne serwujące wyselekcjonowane sery rzemieślnicze, włoskie i hiszpańskie wędliny (antipasti / tapas), owoce, orzechy, świeże pieczywo oraz słodkie przekąski.
-- **Atrakcja kulinarna na wesele:** Elegancka alternatywa dla tradycyjnego wiejskiego stołu i klasycznego bufetu — pełna obsługa na żywo, autorska aranżacja wizualna dopasowana do stylu wesela (boho, glamour, rustykalny, nowoczesny).
-- **Catering eventowy B2B (Konferencje, Targi, Gale, Integracje):** Efektowne finger food i stacje live cooking przyciągające gości na stoiska targowe, bankiety i eventy korporacyjne w całej Polsce.
+## Pakiety łączone (2 oraz 3 stanowiska)
+- **Pakiety 2 stanowiska (rabat -5%, logistyka liczona raz):**
+  - Mini Pancakes + Lody Włoskie: 50 os. `6 250 zł` | 100 os. `8 720 zł` | 150 os. `11 240 zł` | 200 os. `13 710 zł`
+  - Mini Pancakes + Deska Serów: 50 os. `6 490 zł` | 100 os. `9 200 zł` | 150 os. `11 950 zł` | 200 os. `14 660 zł`
+  - Lody Włoskie + Deska Serów: 50 os. `6 350 zł` | 100 os. `8 960 zł` | 150 os. `11 670 zł` | 200 os. `14 280 zł`
+- **Pakiet Kompleksowy — 3 stanowiska (Mini Pancakes + Lody Włoskie + Deska Serów, rabat -10%):**
+  - 50 osób: `8 870 zł`
+  - 100 osób: `12 560 zł`
+  - 150 osób: `16 340 zł`
+  - 200 osób: `20 030 zł`
+- **Logistyka i obsługa:** Dojazd do 50 km w cenie (powyżej 50 km: `+2 zł/km`). Każde stanowisko obejmuje pełną aranżację i dedykowaną obsługę przez cały czas trwania serwisu.
 
-## Kluczowe podstrony
-
-- [Strona główna — Stacje Live Food, Realizacje i Opinie](https://raricart.pl/)
-- [Pakiety i Konfigurator Oferty](https://raricart.pl/pakiety.php)
-- [Polityka Prywatności](https://raricart.pl/polityka-prywatnosci.php)
-
-## Kontakt i Rezerwacja Terminów
-
-- Strona WWW: https://raricart.pl/
-- E-mail: kontakt@raricart.pl
-- Telefon: +48 883 392 688
-- Instagram: https://www.instagram.com/raricart.pl
-- Obszar działania: Cała Polska (dojazd na wesela i eventy firmowe w całym kraju)
+## Kluczowe adresy URL i kontakt
+- Strona główna i formularz zapytania o termin: https://raricart.pl/
+- Szczegółowa oferta i cennik pakietów: https://raricart.pl/pakiety
+- Polityka prywatności: https://raricart.pl/polityka-prywatnosci
+- Mapa witryny XML: https://raricart.pl/sitemap.xml
+- Telefon: +48 883 392 688 | E-mail: kontakt@raricart.pl

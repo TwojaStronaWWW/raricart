@@ -16,6 +16,7 @@ RewriteRule ^(composer\.(json|lock)|package\.json|\.env.*) - [F,L]
 
 RewriteRule ^robots\.txt$ api/robots.php [L]
 RewriteRule ^pakiety/?$ pakiety.php [L]
+RewriteRule ^polityka-prywatnosci/?$ polityka-prywatnosci.php [L]
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP_HOST} !^localhost
 RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
