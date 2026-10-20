@@ -10,6 +10,10 @@ Options -Indexes
 DirectoryIndex index.php
 RewriteEngine On
 
+# Kanoniczny adres bez www (301 Moved Permanently – eliminacja duplikacji w Google Search Console)
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
 # Blokada bezpośredniego dostępu HTTP do katalogów wewnętrznych i plików wrażliwych
 RewriteRule ^(bin|config|\.git|\.github|tests|drafts)/ - [F,L]
 RewriteRule ^(composer\.(json|lock)|package\.json|\.env.*) - [F,L]
@@ -60,10 +64,13 @@ ErrorDocument 404 /parts/404.html
 # Wymuszenie nagłówków cache w HTTP (naprawa "no-cache")
 <IfModule mod_headers.c>
     # Globalne nagłówki bezpieczeństwa HTTP (OWASP / Best Practices)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always set Content-Security-Policy "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header unset X-Powered-By
 
     # Cache Control dla plików statycznych (1 rok)
     <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|js|css|swf|webmanifest)$">

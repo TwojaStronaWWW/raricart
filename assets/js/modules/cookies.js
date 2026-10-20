@@ -70,25 +70,44 @@ export function initCookies() {
 
 	// Bezciasteczkowa Analityka Ruchu WWW & Konwersji (100% Cookieless RODO / Zero-PII)
 	const win = typeof window !== 'undefined' ? window : null;
-	if (win && !win.__TSW_ANALYTICS_ACTIVE__ && typeof win.navigator?.sendBeacon === 'function') {
+	if (win && !win.__TSW_ANALYTICS_ACTIVE__ && (typeof win.navigator?.sendBeacon === 'function' || typeof win.fetch === 'function')) {
 		win.__TSW_ANALYTICS_ACTIVE__ = true;
 		const analyticsEndpoint = 'https://ai.twojastronawww.pl/analytics';
 		const sendBeacon = (extra = {}) => {
 			try {
 				const loc = win.location || { pathname: '/', hash: '', search: '' };
 				const params = typeof URLSearchParams !== 'undefined' ? new URLSearchParams(loc.search || '') : null;
-				const utmTerm = params ? (params.get('q') || params.get('utm_term') || params.get('utm_campaign') || '') : '';
+				const utmTerm = params ? (params.get('term') || params.get('q') || params.get('utm_term') || params.get('utm_campaign') || '') : '';
+				const resolvedTerm = extra.term || extra.search_term || utmTerm || undefined;
+				const resolvedEvent = extra.event || extra.event_name || undefined;
 				const payload = JSON.stringify({
 					site_id: 'raricart',
 					type: extra.type || 'pageview',
 					path: (loc.pathname || '/') + (loc.hash || ''),
 					referrer: document.referrer || '',
+					utm_source: params ? (params.get('utm_source') || '') : '',
 					screen_w: win.innerWidth || 1280,
-					search_term: extra.search_term || utmTerm || undefined,
-					event_name: extra.event_name || undefined,
+					term: resolvedTerm,
+					search_term: resolvedTerm,
+					event: resolvedEvent,
+					event_name: resolvedEvent,
 					lcp_ms: extra.lcp_ms || undefined
 				});
-				win.navigator.sendBeacon(analyticsEndpoint, payload);
+				let sent = false;
+				if (typeof win.navigator?.sendBeacon === 'function') {
+					try {
+						sent = win.navigator.sendBeacon(analyticsEndpoint, payload);
+					} catch (_) {}
+				}
+				if (!sent && typeof win.fetch === 'function') {
+					win.fetch(analyticsEndpoint, {
+						method: 'POST',
+						body: payload,
+						keepalive: true,
+						mode: 'cors',
+						credentials: 'omit'
+					}).catch(() => {});
+				}
 			} catch (_) { /* ciche ignorowanie */ }
 		};
 		let lcpVal = 0;
