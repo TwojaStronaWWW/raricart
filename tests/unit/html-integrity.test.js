@@ -116,6 +116,7 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.ok(scriptPos !== -1, 'Brak skryptu script.js');
       assert.ok(scriptPos < bodyEndPos, 'script.js powinien być umieszczony przed zamknięciem body');
       assert.match(indexHtml, /<script\s+type="module"\s+src="[^"]*\/assets\/js\/script\.js/);
+      assert.match(indexHtml, /<script\s+type="module"\s+src="[^"]*\/assets\/js\/ai-widget\.js[^"]*"[^>]*data-site-id="raricart"/);
     });
   });
 

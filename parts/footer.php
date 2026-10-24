@@ -85,5 +85,6 @@
 
     <!-- Scripts (Modular Vanilla JS ES6+) -->
     <script type="module" src="/assets/js/script.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/script.js'); ?>" data-cfasync="false"></script>
+    <script type="module" src="/assets/js/ai-widget.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/ai-widget.js'); ?>" data-cfasync="false" data-site-id="raricart" data-title="Asystent Raricart"></script>
 </body>
 </html>
