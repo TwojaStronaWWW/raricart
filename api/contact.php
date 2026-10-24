@@ -27,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
+require_once __DIR__ . '/rate-limit.php';
+require_once __DIR__ . '/leads-store.php';
+
 // --- DRAFTS DIR ---
 $draftsDir = __DIR__ . '/drafts';
 if (!is_dir($draftsDir)) {
@@ -34,24 +37,13 @@ if (!is_dir($draftsDir)) {
     @file_put_contents($draftsDir . '/.htaccess', "Deny from all"); 
 }
 
-// Rate Limiting (15 requests per 10 minutes per IP)
-$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-$rateFile = $draftsDir . '/rate_' . md5($ip) . '.json';
-$rateData = [];
-if (file_exists($rateFile)) {
-    $rateData = json_decode(file_get_contents($rateFile), true) ?: [];
-}
-$now = time();
-$rateData = array_filter($rateData, function($time) use ($now) {
-    return $time > $now - 600;
-});
-if (count($rateData) >= 15) {
+// Rate Limiting (15 requests per 10 minutes per IP — atomic flock + SHA-256 via rate_limit)
+$ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+if (!rate_limit('raricart_contact_' . $ip, 15, 600)) {
     http_response_code(429);
     echo json_encode(["status" => "error", "message" => "Zbyt wiele zapytań. Spróbuj ponownie za kilka minut."]);
     exit;
 }
-$rateData[] = $now;
-file_put_contents($rateFile, json_encode(array_values($rateData)), LOCK_EX);
 
 // Anti-Spam
 if (!empty($data['website_check'])) {
@@ -186,6 +178,99 @@ if ($isPartial && $userId) {
 } 
 // --- NORMALNA WYSYŁKA (FINAL SUBMIT) ---
 else {
+    @session_write_close();
+
+    // 0. Rejestracja zgłoszenia w centralnym systemie ticketowym osTicket (Dual-Endpoint Failover) + Ntfy 1-Klik
+    $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
+    $ticketCreated = false;
+    $ticketNum = 'BRAK';
+    if (!empty($osTicketApiKey) && function_exists('curl_init')) {
+        $ticketPayload = [
+            'name' => html_entity_decode($name, ENT_QUOTES, 'UTF-8') ?: 'Klient Raricart',
+            'email' => $email ?: 'kontakt@raricart.pl',
+            'phone' => $phone,
+            'subject' => $rawSubject,
+            'message' => html_entity_decode($emailBody, ENT_QUOTES, 'UTF-8'),
+            'ip' => $ip,
+            'source' => 'Web',
+            'autorespond' => false,
+            'send_email' => false,
+        ];
+        $endpoints = [
+            ['url' => 'http://hd.twojastronawww.pl:8080/ticket_hook.php', 'resolve' => ['hd.twojastronawww.pl:8080:127.0.0.1']],
+            ['url' => 'https://hd.twojastronawww.pl/ticket_hook.php', 'resolve' => []],
+        ];
+        foreach ($endpoints as $ep) {
+            $ch = curl_init($ep['url']);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'X-API-Key: ' . $osTicketApiKey,
+                'Content-Type: application/json',
+                'Expect:'
+            ]);
+            if (!empty($ep['resolve'])) {
+                curl_setopt($ch, CURLOPT_RESOLVE, $ep['resolve']);
+            }
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Raricart-HelpdeskClient/2.0');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($ticketPayload, JSON_UNESCAPED_UNICODE));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 0);
+            if (defined('CURLPROTO_HTTPS') && defined('CURLPROTO_HTTP')) {
+                curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS | CURLPROTO_HTTP);
+            }
+            $apiResponse = @curl_exec($ch);
+            if (is_string($apiResponse) && strlen($apiResponse) > 65536) {
+                $apiResponse = substr($apiResponse, 0, 65536);
+            }
+            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            $resArr = is_string($apiResponse) ? json_decode($apiResponse, true) : null;
+            if ($httpCode === 201 && !empty($resArr['success'])) {
+                $ticketCreated = true;
+                $ticketNum = (string)($resArr['number'] ?? 'OK');
+                break;
+            }
+        }
+    }
+
+    $ntfyTopic = get_env_secret('NTFY_TOPIC');
+    if ($ntfyTopic !== '' && function_exists('curl_init')) {
+        $ntfyActions = [];
+        if (!empty($phone)) {
+            $digits = preg_replace('/\D+/', '', $phone) ?: '';
+            $dial = (strlen($digits) === 9) ? '+48' . $digits : '+' . $digits;
+            $ntfyActions[] = "view, Zadzwon ({$phone}), tel:{$dial}";
+        }
+        if (!empty($email)) {
+            $ntfyActions[] = "view, Napisz e-mail ({$email}), mailto:{$email}";
+        }
+        $ntfyActions[] = "view, Otworz Helpdesk, https://hd.twojastronawww.pl/scp/";
+        $chNtfy = curl_init("https://ntfy.sh/{$ntfyTopic}");
+        curl_setopt_array($chNtfy, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $emailBody,
+            CURLOPT_HTTPHEADER => [
+                'Title: ' . ($isHot ? 'HOT LEAD (Raricart) - ' : 'Formularz (Raricart) - ') . $name,
+                'Priority: high',
+                'Tags: incoming_envelope,pancakes',
+                'Actions: ' . implode('; ', array_slice($ntfyActions, 0, 3))
+            ],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 3,
+            CURLOPT_CONNECTTIMEOUT => 2,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_MAXREDIRS => 0
+        ]);
+        if (defined('CURLPROTO_HTTPS')) {
+            curl_setopt($chNtfy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+        }
+        @curl_exec($chNtfy);
+        curl_close($chNtfy);
+    }
+
     // 1. Wyślij normalnego maila
     $headers = "From: Formularz WWW <kontakt@raricart.pl>\r\n";
     $headers .= "Reply-To: $email\r\n";

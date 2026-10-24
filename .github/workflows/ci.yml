@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: 1. Pobranie kodu repozytorium
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: 2. Weryfikacja obecności pliku wejściowego index.php
         run: |
@@ -27,12 +29,14 @@ jobs:
             exit 1
           fi
 
-      - name: 3. Ochrona przed wyciekiem plików sekretów (.env, secrets.php)
+      - name: 3. Ochrona przed wyciekiem plików sekretów (.env, secrets.php) i skan Gitleaks
         run: |
-          if git ls-files | grep -E "(\.env|config/secrets\.php|\.htpasswd)$"; then
+          if git ls-files | grep -E "(\.env$|config/secrets\.php|\.htpasswd|leady\.csv)$"; then
             echo "❌ Wykryto plik z wrażliwymi danymi w repozytorium!"
             exit 1
           fi
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz | tar -xz -C /tmp gitleaks
+          /tmp/gitleaks detect --source . --config .gitleaks.toml --verbose --redact
 
       - name: 4. Konfiguracja środowiska PHP 8.2
         uses: shivammathur/setup-php@v2
@@ -65,6 +69,8 @@ jobs:
     steps:
       - name: 1. Pobranie kodu repozytorium
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: 2. Konfiguracja środowiska Node.js
         uses: actions/setup-node@v4

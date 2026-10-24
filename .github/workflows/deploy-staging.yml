@@ -63,6 +63,7 @@ jobs:
             **,
             !.git/**,
             !.github/**,
+            !.gemini/**,
             !tests/**,
             !drafts/**,
             !testpkg/**,

@@ -286,3 +286,175 @@ export {
   MockDocument,
   MockWindow,
 };
+
+export function setupMockDom() {
+  const elements = new Map();
+  const listeners = new Map();
+
+  class SetupMockElement {
+    constructor(tagName, id = '', className = '') {
+      this.tagName = tagName.toUpperCase();
+      this.id = id;
+      this._classes = new Set(className ? className.split(' ').filter(Boolean) : []);
+      const self = this;
+      this.classList = {
+        get _classes() { return self._classes; },
+        add(...cls) { cls.forEach(c => self._classes.add(c)); },
+        remove(...cls) { cls.forEach(c => self._classes.delete(c)); },
+        toggle(cls, force) {
+          if (typeof force === 'boolean') {
+            if (force) self._classes.add(cls);
+            else self._classes.delete(cls);
+            return force;
+          }
+          if (self._classes.has(cls)) {
+            self._classes.delete(cls);
+            return false;
+          }
+          self._classes.add(cls);
+          return true;
+        },
+        contains(cls) { return self._classes.has(cls); }
+      };
+      this.attributes = new Map();
+      this._listeners = new Map();
+      this.style = {};
+      this.textContent = '';
+      this._innerHTML = '';
+      this.children = [];
+      this.value = '';
+      this.disabled = false;
+      this.scrollTop = 0;
+      this.scrollHeight = 100;
+      this.parentNode = null;
+    }
+
+    get innerHTML() { return this._innerHTML; }
+    set innerHTML(val) {
+      this._innerHTML = String(val || '');
+      if (this._innerHTML === '') {
+        this.children = [];
+        return;
+      }
+      const tagRegex = /<([a-zA-Z0-9]+)\b([^>]*)>/g;
+      let match;
+      while ((match = tagRegex.exec(this._innerHTML)) !== null) {
+        const [, tag, attrs] = match;
+        const idMatch = attrs.match(/\bid=["']([^"']+)["']/);
+        const classMatch = attrs.match(/\bclass=["']([^"']+)["']/);
+        if (idMatch) {
+          const child = new SetupMockElement(tag, idMatch[1], classMatch ? classMatch[1] : '');
+          const ariaExpanded = attrs.match(/\baria-expanded=["']([^"']+)["']/);
+          if (ariaExpanded) child.setAttribute('aria-expanded', ariaExpanded[1]);
+          const ariaLabel = attrs.match(/\baria-label=["']([^"']+)["']/);
+          if (ariaLabel) child.setAttribute('aria-label', ariaLabel[1]);
+          child.parentNode = this;
+          this.children.push(child);
+          elements.set(child.id, child);
+        }
+      }
+    }
+
+    get className() { return Array.from(this._classes).join(' '); }
+    set className(val) { this._classes = new Set(val ? String(val).split(' ').filter(Boolean) : []); }
+    appendChild(child) {
+      if (!child) return null;
+      child.parentNode = this;
+      this.children.push(child);
+      if (child.id) elements.set(child.id, child);
+      return child;
+    }
+    remove() {
+      if (this.parentNode && Array.isArray(this.parentNode.children)) {
+        this.parentNode.children = this.parentNode.children.filter(c => c !== this);
+      }
+      if (this.id) elements.delete(this.id);
+    }
+    setAttribute(k, v) {
+      this.attributes.set(k, String(v));
+      if (k === 'class') this.className = v;
+      if (k === 'id') { this.id = v; elements.set(v, this); }
+    }
+    getAttribute(k) { return this.attributes.get(k) || null; }
+    removeAttribute(k) { this.attributes.delete(k); }
+    hasAttribute(k) { return this.attributes.has(k); }
+    addEventListener(evt, fn) {
+      if (!this._listeners.has(evt)) this._listeners.set(evt, []);
+      this._listeners.get(evt).push(fn);
+    }
+    dispatchEvent(evt) {
+      const fns = this._listeners.get(evt.type) || [];
+      fns.forEach(fn => fn.call(this, evt));
+      return true;
+    }
+    focus() { this._focused = true; }
+    reset() { this.value = ''; }
+    querySelector(sel) {
+      for (const el of elements.values()) {
+        if (matchSelector(el, sel)) return el;
+      }
+      return null;
+    }
+  }
+
+  const matchSelector = (el, rawSel) => {
+    const sel = rawSel.trim();
+    if (!sel) return false;
+    if (sel.startsWith('#')) return el.id === sel.slice(1);
+    if (sel.startsWith('.')) return el.classList.contains(sel.slice(1));
+    if (sel.includes('[data-site-id]')) return el.hasAttribute('data-site-id');
+    return el.tagName.toLowerCase() === sel.toLowerCase();
+  };
+
+  const mockDocument = {
+    readyState: 'complete',
+    head: new SetupMockElement('head'),
+    body: new SetupMockElement('body'),
+    documentElement: new SetupMockElement('html'),
+    getElementById: (id) => elements.get(id) || null,
+    querySelector: (sel) => {
+      for (const p of sel.split(',')) {
+        for (const el of elements.values()) {
+          if (matchSelector(el, p)) return el;
+        }
+      }
+      return null;
+    },
+    querySelectorAll: (sel) => {
+      const res = [];
+      for (const el of elements.values()) {
+        if (sel.split(',').some(p => matchSelector(el, p))) res.push(el);
+      }
+      return res;
+    },
+    createElement: (tag) => new SetupMockElement(tag),
+    addEventListener: (evt, fn) => {
+      if (!listeners.has(evt)) listeners.set(evt, []);
+      listeners.get(evt).push(fn);
+    },
+    dispatchEvent: (evt) => {
+      const fns = listeners.get(evt.type) || [];
+      fns.forEach(fn => fn(evt));
+      return true;
+    }
+  };
+
+  const defaultForbiddenFetch = async (url) => {
+    throw new Error(`NETWORK_FORBIDDEN: Zablokowano niezamockowane wywołanie sieciowe fetch(${String(url)}) w teście jednostkowym`);
+  };
+
+  const mockWindow = {
+    document: mockDocument,
+    innerWidth: 1024,
+    innerHeight: 768,
+    sessionStorage: new MockLocalStorage(),
+    localStorage: new MockLocalStorage(),
+    performance: { now: () => Date.now() },
+    fetch: defaultForbiddenFetch,
+    addEventListener: (evt, fn) => mockDocument.addEventListener(evt, fn)
+  };
+
+  globalThis.fetch = defaultForbiddenFetch;
+
+  return { mockWindow, mockDocument, MockElement: SetupMockElement, elements, listeners };
+}

@@ -663,7 +663,39 @@ export function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) 
   }
 
   // ===========================================================================
-  // 4. TWOJASTRONAWWW & SZABLON BAZOWY (Domyślny)
+  // 4. RADAR-P1 (Systemy e-Zdrowia P1 CeZ / NFZ / ZUS / KSeF)
+  // ===========================================================================
+  if (resolvedSiteId === 'radar-p1') {
+    if (qNorm.includes('recept') || qNorm.includes('drr') || qNorm.includes('aptek')) {
+      return (
+        `💊 **Awaria e-Recepty (System P1 — art. 95b i 96 Prawa farmaceutycznego):**\n` +
+        `- **W gabinecie / przychodni:** Lekarz wystawia receptę w postaci papierowej (z numerem PWZ i własnoręcznym podpisem). Jeśli problem dotyczy tylko lokalnego programu gabinetowego, e-Receptę można wystawić przez rządową aplikację https://gabinet.gov.pl.\n` +
+        `- **W aptece:** Recepta papierowa wystawiona w czasie awarii jest realizowana z zachowaniem pełnej refundacji NFZ, a dokument DRR przekazuje się po ustąpieniu awarii P1.`
+      );
+    }
+    if (qNorm.includes('ewus') || qNorm.includes('ubezpiecz') || qNorm.includes('rejestracj')) {
+      return (
+        `🏥 **Awaria eWUŚ w rejestracji (art. 50 ustawy o świadczeniach opieki zdrowotnej):**\n` +
+        `- Brak połączenia z eWUŚ **nigdy nie jest podstawą do odmowy przyjęcia pacjenta**.\n` +
+        `- Prawo do świadczeń NFZ potwierdza się na podstawie dokumentu ubezpieczenia (np. mObywatel / IKP, legitymacja) lub **pisemnego oświadczenia pacjenta**.`
+      );
+    }
+    if (qNorm.includes('ksef') || qNorm.includes('zla') || qNorm.includes('l4') || qNorm.includes('zus') || qNorm.includes('skierowan')) {
+      return (
+        `📋 **Tryb awaryjny e-Skierowań, ZUS e-ZLA oraz KSeF:**\n` +
+        `- **e-Skierowanie (art. 59aa):** Lekarz wystawia skierowanie papierowe, a placówka ma obowiązek wpisać pacjenta na listę oczekujących.\n` +
+        `- **ZUS e-ZLA (L4):** Lekarz wystawia zwolnienie na wydrukowanym wcześniej formularzu z bloczka ZUS ZLA i wprowadza je do PUE ZUS w ciągu **3 dni roboczych** od ustania awarii.\n` +
+        `- **KSeF (offline24 / awaria):** Fakturę z kodem QR przesyła się do KSeF w następnym dniu roboczym (*offline24*) lub w ciągu **7 dni roboczych** po zakończeniu awarii ogłoszonej w BIP MF.`
+      );
+    }
+    return (
+      `📡 Jestem niezależnym informatorem **Radaru Systemów e-Zdrowia (P1 / NFZ / ZUS / KSeF)**.\n` +
+      `Zapytaj mnie o ustawowe procedury awaryjne (**e-Recepta papierowa, e-Skierowanie, oświadczenie eWUŚ, ZUS ZLA z bloczka, KSeF offline24**) lub skontaktuj się z całodobową infolinią **Centrum e-Zdrowia (Helpdesk P1 24/7): tel. 19457**.`
+    );
+  }
+
+  // ===========================================================================
+  // 5. TWOJASTRONAWWW & SZABLON BAZOWY (Domyślny)
   // ===========================================================================
   if (q.includes('wordpress') || q.includes('wtyczk') || q.includes('kod') || q.includes('sql') || q.includes('szybk')) {
     return 'Tworzymy strony w **czystym kodzie (architektura Flat-File)** zamiast ciężkiego WordPressa z dziesiątkami wtyczek:\n- **Waga poniżej 100 KB** i ładowanie **< 0.6s** (Google PageSpeed **95–100/100**)\n- **Brak bazy SQL** = zero ryzyka ataków SQL Injection i awarii po aktualizacjach\n- **100% kodu na własność** w repozytorium Git i brak ukrytych abonamentów.';
@@ -682,7 +714,7 @@ export function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) 
   }
 
   if (q.includes('realizacj') || q.includes('portfolio') || q.includes('przykład') || q.includes('projekt')) {
-    return 'Przykładowe wdrożenia z wynikami **Google PageSpeed 98–100/100**:\n- **Raricart.pl** (branża eventowa) – ładowanie skrócone z 4.2s do **0.6s** i automatyzacja rezerwacji\n- **KatoSalsaHub.pl** & **DancePuls** – portal społecznościowy z Salsopedią i automatycznym agregatorem wydarzeń\n- **FuegoLingua.pl** – ultra-lekka strona (45 KB) bez bazy SQL z wirtualnym doradcą AI.';
+    return 'Przykładowe wdrożenia z wynikami **Google PageSpeed 98–100/100**:\n- **Raricart.pl** (branża eventowa) – ładowanie skrócone z 4.2s do **0.6s** i automatyzacja rezerwacji\n- **KatoSalsaHub.pl** – portal społecznościowy z encyklopedią Salsopedia i wspólnym grafikiem szkół\n- **FuegoLingua.pl** – ultra-lekka strona (45 KB) bez bazy SQL z wirtualnym doradcą AI\n- **Radar-P1** – ogólnopolski panel telemetryczny systemów e-Zdrowia (P1 CeZ, 16 OW NFZ, ZUS, KSeF).';
   }
 
   if (q.includes('kontakt') || q.includes('telefon') || q.includes('mail') || q.includes('oddzwon') || q.includes('wiadomo')) {
@@ -765,26 +797,48 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
 
   let responseCache = { kbVersion, entries: {} };
 
+  function getMonotonicTimeMs() {
+    const perf = win?.performance || globalThis.performance;
+    if (perf && typeof perf.now === 'function') {
+      const t = perf.now();
+      if (Number.isFinite(t)) return t;
+    }
+    return Date.now();
+  }
+
+  function invalidateResponseCache() {
+    responseCache = { kbVersion, entries: {} };
+    saveResponseCache();
+  }
+
   function loadResponseCache() {
     try {
       const storage = win?.localStorage || win?.sessionStorage;
       const raw = storage?.getItem(cacheStorageKey);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.entries) {
+        if (
+          parsed &&
+          typeof parsed === 'object' &&
+          !Array.isArray(parsed) &&
+          parsed.entries &&
+          typeof parsed.entries === 'object' &&
+          !Array.isArray(parsed.entries)
+        ) {
           if (knowledgeEntries.length > 0 && parsed.kbVersion !== kbVersion) {
-            responseCache = { kbVersion, entries: {} };
-            saveResponseCache();
+            invalidateResponseCache();
           } else {
             responseCache = {
               kbVersion: parsed.kbVersion || kbVersion,
-              entries: parsed.entries || {}
+              entries: parsed.entries
             };
           }
+        } else {
+          invalidateResponseCache();
         }
       }
     } catch (_) {
-      responseCache = { kbVersion, entries: {} };
+      invalidateResponseCache();
     }
   }
 
@@ -806,17 +860,33 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     const normQ = normalizeCacheQuery(question);
     if (!normQ || hasContactPii(question)) return null;
 
-    if (knowledgeEntries.length > 0 && responseCache.kbVersion !== kbVersion) {
-      responseCache = { kbVersion, entries: {} };
-      saveResponseCache();
+    if (
+      !responseCache ||
+      typeof responseCache.entries !== 'object' ||
+      Array.isArray(responseCache.entries) ||
+      (knowledgeEntries.length > 0 && responseCache.kbVersion !== kbVersion)
+    ) {
+      invalidateResponseCache();
       return null;
     }
 
     const item = responseCache.entries?.[normQ];
-    if (!item || !item.answer) return null;
+    if (!item || typeof item !== 'object') return null;
+
+    if (
+      typeof item.answer !== 'string' ||
+      item.answer.trim() === '' ||
+      typeof item.ts !== 'number' ||
+      !Number.isFinite(item.ts) ||
+      item.ts <= 0
+    ) {
+      delete responseCache.entries[normQ];
+      saveResponseCache();
+      return null;
+    }
 
     const now = Date.now();
-    if (item.ts && now - item.ts > cacheTtlMs) {
+    if (now - item.ts > cacheTtlMs || item.ts > now + 60000) {
       delete responseCache.entries[normQ];
       saveResponseCache();
       return null;
@@ -833,8 +903,8 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
 
   function setCachedAnswer(question, answer, source = 'ai') {
     const normQ = normalizeCacheQuery(question);
-    if (!normQ || !answer || hasContactPii(question)) return;
-    if (!responseCache.entries || responseCache.kbVersion !== kbVersion) {
+    if (!normQ || typeof answer !== 'string' || answer.trim() === '' || hasContactPii(question)) return;
+    if (!responseCache.entries || typeof responseCache.entries !== 'object' || Array.isArray(responseCache.entries) || responseCache.kbVersion !== kbVersion) {
       responseCache = { kbVersion, entries: {} };
     }
     responseCache.kbVersion = kbVersion;
@@ -842,7 +912,8 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
       answer: String(answer),
       kbVersion,
       source,
-      ts: Date.now()
+      ts: Date.now(),
+      monotonicMs: getMonotonicTimeMs()
     };
     saveResponseCache();
   }
@@ -1551,6 +1622,8 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
         ? '¡Hola! 💃 Jestem wirtualnym doradcą **Fuego Lingua**. W czym mogę Ci pomóc? Zapytaj o bezpłatną lekcję próbną, cennik lub kursy hiszpańskiego!'
         : siteId === 'raricart'
         ? 'Cześć! 🥞🍦🧀 Jestem wirtualnym doradcą **Raricart Live Food Station**. Zapytaj o cennik stacji na żywo (Lody Włoskie, Mini Pancakes, Deska Serów), pakiety łączone lub dostępność terminu na Twoje wesele czy event!'
+        : siteId === 'radar-p1'
+        ? 'Cześć! 📡 Jestem niezależnym informatorem **Radaru Systemów e-Zdrowia (P1 / NFZ / ZUS / KSeF)**. Zapytaj o procedury awaryjne dla e-Recepty, e-Skierowania, eWUŚ, e-ZLA lub KSeF!'
         : `Cześć! 👋 Jestem wirtualnym doradcą **${title}**. W czym mogę Ci pomóc? Zapytaj o ofertę, wycenę lub współpracę!`;
 
     appendMessageElement('model', welcomeText);
@@ -1747,6 +1820,18 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
       sendAnalyticsBeacon({ type: 'pageview' });
     });
 
+    doc.addEventListener?.('page:loaded', () => {
+      sendAnalyticsBeacon({ type: 'pageview' });
+    });
+
+    let lastTrackedSearch = '';
+    win.trackCookielessSearch = function (term) {
+      const clean = String(term || '').trim().slice(0, 80);
+      if (clean.length < 2 || clean.toLowerCase() === lastTrackedSearch.toLowerCase()) return;
+      lastTrackedSearch = clean;
+      sendAnalyticsBeacon({ type: 'search', term: clean });
+    };
+
     setTimeout(() => {
       if (doc.visibilityState !== 'hidden') {
         sendAnalyticsBeacon({ type: 'engaged' });
@@ -1779,11 +1864,33 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     });
   }
 
+  function openAndAsk(promptText) {
+    const cleanPrompt = String(promptText || '').trim();
+    if (!cleanPrompt) return null;
+    if (chatWindow && !chatWindow.classList.contains('tsw-open')) {
+      chatWindow.classList.add('tsw-open');
+      toggleBtn?.setAttribute('aria-expanded', 'true');
+      sendAnalyticsBeacon({ type: 'event', event: 'chat_open' });
+    }
+    sendAnalyticsBeacon({ type: 'event', event: 'quick_prompt_click' });
+    return sendQuestion(cleanPrompt);
+  }
+
+  doc.addEventListener?.('click', (e) => {
+    const target = e?.target?.closest ? e.target.closest('[data-ai-prompt]') : null;
+    if (!target) return;
+    const promptText = target.getAttribute('data-ai-prompt');
+    if (promptText) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      openAndAsk(promptText);
+    }
+  });
+
   if ((kbUrl || kbApiUrl) && knowledgeEntries.length === 0 && !options.skipInitialFetch) {
     refreshKnowledge();
   }
 
-  return {
+  const instance = {
     root,
     toggleBtn,
     closeBtn,
@@ -1798,6 +1905,7 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     toggleChat,
     closeChat,
     sendQuestion,
+    openAndAsk,
     toggleVoiceRecognition,
     stopVoiceRecognition,
     isVoiceListening: () => isListening,
@@ -1812,6 +1920,12 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
       saveResponseCache();
     }
   };
+
+  if (win) {
+    win.TSWAiWidget = instance;
+  }
+
+  return instance;
 }
 
 function autoInitAiWidget() {
