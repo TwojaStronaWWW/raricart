@@ -86,5 +86,23 @@
     <!-- Scripts (Modular Vanilla JS ES6+) -->
     <script type="module" src="/assets/js/script.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/script.js'); ?>" data-cfasync="false"></script>
     <script type="module" src="/assets/js/ai-widget.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/ai-widget.js'); ?>" data-cfasync="false" data-site-id="raricart" data-title="Asystent Raricart"></script>
+  <!-- [REF-02] Speculation Rules API (Web Platform Baseline): natychmiastowa nawigacja 0 ms bez SPA przy najechaniu kursorem -->
+  <script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": {
+          "and": [
+            { "href_matches": "/*" },
+            { "not": { "href_matches": "/api/*" } },
+            { "not": { "href_matches": "/assets/php/*" } },
+            { "not": { "href_matches": "/admin/*" } }
+          ]
+        },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+  </script>
 </body>
 </html>

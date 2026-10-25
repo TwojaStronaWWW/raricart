@@ -171,6 +171,7 @@
             window.scrollTo(0, 0);
         }
     </script>
+  <link rel="alternate" type="text/markdown" href="llms.txt" title="Baza wiedzy dla asystentów AI (llms.txt)">
 </head>
 
 <?php
