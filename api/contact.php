@@ -24,6 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+// Wczesne zwolnienie sesji PHP (jeśli aktywna)
+if (session_status() === PHP_SESSION_ACTIVE) {
+    @session_write_close();
+}
+
+// [REF-05] Zabezpieczenie OWASP Fetch Metadata (Sec-Fetch-Site) przed żądaniami Cross-Site
+if (isset($_SERVER['HTTP_SEC_FETCH_SITE']) && strtolower(trim((string)$_SERVER['HTTP_SEC_FETCH_SITE'])) === 'cross-site') {
+    http_response_code(403);
+    echo json_encode(["status" => "error", "message" => "Niedozwolone żądanie międzywitrynowe (Cross-Site Request Blocked)."]);
+    exit;
+}
+
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
