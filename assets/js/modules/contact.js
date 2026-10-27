@@ -14,7 +14,74 @@ export function initContactForm() {
 	const preCtaBtn = document.getElementById('preCtaCheckBtn');
 
 	let formSubmitted = false;
+	let isSubmitting = false;
 	let abandonedSent = false;
+	let draftTimer = null;
+	let lastDraftSignature = '';
+
+	function cancelPendingDraft() {
+		if (draftTimer !== null) {
+			clearTimeout(draftTimer);
+			draftTimer = null;
+		}
+	}
+
+	function collectFormData() {
+		const data = {
+			website_check: '',
+			name: '',
+			email: '',
+			phone: '',
+			date: '',
+			location: '',
+			guests: '',
+			event_type: '',
+			stations: '',
+			message: '',
+		};
+
+		fields.forEach(f => {
+			if (!f.name || f.type === 'checkbox' || f.type === 'submit') return;
+			data[f.name] = typeof f.value === 'string' ? f.value.trim() : '';
+		});
+
+		const stations = Array.from(form.querySelectorAll('input[name="stations"]:checked'))
+			.map(cb => (cb.nextElementSibling && cb.nextElementSibling.textContent ? cb.nextElementSibling.textContent.trim() : cb.value))
+			.filter(Boolean)
+			.join(', ');
+
+		data.stations = stations;
+		return data;
+	}
+
+	function sendDraftNow() {
+		draftTimer = null;
+		if (formSubmitted || isSubmitting) return;
+
+		const data = collectFormData();
+		if (!data.phone && !data.email) return;
+
+		const sig = JSON.stringify(data);
+		if (sig === lastDraftSignature) return;
+		lastDraftSignature = sig;
+
+		const payload = {
+			...data,
+			is_partial: true,
+		};
+
+		fetch('api/contact.php', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload),
+		}).catch(() => {});
+	}
+
+	function scheduleDraftSave() {
+		if (formSubmitted || isSubmitting) return;
+		cancelPendingDraft();
+		draftTimer = setTimeout(sendDraftNow, 300);
+	}
 
 	// Toast Notification Utility
 	function showToast(type, title, message) {
@@ -82,60 +149,75 @@ export function initContactForm() {
 			}).catch(() => {});
 		};
 
-		if ('requestIdleCallback' in window) {
-			requestIdleCallback(sendPing);
+		if ('requestIdleCallback' in window && typeof window.requestIdleCallback === 'function') {
+			window.requestIdleCallback(sendPing);
 		} else {
 			setTimeout(sendPing, 2000);
 		}
 	});
 
+	// Prevent blur-triggered draft race when clicking Submit button
+	const submitBtnEl = form.querySelector('.cta-primary');
+	if (submitBtnEl) {
+		['pointerdown', 'mousedown', 'touchstart'].forEach(evtName => {
+			submitBtnEl.addEventListener(evtName, cancelPendingDraft);
+		});
+	}
+
 	// Field inputs & Silent Autosave
 	fields.forEach(f => {
-		f.addEventListener('input', updateProgress);
-		f.addEventListener('change', updateProgress);
+		const clearFieldError = () => {
+			f.classList.remove('input-error');
+			if (f.parentNode) {
+				const err = f.parentNode.querySelector('.error-message');
+				if (err) err.remove();
+			}
+			if (f.name === 'stations') {
+				const group = form.querySelector('.checkbox-group');
+				if (group) {
+					group.classList.remove('input-error');
+					if (group.parentNode) {
+						const groupErr = group.parentNode.querySelector('.error-message');
+						if (groupErr) groupErr.remove();
+					}
+				}
+			}
+		};
+
+		f.addEventListener('input', () => {
+			clearFieldError();
+			updateProgress();
+		});
+
+		f.addEventListener('change', () => {
+			clearFieldError();
+			updateProgress();
+			if (f.tagName === 'SELECT' || f.type === 'checkbox' || f.type === 'date') {
+				scheduleDraftSave();
+			}
+		});
 
 		f.addEventListener('blur', () => {
-			if (formSubmitted) return;
-			const formDataRaw = new FormData(form);
-			const data = Object.fromEntries(formDataRaw.entries());
-
-			if (data.phone || data.email) {
-				const stations = Array.from(form.querySelectorAll('input[name="stations"]:checked'))
-					.map(cb => cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value)
-					.join(', ');
-
-				const payload = {
-					...data,
-					stations: stations,
-					is_partial: true,
-				};
-
-				fetch('api/contact.php', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(payload),
-				}).catch(() => {});
-			}
+			if (formSubmitted || isSubmitting) return;
+			scheduleDraftSave();
 		});
 	});
 
 	// Abandoned Lead Capture (beforeunload + visibilitychange)
 	function sendAbandonedLead() {
-		if (formSubmitted || abandonedSent) return;
-		abandonedSent = true;
+		if (formSubmitted || isSubmitting) return;
+		cancelPendingDraft();
 
-		const formDataRaw = new FormData(form);
-		const data = Object.fromEntries(formDataRaw.entries());
-
+		const data = collectFormData();
 		if (!data.phone && !data.email) return;
 
-		const stations = Array.from(form.querySelectorAll('input[name="stations"]:checked'))
-			.map(cb => cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value)
-			.join(', ');
+		const sig = JSON.stringify(data);
+		if (abandonedSent && sig === lastDraftSignature) return;
+		abandonedSent = true;
+		lastDraftSignature = sig;
 
 		const payload = JSON.stringify({
 			...data,
-			stations: stations,
 			is_partial: true,
 			is_abandoned: true,
 		});
@@ -168,7 +250,7 @@ export function initContactForm() {
 			const digits = this.value.replace(/\D/g, '');
 			if (digits.length > 0 && digits.length < 9) {
 				this.classList.add('input-error');
-				if (!this.parentNode.querySelector('.phone-error')) {
+				if (this.parentNode && !this.parentNode.querySelector('.phone-error')) {
 					const msg = document.createElement('small');
 					msg.className = 'error-message phone-error';
 					msg.textContent = 'Numer musi mieć min. 9 cyfr';
@@ -176,8 +258,10 @@ export function initContactForm() {
 				}
 			} else {
 				this.classList.remove('input-error');
-				const existing = this.parentNode.querySelector('.phone-error');
-				if (existing) existing.remove();
+				if (this.parentNode) {
+					const existing = this.parentNode.querySelector('.phone-error');
+					if (existing) existing.remove();
+				}
 			}
 		});
 	}
@@ -185,7 +269,8 @@ export function initContactForm() {
 	// Form Submission
 	form.addEventListener('submit', function (e) {
 		e.preventDefault();
-		formSubmitted = true;
+		cancelPendingDraft();
+		if (isSubmitting) return;
 
 		let isValid = true;
 
@@ -193,34 +278,45 @@ export function initContactForm() {
 		form.querySelectorAll('.error-message').forEach(el => el.remove());
 
 		fields.forEach(f => {
-			if (f.hasAttribute('required') && !f.value.trim()) {
+			const val = typeof f.value === 'string' ? f.value.trim() : '';
+
+			if (f.hasAttribute('required') && !val) {
 				isValid = false;
 				f.classList.add('input-error');
 
-				const msg = document.createElement('small');
-				msg.className = 'error-message';
-				msg.textContent = getTranslation('form.required', 'Pole jest wymagane');
-				f.parentNode.appendChild(msg);
+				if (f.parentNode) {
+					const msg = document.createElement('small');
+					msg.className = 'error-message';
+					msg.textContent = getTranslation('form.required', 'Pole jest wymagane');
+					f.parentNode.appendChild(msg);
+				}
 			}
 
-			if (f.name === 'email' && f.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value.trim())) {
+			if (f.name === 'email' && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
 				isValid = false;
 				f.classList.add('input-error');
 
-				const msg = document.createElement('small');
-				msg.className = 'error-message';
-				msg.textContent = getTranslation('form.email_error', 'Nieprawidłowy adres email');
-				f.parentNode.appendChild(msg);
+				if (f.parentNode) {
+					const msg = document.createElement('small');
+					msg.className = 'error-message';
+					msg.textContent = getTranslation('form.email_error', 'Nieprawidłowy adres email');
+					f.parentNode.appendChild(msg);
+				}
 			}
 
-			if (f.name === 'message' && f.value.trim().length > 0 && f.value.trim().length < 3) {
-				isValid = false;
-				f.classList.add('input-error');
+			if (f.name === 'phone' && val) {
+				const digits = val.replace(/\D/g, '');
+				if (digits.length > 0 && digits.length < 9) {
+					isValid = false;
+					f.classList.add('input-error');
 
-				const msg = document.createElement('small');
-				msg.className = 'error-message';
-				msg.textContent = 'Minimum 3 znaki';
-				f.parentNode.appendChild(msg);
+					if (f.parentNode) {
+						const msg = document.createElement('small');
+						msg.className = 'error-message phone-error';
+						msg.textContent = 'Numer musi mieć min. 9 cyfr';
+						f.parentNode.appendChild(msg);
+					}
+				}
 			}
 		});
 
@@ -230,63 +326,62 @@ export function initContactForm() {
 			isValid = false;
 			const container = form.querySelector('.checkbox-group');
 			if (container) {
-				const msg = document.createElement('small');
-				msg.className = 'error-message';
-				msg.style.marginTop = '10px';
-				msg.textContent = getTranslation('form.stations_error', 'Wybierz przynajmniej jedną stację');
-				container.parentNode.appendChild(msg);
+				container.classList.add('input-error');
+				if (container.parentNode) {
+					const msg = document.createElement('small');
+					msg.className = 'error-message';
+					msg.style.marginTop = '10px';
+					msg.textContent = getTranslation('form.stations_error', 'Wybierz przynajmniej jedną stację');
+					container.parentNode.appendChild(msg);
+				}
 			}
 		}
 
 		if (!isValid) {
 			formSubmitted = false;
 			const firstError = form.querySelector('.input-error, .error-message');
-			if (firstError) {
+			if (firstError && typeof firstError.scrollIntoView === 'function') {
 				firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
 			}
 			return;
 		}
 
-		const stations = Array.from(form.querySelectorAll('input[name="stations"]:checked'))
-			.map(cb => cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : cb.value)
-			.join(', ');
+		isSubmitting = true;
+		formSubmitted = true;
 
-		const formData = {
-			website_check: form.website_check ? form.website_check.value : '',
-			name: form.name ? form.name.value : '',
-			email: form.email ? form.email.value : '',
-			phone: form.phone ? form.phone.value : '',
-			date: form.date ? form.date.value : '',
-			location: form.location ? form.location.value : '',
-			guests: form.guests ? form.guests.value : '',
-			event_type: form.event_type ? form.event_type.value : '',
-			stations: stations,
-			message: form.message ? form.message.value : '',
-		};
+		const formData = collectFormData();
 
 		const submitBtn = form.querySelector('.cta-primary');
-		const originalText = submitBtn ? submitBtn.textContent : '';
-		if (submitBtn) {
-			submitBtn.textContent = getTranslation('form.sending', 'Sprawdzanie dostępności...');
+		const submitLabel = submitBtn ? (submitBtn.querySelector('span') || submitBtn) : null;
+		const originalText = submitLabel ? submitLabel.textContent : '';
+		if (submitBtn && submitLabel) {
+			submitLabel.textContent = getTranslation('form.sending', 'Sprawdzanie dostępności...');
 			submitBtn.disabled = true;
 		}
 
 		fetch('api/contact.php', {
 			method: 'POST',
+			keepalive: true,
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(formData),
 		})
 			.then(response => response.json())
 			.then(data => {
-				if (data.status === 'success') {
+				if (data && data.status === 'success') {
 					formSubmitted = true;
+					lastDraftSignature = '';
 					const successMsg = getTranslation('form.success_msg', 'Zapytanie zostało przesłane! Skontaktujemy się z Tobą w ciągu 24h.');
 					showToast('success', getTranslation('form.submit', 'Wysłano zapytanie'), successMsg);
-					form.reset();
+					if (typeof form.reset === 'function') {
+						form.reset();
+					}
+					checkboxes.forEach(cb => {
+						cb.checked = false;
+					});
 					updateProgress();
 				} else {
 					formSubmitted = false;
-					showToast('error', 'Błąd', data.message || 'Wystąpił błąd podczas wysyłania');
+					showToast('error', 'Błąd', (data && data.message) || 'Wystąpił błąd podczas wysyłania');
 				}
 			})
 			.catch(err => {
@@ -296,8 +391,9 @@ export function initContactForm() {
 				showToast('error', 'Błąd wysyłki', errorMsg);
 			})
 			.finally(() => {
-				if (submitBtn) {
-					submitBtn.textContent = getTranslation('form.submit', originalText);
+				isSubmitting = false;
+				if (submitBtn && submitLabel) {
+					submitLabel.textContent = getTranslation('form.submit', originalText);
 					submitBtn.disabled = false;
 				}
 			});

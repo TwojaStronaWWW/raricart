@@ -15,17 +15,41 @@ class PrivateStorageService
     private ?R2Client $client = null;
     private string $bucketName;
 
-    public function __construct(?string $bucketName = null)
-    {
+    public function __construct(
+        ?string $bucketOrAccountId = null,
+        ?string $accessKeyArg = null,
+        ?string $secretKeyArg = null,
+        ?string $bucketNameArg = null
+    ) {
         $secretsFile = dirname(__DIR__) . '/config/secrets.php';
         if (file_exists($secretsFile)) {
             require_once $secretsFile;
         }
+        if (!function_exists('get_env_secret') && file_exists(__DIR__ . '/leads-store.php')) {
+            require_once __DIR__ . '/leads-store.php';
+        }
 
-        $accountId = defined('R2_ACCOUNT_ID') ? (string)R2_ACCOUNT_ID : '';
-        $accessKey = defined('R2_ACCESS_KEY_ID') ? (string)R2_ACCESS_KEY_ID : '';
-        $secretKey = defined('R2_SECRET_ACCESS_KEY') ? (string)R2_SECRET_ACCESS_KEY : '';
-        $this->bucketName = $bucketName ?? (defined('R2_PRIVATE_BUCKET_NAME') ? (string)R2_PRIVATE_BUCKET_NAME : 'raricart-private');
+        $env = static function (string $key, string $default = ''): string {
+            if (defined($key) && (string)constant($key) !== '') {
+                return (string)constant($key);
+            }
+            if (function_exists('get_env_secret')) {
+                return get_env_secret($key, $default);
+            }
+            return $default;
+        };
+
+        if ($accessKeyArg !== null || $secretKeyArg !== null || $bucketNameArg !== null) {
+            $accountId = $bucketOrAccountId ?? $env('R2_ACCOUNT_ID');
+            $accessKey = $accessKeyArg ?? $env('R2_ACCESS_KEY_ID');
+            $secretKey = $secretKeyArg ?? $env('R2_SECRET_ACCESS_KEY');
+            $this->bucketName = $bucketNameArg ?? $env('R2_PRIVATE_BUCKET_NAME', 'raricart-private');
+        } else {
+            $accountId = $env('R2_ACCOUNT_ID');
+            $accessKey = $env('R2_ACCESS_KEY_ID');
+            $secretKey = $env('R2_SECRET_ACCESS_KEY');
+            $this->bucketName = $bucketOrAccountId ?? $env('R2_PRIVATE_BUCKET_NAME', 'raricart-private');
+        }
 
         if ($accountId !== '' && $accessKey !== '' && $secretKey !== '' && $this->bucketName !== '') {
             $this->client = new R2Client($accountId, $accessKey, $secretKey, $this->bucketName, 'auto');
@@ -63,8 +87,9 @@ class PrivateStorageService
             return false;
         }
 
-        // 1. Zapis kopii bieżącej (Master copy)
+        // 1. Zapis kopii bieżącej (Master copy + alias latest)
         $uploadedMaster = $this->client->putObject('leads/leady.csv', $content, 'text/csv; charset=UTF-8');
+        $this->client->putObject('leads/leady_latest.csv', $content, 'text/csv; charset=UTF-8');
 
         // 2. Zapis kopii dziennej (Versioning archive)
         $dateKey = 'leads/archive/leady_' . date('Y-m-d') . '.csv';
@@ -82,7 +107,7 @@ class PrivateStorageService
             return null;
         }
 
-        return $this->client->getObject('leads/leady.csv');
+        return $this->client->getObject('leads/leady.csv') ?? $this->client->getObject('leads/leady_latest.csv');
     }
 
     /**

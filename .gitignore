@@ -38,6 +38,7 @@ composer.phar
 admin/leady.csv
 drafts/
 api/drafts/
+api/rate_limits/
 assets/uploads/
 
 # IDE

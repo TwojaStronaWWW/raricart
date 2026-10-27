@@ -98,8 +98,8 @@
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="cta-primary form-submit-btn" data-i18n="form.submit">
-                <span>SPRAWDŹ DOSTĘPNOŚĆ I OTRZYMAJ WYCENĘ</span>
+            <button type="submit" class="cta-primary form-submit-btn">
+                <span data-i18n="form.submit">SPRAWDŹ DOSTĘPNOŚĆ I OTRZYMAJ WYCENĘ</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
