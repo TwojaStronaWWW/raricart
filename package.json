@@ -10,10 +10,11 @@
     "test:php": "php tests/run_php_tests.php",
     "test:all": "npm test && npm run test:php",
     "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.js",
-    "check:syntax": "node --check assets/js/script.js assets/js/ai-widget.js assets/js/modules/cookies.js assets/js/modules/i18n.js assets/js/modules/modals.js assets/js/modules/utils.js assets/js/modules/contact.js assets/js/modules/gallery.js assets/js/modules/nav.js assets/js/modules/scroll.js assets/js/modules/translations.js",
+    "check:syntax": "node --check scripts/sync-worktrees.js assets/js/script.js assets/js/ai-widget.js assets/js/modules/cookies.js assets/js/modules/i18n.js assets/js/modules/modals.js assets/js/modules/utils.js assets/js/modules/contact.js assets/js/modules/gallery.js assets/js/modules/nav.js assets/js/modules/scroll.js assets/js/modules/translations.js",
     "check:php": "php tests/lint_php.php",
     "check": "npm run check:syntax && npm run check:php && npm test && npm run test:php",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "sync": "node scripts/sync-worktrees.js"
   },
   "keywords": [
     "raricart",

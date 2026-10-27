@@ -21,6 +21,34 @@ describe('Higiena repozytorium (Repo Hygiene wzorowane na Gal Anonim i _site-tem
     assert.ok(pkg.scripts['check:php'], 'Brak skryptu check:php');
     assert.ok(pkg.scripts.check, 'Brak skryptu check');
     assert.ok(pkg.scripts.prepare, 'Brak skryptu prepare');
+    assert.ok(pkg.scripts.sync, 'Brak skryptu sync do synchronizacji worktree');
+  });
+
+  it('skrypt scripts/sync-worktrees.js oraz hook .githooks/post-commit powinny istnieć i obsługiwać 3 przestrzenie robocze Git Worktree', async () => {
+    const syncScriptPath = path.join(ROOT_DIR, 'scripts', 'sync-worktrees.js');
+    const postCommitPath = path.join(ROOT_DIR, '.githooks', 'post-commit');
+    assert.ok(fs.existsSync(syncScriptPath), 'Brak scripts/sync-worktrees.js');
+    assert.ok(fs.existsSync(postCommitPath), 'Brak .githooks/post-commit');
+
+    const { parseWorktreeListPorcelain, buildCleanGitEnv } = await import('../../scripts/sync-worktrees.js');
+    const sample = [
+      'worktree E:/Projekty/raricart',
+      'HEAD 5bc5639',
+      'branch refs/heads/main',
+      '',
+      'worktree E:/Projekty/_workspaces/raricart-ws1',
+      'HEAD 5bc5639',
+      'branch refs/heads/ws/raricart-1'
+    ].join('\n');
+    const parsed = parseWorktreeListPorcelain(sample);
+    assert.strictEqual(parsed.length, 2);
+    assert.strictEqual(parsed[0].branch, 'main');
+    assert.strictEqual(parsed[1].branch, 'ws/raricart-1');
+
+    const cleanEnv = buildCleanGitEnv({ GIT_DIR: '/tmp/.git', GIT_INDEX_FILE: '/tmp/idx', PATH: '/usr/bin' });
+    assert.strictEqual(cleanEnv.GIT_DIR, undefined);
+    assert.strictEqual(cleanEnv.GIT_INDEX_FILE, undefined);
+    assert.strictEqual(cleanEnv.RARICART_SYNC_IN_PROGRESS, '1');
   });
 
   it('konfiguracja CI/CD (.github/workflows) powinna posiadać ci.yml, deploy-staging.yml oraz deploy-production.yml', () => {

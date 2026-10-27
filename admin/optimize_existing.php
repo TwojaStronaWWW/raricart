@@ -1,5 +1,9 @@
 <?php
 // optimize_existing.php - Skrypt do optymalizacji istniejących zdjęć na serwerze
+if (PHP_SAPI !== 'cli') {
+    require_once __DIR__ . '/auth.php';
+    check_login();
+}
 // Tworzy kopie w formacie WebP i skaluje do max 1920px
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

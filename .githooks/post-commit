@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Automatyczna propagacja commita do pozostałych czystych przestrzeni roboczych (Git Worktrees)
+if [ -f scripts/sync-worktrees.js ]; then
+  node scripts/sync-worktrees.js --post-commit || true
+fi
+exit 0

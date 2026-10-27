@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 unset($attempts[$ipKey]);
                 file_put_contents($attemptsFile, json_encode($attempts, JSON_PRETTY_PRINT), LOCK_EX);
 
+                session_regenerate_id(true);
                 $_SESSION['logged_in'] = true;
                 $_SESSION['user_email'] = $email;
                 

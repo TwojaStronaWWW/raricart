@@ -29,8 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tokens[$token] = ['email' => $email, 'expiry' => $expiry];
         file_put_contents($tokens_file, json_encode($tokens, JSON_PRETTY_PRINT), LOCK_EX);
         
-        // Send Email
-        $resetLink = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]" . dirname($_SERVER['PHP_SELF']) . "/reset_password.php?token=$token";
+        // Send Email (Strict Host Whitelist against Password Reset Poisoning)
+        $rawHost = strtolower(trim((string)($_SERVER['HTTP_HOST'] ?? 'raricart.pl')));
+        $allowedHosts = ['raricart.pl', 'www.raricart.pl', 'test.raricart.pl', 'localhost'];
+        $safeHost = in_array($rawHost, $allowedHosts, true) ? $rawHost : 'raricart.pl';
+        $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+        $resetLink = $scheme . "://" . $safeHost . dirname($_SERVER['PHP_SELF']) . "/reset_password.php?token=" . urlencode($token);
         
         $subject = "Reset Hasła - Raricart Admin";
         $body = "Witaj,\n\nAby zresetować hasło dla konta $email, kliknij w poniższy link:\n\n$resetLink\n\nLink wygaśnie za 30 minut.\n\nJeśli to nie Ty, zignoruj tę wiadomość.";

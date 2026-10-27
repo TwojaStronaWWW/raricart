@@ -2,11 +2,10 @@
  * Raricart.pl — Service Worker (PWA Offline Support — Hybrid Strategy)
  */
 
-const CACHE_NAME = 'raricart-pwa-v2';
+const CACHE_NAME = 'raricart-pwa-v3';
 const PRECACHE_URLS = [
   '/',
-  '/index.html',
-  '/assets/css/style.css',
+  '/assets/css/styles.css',
   '/assets/js/script.js',
   '/assets/js/ai-widget.js',
   '/site.webmanifest',

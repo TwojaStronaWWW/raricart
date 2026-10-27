@@ -154,7 +154,7 @@ function save_lead(array $data, bool $draft = false): void {
         $privBucket = get_env_secret('R2_PRIVATE_BUCKET_NAME');
         if ($privBucket !== '') {
             require_once __DIR__ . '/PrivateStorageService.php';
-            $storage = new \TwojaStronaWWW\Api\PrivateStorageService(
+            $storage = new \Raricart\Api\PrivateStorageService(
                 get_env_secret('R2_ACCOUNT_ID'),
                 get_env_secret('R2_ACCESS_KEY_ID'),
                 get_env_secret('R2_SECRET_ACCESS_KEY'),

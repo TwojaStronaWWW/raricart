@@ -104,6 +104,15 @@ raricart/
 
 ---
 
+## 🔀 Praca Wieloagentowa (3 Przestrzenie Robocze Git Worktrees)
+
+Projekt posiada repozytorium główne `E:\Projekty\raricart` (`main`) oraz 3 izolowane przestrzenie robocze w `E:\Projekty\_workspaces\`:
+- **`E:\Projekty\_workspaces\raricart-ws1` (`ws/raricart-1`)** — Backend PHP 8 (`api/`, `admin/`), integracja Cloudflare R2 (`R2Client.php`, `MediaService.php`) & bezpieczeństwo OWASP/ISO 27001
+- **`E:\Projekty\_workspaces\raricart-ws2` (`ws/raricart-2`)** — Frontend (`index.php`, `pakiety.php`, `parts/`, `assets/js/`, `assets/css/`) & kalkulator wycen Live Food Stations
+- **`E:\Projekty\_workspaces\raricart-ws3` (`ws/raricart-3`)** — Testy jednostkowe (`node:test` + PHP), SEO/GEO (`llms.txt`, `Schema.org`), Lighthouse CI & potoki CI/CD (`npm run sync`)
+
+---
+
 ## 👤 Autor i Kontakt
 
 - **Projekt i Wdrożenie:** Krzysztof Początek

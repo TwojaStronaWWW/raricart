@@ -39,7 +39,9 @@ if (!isset($config['users'][$currentUser])) {
 }
 
 // Verify Old Password
-if (!password_verify($oldPass, $config['users'][$currentUser])) {
+$userEntry = $config['users'][$currentUser];
+$existingHash = is_array($userEntry) ? (string)($userEntry['hash'] ?? '') : (string)$userEntry;
+if ($existingHash === '' || !password_verify($oldPass, $existingHash)) {
     echo json_encode(['status' => 'error', 'message' => 'Stare hasło jest nieprawidłowe.']);
     exit;
 }

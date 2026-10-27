@@ -77,7 +77,11 @@ jobs:
             !*.bak,
             !api/sessions/**,
             !api/rate_limits/**,
+            !api/drafts/**,
             !api/leads_*.csv,
+            !admin/leady.csv,
+            !bin/**,
+            !docker/**,
             !*.md
           target: '/home/platne/serwer409986/public_html/raricart.pl/'
           overwrite: true
