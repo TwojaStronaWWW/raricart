@@ -1,25 +1,146 @@
 /**
- * modules/scroll.js - Moduł płynnego przewijania, deep-linków i widżetu pływającego CTA (Lejek 2026)
+ * modules/scroll.js - Moduł płynnego przewijania, deep-linków, scroll-scrubbed motion (Awwwards SOTD V3) i widżetu CTA
  */
 
 export function initScrollFeatures() {
 	// 1. Intersection Observer for Section Reveals
-	const sectionObserver = new IntersectionObserver(
-		entries => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('visible');
+	if (typeof IntersectionObserver !== 'undefined') {
+		const sectionObserver = new IntersectionObserver(
+			entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('visible');
+					}
+				});
+			},
+			{ threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+		);
+
+		document
+			.querySelectorAll('.section, .section-premium')
+			.forEach(s => sectionObserver.observe(s));
+	} else {
+		document
+			.querySelectorAll('.section, .section-premium')
+			.forEach(s => s.classList.add('visible'));
+	}
+
+	// 2. Interactive Showcase Deck (Tryptyk Stacji Live Food - Awwwards V3)
+	const stationCards = document.querySelectorAll('.station-card');
+	if (stationCards.length > 0) {
+		stationCards[0].classList.add('is-expanded');
+		stationCards.forEach(card => {
+			const activateCard = () => {
+				stationCards.forEach(c => c.classList.remove('is-expanded'));
+				card.classList.add('is-expanded');
+			};
+			card.addEventListener('mouseenter', activateCard, { passive: true });
+			card.addEventListener('focusin', activateCard, { passive: true });
+		});
+	}
+
+	// 3. Scroll-Scrubbed Motion Engine (CSS Custom Properties in rAF)
+	const rootEl = document.documentElement;
+	const heroSection = document.querySelector('.hero-split');
+	const whySection = document.querySelector('.why-station-section');
+	const processSection = document.querySelector('.process-section');
+	const processCards = document.querySelectorAll('.process-step-card');
+	const aboutSection = document.querySelector('.section-about-story');
+
+	let scrubTicking = false;
+
+	const updateScrollScrub = () => {
+		const scrollY = window.scrollY || rootEl.scrollTop || 0;
+		const vh = window.innerHeight || 900;
+		const docHeight = Math.max(
+			(document.body && document.body.scrollHeight) || 0,
+			rootEl.scrollHeight || 0,
+			vh + 1
+		);
+		const maxScroll = Math.max(1, docHeight - vh);
+		const pageProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
+
+		if (rootEl && rootEl.style && typeof rootEl.style.setProperty === 'function') {
+			rootEl.style.setProperty('--page-scroll-progress', `${(pageProgress * 100).toFixed(2)}%`);
+		}
+
+		// Hero full-bleed stage scrub
+		if (heroSection && heroSection.style && typeof heroSection.getBoundingClientRect === 'function') {
+			const rect = heroSection.getBoundingClientRect();
+			if (rect.bottom > 0 && rect.top < vh) {
+				const progress = Math.min(1, Math.max(0, -rect.top / Math.max(1, rect.height)));
+				const scrubY = (progress * 48).toFixed(1);
+				const scrubScale = (1.02 + progress * 0.06).toFixed(4);
+				heroSection.style.setProperty('--scrub-y', `${scrubY}px`);
+				heroSection.style.setProperty('--scrub-scale', scrubScale);
+			}
+		}
+
+		// Why Station overlapping planes scrub
+		if (whySection && whySection.style && typeof whySection.getBoundingClientRect === 'function') {
+			const rect = whySection.getBoundingClientRect();
+			if (rect.bottom > 0 && rect.top < vh) {
+				const progress = (vh - rect.top) / Math.max(1, vh + rect.height);
+				const offset = ((progress - 0.5) * 64).toFixed(1);
+				whySection.style.setProperty('--scrub-y', `${offset}px`);
+			}
+		}
+
+		// About Story subtle plane scrub
+		if (aboutSection && aboutSection.style && typeof aboutSection.getBoundingClientRect === 'function') {
+			const rect = aboutSection.getBoundingClientRect();
+			if (rect.bottom > 0 && rect.top < vh) {
+				const progress = (vh - rect.top) / Math.max(1, vh + rect.height);
+				const offset = ((progress - 0.5) * 44).toFixed(1);
+				aboutSection.style.setProperty('--scrub-y', `${offset}px`);
+			}
+		}
+
+		// Process Horizontal Scrollytelling Track progress
+		if (processSection && processSection.style && typeof processSection.getBoundingClientRect === 'function') {
+			const rect = processSection.getBoundingClientRect();
+			if (rect.bottom > 0 && rect.top < vh) {
+				const rawProgress = (vh * 0.78 - rect.top) / Math.max(1, rect.height * 0.82);
+				const clamped = Math.min(1, Math.max(0.12, rawProgress));
+				processSection.style.setProperty('--process-fill', `${(clamped * 100).toFixed(1)}%`);
+
+				if (processCards.length > 0) {
+					const activeThreshold = Math.ceil(clamped * processCards.length);
+					processCards.forEach((card, idx) => {
+						if (idx < activeThreshold) {
+							card.classList.add('step-active');
+						} else {
+							card.classList.remove('step-active');
+						}
+					});
 				}
-			});
+			}
+		}
+
+		scrubTicking = false;
+	};
+
+	window.addEventListener(
+		'scroll',
+		() => {
+			if (!scrubTicking) {
+				scrubTicking = true;
+				if (typeof requestAnimationFrame === 'function') {
+					requestAnimationFrame(updateScrollScrub);
+				} else {
+					updateScrollScrub();
+				}
+			}
 		},
-		{ threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+		{ passive: true }
 	);
 
-	document.querySelectorAll('.section, .section-premium').forEach(s => sectionObserver.observe(s));
+	updateScrollScrub();
 
-	// 2. SCROLL TO SECTION (query param ?goto= OR hash #)
-	const gotoParam = new URLSearchParams(window.location.search).get('goto');
-	const scrollTarget = gotoParam ? '#' + gotoParam : window.location.hash;
+	// 4. SCROLL TO SECTION (query param ?goto= OR hash #)
+	const searchStr = (window.location && window.location.search) || '';
+	const gotoParam = new URLSearchParams(searchStr).get('goto');
+	const scrollTarget = gotoParam ? '#' + gotoParam : (window.location && window.location.hash) || '';
 
 	if (scrollTarget && scrollTarget !== '#') {
 		const NAVBAR_OFFSET = 100;
@@ -34,7 +155,7 @@ export function initScrollFeatures() {
 			try {
 				const el = document.querySelector(scrollTarget);
 				if (el) {
-					const y = el.getBoundingClientRect().top + window.pageYOffset - NAVBAR_OFFSET;
+					const y = el.getBoundingClientRect().top + (window.pageYOffset || 0) - NAVBAR_OFFSET;
 					window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
 				}
 			} catch (e) {
@@ -48,38 +169,42 @@ export function initScrollFeatures() {
 		// Re-scroll on full window load (after fonts and images settle layout)
 		window.addEventListener('load', () => {
 			scrollToTarget();
-			if (gotoParam) {
+			if (gotoParam && typeof history !== 'undefined' && history.replaceState) {
 				const cleanUrl = window.location.pathname + '#' + gotoParam;
 				history.replaceState(null, '', cleanUrl);
 			}
-			if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+			if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
+				history.scrollRestoration = 'auto';
+			}
 		});
 
 		// Re-enable CSS transitions
-		requestAnimationFrame(() => {
+		if (typeof requestAnimationFrame === 'function') {
 			requestAnimationFrame(() => {
-				document.querySelectorAll('.section, .section-premium').forEach(s => {
-					s.style.transition = '';
+				requestAnimationFrame(() => {
+					document.querySelectorAll('.section, .section-premium').forEach(s => {
+						s.style.transition = '';
+					});
 				});
 			});
-		});
+		}
 	}
 
-	// 3. Floating CTA Button Visibility Handler
+	// 5. Floating CTA Button Visibility Handler
 	const floatingCta = document.getElementById('floatingCta');
 	if (floatingCta) {
 		const footer = document.querySelector('footer');
 		window.addEventListener(
 			'scroll',
 			() => {
-				const y = window.scrollY || document.documentElement.scrollTop;
+				const y = window.scrollY || (rootEl && rootEl.scrollTop) || 0;
 				if (y > 300) {
 					floatingCta.classList.add('visible');
 				} else {
 					floatingCta.classList.remove('visible');
 				}
 
-				if (footer) {
+				if (footer && typeof footer.getBoundingClientRect === 'function') {
 					const footerTop = footer.getBoundingClientRect().top;
 					if (footerTop < window.innerHeight) {
 						floatingCta.classList.remove('visible');
