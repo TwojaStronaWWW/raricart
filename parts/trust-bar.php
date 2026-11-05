@@ -4,12 +4,12 @@
 <section id="trust-bar" class="trust-bar" aria-label="Dlaczego Raricart">
     <div class="trust-bar-container">
         <div class="trust-bar-header">
-            <span class="trust-bar-badge" data-i18n="trust_bar.badge">Doświadczenie kulinarne</span>
-            <h2 class="trust-bar-headline" data-i18n="trust_bar.headline">Jedzenie, które dzieje się na oczach gości.</h2>
+            <span class="trust-bar-badge" data-i18n="trust_bar.badge">Więcej niż poczęstunek</span>
+            <h2 class="trust-bar-headline" data-i18n="trust_bar.headline">Doświadczenie, którego nie zastąpi żaden klasyczny bufet</h2>
         </div>
 
         <div class="trust-bar-grid">
-            <!-- 1. Świeżo przygotowywane -->
+            <!-- 1. Świeżo serwowane -->
             <div class="trust-bar-item">
                 <div class="trust-bar-icon-box" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="trust-bar-icon">
@@ -18,8 +18,8 @@
                     </svg>
                 </div>
                 <div class="trust-bar-text">
-                    <h3 class="trust-bar-title" data-i18n="trust_bar.pillar1_title">ŚWIEŻO PRZYGOTOWYWANE</h3>
-                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar1_desc">Każda porcja powstaje na żywo na oczach Twoich gości.</p>
+                    <h3 class="trust-bar-title" data-i18n="trust_bar.pillar1_title">ŚWIEŻO SERWOWANE</h3>
+                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar1_desc">Każda porcja powstaje na bieżąco w trakcie przyjęcia, ze świeżych składników i bezpośrednio przed podaniem.</p>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                 </div>
                 <div class="trust-bar-text">
                     <h3 class="trust-bar-title" data-i18n="trust_bar.pillar2_title">WŁASNE KOMPOZYCJE</h3>
-                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar2_desc">Goście sami decydują o ulubionych dodatkach i smakach.</p>
+                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar2_desc">Goście sami komponują swoje porcje, swobodnie dobierając ulubione dodatki w wersji słodkiej lub wytrawnej.</p>
                 </div>
             </div>
 
@@ -56,11 +56,11 @@
                 </div>
                 <div class="trust-bar-text">
                     <h3 class="trust-bar-title" data-i18n="trust_bar.pillar3_title">PEŁNA OBSŁUGA</h3>
-                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar3_desc">Od montażu, przez serwis, po demontaż i nienaganny porządek.</p>
+                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar3_desc">Przyjeżdżamy z pełnym wyposażeniem, dbamy o wszystko przez cały czas trwania imprezy i zostawiamy idealny porządek.</p>
                 </div>
             </div>
 
-            <!-- 4. Mobilne stacje -->
+            <!-- 4. Pełne dopasowanie -->
             <div class="trust-bar-item">
                 <div class="trust-bar-icon-box" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="trust-bar-icon">
@@ -69,8 +69,8 @@
                     </svg>
                 </div>
                 <div class="trust-bar-text">
-                    <h3 class="trust-bar-title" data-i18n="trust_bar.pillar4_title">MOBILNE STACJE</h3>
-                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar4_desc">Działamy w każdej przestrzeni: plener, elegancka sala, biuro.</p>
+                    <h3 class="trust-bar-title" data-i18n="trust_bar.pillar4_title">PEŁNE DOPASOWANIE</h3>
+                    <p class="trust-bar-desc" data-i18n="trust_bar.pillar4_desc">Kompaktowe stoiska rozstawiamy w salach weselnych, ogrodach oraz biurach, dopasowując ich oprawę do stylu wydarzenia lub marki.</p>
                 </div>
             </div>
         </div>

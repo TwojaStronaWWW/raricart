@@ -5,10 +5,10 @@
     <div class="audiences-container">
         <!-- Nagłówek sekcji -->
         <div class="audiences-header">
-            <span class="audiences-badge" data-i18n="audiences.badge">DLA KOGO JEST RARICART?</span>
-            <h2 class="audiences-title" data-i18n="audiences.title">Gdzie pojawia się Raricart?</h2>
+            <span class="audiences-badge" data-i18n="audiences.badge">Dla kogo jest Raricart?</span>
+            <h2 class="audiences-title" data-i18n="audiences.title">OD KAMERALNYCH PRZYJĘĆ PO DUŻE GALE.</h2>
             <p class="audiences-subtitle" data-i18n="audiences.subtitle">
-                Dopasowujemy stację do charakteru i harmonogramu wydarzenia. Zobacz, w jakich formatach sprawdzamy się najlepiej i wybierz scenariusz dla siebie.
+                Niezależnie od skali wydarzenia zapewniamy tę samą dbałość o detale i pełną organizację strefy. Zobacz, jak nasze stacje wpisują się w scenariusz różnych uroczystości.
             </p>
         </div>
 
@@ -22,16 +22,16 @@
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
                         </svg>
                     </div>
-                    <span class="audience-tag" data-i18n="audiences.card1_tag">Wesela & Poprawiny</span>
+                    <span class="audience-tag" data-i18n="audiences.card1_tag">WESELA I POPRAWINY</span>
                 </div>
-                <h3 class="audience-card-title" data-i18n="audiences.card1_title">Wesela z charakterem</h3>
+                <h3 class="audience-card-title" data-i18n="audiences.card1_title">Wesela z klasą</h3>
                 <p class="audience-card-desc" data-i18n="audiences.card1_desc">
-                    Słodka atrakcja na żywo, orzeźwiający deser po obiedzie, nocna przekąska po tańcach lub stylowa strefa chillout na sali weselnej i w plenerze.
+                    Elegancka strefa słodka lub wytrawna, która towarzyszy gościom od popołudniowej kawy w ogrodzie aż po wieczorną zabawę na sali.
                 </p>
                 <ul class="audience-features">
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card1_f1">Nowoczesna alternatywa dla candy baru</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card1_f2">Strefa, przy której goście integrują się i robią zdjęcia</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card1_f3">Płynny serwis bez kolejek i limitów porcji</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card1_f1">Słodki deser po obiedzie lub wytrawna strefa wieczorna</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card1_f2">Płynne wydawanie porcji na żywo bez kolejek i przestojów</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card1_f3">Wygląd stoiska spójny ze stylistyką sali lub pleneru</span></li>
                 </ul>
             </div>
 
@@ -44,16 +44,16 @@
                             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                         </svg>
                     </div>
-                    <span class="audience-tag" data-i18n="audiences.card2_tag">Biznes & Korporacje</span>
+                    <span class="audience-tag" data-i18n="audiences.card2_tag">BIZNES I KORPORACJE</span>
                 </div>
                 <h3 class="audience-card-title" data-i18n="audiences.card2_title">Eventy firmowe i gale</h3>
                 <p class="audience-card-desc" data-i18n="audiences.card2_desc">
-                    Spotkania integracyjne, pikniki firmowe, konferencje, jubileusze, gale roczne i premiery produktów.
+                    Konferencje, jubileusze, premiery produktów oraz spotkania integracyjne, na których liczy się wizerunek marki i sprawna organizacja.
                 </p>
                 <ul class="audience-features">
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card2_f1">Wysoka przepustowość (obsługa od 50 do ponad 500 osób)</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card2_f2">Pełna faktura VAT, ubezpieczenie i certyfikaty sanitarne</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card2_f3">Możliwość personalizacji menu i brandingu</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card2_f1">Sprawna obsługa wydarzeń od 50 do ponad 500 gości</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card2_f2">Możliwość personalizacji stoiska oraz pełnego brandingu</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card2_f3">Faktura VAT, ubezpieczenie OC i aktualne wymogi sanitarne</span></li>
                 </ul>
             </div>
 
@@ -68,16 +68,16 @@
                             <line x1="15" y1="9" x2="15.01" y2="9"></line>
                         </svg>
                     </div>
-                    <span class="audience-tag" data-i18n="audiences.card3_tag">Uroczystości prywatne</span>
+                    <span class="audience-tag" data-i18n="audiences.card3_tag">PRZYJĘCIA PRYWATNE</span>
                 </div>
                 <h3 class="audience-card-title" data-i18n="audiences.card3_title">Urodziny i przyjęcia w ogrodzie</h3>
                 <p class="audience-card-desc" data-i18n="audiences.card3_desc">
-                    Okrągłe urodziny, rocznice, baby shower, chrzciny, komunie oraz swobodne przyjęcia w przydomowym ogrodzie lub wynajętym lokalu.
+                    Komunie, chrzciny, baby shower, okrągłe rocznice oraz swobodne spotkania rodzinne w przydomowym ogrodzie lub wynajętym lokalu.
                 </p>
                 <ul class="audience-features">
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card3_f1">Kompaktowy rozmiar — mieścimy się na tarasie i w salonie</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card3_f2">Radość dla dzieci i zachwyt dorosłych smakoszy</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card3_f3">Ty bawisz się z rodziną, my zajmujemy się gastronomią</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card3_f1">Menu uwielbiane zarówno przez dzieci, jak i dorosłych</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card3_f2">Swobodna aranżacja strefy we wnętrzu, na tarasie lub w plenerze</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card3_f3">Pełna niezależność techniczna z własnym zapleczem</span></li>
                 </ul>
             </div>
 
@@ -89,16 +89,16 @@
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                         </svg>
                     </div>
-                    <span class="audience-tag" data-i18n="audiences.card4_tag">Agencje & B2B</span>
+                    <span class="audience-tag" data-i18n="audiences.card4_tag">AGENCJE I B2B</span>
                 </div>
                 <h3 class="audience-card-title" data-i18n="audiences.card4_title">Agencje i Wedding Plannerzy</h3>
                 <p class="audience-card-desc" data-i18n="audiences.card4_desc">
-                    Niezawodny, estetyczny podwykonawca gastronomiczny jako gotowy, bezproblemowy moduł w scenariuszu Twojego wydarzenia.
+                    Sprawdzony partner dla organizatorów i koordynatorów, którzy szukają reprezentacyjnej strefy kulinarnej niewymagającej nadzoru.
                 </p>
                 <ul class="audience-features">
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card4_f1">Żelazna punktualność i bezgłośny, sprawny montaż</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card4_f2">Nienaganny dress code i wysoka kultura osobista zespołu</span></li>
-                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card4_f3">Spokój koordynatora — bierzemy 100% odpowiedzialności za strefę</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card4_f1">Punktualny przyjazd oraz cichy, sprawny montaż przed serwisem</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card4_f2">Nienaganny strój i wysoka kultura osobista naszego zespołu</span></li>
+                    <li><span class="feat-bullet">✓</span> <span data-i18n="audiences.card4_f3">Pełna samodzielność obsługi przez cały czas trwania zlecenia</span></li>
                 </ul>
             </div>
         </div>

@@ -25,35 +25,35 @@ if (empty($reviewsList)) {
     $reviewsList = [
         [
             'id' => 1,
-            'author' => 'Karolina & Michał',
-            'role' => 'Wesele plenerowe',
-            'location' => 'Katowice / Śląsk',
+            'author' => 'Emilia Samoraj',
+            'role' => 'Opinia z Google',
+            'location' => '5/5 ★',
             'rating' => 5,
             'source' => 'google',
-            'text' => 'Stacja mini pancakes była absolutnym strzałem w dziesiątkę! Po północy, kiedy goście mieli już dość ciężkich potraw, świeże pancakes ze świeżymi owocami i nutellą zrobiły prawdziwą furorę. Kolejka nie malała, a zapach przyciągał każdego. Pełen profesjonalizm i kultura obsługi!',
-            'avatar_initials' => 'KM',
+            'text' => 'Jestem pod wrażeniem estetyki i smaku serwowanych produktów. Super stoiska. Parasol daje taki włoski klimat. Miałam możliwość spróbować już każdej z opcji – naleśników, lodów oraz deski serów na targach ślubnych, na których byłam z przyjaciółką. Bliska mi osoba z naszego polecenia zdecydowała się na lody z dodatkami na urodzinach. Goście byli zaskoczeni 🥰 Bardzo polecam! A ślub dopiero przed nami 🕊️🕊️',
+            'avatar_initials' => 'ES',
             'verified' => true
         ],
         [
             'id' => 2,
-            'author' => 'Tomasz B.',
-            'role' => 'Dyrektor Marketingu, TechCorp',
-            'location' => 'Jubileusz 15-lecia firmy (250 osób)',
+            'author' => 'Jenny Wyderka',
+            'role' => 'Opinia z Google',
+            'location' => '5/5 ★',
             'rating' => 5,
             'source' => 'google',
-            'text' => 'Wynajęliśmy stację lodów włoskich i deski serów na nasz letni bankiet jubileuszowy. Przepustowość i tempo serwowania przy ponad 200 gościach przeszły nasze oczekiwania – zero zatorów, wszystko płynnie i z najwyższą klasą. Nienaganna faktura VAT i terminowość na minutę.',
-            'avatar_initials' => 'TB',
+            'text' => 'Jestem zachwycona! 💞 Emilia jest przesympatyczną osobą i ma świetne pomysły, pracuje na oryginalnych produktach i zapewnia niezapomniane wspomnienia z imprez 🌷',
+            'avatar_initials' => 'JW',
             'verified' => true
         ],
         [
             'id' => 3,
-            'author' => 'Aleksandra W.',
-            'role' => 'Wedding Plannerka',
-            'location' => 'Kraków / Małopolska',
+            'author' => 'Anna Słomka',
+            'role' => 'Opinia z Google',
+            'location' => '5/5 ★',
             'rating' => 5,
             'source' => 'google',
-            'text' => 'Współpracuję z wieloma podwykonawcami, ale Raricart to rzadki wzór spokoju dla koordynatora. Żelazna punktualność, estetyka wózków idealnie wpisująca się w eleganckie wesela i goście dziękujący za "najfajniejszą atrakcję wieczoru". Polecam każdej parze.',
-            'avatar_initials' => 'AW',
+            'text' => 'Super sprawa na imprezę, pancake i lody pycha 😋, nie wspomnę o czekoladzie i reszcie dodatkach, bardzo profesjonalna i miła obsługa. Rozkładanie i składanie stanowisk bezszelestnie. 🙂 Polecam!',
+            'avatar_initials' => 'AS',
             'verified' => true
         ]
     ];
@@ -62,7 +62,7 @@ if (empty($reviewsList)) {
 // Konfigurowalny URL do profilu Google Maps / Wizytówki Google
 $googleReviewsUrl = function_exists('get_val') ? get_val('google_reviews_url', '') : '';
 if (empty($googleReviewsUrl)) {
-    $googleReviewsUrl = 'https://www.google.com/maps/search/?api=1&query=Raricart+Live+Food+Station';
+    $googleReviewsUrl = 'https://www.google.com/maps/place/Raricart/@51.953761,19.1343692,6z/data=!3m1!4b1!4m6!3m5!1s0x69af180207d122d:0xe20e8bd1466a3884!8m2!3d51.953761!4d19.1343692!16s%2Fg%2F11mzpd4pwn?hl=pl';
 }
 ?>
 <section id="opinie" class="section section-reviews" aria-label="Opinie klientów o Raricart">
@@ -102,7 +102,7 @@ if (empty($googleReviewsUrl)) {
                 </div>
                 <div class="reviews-google-divider" aria-hidden="true"></div>
                 <div class="reviews-google-right">
-                    <span class="reviews-google-meta" data-i18n="reviews.google_verified_meta">Wizytówka Google &bull; Ponad 120 obsłużonych wydarzeń</span>
+                    <span class="reviews-google-meta" data-i18n="reviews.google_verified_meta">Wizytówka Google &bull; 5,0 / 5 (10 opinii)</span>
                     <a href="<?php echo htmlspecialchars($googleReviewsUrl); ?>" target="_blank" rel="noopener noreferrer" class="reviews-google-btn" aria-label="Otwórz profil i opinie Raricart w Google Maps">
                         <span data-i18n="reviews.see_google_maps">Sprawdź w Google Maps</span>
                         <span class="ext-arrow" aria-hidden="true">↗</span>

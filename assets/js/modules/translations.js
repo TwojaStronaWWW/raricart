@@ -17,54 +17,54 @@ export const translations = {
 				title1: 'TAM, GDZIE SMAK SPOTYKA EMOCJE, A PROSTOTA STAJE SIĘ ELEGANCJĄ...',
 				title2: '...TAM ZACZYNA SIĘ <span class="logo-pulse">RARICART</span>',
 				scroll: 'Przewiń w dół',
-				badge: 'Tam, gdzie smak spotyka emocje',
-				title: 'Mobilne Live Food Station na Twoje wydarzenie',
-				subtitle: 'Świeże desery i przekąski przygotowywane na żywo — z pełną obsługą i efektem WOW.',
+				badge: 'Tam, gdzie smak budzi emocje',
+				title: 'Mobilne stacje Live Food na Twoje wydarzenie',
+				subtitle: 'Autorskie słodkości i włoskie specjały serwowane na oczach gości, w pięknej oprawie i z pełną obsługą.',
 				tag_weddings: 'Wesela',
 				tag_corporate: 'Eventy firmowe',
 				tag_private: 'Przyjęcia',
-				tag_outdoor: 'Eventy plenerowe',
+				tag_outdoor: 'Plenery',
 				cta: 'SPRAWDŹ DOSTĘPNOŚĆ TERMINU',
-				microcopy: 'Podaj datę, miejsce i liczbę gości — przygotujemy indywidualną ofertę.',
+				microcopy: 'Podaj datę, miejsce i liczbę gości — przygotujemy bezpłatną wycenę.',
 			},
 			trust_bar: {
-				badge: 'Doświadczenie kulinarne',
-				headline: 'Jedzenie, które dzieje się na oczach gości.',
-				pillar1_title: 'ŚWIEŻO PRZYGOTOWYWANE',
-				pillar1_desc: 'Każda porcja powstaje na żywo na oczach Twoich gości.',
+				badge: 'Więcej niż poczęstunek',
+				headline: 'Doświadczenie, którego nie zastąpi żaden klasyczny bufet',
+				pillar1_title: 'ŚWIEŻO SERWOWANE',
+				pillar1_desc: 'Każda porcja powstaje na bieżąco w trakcie przyjęcia, ze świeżych składników i bezpośrednio przed podaniem.',
 				pillar2_title: 'WŁASNE KOMPOZYCJE',
-				pillar2_desc: 'Goście sami decydują o ulubionych dodatkach i smakach.',
+				pillar2_desc: 'Goście sami komponują swoje porcje, swobodnie dobierając ulubione dodatki w wersji słodkiej lub wytrawnej.',
 				pillar3_title: 'PEŁNA OBSŁUGA',
-				pillar3_desc: 'Od montażu, przez serwis, po demontaż i nienaganny porządek.',
-				pillar4_title: 'MOBILNE STACJE',
-				pillar4_desc: 'Działamy w każdej przestrzeni: plener, elegancka sala, biuro.',
+				pillar3_desc: 'Przyjeżdżamy z pełnym wyposażeniem, dbamy o wszystko przez cały czas trwania imprezy i zostawiamy idealny porządek.',
+				pillar4_title: 'PEŁNE DOPASOWANIE',
+				pillar4_desc: 'Kompaktowe stoiska rozstawiamy w salach weselnych, ogrodach oraz biurach, dopasowując ich oprawę do stylu wydarzenia lub marki.',
 			},
 			stations: {
-				badge: 'Co właściwie oferujemy?',
-				title: 'Wybierz swoją stację',
-				intro: 'Nie jesteśmy klasycznym bufetem. Nasze stacje przygotowują jedzenie na miejscu, na oczach gości. Każdy może wybrać swoje dodatki i stworzyć własną kompozycję.',
-				see_all: 'ZOBACZ CAŁĄ OFERTĘ & PAKIETY',
+				badge: 'Jedna formuła, różne odsłony',
+				title: 'WYBIERZ SWOJĄ STACJĘ',
+				intro: '',
+				see_all: 'WYCEŃ PAKIET STACJI',
 				explore_btn: 'POZNAJ STACJĘ',
 				badge_sweet: 'Na słodko',
 				badge_refresh: 'Orzeźwienie',
 				badge_savory: 'Wytrawnie',
-				pancakes_desc: 'Ciepłe, puszyste mini pancakes z dodatkami i sosami przygotowywane na oczach gości.',
-				icecream_desc: 'Kremowe lody włoskie, świeże owoce, rzemieślnicze sosy i chrupiące dodatki.',
-				cheese_desc: 'Starannie dobrane sery, wędliny i wytrawne dodatki w eleganckiej oprawie.',
-				combine_note: '<strong>Chcesz więcej niż jedną atrakcję?</strong> Możesz dowolnie łączyć stacje na jednym evencie — przygotujemy dla Ciebie indywidualny pakiet.',
-				cta_check: 'SPRAWDŹ DOSTĘPNOŚĆ STACJI',
+				pancakes_desc: 'Gorące, puszyste placuszki prosto z płyty to pachnąca alternatywa dla słodkiego stołu, po którą goście wracają kilka razy.',
+				icecream_desc: 'Kremowe lody śmietankowe z bogactwem owoców, gęstych polew i posypek, z których każdy gość komponuje swój własny deser.',
+				cheese_desc: 'Włoskie sery, dojrzewające wędliny i wytrawne przekąski tworzą elegancką strefę dla gości, którzy zamiast słodyczy wolą wyraziste smaki.',
+				combine_note: '<strong>Chcesz połączyć strefę słodką z wytrawną?</strong> Wybierając dwie lub trzy stacje na jedno przyjęcie, otrzymujesz spójną oprawę wizualną oraz preferencyjną wycenę w pakiecie.',
+				cta_check: 'WYCEŃ PAKIET STACJI',
 			},
 			why_station: {
 				stat_label: 'Na oczach gości',
-				badge: 'Dlaczego stacja zamiast cateringu?',
-				title: 'Nie tylko jedzenie. Atrakcja dla Twoich gości.',
-				intro: 'Tradycyjny catering często stoi w podgrzewaczach i czeka na gości. My tworzymy kulinarne show, które angażuje zmysły i staje się naturalnym centrum rozmów na Twoim przyjęciu.',
-				pillar1_title: 'SMAK',
-				pillar1_desc: 'Świeże produkty przygotowywane i serwowane na bieżąco na oczach gości — bez kompromisów i bez odgrzewania.',
-				pillar2_title: 'DOŚWIADCZENIE',
-				pillar2_desc: 'Goście z zachwytem obserwują proces przygotowania, rozmawiają z obsługą i sami komponują swój wymarzony deser.',
-				pillar3_title: 'ESTETYKA',
-				pillar3_desc: 'Dopracowana, elegancka stacja mobilna staje się spójną, fotogeniczną częścią aranżacji Twojej sali lub pleneru.',
+				badge: 'Dlaczego warto wybrać mobilną stację? · ZAMIAST KLASYCZNEGO BUFETU.',
+				title: 'MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.',
+				intro: 'Nowoczesne przyjęcia odchodzą od ciężkich, zastawionych stołów na rzecz lżejszych form. Nasze stanowisko wnosi na salę świeżość, ruch i dyskretną obsługę przez cały czas trwania serwisu.',
+				pillar1_title: 'PERFEKCYJNA EKSPOZYCJA',
+				pillar1_desc: 'Na bieżąco uzupełniamy produkty i dbamy o porządek, dzięki czemu nawet pod koniec wieczoru strefa wygląda tak samo apetycznie, jak na samym początku.',
+				pillar2_title: 'SWOBODNA ATMOSFERA',
+				pillar2_desc: 'Wózek staje się naturalnym punktem spotkań, który sprzyja krótkim rozmowom przy wyborze dodatków i wprowadza na przyjęcie lekki, niewymuszony klimat.',
+				pillar3_title: 'ESTETYKA I PERSONALIZACJA',
+				pillar3_desc: 'Wszystkie elementy robocze ukryliśmy w jasnej, eleganckiej zabudowie, dzięki czemu stoisko prezentuje się lekko i szykownie z każdej strony. Na życzenie personalizujemy jego oprawę pod stylistykę uroczystości lub identyfikację firmy.',
 				benefit_box_label: 'Bezstresowa organizacja',
 				benefit_box_p1: 'A Ty? Nie musisz organizować obsługi, przygotowywać stanowiska ani martwić się o sprzątanie.',
 				benefit_box_rhythm: 'Przyjeżdżamy. Przygotowujemy. Serwujemy. Sprzątamy.',
@@ -73,56 +73,56 @@ export const translations = {
 			},
 			process: {
 				badge: 'PROSTY PROCES WSPÓŁPRACY',
-				title: 'Od pierwszej wiadomości do ostatniej porcji.',
-				subtitle: 'Zero skomplikowanych formalności i zero stresu. Sprawdź, jak krok po kroku wygląda realizacja stacji Raricart na Twoim weselu, evencie firmowym lub przyjęciu.',
-				step1_tag: 'Kontakt',
-				step1_title: 'Opowiadasz nam o wydarzeniu',
-				step1_desc: 'Podajesz datę, miejscowość, szacowaną liczbę gości oraz charakter imprezy. Wystarczy krótka wiadomość przez formularz.',
-				step2_tag: 'Dopasowanie',
-				step2_title: 'Dobieramy idealną stację',
-				step2_desc: 'Podpowiadamy, które rozwiązanie (lub zestaw stacji) najlepiej sprawdzi się przy Twoim formacie przyjęcia i liczbie gości.',
-				step3_tag: 'Logistyka 100%',
-				step3_title: 'Przyjeżdżamy i szykujemy wszystko',
-				step3_desc: 'Transport, montaż, sprzęt, świeże składniki i nienaganna estetyka stoiska — pełne przygotowanie jest całkowicie po naszej stronie.',
-				step4_tag: 'Live Cooking',
-				step4_title: 'Goście korzystają ze stacji',
-				step4_desc: 'Wybierają ulubione dodatki, komponują własne smaki i wracają po kolejne porcje. Stacja tętni życiem, uśmiechem i aromatem.',
-				step5_tag: 'Czystość',
-				step5_title: 'My sprzątamy i demontujemy',
-				step5_desc: 'Po zakończeniu serwisu sprawnie demontujemy stację i zostawiamy salę lub plener w idealnym porządku. Ty nie martwisz się o nic.',
-				summary_highlight: 'Prościej się nie da.',
-				summary_lead: 'Ty cieszysz się gośćmi i wyjątkowymi chwilami — my dbamy o kulinarny zachwyt i perfekcyjny serwis od A do Z.',
-				microcopy: '⏱️ Odpowiadamy na zapytania zazwyczaj w ciągu kilku godzin.',
+				title: 'OD PIERWSZEJ WIADOMOŚCI DO OSTATNIEJ PORCJI.',
+				subtitle: 'Minimum formalności i pełen spokój organizacyjny. Zobacz, jak krok po kroku wygląda współpraca przy organizacji Twojego przyjęcia.',
+				step1_tag: 'KONTAKT',
+				step1_title: 'Piszesz do nas o swoim przyjęciu',
+				step1_desc: 'Podajesz datę, lokalizację oraz orientacyjną liczbę gości, a my od ręki sprawdzamy dostępność terminu.',
+				step2_tag: 'DOPASOWANIE',
+				step2_title: 'Wybieramy stacje i konfigurację',
+				step2_desc: 'Dobieramy strefy oraz dodatki do charakteru uroczystości i przesyłamy przejrzystą wycenę.',
+				step3_tag: 'PRZYGOTOWANIE',
+				step3_title: 'Przyjeżdżamy i aranżujemy strefę',
+				step3_desc: 'Przed rozpoczęciem serwisu dyskretnie rozstawiamy stanowisko, dbając o każdy detal ekspozycji.',
+				step4_tag: 'SERWIS NA ŻYWO',
+				step4_title: 'Serwujemy i dbamy o Twoich gości',
+				step4_desc: 'Przez cały umówiony czas przygotowujemy świeże porcje i na bieżąco uzupełniamy strefę dodatków.',
+				step5_tag: 'FINAŁ',
+				step5_title: 'Zostawiamy idealny porządek',
+				step5_desc: 'Po zakończeniu serwisu sprawnie składamy stanowisko i sprzątamy całą strefę bez angażowania obsługi sali.',
+				summary_highlight: 'DOSTĘPNOŚĆ KALENDARZA',
+				summary_lead: 'Masz już datę swojego przyjęcia? Napisz do nas i sprawdź, czy mamy jeszcze wolny termin.',
+				microcopy: '🕒 Na zapytania odpowiadamy w ciągu kilku godzin.',
 				cta_btn: 'ZAPYTAJ O SWÓJ TERMIN',
 			},
 			audiences: {
-				badge: 'DLA KOGO JEST RARICART?',
-				title: 'Gdzie pojawia się Raricart?',
-				subtitle: 'Dopasowujemy stację do charakteru i harmonogramu wydarzenia. Zobacz, w jakich formatach sprawdzamy się najlepiej i wybierz scenariusz dla siebie.',
-				card1_tag: 'Wesela & Poprawiny',
-				card1_title: 'Wesela z charakterem',
-				card1_desc: 'Słodka atrakcja na żywo, orzeźwiający deser po obiedzie, nocna przekąska po tańcach lub stylowa strefa chillout na sali weselnej i w plenerze.',
-				card1_f1: 'Nowoczesna alternatywa dla candy baru',
-				card1_f2: 'Strefa, przy której goście integrują się i robią zdjęcia',
-				card1_f3: 'Płynny serwis bez kolejek i limitów porcji',
-				card2_tag: 'Biznes & Korporacje',
+				badge: 'Dla kogo jest Raricart?',
+				title: 'OD KAMERALNYCH PRZYJĘĆ PO DUŻE GALE.',
+				subtitle: 'Niezależnie od skali wydarzenia zapewniamy tę samą dbałość o detale i pełną organizację strefy. Zobacz, jak nasze stacje wpisują się w scenariusz różnych uroczystości.',
+				card1_tag: 'WESELA I POPRAWINY',
+				card1_title: 'Wesela z klasą',
+				card1_desc: 'Elegancka strefa słodka lub wytrawna, która towarzyszy gościom od popołudniowej kawy w ogrodzie aż po wieczorną zabawę na sali.',
+				card1_f1: 'Słodki deser po obiedzie lub wytrawna strefa wieczorna',
+				card1_f2: 'Płynne wydawanie porcji na żywo bez kolejek i przestojów',
+				card1_f3: 'Wygląd stoiska spójny ze stylistyką sali lub pleneru',
+				card2_tag: 'BIZNES I KORPORACJE',
 				card2_title: 'Eventy firmowe i gale',
-				card2_desc: 'Spotkania integracyjne, pikniki firmowe, konferencje, jubileusze, gale roczne i premiery produktów.',
-				card2_f1: 'Wysoka przepustowość (obsługa od 50 do ponad 500 osób)',
-				card2_f2: 'Pełna faktura VAT, ubezpieczenie i certyfikaty sanitarne',
-				card2_f3: 'Możliwość personalizacji menu i brandingu',
-				card3_tag: 'Uroczystości prywatne',
+				card2_desc: 'Konferencje, jubileusze, premiery produktów oraz spotkania integracyjne, na których liczy się wizerunek marki i sprawna organizacja.',
+				card2_f1: 'Sprawna obsługa wydarzeń od 50 do ponad 500 gości',
+				card2_f2: 'Możliwość personalizacji stoiska oraz pełnego brandingu',
+				card2_f3: 'Faktura VAT, ubezpieczenie OC i aktualne wymogi sanitarne',
+				card3_tag: 'PRZYJĘCIA PRYWATNE',
 				card3_title: 'Urodziny i przyjęcia w ogrodzie',
-				card3_desc: 'Okrągłe urodziny, rocznice, baby shower, chrzciny, komunie oraz swobodne przyjęcia w przydomowym ogrodzie lub wynajętym lokalu.',
-				card3_f1: 'Kompaktowy rozmiar — mieścimy się na tarasie i w salonie',
-				card3_f2: 'Radość dla dzieci i zachwyt dorosłych smakoszy',
-				card3_f3: 'Ty bawisz się z rodziną, my zajmujemy się gastronomią',
-				card4_tag: 'Agencje & B2B',
+				card3_desc: 'Komunie, chrzciny, baby shower, okrągłe rocznice oraz swobodne spotkania rodzinne w przydomowym ogrodzie lub wynajętym lokalu.',
+				card3_f1: 'Menu uwielbiane zarówno przez dzieci, jak i dorosłych',
+				card3_f2: 'Swobodna aranżacja strefy we wnętrzu, na tarasie lub w plenerze',
+				card3_f3: 'Pełna niezależność techniczna z własnym zapleczem',
+				card4_tag: 'AGENCJE I B2B',
 				card4_title: 'Agencje i Wedding Plannerzy',
-				card4_desc: 'Niezawodny, estetyczny podwykonawca gastronomiczny jako gotowy, bezproblemowy moduł w scenariuszu Twojego wydarzenia.',
-				card4_f1: 'Żelazna punktualność i bezgłośny, sprawny montaż',
-				card4_f2: 'Nienaganny dress code i wysoka kultura osobista zespołu',
-				card4_f3: 'Spokój koordynatora — bierzemy 100% odpowiedzialności za strefę',
+				card4_desc: 'Sprawdzony partner dla organizatorów i koordynatorów, którzy szukają reprezentacyjnej strefy kulinarnej niewymagającej nadzoru.',
+				card4_f1: 'Punktualny przyjazd oraz cichy, sprawny montaż przed serwisem',
+				card4_f2: 'Nienaganny strój i wysoka kultura osobista naszego zespołu',
+				card4_f3: 'Pełna samodzielność obsługi przez cały czas trwania zlecenia',
 				footer_title: 'Organizujesz coś innego?',
 				footer_desc: 'Napisz do nas. Chętnie dopasujemy stację, menu i logistykę do każdego nietypowego formatu imprezy.',
 				cta_btn: 'SKONSULTUJ SWÓJ EVENT',
@@ -326,8 +326,8 @@ export const translations = {
 				badge: 'GOOGLE REVIEWS &bull; 100% ZWERYFIKOWANE',
 				title: 'Co mówią goście i organizatorzy?',
 				subtitle: 'Prawdziwe emocje, puste talerzyki i spokój organizatora. Zobacz, jak wspominają stację Raricart pary młode, firmy i gospodarze przyjęć.',
-				trust_summary: '<strong>5.0 / 5.0</strong> &bull; Ponad 120 zrealizowanych wydarzeń &bull; 100% zachwyconych gości',
-				google_verified_meta: 'Wizytówka Google &bull; Ponad 120 obsłużonych wydarzeń',
+				trust_summary: '<strong>5.0 / 5.0</strong> &bull; 10 opinii w Google &bull; 100% zachwyconych gości',
+				google_verified_meta: 'Wizytówka Google &bull; 5,0 / 5 (10 opinii)',
 				see_google_maps: 'Sprawdź w Google Maps',
 				verified: 'Zweryfikowana realizacja',
 				cta_title: 'Chcesz, aby Twoi goście również tak wspominali Twoje wydarzenie?',
@@ -338,30 +338,27 @@ export const translations = {
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
-					content: `<p class="modal-lead">Słodka stacja, która angażuje gości, przyciąga uwagę i&nbsp;naturalnie staje się jednym z&nbsp;najbardziej lubianych punktów wydarzenia.</p>
-        <div class="modal-section"><h4>JAK TO DZIAŁA?</h4><p>Na oczach gości powstają delikatne, złociste pancakes: lekkie, puszyste i&nbsp;podawane w&nbsp;eleganckiej formie. Każda porcja przygotowywana jest na świeżo, dzięki czemu przestrzeń wypełnia przyjemny aromat, który natychmiast przyciąga uwagę.</p><p>Goście mogą samodzielnie stworzyć swoją kompozycję, wybierając spośród dodatków takich jak owoce, czekolada, posypki, polewy czy chrupiące ciasteczka. To moment swobody i&nbsp;kreatywności, który sprawia, że degustacja staje się przyjemnym doświadczeniem, a&nbsp;nie tylko deserem.</p></div>
-        <div class="modal-section"><h4>DOBÓR DODATKÓW</h4><p>Jeśli wolisz, przejmiemy tę część za Ciebie: przygotujemy zestaw dodatków idealnie dopasowany do stylu wydarzenia i&nbsp;profilu gości. Zadbamy o&nbsp;harmonię smaków i&nbsp;estetykę prezentacji, tak by całość była spójna z&nbsp;charakterem wydarzenia i&nbsp;jego atmosferą.</p><p>Możesz także samodzielnie wybrać dodatki z&nbsp;naszej listy: damy Ci pełną swobodę w&nbsp;komponowaniu oferty według własnych preferencji.</p></div>
-        <div class="modal-section"><h4>GDZIE SPRAWDZA SIĘ NASZA STACJA?</h4><ul><li>Eventy firmowe i&nbsp;konferencje</li><li>Wesela i&nbsp;przyjęcia weselne</li><li>Gale i&nbsp;bankiety</li><li>Prywatne przyjęcia i&nbsp;urodziny</li><li>Imprezy plenerowe i&nbsp;pikniki</li></ul></div>
-
-        <div class="modal-section"><h4>CO OTRZYMUJESZ?</h4><ul><li>Profesjonalną, mobilną stację o&nbsp;dopracowanej estetyce</li><li>Obsługę od montażu po ostatni serwis</li><li>Świeżo przygotowane pancakes i&nbsp;starannie dobrane dodatki</li><li>Punkt, który angażuje gości i&nbsp;tworzy naturalne miejsce spotkań</li></ul></div>`,
+					content: `<p class="modal-lead">Ciepły, wypiekany na żywo deser, który zapachem przyciąga gości i z powodzeniem zastępuje tradycyjny słodki stół.</p>
+        <div class="modal-section"><h4>PROSTO Z GORĄCEJ PŁYTY</h4><p>Złociste, puszyste placuszki wypiekamy na bieżąco przez cały czas trwania serwisu. Trafiają na talerzyk dokładnie w tym momencie, gdy podchodzi gość, dzięki czemu zawsze są miękkie i ciepłe, a nałożone na nie kremy oraz czekolada apetycznie się rozpuszczają.</p></div>
+        <div class="modal-section"><h4>OTWARTA STREFA DODATKÓW</h4><p>Goście sami komponują swoje porcje, łącząc ulubione smaki:</p><ul><li><strong>Gęste kremy:</strong> pistacjowy · Nutella · biała czekolada · słony karmel</li><li><strong>Oryginalne słodycze:</strong> Kinder Bueno · czekoladki Kinder · Toffifee · Merci · M&amp;M’s</li><li><strong>Owoce i orzechy:</strong> świeże owoce sezonowe · chrupiące orzechy</li></ul><p class="modal-note">Dodatki na przyjęcie możesz wybrać z naszej karty lub zdać się na nasz sprawdzony zestaw.</p></div>
+        <div class="modal-assurances"><strong>Zapewniamy:</strong> wypiek na żywo · obsługę przez cały serwis · pełny zapas dodatków · własne zaplecze</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">ZAPYTAJ O TERMIN I WYCENĘ →</a></div>`,
 				},
 				icecream: {
 					title: 'Lody Włoskie',
-					content: `<p class="modal-lead">Orzeźwiająca stacja, która zachwyca gości, buduje atmosferę i&nbsp;naturalnie staje się hitem wydarzenia.</p>
-        <div class="modal-section"><h4>JAK TO DZIAŁA?</h4><p>Goście mają okazję zobaczyć, jak kremowe lody włoskie nalewane są prosto z&nbsp;maszyny do eleganckich kubeczków: z&nbsp;aksamitną konsystencją i&nbsp;idealną świeżością. To proste, widowiskowe przedstawienie działa na zmysły i&nbsp;sprawia, że każdy deser jest wyjątkowy. Porcje serwowane są na bieżąco, zarówno na eventy plenerowe, jak i&nbsp;w&nbsp;przestrzeniach zamkniętych.</p><p>Do lodów dobieramy dodatki takie jak świeże owoce, sosy owocowe i&nbsp;czekoladowe, chrupiące posypki, orzechy czy mini ciasteczka, umożliwiając gościom stworzenie własnych kompozycji smakowych.</p></div>
-        <div class="modal-section"><h4>DOBÓR SMAKÓW I&nbsp;DODATKÓW</h4><p>Możesz powierzyć nam dobór smaków i&nbsp;dodatków: dopasujemy konfigurację do charakteru wydarzenia, sezonu i&nbsp;profilu gości. Możliwa jest też pełna swoboda w&nbsp;samodzielnym skomponowaniu listy, tak by oferta idealnie wpasowała się w&nbsp;Twoją koncepcję.</p></div>
-        <div class="modal-section"><h4>GDZIE SPRAWDZA SIĘ STACJA LODÓW?</h4><ul><li>Eventy firmowe i&nbsp;dni otwarte</li><li>Wesela, poprawiny i&nbsp;letnie przyjęcia</li><li>Gale, premiery, eventy wizerunkowe</li><li>Przyjęcia rodzinne, urodziny, komunie</li><li>Imprezy plenerowe i&nbsp;pikniki</li></ul></div>
-
-        <div class="modal-section"><h4>CO ZYSKUJESZ?</h4><ul><li>Estetyczną, mobilną stację lodów dopasowaną do charakteru wydarzenia</li><li>Kompleksową obsługę – od przygotowania po serwis w&nbsp;trakcie eventu</li><li>Kremowe lody włoskie serwowane na żywo z&nbsp;profesjonalnie dobranymi dodatkami</li><li>Punkt, który naturalnie przyciąga gości i&nbsp;buduje pozytywne skojarzenia z&nbsp;wydarzeniem.</li></ul></div>`,
+					content: `<p class="modal-lead">Lekki, przyjemnie chłodzący deser, który daje gościom chwilę orzeźwienia i stanowi świetną alternatywę dla ciężkich ciast.</p>
+        <div class="modal-section"><h4>WIĘCEJ NIŻ KLASYCZNE LODY</h4><p>Aksamitne, śmietankowe lody włoskie podajemy w zupełnie nowej odsłonie - zamiast zwykłej porcji z automatu goście tworzą u nas własne, bogate desery. Delikatna, kremowa baza nie przytłacza słodyczą, dzięki czemu świetnie równoważy nawet najbardziej wyraziste smaki i pozwala dowolnie łączyć ze sobą dodatki.</p></div>
+        <div class="modal-section"><h4>OTWARTA STREFA DODATKÓW</h4><p>Każdą porcję można udekorować dokładnie tak, jak się lubi:</p><ul><li><strong>Musy i polewy:</strong> mus malinowy · mus truskawkowy · gęsta czekolada mleczna</li><li><strong>Oryginalne słodycze:</strong> Raffaello · Oreo · KitKat · Kinder Maxi King · Lotus Biscoff</li><li><strong>Owoce i orzechy:</strong> świeże owoce sezonowe · chrupiące orzechy</li></ul><p class="modal-note">Składniki na przyjęcie możesz wskazać samodzielnie z naszej karty lub zdać się na nasz sprawdzony zestaw.</p></div>
+        <div class="modal-assurances"><strong>Zapewniamy:</strong> obsługę przez cały serwis · pełny zapas dodatków · własne zaplecze</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">ZAPYTAJ O TERMIN I WYCENĘ →</a></div>`,
 				},
 				cheese: {
-					title: 'Deska Serów',
-					content: `<p class="modal-lead">Fascynująca strefa smaku, która podnosi wartość Twojego wydarzenia.</p>
-        <div class="modal-section"><h4>JAK TO DZIAŁA?</h4><p>Nasze stoisko oferuje 12 starannie wyselekcjonowanych pozycji: wysokiej jakości sery i&nbsp;wędliny włoskie, uzupełnione wybornymi dodatkami słonymi. Wszystko to komponuje się w&nbsp;harmonijną całość, wzbogaconą o&nbsp;specjalnie dobrane sosy, które wzmacniają smak każdej degustacji. Goście sami tworzą swoje własne mini kompozycje desek serów, swobodnie sięgając po ulubione składniki: od kremowych serów z&nbsp;dojrzewającymi wędlinami, przez chrupiące dodatki, po wyrafinowane sosy podkreślające włoski charakter całości.</p></div>
-        <div class="modal-section"><h4>STARANNIE SKOMPONOWANY DOBÓR SKŁADNIKÓW</h4><p>Dobór wszystkich 12 pozycji i&nbsp;sosów jest precyzyjnie przemyślany: każdy składnik został wyselekcjonowany tak, aby idealnie komponował się z&nbsp;pozostałymi, tworząc harmonijną całość smakową i&nbsp;wizualną. Kompozycja została stworzona z&nbsp;myślą o&nbsp;najwyższych standardach doświadczeń degustacyjnych, gwarantując gościom profesjonalne wrażenia na światowym poziomie. Powierzenie nam tego aspektu pozwala skupić się na organizacji wydarzenia, podczas gdy my zapewniamy spójność i&nbsp;jakość każdej porcji.</p></div>
-        <div class="modal-section"><h4>GDZIE SPRAWDZA SIĘ STOISKO SERÓW?</h4><ul><li>Eventy firmowe, bankiety i&nbsp;koktajle</li><li>Wesela, przyjęcia przedślubne i&nbsp;poprawiny</li><li>Gale, wernisaże, premiery produktowe</li><li>Kameralne przyjęcia prywatne i&nbsp;spotkania biznesowe</li><li>Konferencje i&nbsp;networkingowe spotkania</li></ul></div>
-
-        <div class="modal-section"><h4>CO ZYSKUJESZ?</h4><ul><li>Spektakularną ekspozycję kulinarną, która przyciąga wzrok</li><li>Wysokiej jakości produkty, które zadowolą koneserów</li><li>Alternatywę dla klasycznego bufetu – "grazing table" w&nbsp;wersji premium</li><li>Elegancki element, który podnosi rangę wydarzenia</li></ul></div>`,
+					title: 'Włoska Deska Serów',
+					content: `<p class="modal-lead">Wytrawna strefa pełna szlachetnych serów, dojrzewających wędlin i antipasti, która przełamuje słodkie menu i stanowi eleganckie dopełnienie wieczoru.</p>
+        <div class="modal-section"><h4>ORYGINALNE WŁOSKIE SPECJAŁY</h4><p>Nie każdy gość sięga na przyjęciu po słodkości – dlatego nasza wytrawna stacja tak dobrze sprawdza się w części wieczornej. Łączymy na niej łagodne, kremowe sery i cienko krojone, delikatne szynki z długo dojrzewającymi, wyrazistymi klasykami. Całość efektownie eksponujemy, tworząc apetyczną przestrzeń do niespiesznej degustacji przy kieliszku wina lub prosecco.</p></div>
+        <div class="modal-section"><h4>KOMPOZYCJA WŁASNYCH MINI DESEK</h4><p>Goście sami wybierają to, na co mają ochotę, układając na swoich mini deskach ulubione wytrawne połączenia:</p><ul><li><strong>Włoskie sery:</strong> Parmigiano Reggiano · Gorgonzola · Pecorino · Provolone · Mozzarella</li><li><strong>Dojrzewające wędliny:</strong> Prosciutto Crudo · Salami Milano · pikantna Spianata · Coppa · włoska Mortadella</li><li><strong>Antipasti i dodatki:</strong> chrupiące paluszki grissini · oliwki · suszone pomidory · winogrona i świeże figi · orzechy · konfitury do serów</li></ul><p class="modal-note">Zestaw serów, wędlin oraz przystawek możemy dopasować do charakteru Twojego wydarzenia lub przygotować według naszej autorskiej selekcji.</p></div>
+        <div class="modal-assurances"><strong>Zapewniamy:</strong> oryginalne włoskie produkty · efektowną ekspozycję · stałe uzupełnianie stanowiska · własne zaplecze</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">ZAPYTAJ O TERMIN I WYCENĘ →</a></div>`,
 				},
 			},
 		},
@@ -695,27 +692,27 @@ export const translations = {
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
-					content: `<p class="modal-lead">A sweet station that engages guests, attracts attention, and naturally becomes one of the most beloved points of the event.</p>
-        <div class="modal-section"><h4>HOW IT WORKS?</h4><p>Delicate, golden pancakes are created before guests' eyes: light, fluffy, and served elegantly. Each portion is prepared fresh, filling the space with a pleasant aroma that immediately draws attention.</p><p>Guests can create their own compositions, choosing from toppings such as fruits, chocolate, sprinkles, sauces, or crispy cookies. It's a moment of freedom and creativity that makes tasting a pleasant experience, not just a dessert.</p></div>
-        <div class="modal-section"><h4>TOPPING SELECTION</h4><p>If you prefer, we'll take care of this part for you: we'll prepare a set of toppings perfectly matched to the event style and guest profile. We'll ensure harmony of flavors and aesthetic presentation, so that the whole is consistent with the event's character and atmosphere.</p><p>You can also choose toppings from our list yourself: we give you full freedom to compose the offer according to your own preferences.</p></div>
-        <div class="modal-section"><h4>WHERE DOES OUR STATION WORK?</h4><ul><li>Corporate events and conferences</li><li>Weddings and wedding receptions</li><li>Galas and banquets</li><li>Private parties and birthdays</li><li>Outdoor events and picnics</li></ul></div>
-        <div class="modal-section"><h4>WHAT DO YOU GET?</h4><ul><li>Professional, mobile station with refined aesthetics</li><li>Service from setup to the last serving</li><li>Freshly prepared pancakes and carefully selected toppings</li><li>A point that engages guests and creates a natural meeting place</li></ul></div>`,
+					content: `<p class="modal-lead">A warm, freshly baked dessert whose aroma attracts guests and effortlessly replaces a traditional dessert table.</p>
+        <div class="modal-section"><h4>FRESH OFF THE HOT GRIDDLE</h4><p>Golden, fluffy mini pancakes are baked continuously throughout the entire service. They land on the plate the exact moment a guest steps up, ensuring they are always soft and warm, while the toppings and chocolate melt deliciously on top.</p></div>
+        <div class="modal-section"><h4>OPEN TOPPING ZONE</h4><p>Guests compose their own portions, combining their favorite flavors:</p><ul><li><strong>Rich creams:</strong> Pistachio · Nutella · White Chocolate · Salted Caramel</li><li><strong>Original sweets:</strong> Kinder Bueno · Kinder Chocolate · Toffifee · Merci · M&amp;M’s</li><li><strong>Fruits &amp; nuts:</strong> Fresh seasonal fruit · Crunchy nuts</li></ul><p class="modal-note">You can hand-pick the toppings for your celebration from our menu or rely on our proven signature selection.</p></div>
+        <div class="modal-assurances"><strong>We provide:</strong> live baking · full-service staff · unlimited toppings · complete self-sufficiency</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">INQUIRE ABOUT DATE &amp; QUOTE →</a></div>`,
 				},
 				icecream: {
-					title: 'Soft Serve',
-					content: `<p class="modal-lead">A refreshing station that delights guests, builds atmosphere, and naturally becomes an event hit.</p>
-        <div class="modal-section"><h4>HOW IT WORKS?</h4><p>Guests have the opportunity to see creamy Italian ice cream poured directly from the machine into elegant cups: with a velvety consistency and ideal freshness. This simple, spectacular presentation appeals to the senses and makes every dessert unique. Portions are served continuously, both for outdoor events and in enclosed spaces.</p><p>We select toppings for ice cream such as fresh fruits, fruit and chocolate sauces, crispy sprinkles, nuts, or mini cookies, allowing guests to create their own flavor compositions.</p></div>
-        <div class="modal-section"><h4>FLAVOR AND TOPPING SELECTION</h4><p>You can entrust us with the selection of flavors and toppings: we will adapt the configuration to the character of the event, season, and guest profile. Full freedom is also possible in composing the list yourself, so that the offer perfectly fits your concept.</p></div>
-        <div class="modal-section"><h4>WHERE DOES THE ICE CREAM STATION WORK?</h4><ul><li>Corporate events and open days</li><li>Weddings, after-parties, and summer receptions</li><li>Galas, premieres, image events</li><li>Family parties, birthdays, communions</li><li>Outdoor events and picnics</li></ul></div>
-        <div class="modal-section"><h4>WHAT DO YOU GAIN?</h4><ul><li>Aesthetic, mobile ice cream station adapted to the event's character</li><li>Comprehensive service – from preparation to service during the event</li><li>Creamy Italian ice cream served live with professionally selected toppings</li><li>A point that naturally attracts guests and builds positive associations with the event.</li></ul></div>`,
+					title: 'Soft Serve Ice Cream',
+					content: `<p class="modal-lead">A light, pleasantly refreshing dessert that offers guests a moment of coolness and serves as a great alternative to heavy cakes.</p>
+        <div class="modal-section"><h4>MORE THAN CLASSIC ICE CREAM</h4><p>We serve velvety cream soft serve in a completely new way — instead of a plain cone from a machine, guests create their own rich desserts. The delicate creamy base is never overly sweet, balancing even the boldest toppings.</p></div>
+        <div class="modal-section"><h4>OPEN TOPPING ZONE</h4><p>Every portion can be decorated just the way your guests like it:</p><ul><li><strong>Mousses &amp; toppings:</strong> Raspberry mousse · Strawberry mousse · Rich milk chocolate</li><li><strong>Original sweets:</strong> Raffaello · Oreo · KitKat · Kinder Maxi King · Lotus Biscoff</li><li><strong>Fruits &amp; nuts:</strong> Fresh seasonal fruit · Crunchy nuts</li></ul><p class="modal-note">You can choose the ingredients from our menu yourself or rely on our proven signature set.</p></div>
+        <div class="modal-assurances"><strong>We provide:</strong> full-service staff · unlimited toppings · complete self-sufficiency</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">INQUIRE ABOUT DATE &amp; QUOTE →</a></div>`,
 				},
 				cheese: {
-					title: 'Cheese Board',
-					content: `<p class="modal-lead">A fascinating taste zone that enhances the value of your event.</p>
-        <div class="modal-section"><h4>HOW IT WORKS?</h4><p>Our stand offers 12 carefully selected items: high-quality Italian cheeses and cold cuts, complemented by exquisite savory additions. All this combines into a harmonious whole, enriched with specially selected sauces that enhance the taste of each tasting. Guests create their own mini cheese board compositions, freely reaching for their favorite ingredients: from creamy cheeses with aged cold cuts, through crispy additions, to refined sauces emphasizing the Italian character of the whole.</p></div>
-        <div class="modal-section"><h4>CAREFULLY COMPOSED SELECTION OF INGREDIENTS</h4><p>The selection of all 12 items and sauces is precisely thought out: each ingredient has been selected to perfectly complement the others, creating a harmonious taste and visual whole. The composition was created with the highest standards of tasting experiences in mind, guaranteeing guests professional, world-class impressions. Entrusting us with this aspect allows you to focus on organizing the event, while we ensure the consistency and quality of each portion.</p></div>
-        <div class="modal-section"><h4>WHERE DOES THE CHEESE STAND WORK?</h4><ul><li>Corporate events, banquets, and cocktails</li><li>Weddings, pre-wedding parties, and after-parties</li><li>Galas, vernissages, product launches</li><li>Intimate private parties and business meetings</li><li>Conferences and networking meetings</li></ul></div>
-        <div class="modal-section"><h4>WHAT DO YOU GAIN?</h4><ul><li>Aesthetic, mobile stand with top-quality Italian cheeses and cold cuts</li><li>Comprehensive service: from arrangement to service and replenishment during the event</li><li>12 precisely selected items plus sauces enhancing the tasting</li><li>A point that naturally attracts guests and builds positive associations with the event.</li></ul></div>`,
+					title: 'Italian Cheese Board',
+					content: `<p class="modal-lead">A savory zone filled with noble cheeses, cured meats, and antipasti that balances the sweet menu and provides an elegant evening highlight.</p>
+        <div class="modal-section"><h4>AUTHENTIC ITALIAN SPECIALTIES</h4><p>Not every guest reaches for sweets at a reception — which is why our savory station works so well in the evening. We pair mild, creamy cheeses and thinly sliced prosciutto with aged, bold classics, creating an inviting space for unhurried tasting over a glass of wine or prosecco.</p></div>
+        <div class="modal-section"><h4>COMPOSE YOUR OWN MINI BOARDS</h4><p>Guests choose whatever they fancy, arranging their favorite savory pairings on personal mini boards:</p><ul><li><strong>Italian cheeses:</strong> Parmigiano Reggiano · Gorgonzola · Pecorino · Provolone · Mozzarella</li><li><strong>Cured meats:</strong> Prosciutto Crudo · Salami Milano · Spicy Spianata · Coppa · Italian Mortadella</li><li><strong>Antipasti &amp; extras:</strong> Crispy grissini breadsticks · Olives · Sun-dried tomatoes · Grapes &amp; fresh figs · Nuts · Cheese jams</li></ul><p class="modal-note">We can tailor the selection of cheeses, cold cuts, and antipasti to your event or prepare our signature curation.</p></div>
+        <div class="modal-assurances"><strong>We provide:</strong> authentic Italian products · stunning display · continuous replenishment · complete self-sufficiency</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">INQUIRE ABOUT DATE &amp; QUOTE →</a></div>`,
 				},
 			},
 		},
@@ -1050,27 +1047,27 @@ export const translations = {
 			modals: {
 				pancakes: {
 					title: 'Mini Pancakes',
-					content: `<p class="modal-lead">Una estación dulce que atrae a los invitados, capta la atención y, naturalmente, se convierte en uno de los puntos más queridos del evento.</p>
-        <div class="modal-section"><h4>¿CÓMO FUNCIONA?</h4><p>Delicados y dorados pancakes se crean ante los ojos de los invitados: ligeros, esponjosos y servidos de forma elegante. Cada porción se prepara al momento, llenando el espacio con un agradable aroma que atrae inmediatamente la atención.</p><p>Los invitados pueden crear su propia composición, eligiendo entre aderezos como frutas, chocolate, chispas, salsas o galletas crujientes. Es un momento de libertad y creatividad que convierte la degustación en una experiencia placentera, no solo un postre.</p></div>
-        <div class="modal-section"><h4>SELECCIÓN DE ADEREZOS</h4><p>Si lo prefieres, nosotros nos encargamos de esta parte: prepararemos un conjunto de aderezos perfectamente adaptados al estilo del evento y al perfil de los invitados. Nos aseguraremos de la armonía de sabores y la presentación estética, para que todo sea coherente con el carácter y la atmósfera del evento.</p><p>También puedes elegir los aderezos de nuestra lista: te damos total libertad para componer la oferta según tus propias preferencias.</p></div>
-        <div class="modal-section"><h4>¿DÓNDE FUNCIONA NUESTRA ESTACIÓN?</h4><ul><li>Eventos corporativos y conferencias</li><li>Bodas y recepciones de boda</li><li>Galas y banquetes</li><li>Fiestas privadas y cumpleaños</li><li>Eventos al aire libre y picnics</li></ul></div>
-        <div class="modal-section"><h4>¿QUÉ OBTIENES?</h4><ul><li>Estación profesional y móvil con una estética refinada</li><li>Servicio desde el montaje hasta el último servicio</li><li>Pancakes recién preparados y aderezos cuidadosamente seleccionados</li><li>Un punto que atrae a los invitados y crea un lugar de encuentro natural</li></ul></div>`,
+					content: `<p class="modal-lead">Un postre cálido horneado en vivo cuyo aroma atrae a los invitados y reemplaza con éxito la mesa de dulces tradicional.</p>
+        <div class="modal-section"><h4>DIRECTO DE LA PLANCHA CALIENTE</h4><p>Horneamos esponjosos y dorados mini pancakes continuamente durante todo el servicio. Llegan al plato en el momento exacto en que se acerca el invitado, siempre suaves y calientes, derritiendo deliciosamente las cremas y el chocolate.</p></div>
+        <div class="modal-section"><h4>ZONA ABIERTA DE TOPPINGS</h4><p>Los invitados componen sus propias porciones combinando sus sabores favoritos:</p><ul><li><strong>Cremas densas:</strong> Pistacho · Nutella · Chocolate blanco · Caramelo salado</li><li><strong>Dulces originales:</strong> Kinder Bueno · Chocolates Kinder · Toffifee · Merci · M&amp;M’s</li><li><strong>Frutas y frutos secos:</strong> Fruta fresca de temporada · Frutos secos crujientes</li></ul><p class="modal-note">Puedes elegir los aderezos de nuestra carta o confiar en nuestra selección probada.</p></div>
+        <div class="modal-assurances"><strong>Garantizamos:</strong> horneado en vivo · atención durante todo el servicio · suministro completo · equipamiento propio</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">CONSULTAR FECHA Y PRESUPUESTO →</a></div>`,
 				},
 				icecream: {
-					title: 'Helado Suave',
-					content: `<p class="modal-lead">Una estación refrescante que deleita a los invitados, crea ambiente y, naturalmente, se convierte en un éxito del evento.</p>
-        <div class="modal-section"><h4>¿CÓMO FUNCIONA?</h4><p>Los invitados tienen la oportunidad de ver cómo se vierte cremoso helado italiano directamente de la máquina en elegantes vasos: con una consistencia aterciopelada y una frescura ideal. Esta presentación sencilla y espectacular apela a los sentidos y hace que cada postre sea único. Las porciones se sirven continuamente, tanto para eventos al aire libre como en espacios cerrados.</p><p>Seleccionamos aderezos para el helado como frutas frescas, salsas de frutas y chocolate, chispas crujientes, nueces o mini galletas, permitiendo a los invitados crear sus propias composiciones de sabores.</p></div>
-        <div class="modal-section"><h4>SELECCIÓN DE SABORES Y ADEREZOS</h4><p>Puedes confiarnos la selección de sabores y aderezos: adaptaremos la configuración al carácter del evento, la temporada y el perfil de los invitados. También es posible una total libertad para componer la lista tú mismo, para que la oferta se adapte perfectamente a tu concepto.</p></div>
-        <div class="modal-section"><h4>¿DÓNDE FUNCIONA LA ESTACIÓN DE HELADOS?</h4><ul><li>Eventos corporativos y jornadas de puertas abiertas</li><li>Bodas, post-bodas y recepciones de verano</li><li>Galas, estrenos, eventos de imagen</li><li>Fiestas familiares, cumpleaños, comuniones</li><li>Eventos al aire libre y picnics</li></ul></div>
-        <div class="modal-section"><h4>¿QUÉ GANAS?</h4><ul><li>Estación de helados estética y móvil adaptada al carácter del evento</li><li>Servicio integral – desde la preparación hasta el servicio durante el evento</li><li>Cremoso helado italiano servido en vivo con aderezos seleccionados profesionalmente</li><li>Un punto que atrae naturalmente a los invitados y construye asociaciones positivas con el evento.</li></ul></div>`,
+					title: 'Helado Suave Italiano',
+					content: `<p class="modal-lead">Un postre ligero y refrescante que brinda un momento de frescura y es una excelente alternativa a los pasteles pesados.</p>
+        <div class="modal-section"><h4>MÁS QUE UN HELADO CLÁSICO</h4><p>Servimos nuestro aterciopelado helado de nata en una versión totalmente nueva: en lugar de una simple porción de máquina, los invitados crean sus propios postres ricos en matices.</p></div>
+        <div class="modal-section"><h4>ZONA ABIERTA DE TOPPINGS</h4><p>Cada porción se puede decorar exactamente al gusto de cada invitado:</p><ul><li><strong>Mousses y salsas:</strong> Mousse de frambuesa · Mousse de fresa · Chocolate con leche denso</li><li><strong>Dulces originales:</strong> Raffaello · Oreo · KitKat · Kinder Maxi King · Lotus Biscoff</li><li><strong>Frutas y frutos secos:</strong> Fruta fresca de temporada · Frutos secos crujientes</li></ul><p class="modal-note">Puedes elegir los ingredientes de nuestra carta o dejarlo en manos de nuestra selección probada.</p></div>
+        <div class="modal-assurances"><strong>Garantizamos:</strong> atención durante todo el servicio · suministro completo · equipamiento propio</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">CONSULTAR FECHA Y PRESUPUESTO →</a></div>`,
 				},
 				cheese: {
-					title: 'Tabla de Quesos',
-					content: `<p class="modal-lead">Una fascinante zona de sabor que realza el valor de tu evento.</p>
-        <div class="modal-section"><h4>¿CÓMO FUNCIONA?</h4><p>Nuestro puesto ofrece 12 artículos cuidadosamente seleccionados: quesos y embutidos italianos de alta calidad, complementados con exquisitos aderezos salados. Todo esto se combina en un conjunto armonioso, enriquecido con salsas especialmente seleccionadas que realzan el sabor de cada degustación. Los invitados crean sus propias mini composiciones de tablas de quesos, eligiendo libremente sus ingredientes favoritos: desde quesos cremosos con embutidos curados, pasando por aderezos crujientes, hasta salsas refinadas que realzan el carácter italiano del conjunto.</p></div>
-        <div class="modal-section"><h4>SELECCIÓN CUIDADOSAMENTE COMPUESTA DE INGREDIENTES</h4><p>La selección de los 12 artículos y salsas está precisamente pensada: cada ingrediente ha sido seleccionado para complementar perfectamente a los demás, creando un conjunto armonioso de sabor y visual. La composición fue creada pensando en los más altos estándares de experiencias de degustación, garantizando a los invitados impresiones profesionales de clase mundial. Confiarnos este aspecto te permite concentrarte en la organización del evento, mientras nosotros aseguramos la consistencia y calidad de cada porción.</p></div>
-        <div class="modal-section"><h4>¿DÓNDE FUNCIONA EL PUESTO DE QUESOS?</h4><ul><li>Eventos corporativos, banquetes y cócteles</li><li>Bodas, fiestas pre-boda y post-bodas</li><li>Galas, vernissages, lanzamientos de productos</li><li>Fiestas privadas íntimas y reuniones de negocios</li><li>Conferencias y reuniones de networking</li></ul></div>
-        <div class="modal-section"><h4>¿QUÉ GANAS?</h4><ul><li>Puesto estético y móvil con quesos y embutidos italianos de primera calidad</li><li>Servicio integral: desde la disposición hasta el servicio y la reposición durante el evento</li><li>12 artículos seleccionados con precisión más salsas que realzan la degustación</li><li>Un punto que atrae naturalmente a los invitados y construye asociaciones positivas con el evento.</li></ul></div>`,
+					title: 'Tabla de Quesos Italianos',
+					content: `<p class="modal-lead">Una zona salada llena de quesos nobles, embutidos curados y antipasti que equilibra el menú dulce y complementa la noche con elegancia.</p>
+        <div class="modal-section"><h4>ESPECIALIDADES ITALIANAS ORIGINALES</h4><p>No todos los invitados buscan dulces en una fiesta; por eso nuestra estación salada triunfa por la noche. Combinamos quesos cremosos y jamones finamente cortados con clásicos curados intensos, ideal para degustar con una copa de vino o prosecco.</p></div>
+        <div class="modal-section"><h4>COMPOSICIÓN DE MINI TABLAS PROPIAS</h4><p>Los invitados eligen lo que les apetece en sus propias mini tablas:</p><ul><li><strong>Quesos italianos:</strong> Parmigiano Reggiano · Gorgonzola · Pecorino · Provolone · Mozzarella</li><li><strong>Embutidos curados:</strong> Prosciutto Crudo · Salami Milano · Spianata picante · Coppa · Mortadella italiana</li><li><strong>Antipasti y extras:</strong> Colines grissini crujientes · Aceitunas · Tomates secos · Uvas e higos frescos · Nueces · Mermeladas para quesos</li></ul><p class="modal-note">Podemos adaptar la selección de quesos, embutidos y aperitivos al carácter de tu evento o preparar nuestra selección de autor.</p></div>
+        <div class="modal-assurances"><strong>Garantizamos:</strong> productos italianos originales · exposición espectacular · reposición constante · equipamiento propio</div>
+        <div class="modal-cta-wrap"><a href="#kontakt" class="modal-cta-btn">CONSULTAR FECHA Y PRESUPUESTO →</a></div>`,
 				},
 			},
 		},

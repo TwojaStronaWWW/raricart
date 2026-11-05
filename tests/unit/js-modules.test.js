@@ -197,6 +197,21 @@ describe('Moduły Vanilla JavaScript (ES6+)', () => {
       assert.strictEqual(modal.classList.contains('active'), false);
       assert.strictEqual(mockDoc.body.classList.contains('lightbox-open'), false);
     });
+
+    it('kliknięcie w przycisk CTA (.modal-cta-btn) wewnątrz modala powinno zamknąć modal i odblokować scroll', () => {
+      initStationModals(translations);
+
+      cardPancakes.click();
+      assert.strictEqual(modal.classList.contains('active'), true);
+      assert.ok(modalText.innerHTML.includes('ZAPYTAJ O TERMIN I WYCENĘ'));
+
+      const ctaTarget = new MockElement('modal-cta', 'a', ['modal-cta-btn']);
+      const clickHandlers = modal.listeners.get('click') || [];
+      clickHandlers.forEach(fn => fn({ target: ctaTarget }));
+
+      assert.strictEqual(modal.classList.contains('active'), false);
+      assert.strictEqual(mockDoc.body.classList.contains('lightbox-open'), false);
+    });
   });
 
   describe('Moduł contact.js (Formularz kontaktowy, walidacja, autosave i ochrona przed wyścigiem)', () => {
