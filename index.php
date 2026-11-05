@@ -42,10 +42,6 @@ include 'parts/navbar.php';
         <!-- 6. DLA KOGO? (Segmentacja wydarzeń - Lejek 2026) -->
         <?php include 'parts/audiences.php'; ?>
 
-        <!-- 7. DLACZEGO RARICART? (6 esencjonalnych argumentów - Lejek 2026) -->
-        <?php include 'parts/why-raricart.php'; ?>
-
-
         <!-- 8. REALIZACJE (Wyselekcjonowana galeria kadrów - Lejek 2026) -->
         <?php include 'parts/realizations.php'; ?>
 
@@ -70,9 +66,6 @@ include 'parts/navbar.php';
 // 3. MODALS
 include 'parts/modals.php';
 
-// 4. Widżet pływający Zapytaj o wycenę
-include 'parts/contact-button.php';
-
-// 5. FOOTER (zawiera stopkę, skrypty oraz zamknięcie body i html)
+// 4. FOOTER (zawiera stopkę, skrypty oraz zamknięcie body i html)
 include 'parts/footer.php';
 ?>

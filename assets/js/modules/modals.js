@@ -86,9 +86,13 @@ export function initStationModals(translations) {
 		});
 	});
 
-	// Close on close button or click on backdrop
+	// Close on close button, CTA link inside modal, or click on backdrop
 	if (modal) {
 		modal.addEventListener('click', e => {
+			if (e.target.classList?.contains('modal-cta-btn') || e.target.closest?.('.modal-cta-btn')) {
+				closeModal();
+				return;
+			}
 			if (
 				e.target === modal ||
 				e.target.classList.contains('modal-close') ||

@@ -8,17 +8,8 @@ $cheese_img = function_exists('get_val') ? get_val('offer_cards.cheese', 'https:
     <div id="oferta" class="station-anchor" aria-hidden="true"></div>
     <div class="stations-container">
         <div class="stations-header">
-            <span class="stations-badge" data-i18n="stations.badge">Co właściwie oferujemy?</span>
-            <h2 class="stations-title" data-i18n="stations.title">Wybierz swoją stację</h2>
-            <p class="stations-intro" data-i18n="stations.intro">
-                Nie jesteśmy klasycznym bufetem. Nasze stacje przygotowują jedzenie na miejscu, na oczach gości. Każdy może wybrać swoje dodatki i stworzyć własną kompozycję.
-            </p>
-            <div class="stations-header-cta">
-                <a href="<?php echo function_exists('nav_link') ? nav_link('pakiety.php') : 'pakiety.php'; ?>" class="stations-sub-btn" aria-label="Zobacz całą ofertę i pakiety" data-i18n="stations.see_all">
-                    <span>ZOBACZ CAŁĄ OFERTĘ & PAKIETY</span>
-                    <span class="btn-arrow" aria-hidden="true">→</span>
-                </a>
-            </div>
+            <span class="stations-badge" data-i18n="stations.badge">Jedna formuła, różne odsłony</span>
+            <h2 class="stations-title" data-i18n="stations.title">WYBIERZ SWOJĄ STACJĘ</h2>
         </div>
 
         <div class="stations-grid offer-grid">
@@ -30,20 +21,10 @@ $cheese_img = function_exists('get_val') ? get_val('offer_cards.cheese', 'https:
                          alt="Mini Pancakes przygotowywane na żywo" 
                          loading="lazy" 
                          class="offer-image-img">
-                    <div class="station-live-badge">
-                        <span class="station-dot"></span>
-                        <span>LIVE STATION</span>
-                    </div>
                 </div>
                 <div class="offer-content station-content">
                     <h3 class="station-name" data-i18n="offer.cards.pancakes.title">Mini Pancakes</h3>
-                    <p class="station-desc" data-i18n="stations.pancakes_desc">Ciepłe, puszyste mini pancakes z dodatkami i sosami przygotowywane na oczach gości.</p>
-                    <div class="station-tags">
-                        <span class="station-tag">Truskawki</span>
-                        <span class="station-tag">Nutella</span>
-                        <span class="station-tag">Pistacja</span>
-                        <span class="station-tag">Chrupiące posypki</span>
-                    </div>
+                    <p class="station-desc" data-i18n="stations.pancakes_desc">Gorące, puszyste placuszki prosto z płyty to pachnąca alternatywa dla słodkiego stołu, po którą goście wracają kilka razy.</p>
                     <div class="station-action">
                         <span class="station-btn">
                             <span data-i18n="stations.explore_btn">POZNAJ STACJĘ</span>
@@ -61,20 +42,10 @@ $cheese_img = function_exists('get_val') ? get_val('offer_cards.cheese', 'https:
                          alt="Lody Włoskie serwowane na żywo" 
                          loading="lazy" 
                          class="offer-image-img">
-                    <div class="station-live-badge">
-                        <span class="station-dot"></span>
-                        <span>LIVE STATION</span>
-                    </div>
                 </div>
                 <div class="offer-content station-content">
                     <h3 class="station-name" data-i18n="offer.cards.icecream.title">Lody Włoskie</h3>
-                    <p class="station-desc" data-i18n="stations.icecream_desc">Kremowe lody włoskie, świeże owoce, rzemieślnicze sosy i chrupiące dodatki.</p>
-                    <div class="station-tags">
-                        <span class="station-tag">Świeże owoce</span>
-                        <span class="station-tag">Belgijska czekolada</span>
-                        <span class="station-tag">Rzemieślnicze sosy</span>
-                        <span class="station-tag">Wafle</span>
-                    </div>
+                    <p class="station-desc" data-i18n="stations.icecream_desc">Kremowe lody śmietankowe z bogactwem owoców, gęstych polew i posypek, z których każdy gość komponuje swój własny deser.</p>
                     <div class="station-action">
                         <span class="station-btn">
                             <span data-i18n="stations.explore_btn">POZNAJ STACJĘ</span>
@@ -92,20 +63,10 @@ $cheese_img = function_exists('get_val') ? get_val('offer_cards.cheese', 'https:
                          alt="Deska Serów i włoskich wędlin" 
                          loading="lazy" 
                          class="offer-image-img">
-                    <div class="station-live-badge">
-                        <span class="station-dot"></span>
-                        <span>LIVE STATION</span>
-                    </div>
                 </div>
                 <div class="offer-content station-content">
                     <h3 class="station-name" data-i18n="offer.cards.cheese.title">Deska Serów</h3>
-                    <p class="station-desc" data-i18n="stations.cheese_desc">Starannie dobrane sery, wędliny i wytrawne dodatki w eleganckiej oprawie.</p>
-                    <div class="station-tags">
-                        <span class="station-tag">Włoskie sery</span>
-                        <span class="station-tag">Prosciutto</span>
-                        <span class="station-tag">Oliwki i orzechy</span>
-                        <span class="station-tag">Konfitury</span>
-                    </div>
+                    <p class="station-desc" data-i18n="stations.cheese_desc">Włoskie sery, dojrzewające wędliny i wytrawne przekąski tworzą elegancką strefę dla gości, którzy zamiast słodyczy wolą wyraziste smaki.</p>
                     <div class="station-action">
                         <span class="station-btn">
                             <span data-i18n="stations.explore_btn">POZNAJ STACJĘ</span>
@@ -125,10 +86,10 @@ $cheese_img = function_exists('get_val') ? get_val('offer_cards.cheese', 'https:
                     </svg>
                 </div>
                 <p class="stations-footer-text" data-i18n="stations.combine_note">
-                    <strong>Chcesz więcej niż jedną atrakcję?</strong> Możesz dowolnie łączyć stacje na jednym evencie — przygotujemy dla Ciebie indywidualny pakiet.
+                    <strong>Chcesz połączyć strefę słodką z wytrawną?</strong> Wybierając dwie lub trzy stacje na jedno przyjęcie, otrzymujesz spójną oprawę wizualną oraz preferencyjną wycenę w pakiecie.
                 </p>
             </div>
-            <a href="#kontakt" class="stations-footer-btn" data-i18n="stations.cta_check">SPRAWDŹ DOSTĘPNOŚĆ STACJI</a>
+            <a href="#kontakt" class="stations-footer-btn" data-i18n="stations.cta_check">WYCEŃ PAKIET STACJI</a>
         </div>
     </div>
 </section>

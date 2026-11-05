@@ -78,7 +78,6 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       { name: 'why-station', cls: 'why-station-section' },
       { name: 'process', cls: 'process-section' },
       { name: 'audiences', cls: 'audiences-section' },
-      { name: 'why-raricart', cls: 'section-why-raricart' },
       { name: 'realizations', cls: 'section-realizations' },
       { name: 'reviews', cls: 'section-reviews' },
       { name: 'about-story', cls: 'section-about-story' },
@@ -95,6 +94,31 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
         );
       });
     }
+
+    it('nie powinien renderować usuniętej sekcji 6 Mocnych Przewag (.section-why-raricart) ani pływającego CTA (#floatingCta)', () => {
+      assert.strictEqual(indexHtml.includes('section-why-raricart'), false);
+      assert.strictEqual(indexHtml.includes('id="floatingCta"'), false);
+    });
+
+    it('nie powinien zawierać usuniętych plakietek zasłaniających multimedia (LIVE PREPARATION, LIVE STATION, 100% Na oczach gości)', () => {
+      assert.strictEqual(indexHtml.includes('LIVE PREPARATION'), false);
+      assert.strictEqual(indexHtml.includes('LIVE STATION'), false);
+      assert.strictEqual(indexHtml.includes('why-station-badge-floating'), false);
+    });
+
+    it('powinien zawierać zaktualizowany copywriting kluczowych sekcji', () => {
+      assert.ok(indexHtml.includes('Tam, gdzie smak budzi emocje'));
+      assert.ok(indexHtml.includes('Więcej niż poczęstunek'));
+      assert.ok(indexHtml.includes('WYBIERZ SWOJĄ STACJĘ'));
+      assert.ok(indexHtml.includes('WYCEŃ PAKIET STACJI'));
+      assert.ok(indexHtml.includes('MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.'));
+      assert.ok(indexHtml.includes('DOSTĘPNOŚĆ KALENDARZA'));
+      assert.ok(indexHtml.includes('Wesela z klasą'));
+      assert.ok(indexHtml.includes('Emilia Samoraj'));
+      assert.ok(indexHtml.includes('Jenny Wyderka'));
+      assert.ok(indexHtml.includes('Anna Słomka'));
+      assert.strictEqual(indexHtml.includes('TechCorp'), false);
+    });
   });
 
   describe('Semantyka i hierarchia drzewa DOM (W3C)', () => {

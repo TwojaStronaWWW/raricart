@@ -6,9 +6,9 @@
         <!-- Nagłówek sekcji -->
         <div class="process-header">
             <span class="process-badge" data-i18n="process.badge">PROSTY PROCES WSPÓŁPRACY</span>
-            <h2 class="process-title" data-i18n="process.title">Od pierwszej wiadomości do ostatniej porcji.</h2>
+            <h2 class="process-title" data-i18n="process.title">OD PIERWSZEJ WIADOMOŚCI DO OSTATNIEJ PORCJI.</h2>
             <p class="process-subtitle" data-i18n="process.subtitle">
-                Zero skomplikowanych formalności i zero stresu. Sprawdź, jak krok po kroku wygląda realizacja stacji Raricart na Twoim weselu, evencie firmowym lub przyjęciu.
+                Minimum formalności i pełen spokój organizacyjny. Zobacz, jak krok po kroku wygląda współpraca przy organizacji Twojego przyjęcia.
             </p>
         </div>
 
@@ -25,10 +25,10 @@
                     </div>
                 </div>
                 <div class="step-card-body">
-                    <span class="step-tag" data-i18n="process.step1_tag">Kontakt</span>
-                    <h3 class="step-title" data-i18n="process.step1_title">Opowiadasz nam o wydarzeniu</h3>
+                    <span class="step-tag" data-i18n="process.step1_tag">KONTAKT</span>
+                    <h3 class="step-title" data-i18n="process.step1_title">Piszesz do nas o swoim przyjęciu</h3>
                     <p class="step-desc" data-i18n="process.step1_desc">
-                        Podajesz datę, miejscowość, szacowaną liczbę gości oraz charakter imprezy. Wystarczy krótka wiadomość przez formularz.
+                        Podajesz datę, lokalizację oraz orientacyjną liczbę gości, a my od ręki sprawdzamy dostępność terminu.
                     </p>
                 </div>
             </div>
@@ -44,10 +44,10 @@
                     </div>
                 </div>
                 <div class="step-card-body">
-                    <span class="step-tag" data-i18n="process.step2_tag">Dopasowanie</span>
-                    <h3 class="step-title" data-i18n="process.step2_title">Dobieramy idealną stację</h3>
+                    <span class="step-tag" data-i18n="process.step2_tag">DOPASOWANIE</span>
+                    <h3 class="step-title" data-i18n="process.step2_title">Wybieramy stacje i konfigurację</h3>
                     <p class="step-desc" data-i18n="process.step2_desc">
-                        Podpowiadamy, które rozwiązanie (lub zestaw stacji) najlepiej sprawdzi się przy Twoim formacie przyjęcia i liczbie gości.
+                        Dobieramy strefy oraz dodatki do charakteru uroczystości i przesyłamy przejrzystą wycenę.
                     </p>
                 </div>
             </div>
@@ -66,10 +66,10 @@
                     </div>
                 </div>
                 <div class="step-card-body">
-                    <span class="step-tag" data-i18n="process.step3_tag">Logistyka 100%</span>
-                    <h3 class="step-title" data-i18n="process.step3_title">Przyjeżdżamy i szykujemy wszystko</h3>
+                    <span class="step-tag" data-i18n="process.step3_tag">PRZYGOTOWANIE</span>
+                    <h3 class="step-title" data-i18n="process.step3_title">Przyjeżdżamy i aranżujemy strefę</h3>
                     <p class="step-desc" data-i18n="process.step3_desc">
-                        Transport, montaż, sprzęt, świeże składniki i nienaganna estetyka stoiska — pełne przygotowanie jest całkowicie po naszej stronie.
+                        Przed rozpoczęciem serwisu dyskretnie rozstawiamy stanowisko, dbając o każdy detal ekspozycji.
                     </p>
                 </div>
             </div>
@@ -85,10 +85,10 @@
                     </div>
                 </div>
                 <div class="step-card-body">
-                    <span class="step-tag" data-i18n="process.step4_tag">Live Cooking</span>
-                    <h3 class="step-title" data-i18n="process.step4_title">Goście korzystają ze stacji</h3>
+                    <span class="step-tag" data-i18n="process.step4_tag">SERWIS NA ŻYWO</span>
+                    <h3 class="step-title" data-i18n="process.step4_title">Serwujemy i dbamy o Twoich gości</h3>
                     <p class="step-desc" data-i18n="process.step4_desc">
-                        Wybierają ulubione dodatki, komponują własne smaki i wracają po kolejne porcje. Stacja tętni życiem, uśmiechem i aromatem.
+                        Przez cały umówiony czas przygotowujemy świeże porcje i na bieżąco uzupełniamy strefę dodatków.
                     </p>
                 </div>
             </div>
@@ -105,10 +105,10 @@
                     </div>
                 </div>
                 <div class="step-card-body">
-                    <span class="step-tag" data-i18n="process.step5_tag">Czystość</span>
-                    <h3 class="step-title" data-i18n="process.step5_title">My sprzątamy i demontujemy</h3>
+                    <span class="step-tag" data-i18n="process.step5_tag">FINAŁ</span>
+                    <h3 class="step-title" data-i18n="process.step5_title">Zostawiamy idealny porządek</h3>
                     <p class="step-desc" data-i18n="process.step5_desc">
-                        Po zakończeniu serwisu sprawnie demontujemy stację i zostawiamy salę lub plener w idealnym porządku. Ty nie martwisz się o nic.
+                        Po zakończeniu serwisu sprawnie składamy stanowisko i sprzątamy całą strefę bez angażowania obsługi sali.
                     </p>
                 </div>
             </div>
@@ -118,12 +118,12 @@
         <div class="process-footer">
             <div class="process-footer-box">
                 <div class="process-footer-info">
-                    <span class="process-footer-highlight" data-i18n="process.summary_highlight">Prościej się nie da.</span>
+                    <span class="process-footer-highlight" data-i18n="process.summary_highlight">DOSTĘPNOŚĆ KALENDARZA</span>
                     <p class="process-footer-lead" data-i18n="process.summary_lead">
-                        Ty cieszysz się gośćmi i wyjątkowymi chwilami — my dbamy o kulinarny zachwyt i perfekcyjny serwis od A do Z.
+                        Masz już datę swojego przyjęcia? Napisz do nas i sprawdź, czy mamy jeszcze wolny termin.
                     </p>
                     <span class="process-footer-micro" data-i18n="process.microcopy">
-                        ⏱️ Odpowiadamy na zapytania zazwyczaj w ciągu kilku godzin.
+                        🕒 Na zapytania odpowiadamy w ciągu kilku godzin.
                     </span>
                 </div>
                 <div class="process-footer-action">
