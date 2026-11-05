@@ -1,9 +1,9 @@
 /**
- * modules/scroll.js - Moduł płynnego przewijania, deep-linków i widżetu pływającego CTA (Lejek 2026)
+ * modules/scroll.js - Moduł płynnego przewijania, deep-linków, osi rytuału kulinarnego i paralaksy (V7 Noma Monograph)
  */
 
 export function initScrollFeatures() {
-	// 1. Intersection Observer for Section Reveals
+	// 1. Intersection Observer for Section & Monograph Act Reveals
 	const sectionObserver = new IntersectionObserver(
 		entries => {
 			entries.forEach(entry => {
@@ -12,10 +12,12 @@ export function initScrollFeatures() {
 				}
 			});
 		},
-		{ threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+		{ threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
 	);
 
-	document.querySelectorAll('.section, .section-premium').forEach(s => sectionObserver.observe(s));
+	document
+		.querySelectorAll('.section, .section-premium, .station-card, .process-step-card, .why-station-pillar, .review-card')
+		.forEach(s => sectionObserver.observe(s));
 
 	// 2. SCROLL TO SECTION (query param ?goto= OR hash #)
 	const gotoParam = new URLSearchParams(window.location.search).get('goto');
@@ -24,7 +26,6 @@ export function initScrollFeatures() {
 	if (scrollTarget && scrollTarget !== '#') {
 		const NAVBAR_OFFSET = 100;
 
-		// Force reveal sections for immediate visibility
 		document.querySelectorAll('.section, .section-premium').forEach(s => {
 			s.style.transition = 'none';
 			s.classList.add('visible');
@@ -42,10 +43,8 @@ export function initScrollFeatures() {
 			}
 		};
 
-		// Scroll immediately
 		scrollToTarget();
 
-		// Re-scroll on full window load (after fonts and images settle layout)
 		window.addEventListener('load', () => {
 			scrollToTarget();
 			if (gotoParam) {
@@ -55,7 +54,6 @@ export function initScrollFeatures() {
 			if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
 		});
 
-		// Re-enable CSS transitions
 		requestAnimationFrame(() => {
 			requestAnimationFrame(() => {
 				document.querySelectorAll('.section, .section-premium').forEach(s => {
@@ -65,7 +63,68 @@ export function initScrollFeatures() {
 		});
 	}
 
-	// 3. Floating CTA Button Visibility Handler
+	// 3. Scroll-Scrubbed Motion: Vertical Culinary Thread (.process-steps) & Fine-Dining Parallax
+	const processSteps = document.querySelector('.process-steps');
+	const stepCards = processSteps ? Array.from(processSteps.querySelectorAll('.process-step-card')) : [];
+	const parallaxMedia = Array.from(
+		document.querySelectorAll('.station-image-wrapper .offer-image-img, .why-station-img, .about-story-img')
+	);
+	const prefersReducedMotion =
+		typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	let scrollTicking = false;
+
+	const updateMonographScroll = () => {
+		const vh = window.innerHeight || 800;
+
+		// A. Vertical Culinary Thread progress (0% -> 100%)
+		if (processSteps) {
+			const rect = processSteps.getBoundingClientRect();
+			const triggerPoint = vh * 0.62;
+			const rawProgress = (triggerPoint - rect.top) / Math.max(1, rect.height);
+			const clampedProgress = Math.max(0, Math.min(1, rawProgress));
+			processSteps.style.setProperty('--process-progress', `${(clampedProgress * 100).toFixed(2)}%`);
+
+			stepCards.forEach(card => {
+				const cardRect = card.getBoundingClientRect();
+				const cardTrigger = cardRect.top + cardRect.height * 0.35;
+				if (cardTrigger <= triggerPoint) {
+					card.classList.add('step-active');
+				} else {
+					card.classList.remove('step-active');
+				}
+			});
+		}
+
+		// B. Subtle Culinary Monograph Parallax with cubic-bezier(0.16, 1, 0.3, 1)
+		if (!prefersReducedMotion && parallaxMedia.length > 0) {
+			parallaxMedia.forEach(img => {
+				const rect = img.getBoundingClientRect();
+				if (rect.top < vh && rect.bottom > 0) {
+					const centerOffset = (rect.top + rect.height / 2 - vh / 2) / (vh / 2);
+					const shiftY = Math.max(-22, Math.min(22, centerOffset * -18));
+					img.style.setProperty('--monograph-parallax-y', `${shiftY.toFixed(2)}px`);
+				}
+			});
+		}
+
+		scrollTicking = false;
+	};
+
+	window.addEventListener(
+		'scroll',
+		() => {
+			if (!scrollTicking) {
+				requestAnimationFrame(updateMonographScroll);
+				scrollTicking = true;
+			}
+		},
+		{ passive: true }
+	);
+
+	updateMonographScroll();
+
+	// 4. Floating CTA Button Visibility Handler
 	const floatingCta = document.getElementById('floatingCta');
 	if (floatingCta) {
 		const footer = document.querySelector('footer');
