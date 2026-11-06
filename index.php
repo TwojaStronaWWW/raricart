@@ -54,10 +54,7 @@ include 'parts/navbar.php';
         <!-- 11. FAQ (Zoptymalizowane 7 pytań - Lejek 2026) -->
         <?php include 'parts/faq.php'; ?>
 
-        <!-- 12. OSTATNIE CTA PRZED FORMULARZEM (Lejek 2026) -->
-        <?php include 'parts/pre-form-cta.php'; ?>
-
-        <!-- 13. FORMULARZ KONTAKTOWY (Skoncentrowany na konwersji - Lejek 2026) -->
+        <!-- 12. FORMULARZ KONTAKTOWY (Skoncentrowany na konwersji - Lejek 2026) -->
         <?php include 'parts/contact.php'; ?>
 
     </main>

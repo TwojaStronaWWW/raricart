@@ -142,37 +142,39 @@ export function initGallery() {
 		}
 	});
 
-	// Parallax scroll calculations
+	// Parallax scroll calculations (Pływające / latające zdjęcia w 4 kolumnach)
 	function updateGalleryParallax() {
-		const parallaxColumns = document.querySelectorAll('.gallery-column.parallax');
-		if (gallerySection && parallaxColumns.length > 0) {
+		const allColumns = document.querySelectorAll('.gallery-column');
+		if (gallerySection && allColumns.length > 0) {
 			const rect = gallerySection.getBoundingClientRect();
-			const windowHeight = window.innerHeight;
+			const windowHeight = window.innerHeight || 900;
 
 			if (rect.top < windowHeight && rect.bottom > 0) {
 				const sectionCenter = rect.top + rect.height / 2;
 				const viewportCenter = windowHeight / 2;
 				const dist = sectionCenter - viewportCenter;
-				const factor = 0.15;
+				const factor = 0.16;
 
 				const isMobile = window.innerWidth <= 768;
-				parallaxColumns.forEach((col, index) => {
-					const direction = index % 2 === 0 ? -1 : 1;
+				allColumns.forEach((col, index) => {
+					const direction = index % 2 === 0 ? -0.75 : 1.15;
 					const movement = dist * factor * direction;
 
 					if (isMobile) {
 						const items = col.querySelectorAll('.gallery-item');
 						items.forEach(item => {
 							item.style.transition = 'transform 0.05s linear';
-							item.style.transform = `translateY(${movement * 0.4}px)`;
+							item.style.transform = `translateY(${movement * 0.35}px)`;
 						});
 					} else {
-						col.style.transform = `translateY(${movement}px)`;
+						col.style.transform = `translateY(${movement.toFixed(1)}px)`;
 					}
 				});
 			}
 		}
 	}
+
+	updateGalleryParallax();
 
 	let galleryTick = false;
 	window.addEventListener(
@@ -230,22 +232,22 @@ export function initGallery() {
 
 					if (images.length >= 5) {
 						columns.forEach((col, cIdx) => {
-							if (cIdx % 2 !== 0) col.classList.add('parallax');
-							else col.classList.remove('parallax');
+							if (cIdx % 2 !== 0) {
+								col.classList.add('parallax');
+								col.classList.remove('parallax-even');
+							} else {
+								col.classList.remove('parallax');
+								col.classList.add('parallax-even');
+							}
 						});
 					} else {
-						columns.forEach(col => col.classList.remove('parallax'));
+						columns.forEach(col => col.classList.remove('parallax', 'parallax-even'));
 					}
 
 					galleryImages.length = 0;
 					images.forEach((src, idx) => {
 						galleryImages[idx] = src;
 					});
-
-					const countBadge = document.querySelector('.realizations-count');
-					if (countBadge) {
-						countBadge.textContent = `(${images.length})`;
-					}
 
 					const maxDisplay = 8;
 					const displayImages = images.slice(0, maxDisplay);
@@ -270,6 +272,7 @@ export function initGallery() {
 
 						div.addEventListener('click', () => openGalleryModal(i));
 					});
+					updateGalleryParallax();
 				})
 				.catch(() => {});
 		}

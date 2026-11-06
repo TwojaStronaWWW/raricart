@@ -1,5 +1,5 @@
 <?php
-// parts/realizations.php - Sekcja 8: Realizacje (Wyselekcjonowane kadry z życia stacji - Lejek 2026)
+// parts/realizations.php - Sekcja 8: Realizacje („W blasku przyjęć” - Latające zdjęcia Parallax)
 $galleryFiles = [];
 $jsonFile = __DIR__ . '/../assets/data/gallery.json';
 if (file_exists($jsonFile)) {
@@ -20,15 +20,12 @@ foreach ($displayFiles as $idx => $item) {
         $columns[$idx % $colsCount][] = ['src' => $src, 'index' => $idx];
     }
 }
-
-$gallery_bg = function_exists('get_val') ? get_val('gallery_bg', '') : '';
 ?>
 <section id="realizacje" class="section section-realizations" aria-label="Galeria realizacji Raricart">
     <div class="realizations-header-box">
-        <span class="realizations-badge" data-i18n="gallery.badge">AUTENTYCZNE KADRY</span>
-        <h2 class="realizations-title" data-i18n="gallery.title">Zobacz Raricart podczas wydarzeń</h2>
+        <h2 class="realizations-title" data-i18n="gallery.title">W BLASKU PRZYJĘĆ</h2>
         <p class="realizations-subtitle" data-i18n="gallery.subtitle">
-            Tak wygląda stacja, kiedy zaczyna się wydarzenie. Świeże produkty, przygotowanie na żywo, własne kompozycje i goście, którzy naprawdę chcą podejść do stacji.
+            Zobacz wybrane kadry z naszych realizacji.
         </p>
     </div>
 
@@ -42,10 +39,10 @@ $gallery_bg = function_exists('get_val') ? get_val('gallery_bg', '') : '';
     ?>
     <script type="application/json" id="galleryInitialData"><?php echo json_encode($allImagesList, JSON_UNESCAPED_SLASHES); ?></script>
 
-    <div id="realizacje-parallax" class="section-gallery-parallax" <?php if($gallery_bg): ?>style="--bg-image: url('<?php echo htmlspecialchars($gallery_bg); ?>');"<?php endif; ?>>
+    <div id="realizacje-parallax" class="section-gallery-parallax">
         <div class="gallery-grid" id="dynamicGalleryGrid">
             <?php foreach ($columns as $cIdx => $colItems): 
-                $parallaxClass = ($cIdx % 2 !== 0) ? 'parallax' : '';
+                $parallaxClass = ($cIdx % 2 !== 0) ? 'parallax' : 'parallax-even';
             ?>
                 <div class="gallery-column <?php echo $parallaxClass; ?>">
                     <?php foreach ($colItems as $item): ?>
@@ -61,8 +58,7 @@ $gallery_bg = function_exists('get_val') ? get_val('gallery_bg', '') : '';
 
         <div class="realizations-action">
             <button type="button" class="realizations-more-btn" id="openFullGalleryBtn" aria-label="Otwórz pełną galerię realizacji">
-                <span data-i18n="gallery.see_more">ZOBACZ WIĘCEJ REALIZACJI</span>
-                <span class="realizations-count">(<?php echo $totalImages; ?>)</span>
+                <span data-i18n="gallery.see_more">PRZEJDŹ DO GALERII</span>
                 <span class="btn-arrow" aria-hidden="true">→</span>
             </button>
         </div>

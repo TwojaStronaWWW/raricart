@@ -96,13 +96,15 @@ export function initScrollFeatures() {
 			}
 		}
 
-		// Process Horizontal Scrollytelling Track progress
+		// Process Vertical Culinary Thread progress
 		if (processSection && processSection.style && typeof processSection.getBoundingClientRect === 'function') {
 			const rect = processSection.getBoundingClientRect();
 			if (rect.bottom > 0 && rect.top < vh) {
 				const rawProgress = (vh * 0.78 - rect.top) / Math.max(1, rect.height * 0.82);
 				const clamped = Math.min(1, Math.max(0.12, rawProgress));
-				processSection.style.setProperty('--process-fill', `${(clamped * 100).toFixed(1)}%`);
+				const pct = `${(clamped * 100).toFixed(1)}%`;
+				processSection.style.setProperty('--process-fill', pct);
+				processSection.style.setProperty('--process-progress', pct);
 
 				if (processCards.length > 0) {
 					const activeThreshold = Math.ceil(clamped * processCards.length);
@@ -190,7 +192,62 @@ export function initScrollFeatures() {
 		}
 	}
 
-	// 5. Floating CTA Button Visibility Handler
+	// 5. Land-Book Style Horizontal Reviews Carousel (Buttons + Drag + Auto-Glide)
+	const reviewsViewport = document.getElementById('reviewsSliderViewport');
+	const reviewsPrevBtn = document.getElementById('reviewsPrevBtn');
+	const reviewsNextBtn = document.getElementById('reviewsNextBtn');
+	if (reviewsViewport && typeof reviewsViewport.addEventListener === 'function') {
+		const getStepWidth = () => {
+			const firstCard = reviewsViewport.querySelector ? reviewsViewport.querySelector('.review-card') : null;
+			return firstCard && firstCard.offsetWidth ? firstCard.offsetWidth + 28 : 400;
+		};
+
+		const scrollReviewsBy = dir => {
+			if (typeof reviewsViewport.scrollBy !== 'function') return;
+			const step = getStepWidth();
+			const maxScrollLeft = (reviewsViewport.scrollWidth || 0) - (reviewsViewport.clientWidth || 0);
+			if (dir > 0 && (reviewsViewport.scrollLeft || 0) >= maxScrollLeft - 16) {
+				reviewsViewport.scrollTo({ left: 0, behavior: 'smooth' });
+			} else if (dir < 0 && (reviewsViewport.scrollLeft || 0) <= 16) {
+				reviewsViewport.scrollTo({ left: Math.max(0, maxScrollLeft), behavior: 'smooth' });
+			} else {
+				reviewsViewport.scrollBy({ left: dir * step, behavior: 'smooth' });
+			}
+		};
+
+		if (reviewsPrevBtn) {
+			reviewsPrevBtn.addEventListener('click', () => scrollReviewsBy(-1));
+		}
+		if (reviewsNextBtn) {
+			reviewsNextBtn.addEventListener('click', () => scrollReviewsBy(1));
+		}
+
+		// Mouse drag-to-scroll
+		let isDown = false;
+		let startX = 0;
+		let scrollStart = 0;
+		reviewsViewport.addEventListener('mousedown', e => {
+			isDown = true;
+			reviewsViewport.classList.add('is-dragging');
+			startX = e.pageX - (reviewsViewport.offsetLeft || 0);
+			scrollStart = reviewsViewport.scrollLeft || 0;
+		});
+		const stopDrag = () => {
+			isDown = false;
+			reviewsViewport.classList.remove('is-dragging');
+		};
+		reviewsViewport.addEventListener('mouseleave', stopDrag);
+		reviewsViewport.addEventListener('mouseup', stopDrag);
+		reviewsViewport.addEventListener('mousemove', e => {
+			if (!isDown) return;
+			e.preventDefault();
+			const x = e.pageX - (reviewsViewport.offsetLeft || 0);
+			const walk = (x - startX) * 1.4;
+			reviewsViewport.scrollLeft = scrollStart - walk;
+		});
+	}
+
+	// 6. Floating CTA Button Visibility Handler
 	const floatingCta = document.getElementById('floatingCta');
 	if (floatingCta) {
 		const footer = document.querySelector('footer');
