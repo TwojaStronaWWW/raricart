@@ -42,7 +42,7 @@ foreach ($displayFiles as $idx => $item) {
     <div id="realizacje-parallax" class="section-gallery-parallax">
         <div class="gallery-grid" id="dynamicGalleryGrid">
             <?php foreach ($columns as $cIdx => $colItems): 
-                $parallaxClass = ($cIdx % 2 !== 0) ? 'parallax' : 'parallax-even';
+                $parallaxClass = ($cIdx % 2 !== 0) ? 'parallax' : '';
             ?>
                 <div class="gallery-column <?php echo $parallaxClass; ?>">
                     <?php foreach ($colItems as $item): ?>
