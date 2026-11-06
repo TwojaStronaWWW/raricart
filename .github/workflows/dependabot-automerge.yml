@@ -1,4 +1,4 @@
-name: Dependabot & Jules Auto-Merge
+name: Dependabot & Multi-Agent Zero-Touch Auto-Merge (A+B+C)
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -31,27 +31,43 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  jules-approve:
-    name: 2. Google Jules PR Safety Check & Auto-Approve
+  ai-agent-approve:
+    name: 2. Multi-Agent PR Safety Check & Auto-Approve (Warianty A + B + C)
     runs-on: ubuntu-latest
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
-      (github.actor == 'google-labs-jules[bot]' || github.event.pull_request.user.login == 'google-labs-jules[bot]')
+      (
+        github.actor == 'copilot-swe-agent[bot]' ||
+        github.event.pull_request.user.login == 'copilot-swe-agent[bot]' ||
+        github.actor == 'claude[bot]' ||
+        github.event.pull_request.user.login == 'claude[bot]' ||
+        github.actor == 'gemini-code-assist[bot]' ||
+        github.event.pull_request.user.login == 'gemini-code-assist[bot]' ||
+        github.actor == 'google-labs-jules[bot]' ||
+        github.event.pull_request.user.login == 'google-labs-jules[bot]' ||
+        (
+          (github.actor == 'github-actions[bot]' || github.event.pull_request.user.login == 'github-actions[bot]') &&
+          (startsWith(github.event.pull_request.head.ref, 'ai-autofix/') ||
+           startsWith(github.event.pull_request.head.ref, 'gemini-cli/') ||
+           startsWith(github.event.pull_request.head.ref, 'claude/'))
+        )
+      )
     steps:
       - name: Weryfikacja ochrony plików krytycznych (Zero-Trust Guard)
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           CHANGED_FILES=$(gh pr view "$PR_NUMBER" --repo "${{ github.repository }}" --json files --jq '.files[].path')
-          echo "Zmienione pliki w PR #${PR_NUMBER}:"
+          echo "Zmienione pliki w PR #${PR_NUMBER} (${PR_AUTHOR}):"
           echo "$CHANGED_FILES"
-          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.gitleaks\.toml|\.github/workflows/(deploy|ai-security-review|dependabot-automerge))'; then
-            echo "::warning::PR od Google Jules modyfikuje chronione pliki CI/CD lub konfigurację sekretów — wymagana ręczna akceptacja właściciela."
+          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.gitleaks\.toml|\.github/workflows/(ci|deploy|ai-security-review|dependabot-automerge))'; then
+            echo "::warning::PR od agenta AI (${PR_AUTHOR}) modyfikuje chronione pliki CI/CD lub konfigurację sekretów — wymagana ręczna akceptacja właściciela."
             exit 0
           fi
-          gh pr review "$PR_NUMBER" --repo "${{ github.repository }}" --approve --body "✅ **Automatyczna akceptacja (Zero-Touch Autopilot):** PR od Google Jules nie narusza chronionych plików wdrożeniowych. Oczekiwanie na zielony wynik *CI & Quality Gate* przed automatycznym scaleniem."
+          gh pr review "$PR_NUMBER" --repo "${{ github.repository }}" --approve --body "✅ **Automatyczna akceptacja (Multi-Agent Zero-Touch Autopilot):** PR od agenta \`${PR_AUTHOR}\` nie narusza chronionych plików wdrożeniowych. Oczekiwanie na zielony wynik *CI & Quality Gate* przed automatycznym scaleniem."
           gh pr merge "$PR_NUMBER" --repo "${{ github.repository }}" --auto --squash --delete-branch || true
 
   automerge-on-ci-success:
@@ -62,18 +78,19 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'pull_request'
     steps:
-      - name: Scalenie zwalidowanego PR od Google Jules lub Dependabot po sukcesie CI
+      - name: Scalenie zwalidowanego PR od Agenta AI (A+B+C) lub Dependabot po sukcesie CI
         env:
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_JSON=$(gh pr list --repo "${{ github.repository }}" --state open --json number,author,isDraft,headRefOid,files --jq ".[] | select(.headRefOid == \"$HEAD_SHA\")")
+          PR_JSON=$(gh pr list --repo "${{ github.repository }}" --state open --json number,author,isDraft,headRefName,headRefOid,files --jq ".[] | select(.headRefOid == \"$HEAD_SHA\")")
           if [ -z "$PR_JSON" ]; then
             echo "Brak otwartego PR dla commita ${HEAD_SHA}."
             exit 0
           fi
           PR_NUMBER=$(echo "$PR_JSON" | jq -r '.number')
           PR_AUTHOR=$(echo "$PR_JSON" | jq -r '.author.login')
+          PR_BRANCH=$(echo "$PR_JSON" | jq -r '.headRefName')
           IS_DRAFT=$(echo "$PR_JSON" | jq -r '.isDraft')
 
           if [ "$IS_DRAFT" = "true" ]; then
@@ -81,13 +98,25 @@ jobs:
             exit 0
           fi
 
-          if [ "$PR_AUTHOR" != "google-labs-jules[bot]" ] && [ "$PR_AUTHOR" != "app/google-labs-jules" ] && [ "$PR_AUTHOR" != "dependabot[bot]" ] && [ "$PR_AUTHOR" != "app/dependabot" ]; then
-            echo "Autor PR #${PR_NUMBER} (${PR_AUTHOR}) nie należy do listy automatycznych botów — pomijam."
+          IS_TRUSTED_BOT="false"
+          case "$PR_AUTHOR" in
+            "dependabot[bot]"|"app/dependabot"|"copilot-swe-agent[bot]"|"app/copilot-swe-agent"|"claude[bot]"|"app/claude"|"gemini-code-assist[bot]"|"app/gemini-code-assist"|"google-labs-jules[bot]"|"app/google-labs-jules")
+              IS_TRUSTED_BOT="true"
+              ;;
+            "github-actions[bot]"|"app/github-actions")
+              if echo "$PR_BRANCH" | grep -E '^(ai-autofix|gemini-cli|claude)/'; then
+                IS_TRUSTED_BOT="true"
+              fi
+              ;;
+          esac
+
+          if [ "$IS_TRUSTED_BOT" != "true" ]; then
+            echo "Autor PR #${PR_NUMBER} (${PR_AUTHOR}, gałąź: ${PR_BRANCH}) nie należy do listy autoryzowanych botów — pomijam."
             exit 0
           fi
 
           CHANGED_FILES=$(echo "$PR_JSON" | jq -r '.files[].path')
-          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.gitleaks\.toml|\.github/workflows/(deploy|ai-security-review|dependabot-automerge))'; then
+          if echo "$CHANGED_FILES" | grep -E '^(\.env|\.gitleaks\.toml|\.github/workflows/(ci|deploy|ai-security-review|dependabot-automerge))'; then
             echo "::warning::PR #${PR_NUMBER} dotyka chronionych plików CI/CD — pomijam automatyczne scalenie."
             exit 0
           fi

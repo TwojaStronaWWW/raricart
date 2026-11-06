@@ -19,7 +19,7 @@ if [[ ! $commit_msg =~ $regex ]]; then
     echo " 🚀 ci:       [opis] - potoki CI/CD i automatyzacja" >&2
     echo " 🧪 test:     [opis] - testy jednostkowe i integracyjne" >&2
     echo "" >&2
-    echo "Przykład: feat(auth): dodaj weryfikację tokenu CSRF" >&2
+    echo "Przykład: feat(nav): dodaj obsługę klawisza escape w menu mobilnym" >&2
     echo "=================================================================" >&2
     exit 1
 fi

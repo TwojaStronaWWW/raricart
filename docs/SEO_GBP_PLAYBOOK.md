@@ -1,6 +1,6 @@
 # PLAYBOOK SEO & WIZYTÓWKA GOOGLE (GOOGLE BUSINESS PROFILE): STANDARD TWOJASTRONAWWW
 
-Kompletna procedura wdrożenia technicznego SEO, indeksacji w Google Search Console, IndexNow API oraz konfiguracji Wizytówki Google (Google Business Profile) dla każdego projektu na bazie `_site-template` (wypracowana produkcyjnie na wdrożeniu Kato Salsa Hub & DancePuls).
+Kompletna procedura wdrożenia technicznego SEO, indeksacji w Google Search Console, IndexNow API oraz konfiguracji Wizytówki Google (Google Business Profile) dla każdego projektu na bazie `_site-template` (wypracowana produkcyjnie na wdrożeniach `katosalsahub.pl`, `fuegolingua.pl`, `raric.art` oraz `radar-p1`).
 
 ---
 

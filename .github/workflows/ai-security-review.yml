@@ -1,4 +1,4 @@
-name: AI Security Review Gate (Claude + VPS AI Router)
+name: AI Security Review & Proactive Autopilot (Claude + Gemini CLI + VPS AI Router)
 
 on:
   pull_request:
@@ -17,26 +17,33 @@ on:
       - '.github/workflows/**'
   issue_comment:
     types: [created]
+  schedule:
+    # Wariant A+B (Następca Google Jules Suggestions): Comiesięczny audyt higieny RFC 9116 / GEO (1. dzień miesiąca o 04:00 UTC)
+    - cron: '0 4 1 * *'
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
   issues: write
 
 concurrency:
-  group: ai-security-review-${{ github.event.pull_request.number || github.event.issue.number }}
+  group: ai-security-review-${{ github.event.pull_request.number || github.event.issue.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   security-audit:
-    name: 🛡️ Niezależny Audyt Bezpieczeństwa PR (Claude / VPS AI)
+    name: 🛡️ Niezależny Audyt Bezpieczeństwa PR (3-Engine Cascade: Claude / Gemini / VPS AI)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: >-
       github.event_name == 'pull_request' ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request != null &&
-       (contains(github.event.comment.body, '@claude review') || contains(github.event.comment.body, '@ai review')))
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+       (contains(github.event.comment.body, '@claude review') ||
+        contains(github.event.comment.body, '@gemini-cli /review') ||
+        contains(github.event.comment.body, '@ai review')))
 
     steps:
       - name: 1. Pobranie kodu repozytorium (bez zapisu poświadczeń)
@@ -45,15 +52,17 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: 2. Wygenerowanie diffu bezpieczeństwa i uruchomienie audytu (Claude Haiku 4.5 Prompt Cache -> VPS AI Router Fallback)
+      - name: 2. Wygenerowanie diffu bezpieczeństwa i uruchomienie 3-silnikowej kaskady audytu (Claude Haiku 4.5 -> Gemini API -> VPS AI Router)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          COMMENT_BODY: ${{ github.event.comment.body || '' }}
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          trap 'rm -f /tmp/claude_payload.json /tmp/vps_payload.json /tmp/pr_full.diff' EXIT INT TERM
+          trap 'rm -f /tmp/claude_payload.json /tmp/gemini_payload.json /tmp/vps_payload.json /tmp/pr_full.diff' EXIT INT TERM
           gh pr diff "$PR_NUMBER" --repo "$REPO" > /tmp/pr_full.diff || true
           PR_DIFF=$(head -n 350 /tmp/pr_full.diff | iconv -f UTF-8 -t UTF-8 -c || true)
           if [ -z "$PR_DIFF" ]; then
@@ -67,8 +76,13 @@ jobs:
 
           REVIEW_BODY=""
           ENGINE_USED=""
+          FORCE_GEMINI="false"
+          if echo "$COMMENT_BODY" | grep -qi '@gemini-cli'; then
+            FORCE_GEMINI="true"
+          fi
 
-          if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+          # Silnik 1 (Wariant A/C): Anthropic Claude Haiku 4.5 (z Prompt Cachingiem)
+          if [ "$FORCE_GEMINI" = "false" ] && [ -n "${ANTHROPIC_API_KEY:-}" ]; then
             echo "Uruchamianie audytu przez Anthropic Claude API (z Prompt Cachingiem)..."
             jq -n \
               --arg rules "$RULES_SUMMARY" \
@@ -101,6 +115,28 @@ jobs:
             fi
           fi
 
+          # Silnik 2 (Wariant B): Natywne Google Gemini CLI / API (następca Google Jules w CI/CD)
+          if [ -z "$REVIEW_BODY" ] && [ -n "${GEMINI_API_KEY:-}" ]; then
+            echo "Uruchamianie audytu przez Google Gemini API (gemini-2.5-flash)..."
+            jq -n \
+              --arg sys "Jesteś Głównym Architektem Bezpieczeństwa ISO 27001 w projekcie TwojaStronaWWW. Wytyczne:\n${RULES_SUMMARY}" \
+              --arg prompt "$PROMPT_TEXT" \
+              '{
+                system_instruction: { parts: [{ text: $sys }] },
+                contents: [{ role: "user", parts: [{ text: $prompt }] }],
+                generationConfig: { temperature: 0.2, maxOutputTokens: 1400 }
+              }' > /tmp/gemini_payload.json
+            GEMINI_RES=$(curl -sS --max-time 25 "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}" \
+              -H "Content-Type: application/json" \
+              --data-binary @/tmp/gemini_payload.json || true)
+            rm -f /tmp/gemini_payload.json
+            REVIEW_BODY=$(echo "$GEMINI_RES" | jq -r '.candidates[0].content.parts[0].text // empty' 2>/dev/null || true)
+            if [ -n "$REVIEW_BODY" ]; then
+              ENGINE_USED="Google Gemini 2.5 Flash (Native CI/CD Agent)"
+            fi
+          fi
+
+          # Silnik 3 (Wariant A): Centralny VPS AI Router (11-Model Cascade Fallback)
           if [ -z "$REVIEW_BODY" ]; then
             echo "Uruchamianie audytu przez centralny VPS AI Router (https://ai.twojastronawww.pl/chat-router.php)..."
             SHORT_DIFF=$(head -n 160 /tmp/pr_full.diff | iconv -f UTF-8 -t UTF-8 -c || true)
@@ -124,8 +160,96 @@ jobs:
           fi
 
           if [ -n "$REVIEW_BODY" ]; then
-            COMMENT_MD=$(printf "### 🛡️ Automatyczny Audyt Bezpieczeństwa PR (\`%s\`)\n\n%s\n\n---\n*Wyzwalacz: zmiana plików krytycznych (\`api/**\`, \`.htaccess\`, \`sw.js\`, \`.github/workflows/**\`) lub komenda \`@claude review\`.*" "$ENGINE_USED" "$REVIEW_BODY")
+            COMMENT_MD=$(printf "### 🛡️ Automatyczny Audyt Bezpieczeństwa PR (\`%s\`)\n\n%s\n\n---\n*Wyzwalacz: zmiana plików krytycznych (\`api/**\`, \`.htaccess\`, \`sw.js\`, \`.github/workflows/**\`) lub komenda \`@claude review\` / \`@gemini-cli /review\` / \`@ai review\`.*" "$ENGINE_USED" "$REVIEW_BODY")
             gh pr comment "$PR_NUMBER" --repo "$REPO" --body "$COMMENT_MD"
           else
             echo "Brak odpowiedzi z bramek AI — pominięto komentarz bez blokowania PR."
           fi
+
+  proactive-maintenance:
+    name: 🤖 Proactive Maintenance Autopilot (Następca Google Jules Suggestions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: >-
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+       (contains(github.event.comment.body, '@ai autofix') || contains(github.event.comment.body, '@gemini-cli /fix')))
+
+    steps:
+      - name: 1. Pobranie repozytorium
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Konfiguracja środowiska Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: 3. Proaktywna kontrola i automatyczne odnowienie RFC 9116 (.well-known/security.txt [REF-06])
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          SEC_FILE=".well-known/security.txt"
+          if [ ! -f "$SEC_FILE" ]; then
+            echo "Brak pliku $SEC_FILE — pomijam."
+            exit 0
+          fi
+
+          NEEDS_RENEWAL=$(node -e '
+            const fs = require("node:fs");
+            const content = fs.readFileSync(".well-known/security.txt", "utf8");
+            const match = content.match(/^Expires:\s*(.+)$/m);
+            if (!match) { console.log("true"); process.exit(0); }
+            const expiresMs = new Date(match[1].trim()).getTime();
+            const thresholdMs = Date.now() + 60 * 24 * 60 * 60 * 1000;
+            console.log(Number.isNaN(expiresMs) || expiresMs < thresholdMs ? "true" : "false");
+          ')
+
+          if [ "$NEEDS_RENEWAL" != "true" ]; then
+            echo "✅ Data Expires w .well-known/security.txt jest ważna przez ponad 60 dni — brak potrzeby otwierania PR."
+            exit 0
+          fi
+
+          NEW_EXPIRES=$(node -e '
+            const nextYear = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+            nextYear.setUTCHours(23, 59, 59, 0);
+            console.log(nextYear.toISOString().replace(".000Z", "Z"));
+          ')
+
+          node -e '
+            const fs = require("node:fs");
+            const file = ".well-known/security.txt";
+            const content = fs.readFileSync(file, "utf8");
+            const updated = content.replace(/^Expires:\s*.+$/m, "Expires: " + process.argv[1]);
+            fs.writeFileSync(file, updated, "utf8");
+          ' "$NEW_EXPIRES"
+
+          npm run check:syntax
+
+          BRANCH_NAME="ai-autofix/security-txt-renewal"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH_NAME"
+          git add "$SEC_FILE"
+          if git diff --cached --quiet; then
+            echo "Brak zmian do zapisania."
+            exit 0
+          fi
+          git commit -m "chore(security): automatyczne przedłużenie ważności .well-known/security.txt [REF-06]"
+          git push --force origin "$BRANCH_NAME"
+
+          EXISTING_PR=$(gh pr list --repo "$REPO" --head "$BRANCH_NAME" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create --repo "$REPO" \
+              --head "$BRANCH_NAME" \
+              --base main \
+              --title "chore(security): automatyczne odnowienie daty Expires w .well-known/security.txt [REF-06]" \
+              --body "🤖 **Proactive Maintenance Autopilot (Następca Google Jules Suggestions):** Automatyczne przedłużenie terminu ważności \`Expires: ${NEW_EXPIRES}\` w pliku \`.well-known/security.txt\` zgodnie z normą RFC 9116 / ISO 27001 (\`[REF-06]\`). PR zostanie automatycznie scalony po pomyślnym przejściu *CI & Quality Gate*."
+          fi
+

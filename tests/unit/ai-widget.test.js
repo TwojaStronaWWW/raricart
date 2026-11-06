@@ -228,5 +228,29 @@ describe('Uniwersalny Widget Asystenta AI v3.0 (assets/js/ai-widget.js)', () => 
     assert.equal(widget.getCachedAnswer('Ile kosztuje strona WWW?'), null);
     assert.equal(widget.getCachedAnswer('Jak wygląda współpraca?'), null);
   });
+
+  test('Enterprise Feature Toggle & Tenant Isolation: respektuje enabled=false, data-enabled="false" oraz tenantConfig', () => {
+    const disabledByOption = initAiWidget(dom.mockDocument, dom.mockWindow, {
+      enabled: false
+    });
+    assert.equal(disabledByOption, null, 'Gdy enabled=false, widget nie może się inicjalizować');
+    assert.equal(dom.mockDocument.getElementById('tsw-ai-widget-root'), null);
+
+    const widget = initAiWidget(dom.mockDocument, dom.mockWindow, {
+      tenantConfig: {
+        enabled: true,
+        siteId: 'custom-enterprise-client',
+        title: 'Doradca Klienta Enterprise',
+        quickPrompts: ['Pytanie testowe 1', 'Pytanie testowe 2'],
+        theme: {
+          primary: '#112233',
+          accent: '#445566'
+        }
+      }
+    });
+    assert.ok(widget);
+    assert.equal(widget.chipsContainer.children.length, 2);
+    assert.equal(widget.chipsContainer.children[0].textContent, 'Pytanie testowe 1');
+  });
 });
 

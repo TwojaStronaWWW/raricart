@@ -368,7 +368,7 @@ export function formatMarkdown(rawText) {
 
   // Klikalne adresy e-mail oraz linki wewnętrzne (#kontakt, salsopedia.html, grafik.html, cennik.html, /pakiety)
   safe = safe.replace(
-    /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+    /(?<![">/@\w.-])([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
     '<a href="mailto:$1" class="tsw-ai-link">$1</a>'
   );
   safe = safe.replace(
@@ -744,8 +744,24 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     doc.querySelector('script[src*="ai-widget.js"]') ||
     doc.querySelector('script[src*="widget.js"]');
 
+  const tenantConfig =
+    (options.tenantConfig && typeof options.tenantConfig === 'object' ? options.tenantConfig : null) ||
+    (win?.__TSW_AI_CONFIG__ && typeof win.__TSW_AI_CONFIG__ === 'object' ? win.__TSW_AI_CONFIG__ : null) ||
+    {};
+
+  // Enterprise Feature Toggle (Opt-In / Opt-Out):
+  const dataEnabledAttr = scriptEl?.getAttribute('data-enabled');
+  if (
+    options.enabled === false ||
+    tenantConfig.enabled === false ||
+    (typeof dataEnabledAttr === 'string' && dataEnabledAttr.toLowerCase() === 'false')
+  ) {
+    return null;
+  }
+
   const siteId = (
     options.siteId ||
+    tenantConfig.siteId ||
     scriptEl?.getAttribute('data-site-id') ||
     'twojastronawww'
   ).toLowerCase();
@@ -756,20 +772,37 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     ? 'http://localhost:8085/chat-router.php'
     : 'https://ai.twojastronawww.pl/chat-router.php';
   const routerUrl =
-    options.routerUrl || scriptEl?.getAttribute('data-router-url') || defaultRouterUrl;
-  const title =
-    options.title || scriptEl?.getAttribute('data-title') || 'Asystent AI';
+    options.routerUrl ||
+    tenantConfig.routerUrl ||
+    scriptEl?.getAttribute('data-router-url') ||
+    defaultRouterUrl;
+  const rawTitle =
+    options.title ||
+    tenantConfig.title ||
+    scriptEl?.getAttribute('data-title') ||
+    'Asystent AI';
+  const title = String(rawTitle)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
   const kbUrl =
     options.kbUrl ||
+    tenantConfig.kbUrl ||
     scriptEl?.getAttribute('data-kb-url') ||
     (siteId === 'katosalsahub' ? 'assets/data/salsopedia.json' : '');
   const kbApiUrl =
     options.kbApiUrl ||
+    tenantConfig.kbApiUrl ||
     scriptEl?.getAttribute('data-kb-api') ||
     (siteId === 'katosalsahub' ? 'assets/php/wiki.php?action=list' : '');
 
-  // Konfiguracja kolorów: atrybuty HTML data-* -> opcje JS -> THEME_PRESETS[siteId] -> zmienne CSS strony
-  const preset = THEME_PRESETS[siteId] || THEME_PRESETS.twojastronawww;
+  // Konfiguracja kolorów: atrybuty HTML data-* -> opcje JS / tenantConfig -> THEME_PRESETS[siteId] -> zmienne CSS strony
+  const preset = {
+    ...(THEME_PRESETS[siteId] || THEME_PRESETS.twojastronawww),
+    ...(tenantConfig.theme && typeof tenantConfig.theme === 'object' ? tenantConfig.theme : {})
+  };
   const themePrimary = options.primaryColor || scriptEl?.getAttribute('data-primary') || preset.primary;
   const themeAccent = options.accentColor || scriptEl?.getAttribute('data-accent') || preset.accent;
   const themeHighlight = options.highlightColor || scriptEl?.getAttribute('data-highlight') || preset.highlight;
@@ -785,7 +818,11 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
   const storageKey = 'tsw_ai_history_' + siteId;
   const cacheStorageKey = 'tsw_ai_cache_' + siteId;
   const cacheTtlMs = Number(options.cacheTtlMs) || 24 * 60 * 60 * 1000;
-  const quickPrompts = QUICK_PROMPTS_MAP[siteId] || QUICK_PROMPTS_MAP.twojastronawww;
+  const quickPrompts =
+    (Array.isArray(options.quickPrompts) && options.quickPrompts.length > 0 ? options.quickPrompts : null) ||
+    (Array.isArray(tenantConfig.quickPrompts) && tenantConfig.quickPrompts.length > 0 ? tenantConfig.quickPrompts : null) ||
+    QUICK_PROMPTS_MAP[siteId] ||
+    QUICK_PROMPTS_MAP.twojastronawww;
 
   const existingGlobalTerms = Array.isArray(win?.__SALSOPEDIA_TERMS__) && win.__SALSOPEDIA_TERMS__.length > 0
     ? win.__SALSOPEDIA_TERMS__
@@ -908,6 +945,10 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
       responseCache = { kbVersion, entries: {} };
     }
     responseCache.kbVersion = kbVersion;
+    const existingKeys = Object.keys(responseCache.entries);
+    if (existingKeys.length >= 50 && !(normQ in responseCache.entries)) {
+      delete responseCache.entries[existingKeys[0]];
+    }
     responseCache.entries[normQ] = {
       answer: String(answer),
       kbVersion,
@@ -1858,7 +1899,7 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
 
     doc.addEventListener?.('submit', (e) => {
       const form = e?.target;
-      if (form && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || form.classList?.contains?.('contact-form'))) {
+      if (form && form.id !== 'tswAiForm' && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || form.classList?.contains?.('contact-form'))) {
         sendAnalyticsBeacon({ type: 'event', event: 'contact_form_submit' });
       }
     });

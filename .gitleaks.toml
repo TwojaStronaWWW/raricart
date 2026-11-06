@@ -15,6 +15,12 @@ description = "Hardcoded Admin Password"
 regex = '''(?i)(admin_secret|admin_pass)\s*[:=]\s*['"][^'"$]{8,}['"]'''
 tags = ["password", "admin"]
 
+[[rules]]
+id = "ntfy-secret-topic"
+description = "Hardcoded Ntfy.sh Secret Topic"
+regex = '''(?i)ntfy_topic\s*[:=]\s*['"][a-z0-9-]+-[a-f0-9]{8,}['"]'''
+tags = ["key", "ntfy"]
+
 [allowlist]
 description = "Allowlist for template examples and tests"
 paths = [
