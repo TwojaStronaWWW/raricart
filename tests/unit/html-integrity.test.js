@@ -82,7 +82,6 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       { name: 'reviews', cls: 'section-reviews' },
       { name: 'about-story', cls: 'section-about-story' },
       { name: 'faq', cls: 'section-faq' },
-      { name: 'pre-cta', cls: 'section-pre-cta' },
       { name: 'contact', cls: 'section-contact' },
     ];
 
@@ -95,8 +94,9 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       });
     }
 
-    it('nie powinien renderować usuniętej sekcji 6 Mocnych Przewag (.section-why-raricart) ani pływającego CTA (#floatingCta)', () => {
+    it('nie powinien renderować usuniętej sekcji 6 Mocnych Przewag (.section-why-raricart), Pre-CTA (.section-pre-cta) ani pływającego CTA (#floatingCta)', () => {
       assert.strictEqual(indexHtml.includes('section-why-raricart'), false);
+      assert.strictEqual(indexHtml.includes('section-pre-cta'), false);
       assert.strictEqual(indexHtml.includes('id="floatingCta"'), false);
     });
 
@@ -106,7 +106,7 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.strictEqual(indexHtml.includes('why-station-badge-floating'), false);
     });
 
-    it('powinien zawierać zaktualizowany copywriting kluczowych sekcji', () => {
+    it('powinien zawierać zaktualizowany copywriting kluczowych sekcji wg wytycznych Emilii', () => {
       assert.ok(indexHtml.includes('Tam, gdzie smak budzi emocje'));
       assert.ok(indexHtml.includes('Więcej niż poczęstunek'));
       assert.ok(indexHtml.includes('WYBIERZ SWOJĄ STACJĘ'));
@@ -114,6 +114,14 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.ok(indexHtml.includes('MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.'));
       assert.ok(indexHtml.includes('DOSTĘPNOŚĆ KALENDARZA'));
       assert.ok(indexHtml.includes('Wesela z klasą'));
+      assert.ok(indexHtml.includes('W BLASKU PRZYJĘĆ'));
+      assert.ok(indexHtml.includes('Zobacz wybrane kadry z naszych realizacji.'));
+      assert.ok(indexHtml.includes('PRZEJDŹ DO GALERII'));
+      assert.ok(indexHtml.includes('ZAUFANIE, KTÓRYM OBDARZYLI NAS KLIENCI.'));
+      assert.ok(indexHtml.includes('WSZYSTKO, CO WARTO WIEDZIEĆ PRZED REZERWACJĄ.'));
+      assert.ok(indexHtml.includes('OPOWIEDZ NAM O SWOIM PRZYJĘCIU.'));
+      assert.ok(indexHtml.includes('ZAPYTAJ O TERMIN I WYCENĘ'));
+      assert.ok(indexHtml.includes('Dziękujemy za wiadomość.'));
       assert.ok(indexHtml.includes('Emilia Samoraj'));
       assert.ok(indexHtml.includes('Jenny Wyderka'));
       assert.ok(indexHtml.includes('Anna Słomka'));
@@ -155,7 +163,10 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       }
     });
 
-    it('formularz powinien posiadać przycisk wysyłki typu submit', () => {
+    it('formularz powinien posiadać id="form", pole honeypot website_check, kontener potwierdzenia oraz przycisk submit', () => {
+      assert.match(indexHtml, /<form[^>]*id="form"[^>]*>/);
+      assert.ok(indexHtml.includes('name="website_check"'), 'Brak pola honeypot website_check');
+      assert.ok(indexHtml.includes('id="formSuccessConfirmation"'), 'Brak kontenera potwierdzenia formSuccessConfirmation');
       assert.match(indexHtml, /<button[^>]*type="submit"[^>]*>/);
     });
   });

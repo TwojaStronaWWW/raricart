@@ -6,6 +6,7 @@ import { initI18n, getCurrentLang, getTranslation, updateLanguage, onLanguageCha
 import { initCookies } from '../../assets/js/modules/cookies.js';
 import { initStationModals } from '../../assets/js/modules/modals.js';
 import { initContactForm } from '../../assets/js/modules/contact.js';
+import { initScrollFeatures } from '../../assets/js/modules/scroll.js';
 import { translations } from '../../assets/js/modules/translations.js';
 
 describe('Moduły Vanilla JavaScript (ES6+)', () => {
@@ -565,6 +566,78 @@ describe('Moduły Vanilla JavaScript (ES6+)', () => {
       // 7. Kliknięcie preCtaCheckBtn
       preCtaBtn.click();
       assert.strictEqual(contactSec.scrolled, true);
+    });
+  });
+
+  describe('Moduł scroll.js (Scroll-Scrubbed Motion Engine & Interactive Triptych V3)', () => {
+    let mockDoc;
+    let mockWin;
+
+    beforeEach(() => {
+      mockDoc = new MockDocument();
+      mockWin = new MockWindow();
+      mockWin.innerHeight = 900;
+      mockWin.scrollY = 450;
+      mockWin.scrollTo = () => {};
+      mockDoc.documentElement = new MockElement('html', 'html');
+      mockDoc.documentElement.scrollHeight = 4500;
+      mockDoc.documentElement.style = {
+        props: {},
+        setProperty(k, v) {
+          this.props[k] = v;
+        }
+      };
+      mockDoc.body.scrollHeight = 4500;
+      globalThis.document = mockDoc;
+      globalThis.window = mockWin;
+      globalThis.requestAnimationFrame = (cb) => cb();
+    });
+
+    it('powinien zainicjalizować interaktywny tryptyk stacji (.is-expanded) oraz obliczyć zmienne scroll-scrubbed (--page-scroll-progress, --scrub-y, --process-fill)', () => {
+      const card1 = new MockElement('st-1', 'article', ['station-card']);
+      const card2 = new MockElement('st-2', 'article', ['station-card']);
+      mockDoc.registerElement(card1);
+      mockDoc.registerElement(card2);
+
+      const makeScrubEl = (id, cls, top, height) => {
+        const el = new MockElement(id, 'section', ['section', cls]);
+        el.style = {
+          props: {},
+          setProperty(k, v) {
+            this.props[k] = v;
+          }
+        };
+        el.getBoundingClientRect = () => ({ top, bottom: top + height, height });
+        mockDoc.registerElement(el);
+        return el;
+      };
+
+      const hero = makeScrubEl('hero', 'hero-split', -180, 600);
+      const why = makeScrubEl('dlaczego-stacja', 'why-station-section', 200, 700);
+      const proc = makeScrubEl('proces', 'process-section', 250, 600);
+      const step1 = new MockElement('step-1', 'div', ['process-step-card']);
+      const step2 = new MockElement('step-2', 'div', ['process-step-card']);
+      mockDoc.registerElement(step1);
+      mockDoc.registerElement(step2);
+
+      initScrollFeatures();
+
+      // Pierwsza karta stacji powinna być domyślnie rozwinięta
+      assert.strictEqual(card1.classList.contains('is-expanded'), true);
+      assert.strictEqual(card2.classList.contains('is-expanded'), false);
+
+      // Najechanie na drugą kartę przełącza aktywną kolumnę tryptyku
+      (card2.listeners.get('mouseenter') || []).forEach(fn => fn());
+      assert.strictEqual(card1.classList.contains('is-expanded'), false);
+      assert.strictEqual(card2.classList.contains('is-expanded'), true);
+
+      // Weryfikacja zmiennych CSS silnika Scroll-Scrubbed Motion
+      assert.ok(mockDoc.documentElement.style.props['--page-scroll-progress']);
+      assert.ok(hero.style.props['--scrub-y']);
+      assert.ok(hero.style.props['--scrub-scale']);
+      assert.ok(why.style.props['--scrub-y']);
+      assert.ok(proc.style.props['--process-fill']);
+      assert.strictEqual(step1.classList.contains('step-active'), true);
     });
   });
 });

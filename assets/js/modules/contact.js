@@ -370,8 +370,12 @@ export function initContactForm() {
 				if (data && data.status === 'success') {
 					formSubmitted = true;
 					lastDraftSignature = '';
-					const successMsg = getTranslation('form.success_msg', 'Zapytanie zostało przesłane! Skontaktujemy się z Tobą w ciągu 24h.');
-					showToast('success', getTranslation('form.submit', 'Wysłano zapytanie'), successMsg);
+					const successTitle = getTranslation('form.success_title', 'Dziękujemy za wiadomość.');
+					const successMsg = getTranslation(
+						'form.success_msg',
+						'Twoje zapytanie do nas dotarło. Sprawdzimy dostępność terminu i w ciągu 24 godzin wrócimy z indywidualną ofertą.'
+					);
+					showToast('success', successTitle, successMsg);
 					if (typeof form.reset === 'function') {
 						form.reset();
 					}
@@ -379,6 +383,19 @@ export function initContactForm() {
 						cb.checked = false;
 					});
 					updateProgress();
+
+					// Wyświetlenie komunikatu potwierdzającego w miejscu formularza
+					const fieldsBox = document.getElementById('contactFormFields');
+					const actionsBox = document.getElementById('contactFormActions');
+					const confirmBox = document.getElementById('formSuccessConfirmation');
+					if (confirmBox) {
+						if (fieldsBox) fieldsBox.style.display = 'none';
+						if (actionsBox) actionsBox.style.display = 'none';
+						if (progressBar && progressBar.parentNode) progressBar.parentNode.style.display = 'none';
+						if (progressText) progressText.style.display = 'none';
+						confirmBox.hidden = false;
+						confirmBox.style.display = 'flex';
+					}
 				} else {
 					formSubmitted = false;
 					showToast('error', 'Błąd', (data && data.message) || 'Wystąpił błąd podczas wysyłania');

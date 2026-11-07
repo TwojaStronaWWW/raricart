@@ -142,7 +142,7 @@ export function initGallery() {
 		}
 	});
 
-	// Parallax scroll calculations
+	// Parallax scroll calculations (Oryginalne pływające / latające zdjęcia z opcji początkowej)
 	function updateGalleryParallax() {
 		const parallaxColumns = document.querySelectorAll('.gallery-column.parallax');
 		if (gallerySection && parallaxColumns.length > 0) {
@@ -242,11 +242,6 @@ export function initGallery() {
 						galleryImages[idx] = src;
 					});
 
-					const countBadge = document.querySelector('.realizations-count');
-					if (countBadge) {
-						countBadge.textContent = `(${images.length})`;
-					}
-
 					const maxDisplay = 8;
 					const displayImages = images.slice(0, maxDisplay);
 
@@ -270,6 +265,7 @@ export function initGallery() {
 
 						div.addEventListener('click', () => openGalleryModal(i));
 					});
+					updateGalleryParallax();
 				})
 				.catch(() => {});
 		}
