@@ -126,7 +126,8 @@
 	--page-scroll-progress: 0%;
 	--scrub-y: 0px;
 	--scrub-scale: 1.02;
-	--process-fill: 35%;
+	--process-fill: 15%;
+	--process-progress: 15%;
 
 	/* --- Z-Index Layering --- */
 	--z-video: 0;
@@ -1325,7 +1326,7 @@ video::-webkit-media-text-track-display {
 	left: 50%;
 	width: 1px;
 	transform: translateX(-50%);
-	background: var(--color-border);
+	background: var(--color-hairline-strong);
 	z-index: 1;
 	pointer-events: none;
 }
@@ -1337,12 +1338,12 @@ video::-webkit-media-text-track-display {
 	top: 0;
 	left: 50%;
 	width: 2px;
-	height: var(--process-fill, 35%);
+	height: var(--process-fill, var(--process-progress, 15%));
 	transform: translateX(-50%);
 	background: linear-gradient(180deg, var(--color-accent-dark) 0%, var(--color-gold) 100%);
 	z-index: 2;
 	pointer-events: none;
-	transition: height 0.25s var(--ease-out-expo);
+	transition: height 0.14s var(--ease-out-expo);
 }
 
 .process-step-card {
@@ -1396,7 +1397,7 @@ video::-webkit-media-text-track-display {
 	height: 38px;
 	border-radius: 50%;
 	background: var(--color-surface-warm);
-	border: 1px solid var(--color-border);
+	border: 1px solid var(--color-hairline-strong);
 	color: var(--color-text-dark);
 	font-family: var(--font-secondary);
 	font-size: 0.95rem;
@@ -1404,7 +1405,12 @@ video::-webkit-media-text-track-display {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition: var(--transition-fast);
+	transition:
+		background-color 0.3s var(--ease-out-expo),
+		color 0.3s var(--ease-out-expo),
+		border-color 0.3s var(--ease-out-expo),
+		transform 0.3s var(--ease-out-expo),
+		box-shadow 0.3s var(--ease-out-expo);
 	z-index: 4;
 }
 
@@ -1421,6 +1427,7 @@ video::-webkit-media-text-track-display {
 	border-color: var(--color-gold);
 	background: var(--color-text-dark);
 	color: var(--color-white);
+	box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.16);
 	transform: scale(1.08);
 }
 

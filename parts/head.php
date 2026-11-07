@@ -87,6 +87,21 @@
     <link rel="preload" href="<?php echo get_val('offer_modals.cheese', 'https://media.raricart.pl/gallery/cdd87e53948f5762_migrated.webp'); ?>" as="image" type="image/webp">
 
     <!-- Scripts -->
+    <?php
+    $jsModulesDir = __DIR__ . '/../assets/js/modules';
+    $jsModuleFiles = ['translations.js', 'i18n.js', 'nav.js', 'modals.js', 'gallery.js', 'contact.js', 'cookies.js', 'scroll.js', 'utils.js'];
+    $maxJsMtime = @filemtime(__DIR__ . '/../assets/js/script.js') ?: 1;
+    $importMapEntries = [];
+    foreach ($jsModuleFiles as $modFile) {
+        $modPath = $jsModulesDir . '/' . $modFile;
+        $mtime = @filemtime($modPath) ?: $maxJsMtime;
+        if ($mtime > $maxJsMtime) {
+            $maxJsMtime = $mtime;
+        }
+        $importMapEntries['/assets/js/modules/' . $modFile] = '/assets/js/modules/' . $modFile . '?v=' . $mtime;
+    }
+    ?>
+    <script type="importmap"><?php echo json_encode(['imports' => $importMapEntries], JSON_UNESCAPED_SLASHES); ?></script>
 
     <script type="application/ld+json">
     {

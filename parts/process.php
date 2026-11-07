@@ -15,7 +15,7 @@
         <!-- 5 Kroków Procesu -->
         <div class="process-steps">
             <!-- Krok 1 -->
-            <div class="process-step-card">
+            <div class="process-step-card step-active">
                 <div class="step-card-top">
                     <span class="step-number">01</span>
                     <div class="step-icon" aria-hidden="true">

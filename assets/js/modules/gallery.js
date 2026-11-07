@@ -252,18 +252,25 @@ export function initGallery() {
 						const div = document.createElement('div');
 						div.className = 'gallery-item in-view';
 						div.setAttribute('data-index', i);
+						div.setAttribute('role', 'button');
+						div.setAttribute('tabindex', '0');
+						div.setAttribute('aria-label', 'Powiększ zdjęcie realizacji ' + (i + 1));
 
 						const img = document.createElement('img');
 						img.src = src;
 						img.loading = 'lazy';
 						img.alt = 'Realizacja Raricart ' + (i + 1);
-						img.style.width = '100%';
-						img.style.display = 'block';
 
 						div.appendChild(img);
 						col.appendChild(div);
 
 						div.addEventListener('click', () => openGalleryModal(i));
+						div.addEventListener('keydown', e => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								openGalleryModal(i);
+							}
+						});
 					});
 					updateGalleryParallax();
 				})

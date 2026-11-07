@@ -44,6 +44,7 @@ export function initScrollFeatures() {
 	const heroSection = document.querySelector('.hero-split');
 	const whySection = document.querySelector('.why-station-section');
 	const processSection = document.querySelector('.process-section');
+	const processSteps = document.querySelector('.process-steps');
 	const processCards = document.querySelectorAll('.process-step-card');
 	const aboutSection = document.querySelector('.section-about-story');
 
@@ -96,26 +97,42 @@ export function initScrollFeatures() {
 			}
 		}
 
-		// Process Vertical Culinary Thread progress
-		if (processSection && processSection.style && typeof processSection.getBoundingClientRect === 'function') {
-			const rect = processSection.getBoundingClientRect();
-			if (rect.bottom > 0 && rect.top < vh) {
-				const rawProgress = (vh * 0.78 - rect.top) / Math.max(1, rect.height * 0.82);
-				const clamped = Math.min(1, Math.max(0.12, rawProgress));
-				const pct = `${(clamped * 100).toFixed(1)}%`;
+		// Process Vertical Culinary Thread progress (V7 exact axis geometry + MockDOM fallback)
+		const processTrack = processSteps || processSection;
+		if (processTrack && typeof processTrack.getBoundingClientRect === 'function') {
+			const rect = processTrack.getBoundingClientRect();
+			const triggerPoint = vh * 0.64;
+			const rawProgress = (triggerPoint - rect.top) / Math.max(1, rect.height);
+			const clamped = Math.min(1, Math.max(0.15, rawProgress));
+			const pct = `${(clamped * 100).toFixed(1)}%`;
+
+			if (processSection && processSection.style && typeof processSection.style.setProperty === 'function') {
 				processSection.style.setProperty('--process-fill', pct);
 				processSection.style.setProperty('--process-progress', pct);
+			}
+			if (processSteps && processSteps.style && typeof processSteps.style.setProperty === 'function') {
+				processSteps.style.setProperty('--process-fill', pct);
+				processSteps.style.setProperty('--process-progress', pct);
+			}
 
-				if (processCards.length > 0) {
-					const activeThreshold = Math.ceil(clamped * processCards.length);
-					processCards.forEach((card, idx) => {
-						if (idx < activeThreshold) {
+			if (processCards.length > 0) {
+				const goldLineTipY = rect.top + clamped * rect.height;
+				const activeThreshold = Math.ceil(clamped * processCards.length);
+				processCards.forEach((card, idx) => {
+					if (typeof card.getBoundingClientRect === 'function') {
+						const cardRect = card.getBoundingClientRect();
+						const circleNodeY = cardRect.top + 24;
+						if (idx === 0 || goldLineTipY >= circleNodeY) {
 							card.classList.add('step-active');
 						} else {
 							card.classList.remove('step-active');
 						}
-					});
-				}
+					} else if (idx < activeThreshold) {
+						card.classList.add('step-active');
+					} else {
+						card.classList.remove('step-active');
+					}
+				});
 			}
 		}
 

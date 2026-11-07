@@ -84,7 +84,8 @@
     </footer>
 
     <!-- Scripts (Modular Vanilla JS ES6+) -->
-    <script type="module" src="/assets/js/script.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/script.js'); ?>" data-cfasync="false"></script>
+    <?php $footerScriptMtime = $maxJsMtime ?? (@filemtime(__DIR__ . '/../assets/js/script.js') ?: 1); ?>
+    <script type="module" src="/assets/js/script.js?v=<?php echo $footerScriptMtime; ?>" data-cfasync="false"></script>
     <script type="module" src="/assets/js/ai-widget.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/ai-widget.js'); ?>" data-cfasync="false" data-site-id="raricart" data-title="Asystent Raricart"></script>
   <!-- [REF-02] Speculation Rules API (Web Platform Baseline): natychmiastowa nawigacja 0 ms bez SPA przy najechaniu kursorem -->
   <script type="speculationrules">

@@ -119,9 +119,26 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.ok(indexHtml.includes('PRZEJDŹ DO GALERII'));
       assert.ok(indexHtml.includes('ZAUFANIE, KTÓRYM OBDARZYLI NAS KLIENCI.'));
       assert.ok(indexHtml.includes('WSZYSTKO, CO WARTO WIEDZIEĆ PRZED REZERWACJĄ.'));
+      assert.ok(indexHtml.includes('Masz inne pytanie przed rezerwacją?'));
+      assert.strictEqual(indexHtml.includes('Chętnie podpowiemy, która stacja sprawdzi się najlepiej'), false);
       assert.ok(indexHtml.includes('OPOWIEDZ NAM O SWOIM PRZYJĘCIU.'));
+      assert.ok(indexHtml.includes('Imię i nazwisko *'));
+      assert.ok(indexHtml.includes('E-mail *'));
+      assert.ok(indexHtml.includes('Data przyjęcia *'));
+      assert.ok(indexHtml.includes('Miejsce przyjęcia *'));
+      assert.ok(indexHtml.includes('Liczba gości *'));
+      assert.ok(indexHtml.includes('Rodzaj przyjęcia *'));
+      assert.ok(indexHtml.includes('Wybierz z listy...'));
+      assert.ok(indexHtml.includes('Które stoisko Cię interesuje? *'));
+      assert.ok(indexHtml.includes('Mini pancakes'));
+      assert.ok(indexHtml.includes('Lody włoskie'));
+      assert.ok(indexHtml.includes('Deska serów i wędlin'));
+      assert.ok(indexHtml.includes('Jeszcze nie wiem / do ustalenia'));
+      assert.ok(indexHtml.includes('Dodatkowe informacje (opcjonalnie)'));
+      assert.ok(indexHtml.includes('Styl przyjęcia, preferowane godziny serwisu lub dodatkowe pytania...'));
       assert.ok(indexHtml.includes('ZAPYTAJ O TERMIN I WYCENĘ'));
       assert.ok(indexHtml.includes('Dziękujemy za wiadomość.'));
+      assert.ok(indexHtml.includes('process-step-card step-active'));
       assert.ok(indexHtml.includes('Emilia Samoraj'));
       assert.ok(indexHtml.includes('Jenny Wyderka'));
       assert.ok(indexHtml.includes('Anna Słomka'));
@@ -147,7 +164,8 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
 
       assert.ok(scriptPos !== -1, 'Brak skryptu script.js');
       assert.ok(scriptPos < bodyEndPos, 'script.js powinien być umieszczony przed zamknięciem body');
-      assert.match(indexHtml, /<script\s+type="module"\s+src="[^"]*\/assets\/js\/script\.js/);
+      assert.match(indexHtml, /<script\s+type="importmap">.*\/assets\/js\/modules\/scroll\.js\?v=\d+.*<\/script>/s);
+      assert.match(indexHtml, /<script\s+type="module"\s+src="[^"]*\/assets\/js\/script\.js\?v=\d+"/);
       assert.match(indexHtml, /<script\s+type="module"\s+src="[^"]*\/assets\/js\/ai-widget\.js[^"]*"[^>]*data-site-id="raricart"/);
     });
   });
