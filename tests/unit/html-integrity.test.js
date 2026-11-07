@@ -111,7 +111,7 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.ok(indexHtml.includes('Więcej niż poczęstunek'));
       assert.ok(indexHtml.includes('WYBIERZ SWOJĄ STACJĘ'));
       assert.ok(indexHtml.includes('WYCEŃ PAKIET STACJI'));
-      assert.ok(indexHtml.includes('MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.'));
+      assert.ok(indexHtml.includes('ZAMIAST KLASYCZNEGO BUFETU.<br>MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.'));
       assert.ok(indexHtml.includes('DOSTĘPNOŚĆ KALENDARZA'));
       assert.ok(indexHtml.includes('Wesela z klasą'));
       assert.ok(indexHtml.includes('W BLASKU PRZYJĘĆ'));

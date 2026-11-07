@@ -1188,12 +1188,14 @@ video::-webkit-media-text-track-display {
 
 .why-station-title {
 	font-family: var(--font-secondary);
-	font-size: var(--font-size-h2);
+	font-size: clamp(1.25rem, 1.85vw, 1.7rem);
 	color: var(--color-text-dark);
 	font-weight: 600;
-	line-height: 1.1;
+	line-height: 1.25;
 	margin-bottom: 1.35rem;
-	letter-spacing: -0.025em;
+	letter-spacing: -0.02em;
+	text-wrap: nowrap;
+	white-space: nowrap;
 }
 
 .why-station-intro {
@@ -3589,6 +3591,11 @@ footer {
 	.stations-footer-btn {
 		width: 100%;
 		text-align: center;
+	}
+
+	.why-station-title {
+		font-size: clamp(0.95rem, 4.1vw, 1.45rem);
+		white-space: nowrap;
 	}
 
 	.why-station-pillar {
