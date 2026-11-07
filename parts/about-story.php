@@ -27,30 +27,27 @@ $about_story_img = function_exists('get_val') ? get_val('about_image', 'https://
 
         <!-- Content Column: Osobista, autentyczna opowieść założycielki -->
         <div class="about-story-content">
-            <span class="about-story-badge" data-i18n="about_story.badge">LUDZIE ZA STACJĄ</span>
-            <h2 class="about-story-title" data-i18n="about_story.title">Cześć, tu Raricart.</h2>
+            <span class="about-story-badge" data-i18n="about_story.badge">O NAS</span>
+            <h2 class="about-story-title" data-i18n="about_story.title">POZNAJMY SIĘ BLIŻEJ.</h2>
             
             <div class="about-story-text">
                 <p class="about-lead" data-i18n="about_story.lead">
-                    Raricart powstało z prostego pomysłu: żeby jedzenie podczas wydarzenia było czymś więcej niż tylko poczęstunkiem.
+                    Tworząc Raricart, chciałam wprowadzić na przyjęcia to, co sama cenię najbardziej: połączenie świetnego smaku, estetycznie podanych porcji i swobodnej atmosfery.
                 </p>
                 <p data-i18n="about_story.p1">
-                    Chciałam stworzyć stacje, które przyciągają ludzi, dają im możliwość wyboru i jednocześnie pięknie wpisują się w charakter wydarzenia.
+                    Zależało mi na formie, która wnosi więcej lekkości. Nasze stoiska zaprojektowałam tak, by dyskretnie dopełniały wystrój uroczystości i pozwalały każdemu skomponować porcję dokładnie tak, jak lubi. Sama dbam o dobór składników i spójny wygląd każdego elementu tak, by stanowisko od początku do samego końca serwisu było pełne i prezentowało się świeżo.
                 </p>
                 <p data-i18n="about_story.p2">
-                    Dlatego każdą realizację traktuję jako połączenie dobrego jedzenia, estetyki i świetnej obsługi. Dziś Raricart pojawia się na weselach, eventach firmowych i prywatnych przyjęciach.
+                    Za każdą realizacją stoję osobiście wraz z zespołem, który dzieli moje podejście do jakości i kultury pracy. Od naszej pierwszej rozmowy aż po zakończenie serwisu czuwam nad każdym szczegółem, zostawiając Ci przestrzeń na spokojne celebrowanie chwili z bliskimi.
                 </p>
-                <blockquote class="about-story-quote">
-                    <p data-i18n="about_story.quote">„A moim celem za każdym razem jest ten sam: żeby Twoi goście powiedzieli: «Wow, ale to było dobre».”</p>
-                </blockquote>
             </div>
 
             <!-- Founder Profile & CTA Action -->
             <div class="about-story-footer">
                 <div class="about-founder-profile">
                     <div class="about-founder-info">
-                        <span class="about-founder-name">Katarzyna</span>
-                        <span class="about-founder-role" data-i18n="about_story.role">Założycielka Raricart & Pasjonatka Estetyki Kulinariów</span>
+                        <span class="about-founder-name">Emilia</span>
+                        <span class="about-founder-role" data-i18n="about_story.role">Założycielka Raricart</span>
                     </div>
                 </div>
                 <div class="about-story-cta">
