@@ -5,10 +5,10 @@
     <div class="contact-header-box">
         <span class="contact-badge" data-i18n="contact.badge">WYCENA I REZERWACJA</span>
         <h2 class="contact-title" data-i18n="contact.title">OPOWIEDZ NAM O SWOIM PRZYJĘCIU.</h2>
-        <div class="progress-container">
+        <div class="progress-container" hidden>
             <div id="form-progress"></div>
         </div>
-        <p id="progress-text" class="progress-text" data-i18n="form.progress_start">Wypełnij pola poniżej (zajmie to mniej niż minutę)...</p>
+        <p id="progress-text" class="progress-text" data-i18n="form.progress_start" hidden>Wypełnij pola poniżej (zajmie to mniej niż minutę)...</p>
     </div>
 
     <form id="form" class="contact-form" novalidate>
@@ -83,7 +83,7 @@
                     </label>
                     <label class="checkbox-item">
                         <input type="checkbox" name="stations" value="nie_wiem">
-                        <span data-i18n="form.stations_advise">Nie wiem jeszcze / chcę doradztwa</span>
+                        <span data-i18n="form.stations_advise">Jeszcze nie wiem / do ustalenia</span>
                     </label>
                 </div>
             </div>
@@ -91,7 +91,7 @@
             <!-- Row 6: Message -->
             <div class="form-group full-width">
                 <label for="message" data-i18n="form.message">Dodatkowe informacje (opcjonalnie)</label>
-                <textarea id="message" name="message" rows="3" placeholder="Opisz krótko harmonogram, motyw przewodni lub zadaj pytanie..." data-i18n-placeholder="form.message_ph"></textarea>
+                <textarea id="message" name="message" rows="3" placeholder="Styl przyjęcia, preferowane godziny serwisu lub dodatkowe pytania..." data-i18n-placeholder="form.message_ph"></textarea>
             </div>
         </div>
 
