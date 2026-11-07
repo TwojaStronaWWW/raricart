@@ -56,8 +56,8 @@ export const translations = {
 			},
 			why_station: {
 				stat_label: 'Na oczach gości',
-				badge: 'Dlaczego warto wybrać mobilną stację? · ZAMIAST KLASYCZNEGO BUFETU.',
-				title: 'MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.',
+				badge: 'Dlaczego warto wybrać mobilną stację?',
+				title: 'ZAMIAST KLASYCZNEGO BUFETU.<br>MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.',
 				intro: 'Nowoczesne przyjęcia odchodzą od ciężkich, zastawionych stołów na rzecz lżejszych form. Nasze stanowisko wnosi na salę świeżość, ruch i dyskretną obsługę przez cały czas trwania serwisu.',
 				pillar1_title: 'PERFEKCYJNA EKSPOZYCJA',
 				pillar1_desc: 'Na bieżąco uzupełniamy produkty i dbamy o porządek, dzięki czemu nawet pod koniec wieczoru strefa wygląda tak samo apetycznie, jak na samym początku.',

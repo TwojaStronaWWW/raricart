@@ -1,15 +1,15 @@
 {
-    "about_image": "https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp",
+    "about_image": "https://media.raricart.pl/content/about_emilia.webp",
     "hero_video": "https://media.raricart.pl/content/hero.mp4",
     "offer_cards": {
-        "pancakes": "https://media.raricart.pl/gallery/7e983f317a6f7fcd_migrated.webp",
-        "icecream": "https://media.raricart.pl/gallery/5164c04607df0960_migrated.webp",
-        "cheese": "https://media.raricart.pl/gallery/09e3cc5855e0b574_migrated.webp"
+        "pancakes": "https://media.raricart.pl/content/img_1794078701_f393282a.webp",
+        "icecream": "https://media.raricart.pl/content/card_icecream.webp",
+        "cheese": "https://media.raricart.pl/content/card_cheese.webp"
     },
     "offer_modals": {
-        "pancakes": "https://media.raricart.pl/gallery/6d13d603eaeb8d57_migrated.webp",
-        "icecream": "https://media.raricart.pl/gallery/9b9579c8c4ed20b2_migrated.webp",
-        "cheese": "https://media.raricart.pl/gallery/cdd87e53948f5762_migrated.webp"
+        "pancakes": "https://media.raricart.pl/content/img_1794078785_a3749c83.webp",
+        "icecream": "https://media.raricart.pl/content/modal_icecream.webp",
+        "cheese": "https://media.raricart.pl/content/modal_cheese.webp"
     },
     "offer_main_image": "https://media.raricart.pl/gallery/b8135a7105f1d9d0_migrated.webp",
     "gallery_bg": "https://media.raricart.pl/gallery/5ee853579503af51_migrated.webp",

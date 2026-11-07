@@ -14,8 +14,8 @@ $why_station_img = function_exists('get_val') ? get_val('offer_main_image', 'htt
         </div>
 
         <div class="why-station-content">
-            <span class="why-station-badge" data-i18n="why_station.badge">Dlaczego warto wybrać mobilną stację? · ZAMIAST KLASYCZNEGO BUFETU.</span>
-            <h2 class="why-station-title" data-i18n="why_station.title">MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.</h2>
+            <span class="why-station-badge" data-i18n="why_station.badge">Dlaczego warto wybrać mobilną stację?</span>
+            <h2 class="why-station-title" data-i18n="why_station.title">ZAMIAST KLASYCZNEGO BUFETU.<br>MIEJSCE, KTÓRE PRZYCIĄGA GOŚCI.</h2>
             <p class="why-station-intro" data-i18n="why_station.intro">
                 Nowoczesne przyjęcia odchodzą od ciężkich, zastawionych stołów na rzecz lżejszych form. Nasze stanowisko wnosi na salę świeżość, ruch i dyskretną obsługę przez cały czas trwania serwisu.
             </p>
