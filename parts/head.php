@@ -115,60 +115,29 @@
       },
       "telephone": "+48883392688",
       "email": "kontakt@raricart.pl",
-      "priceRange": "3000 PLN - 20030 PLN",
       "servesCuisine": ["Desserts", "Ice Cream", "Pancakes", "Cheese Boards", "Live Cooking"],
       "url": "https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'] ?? 'raricart.pl'); ?>",
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
-        "name": "Pakiety Mobilnych Stacji Gastronomicznych Raricart",
+        "name": "Mobilne Stanowiska Kulinarne Raricart",
         "itemListElement": [
           {
             "@type": "Offer",
-            "name": "Stacja Lody Włoskie Live Station",
-            "description": "Kremowe lody włoskie serwowane na żywo z bogatym wyborem owoców, sosów i chrupiących posypek (od 50 do 150+ osób).",
-            "priceSpecification": {
-              "@type": "PriceSpecification",
-              "minPrice": "3000",
-              "maxPrice": "5550",
-              "priceCurrency": "PLN"
-            },
-            "url": "https://raricart.pl/pakiety"
+            "name": "Lody włoskie",
+            "description": "Aksamitne lody o smaku śmietankowym, kręcone na bieżąco podczas przyjęcia ze strefą dodatków (sosy, polewy, posypki i owoce). Wycena indywidualna.",
+            "url": "https://raricart.pl/#oferta"
           },
           {
             "@type": "Offer",
-            "name": "Stacja Mini Pancakes Live Station",
-            "description": "Ciepłe, złociste mini naleśniczki wypiekane na żywo przy gościach z owocami, kremami czekoladowymi i posypkami (od 50 do 150+ osób).",
-            "priceSpecification": {
-              "@type": "PriceSpecification",
-              "minPrice": "3150",
-              "maxPrice": "5850",
-              "priceCurrency": "PLN"
-            },
-            "url": "https://raricart.pl/pakiety"
+            "name": "Mini pancakes",
+            "description": "Gorące, puszyste placuszki wypiekane na miejscu na oczach gości z owocami, sosami i chrupiącymi dodatkami. Wycena indywidualna.",
+            "url": "https://raricart.pl/#oferta"
           },
           {
             "@type": "Offer",
-            "name": "Stacja Deska Serów i Wędlin Live Station",
-            "description": "Strefa degustacyjna obejmująca 12 wyselekcjonowanych pozycji włoskich serów i dojrzewających wędlin premium do samodzielnego komponowania mini desek (od 50 do 150+ osób).",
-            "priceSpecification": {
-              "@type": "PriceSpecification",
-              "minPrice": "3250",
-              "maxPrice": "6300",
-              "priceCurrency": "PLN"
-            },
-            "url": "https://raricart.pl/pakiety"
-          },
-          {
-            "@type": "Offer",
-            "name": "Pakiet Kompleksowy 3 Stanowiska (Mini Pancakes + Lody Włoskie + Deska Serów)",
-            "description": "Pełna strefa live food z rabatem -10% dla 50–200 osób.",
-            "priceSpecification": {
-              "@type": "PriceSpecification",
-              "minPrice": "8870",
-              "maxPrice": "20030",
-              "priceCurrency": "PLN"
-            },
-            "url": "https://raricart.pl/pakiety"
+            "name": "Deska serów i wędlin",
+            "description": "Bogato zaaranżowana strefa wyselekcjonowanych serów, dojrzewających włoskich wędlin oraz świeżych owoców, orzechów, oliwek i konfitur. Wycena indywidualna.",
+            "url": "https://raricart.pl/#oferta"
           }
         ]
       }

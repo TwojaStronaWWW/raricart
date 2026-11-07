@@ -1,0 +1,66 @@
+{
+  "enabled": true,
+  "siteId": "raricart",
+  "title": "Doradca Eventowy Raricart",
+  "routerUrl": "https://ai.twojastronawww.pl/chat-router.php",
+  "theme": {
+    "primary": "var(--color-text-dark, #3d4a3a)",
+    "accent": "var(--color-accent-dark, #6b7d63)",
+    "highlight": "var(--color-gold, #d4af37)",
+    "bg": "#1c241b",
+    "surface": "#283326",
+    "text": "#f5f1eb",
+    "muted": "#c2cbbd",
+    "onPrimary": "#ffffff"
+  },
+  "quickPrompts": [
+    "Jak wygląda wycena i rezerwacja terminu?",
+    "Czy można połączyć kilka stoisk na jednym przyjęciu?",
+    "Czego potrzebujecie na miejscu, aby rozstawić stoisko?",
+    "Czy dojeżdżacie poza Śląsk i Małopolskę?"
+  ],
+  "fallbackFaq": [
+    {
+      "id": "01",
+      "category": "LICZBA GOŚCI",
+      "question": "Na jaką liczbę gości sprawdzi się stoisko Raricart?",
+      "answer": "Obsługujemy zarówno kameralne przyjęcia na 20–30 osób, jak i duże wesela oraz spotkania firmowe. Nasze stoiska są przystosowane do sprawnej pracy na żywo, dzięki czemu wydawanie porcji przebiega płynnie, a goście nie czekają w kolejkach. Czas trwania serwisu oraz zakres oferty zawsze dopasowujemy indywidualnie do planowanej liczby uczestników."
+    },
+    {
+      "id": "02",
+      "category": "ORGANIZACJA NA WESELU",
+      "question": "W jakich godzinach najlepiej zaplanować serwis i jak wygląda montaż w trakcie przyjęcia?",
+      "answer": "Godziny pracy stoiska dobieramy wspólnie do harmonogramu uroczystości – najczęściej są to godziny popołudniowe lub wieczorne, a także drugi dzień wesela. Wszystkie kwestie techniczne możemy ustalić bezpośrednio z managerem sali lub koordynatorem, a samo przygotowanie stanowiska przebiega cicho i dyskretnie, bez zakłócania przebiegu przyjęcia."
+    },
+    {
+      "id": "03",
+      "category": "DOJAZD",
+      "question": "Czy dojeżdżacie poza Śląsk i Małopolskę?",
+      "answer": "Tak, realizujemy zamówienia w całej Polsce. Na co dzień działamy głównie na Śląsku i w Małopolsce, ale regularnie pojawiamy się również na przyjęciach we Wrocławiu, Warszawie, Łodzi, Poznaniu oraz w mniejszych miejscowościach. Koszt transportu zawsze obliczamy indywidualnie na podstawie lokalizacji i od razu uwzględniamy go w wycenie."
+    },
+    {
+      "id": "04",
+      "category": "ŁĄCZENIE STOISK",
+      "question": "Czy można połączyć kilka stoisk na jednym przyjęciu?",
+      "answer": "Tak, możesz dowolnie połączyć dwa lub trzy stoiska na jednym przyjęciu, zestawiając propozycje słodkie z wytrawnymi. Wszystkie nasze stanowiska są utrzymane w tej samej jasnej stylistyce, dzięki czemu ustawione obok siebie tworzą spójną i elegancką całość."
+    },
+    {
+      "id": "05",
+      "category": "MIEJSCE I PRĄD",
+      "question": "Czego potrzebujecie na miejscu, aby rozstawić stoisko?",
+      "answer": "Wystarczy nam około 2 × 2 m lub 3 × 3 m równej powierzchni – w sali, na tarasie, pod namiotem lub w ogrodzie – oraz dostęp do standardowego gniazdka 230 V. Nie wymagamy zaplecza kuchennego ani dostępu do bieżącej wody, ponieważ nasze stanowiska są w pełni samowystarczalne."
+    },
+    {
+      "id": "06",
+      "category": "OBSŁUGA I SERWIS",
+      "question": "Czy zapewniacie pełną obsługę, naczynia i sprzątanie po serwisie?",
+      "answer": "Tak, kompleksowo dbamy o cały przebieg serwisu. W cenie zapewniamy transport, montaż stoiska, obsługę przez cały czas trwania wydarzenia, wszystkie składniki i dodatki, a także estetyczne naczynia, sztućce oraz serwetki. Po zakończeniu pracy sprawnie demontujemy stanowisko i pozostawiamy po sobie nienaganny porządek."
+    },
+    {
+      "id": "07",
+      "category": "WYCENA I REZERWACJA",
+      "question": "Jak wygląda wycena i rezerwacja terminu?",
+      "answer": "Każdą wycenę przygotowujemy indywidualnie – obejmuje ona pełny koszt usługi, bez ukrytych opłat. Kwota zależy od wybranego stoiska, liczby gości, czasu pracy oraz miejsca przyjęcia. Po wysłaniu formularza kontaktowego w ciągu 24 godzin otrzymasz od nas konkretną ofertę, a sam termin rezerwujemy po jej akceptacji i wpłacie zaliczki."
+    }
+  ]
+}
