@@ -44,5 +44,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 7. Przewijanie do sekcji i pływające CTA
 	initScrollFeatures();
 });
-// v2026.11.07.emilia-master-v2
+// v2026.11.07.emilia-master-v3
 

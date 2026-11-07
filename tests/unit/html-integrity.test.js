@@ -118,6 +118,9 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.ok(indexHtml.includes('Zobacz wybrane kadry z naszych realizacji.'));
       assert.ok(indexHtml.includes('PRZEJDŹ DO GALERII'));
       assert.ok(indexHtml.includes('ZAUFANIE, KTÓRYM OBDARZYLI NAS KLIENCI.'));
+      assert.ok(indexHtml.includes('POZNAJMY SIĘ BLIŻEJ.'));
+      assert.ok(indexHtml.includes('Tworząc Raricart, chciałam wprowadzić na przyjęcia to, co sama cenię najbardziej'));
+      assert.ok(indexHtml.includes('Założycielka Raricart'));
       assert.ok(indexHtml.includes('WSZYSTKO, CO WARTO WIEDZIEĆ PRZED REZERWACJĄ.'));
       assert.ok(indexHtml.includes('Masz inne pytanie przed rezerwacją?'));
       assert.strictEqual(indexHtml.includes('Chętnie podpowiemy, która stacja sprawdzi się najlepiej'), false);
