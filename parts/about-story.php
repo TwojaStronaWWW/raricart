@@ -42,22 +42,13 @@ $about_story_img = function_exists('get_val') ? get_val('about_image', 'https://
                 </p>
             </div>
 
-            <!-- Founder Profile & CTA Action -->
+            <!-- Founder Profile -->
             <div class="about-story-footer">
                 <div class="about-founder-profile">
                     <div class="about-founder-info">
                         <span class="about-founder-name">Emilia</span>
                         <span class="about-founder-role" data-i18n="about_story.role">Założycielka Raricart</span>
                     </div>
-                </div>
-                <div class="about-story-cta">
-                    <a href="#kontakt" class="btn-about-story" data-i18n="about_story.cta">
-                        <span>Poznaj Raricart</span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>
