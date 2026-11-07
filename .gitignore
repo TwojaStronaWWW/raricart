@@ -48,6 +48,7 @@ assets/uploads/
 # Runtime config
 assets/data/*.json
 !assets/data/*.json.dist
+!assets/data/ai-config.json
 
 # Uploads
 assets/gallery/
