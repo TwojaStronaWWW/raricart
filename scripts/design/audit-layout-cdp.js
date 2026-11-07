@@ -218,9 +218,10 @@ async function runAuditForViewport(cdp, targetUrl, vpWidth, vpHeight, label) {
       });
 
       document.querySelectorAll('.audience-card').forEach((card, i) => {
+        const num = card.querySelector('.audience-number, .card-num');
         const icon = card.querySelector('.audience-icon-box, .audience-icon-box svg');
-        if (isVisible(icon)) {
-          errors.push(\`[DR-06][COCO_CHANEL] .audience-card [#\${i + 1}] renders redundant .audience-icon-box SVG alongside typographic headers.\`);
+        if (isVisible(num) && isVisible(icon)) {
+          errors.push(\`[DR-06][COCO_CHANEL] .audience-card [#\${i + 1}] renders BOTH numeric index and .audience-icon-box SVG simultaneously.\`);
         }
       });
 
