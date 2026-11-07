@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../api/R2Client.php';
 
 check_login();
 check_csrf();
@@ -15,6 +17,14 @@ if (isset($input['images']) && is_array($input['images'])) {
     // Atomic write with LOCK_EX to prevent corruption
     $encoded = json_encode(array_values($input['images']), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     if ($encoded !== false && file_put_contents($jsonFile, $encoded, LOCK_EX) !== false) {
+        if (defined('R2_ACCOUNT_ID') && defined('R2_ACCESS_KEY_ID') && defined('R2_SECRET_ACCESS_KEY') && defined('R2_BUCKET_NAME')) {
+            try {
+                $r2 = new \Raricart\Api\R2Client(R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME);
+                $r2->putObject('system/gallery.json', $encoded, 'application/json');
+            } catch (\Throwable $e) {
+                // Fail-open R2 backup
+            }
+        }
         header("X-LiteSpeed-Purge: *");
         echo json_encode(['status' => 'success']);
     } else {
