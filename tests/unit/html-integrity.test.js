@@ -163,7 +163,10 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       }
     });
 
-    it('formularz powinien posiadać przycisk wysyłki typu submit', () => {
+    it('formularz powinien posiadać id="form", pole honeypot website_check, kontener potwierdzenia oraz przycisk submit', () => {
+      assert.match(indexHtml, /<form[^>]*id="form"[^>]*>/);
+      assert.ok(indexHtml.includes('name="website_check"'), 'Brak pola honeypot website_check');
+      assert.ok(indexHtml.includes('id="formSuccessConfirmation"'), 'Brak kontenera potwierdzenia formSuccessConfirmation');
       assert.match(indexHtml, /<button[^>]*type="submit"[^>]*>/);
     });
   });

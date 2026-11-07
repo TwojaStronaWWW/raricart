@@ -11,9 +11,9 @@
         <p id="progress-text" class="progress-text" data-i18n="form.progress_start">Wypełnij pola poniżej (zajmie to mniej niż minutę)...</p>
     </div>
 
-    <form class="contact-form" novalidate>
+    <form id="form" class="contact-form" novalidate>
         <!-- Honeypot for bots -->
-        <input type="text" name="website" class="honeypot-field" tabindex="-1" autocomplete="off">
+        <input type="text" name="website_check" class="honeypot-field" tabindex="-1" autocomplete="off">
 
         <!-- Availability Notice -->
         <div id="availability-notice" class="availability-notice"></div>
