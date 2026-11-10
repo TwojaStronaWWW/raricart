@@ -1,17 +1,40 @@
 <?php
-require_once 'auth.php';
-check_login();
+declare(strict_types=1);
 
-// Prevent Caching
+require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/../api/leads-store.php';
+
+// Zezwól na załadowanie dashboardu w trybie wymuszonej zmiany hasła (renderowany jest wtedy wyłącznie formularz zmiany hasła)
+check_login(true);
+
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// Initial Status Fetch for PHP rendering
+$mustChangePassword = !empty($_SESSION['must_change_password']);
+$csrfToken = (string)($_SESSION['csrf_token'] ?? '');
+
 $status_file = __DIR__ . '/../assets/data/status.json';
 $current_status = ['text' => '', 'enabled' => false];
-if (file_exists($status_file)) {
-    $current_status = json_decode(file_get_contents($status_file), true);
+if (!$mustChangePassword && file_exists($status_file)) {
+    $loadedStatus = read_json_file($status_file);
+    if (!empty($loadedStatus)) {
+        $current_status = [
+            'text' => (string)($loadedStatus['text'] ?? ''),
+            'enabled' => !empty($loadedStatus['enabled']),
+        ];
+    }
+}
+
+$content_file = __DIR__ . '/../assets/data/content.json';
+$content_dist = __DIR__ . '/../assets/data/content.json.dist';
+$initial_content = [];
+if (!$mustChangePassword) {
+    if (file_exists($content_file)) {
+        $initial_content = read_json_file($content_file);
+    } elseif (file_exists($content_dist)) {
+        $initial_content = read_json_file($content_dist);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -21,683 +44,231 @@ if (file_exists($status_file)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administratora - Raricart</title>
     <link rel="stylesheet" href="admin.css">
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <meta name="csrf-token" content="<?php echo $_SESSION['csrf_token']; ?>">
+    <meta name="csrf-token" content="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
+    <?php if (!$mustChangePassword): ?>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" defer></script>
+    <?php endif; ?>
+    <script src="admin.js" defer></script>
 </head>
 <body>
 
 <div class="header">
     <h1>Raricart Admin</h1>
-    <a href="logout.php" class="logout-btn">Wyloguj</a>
+    <form method="POST" action="logout.php" class="inline-form">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
+        <button type="submit" class="logout-btn">Wyloguj</button>
+    </form>
 </div>
 
 <div class="container">
     <?php if (!empty($_GET['msg'])): ?>
-        <div class="card" style="background: #e8f5e9; border-left: 4px solid #28a745; padding: 14px 20px; margin-bottom: 20px; color: #1b5e20; font-weight: 500; display: flex; align-items: center; justify-content: space-between;">
-            <span><?php echo htmlspecialchars((string)$_GET['msg']); ?></span>
-            <button onclick="this.parentElement.remove()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#1b5e20;">&times;</button>
+        <div class="card card-flash" role="status">
+            <span><?php echo htmlspecialchars((string)$_GET['msg'], ENT_QUOTES, 'UTF-8'); ?></span>
+            <button type="button" class="flash-close-btn" data-dismiss-parent aria-label="Zamknij komunikat">&times;</button>
         </div>
     <?php endif; ?>
-    <?php if (isset($_SESSION['must_change_password']) && $_SESSION['must_change_password'] === true): ?>
-        <div class="card" style="border-left: 4px solid #dc3545; max-width: 500px; margin: 2rem auto;">
-            <h2 style="color: #dc3545;">Wymagana zmiana hasła</h2>
-            <p style="margin-bottom: 2rem;">Ze względów bezpieczeństwa musisz zmienić swoje hasło przed uzyskaniem dostępu do reszty panelu.</p>
-            
-            <div class="status-group" style="display:block;">
-                <div style="display:grid; gap:10px;">
-                    <input type="password" id="oldPass" class="status-input" placeholder="Obecne (tymczasowe) hasło">
-                    <input type="password" id="newPass" class="status-input" placeholder="Nowe hasło">
-                    <input type="password" id="confirmPass" class="status-input" placeholder="Potwierdź nowe hasło">
-                    <button class="action-btn" onclick="changePassword()">Zmień i przejdź do panelu</button>
+
+    <?php if ($mustChangePassword): ?>
+        <div class="card card-forced-password" id="forcedPasswordCard">
+            <h2 class="heading-danger">Wymagana zmiana hasła</h2>
+            <p class="text-spaced-lg">Ze względów bezpieczeństwa musisz zmienić swoje hasło tymczasowe przed uzyskaniem dostępu do funkcji panelu administracyjnego.</p>
+
+            <div class="status-group status-group-block">
+                <div class="password-grid-full">
+                    <input type="password" id="oldPass" class="status-input" placeholder="Obecne (tymczasowe) hasło" autocomplete="current-password">
+                    <input type="password" id="newPass" class="status-input" placeholder="Nowe hasło (min. 8 znaków)" minlength="8" autocomplete="new-password">
+                    <input type="password" id="confirmPass" class="status-input" placeholder="Potwierdź nowe hasło" minlength="8" autocomplete="new-password">
+                    <button type="button" class="action-btn" id="changePasswordBtn">Zmień i przejdź do panelu</button>
                 </div>
             </div>
         </div>
     <?php else: ?>
-    <!-- Availability Manager -->
-    <div class="card">
-        <h2>Zarządzanie Dostępnością</h2>
-        <p style="color:#666; font-size:0.9rem; margin-bottom:1rem;">Ten komunikat pojawi się na górze strony głównej.</p>
-        <div class="status-group">
-            <input type="text" id="statusText" class="status-input" placeholder="np. Zostały ostatnie 2 terminy na sierpień!" value="<?php echo htmlspecialchars($current_status['text']); ?>">
-            <label class="toggle-switch">
-                <input type="checkbox" id="statusToggle" <?php echo $current_status['enabled'] ? 'checked' : ''; ?>>
-                <span class="slider"></span>
-            </label>
-            <button class="action-btn" onclick="saveStatus()">Zapisz</button>
-        </div>
-        </div>
-    </div>
+        <script type="application/json" id="initialSiteContent"><?php echo json_encode($initial_content, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?></script>
 
-    <!-- --- SITE MEDIA SECTION --- -->
-    <div class="card section-media">
-        <h2>Media Strony</h2>
-        <p style="margin-bottom: 1.5rem; opacity: 0.8;">Zarządzaj zdjęciami i wideo w kluczowych sekcjach.</p>
+        <!-- Availability Manager -->
+        <div class="card">
+            <h2>Zarządzanie Dostępnością</h2>
+            <p class="text-muted-desc">Ten komunikat pojawi się na górze strony głównej.</p>
+            <div class="status-group">
+                <input type="text" id="statusText" class="status-input" placeholder="np. Zostały ostatnie 2 terminy na sierpień!" value="<?php echo htmlspecialchars($current_status['text'], ENT_QUOTES, 'UTF-8'); ?>">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="statusToggle" <?php echo $current_status['enabled'] ? 'checked' : ''; ?>>
+                    <span class="slider"></span>
+                </label>
+                <button type="button" class="action-btn" id="saveStatusBtn">Zapisz</button>
+            </div>
+        </div>
 
-        <div class="media-grid">
-            <!-- Hero Video -->
-            <div class="media-item">
-                <h4>Wideo w tle (Hero)</h4>
-                <div class="media-preview video-preview" id="preview-hero_video">
-                    <span>Brak wideo</span>
+        <!-- Site Media Section -->
+        <div class="card section-media">
+            <h2>Media Strony</h2>
+            <p class="text-spaced-lg">Zarządzaj zdjęciami i wideo w kluczowych sekcjach.</p>
+
+            <div class="media-grid">
+                <div class="media-item">
+                    <h4>Wideo w tle (Hero)</h4>
+                    <div class="media-preview video-preview" id="preview-hero_video">
+                        <span>Brak wideo</span>
+                    </div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień wideo (MP4/WebM)
+                        <input type="file" data-content-key="hero_video" data-media-type="video" accept="video/mp4,video/webm">
+                    </label>
                 </div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień wideo (MP4)
-                    <input type="file" onchange="uploadContent(this, 'hero_video', 'video')" accept="video/mp4,video/webm">
-                </label>
-            </div>
 
-            <!-- About Us Image -->
-            <div class="media-item">
-                <h4>O Nas (Zdjęcie)</h4>
-                <div class="media-preview" id="preview-about_image"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Wgraj zdjęcie
-                    <input type="file" onchange="uploadContent(this, 'about_image', 'image')" accept="image/*">
-                </label>
-            </div>
+                <div class="media-item">
+                    <h4>O Nas (Zdjęcie)</h4>
+                    <div class="media-preview" id="preview-about_image"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Wgraj zdjęcie
+                        <input type="file" data-content-key="about_image" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
 
-            <!-- Offer Main Image -->
-            <div class="media-item">
-                <h4>Oferta (Tło Główne)</h4>
-                <div class="media-preview" id="preview-offer_main_image"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Wgraj zdjęcie
-                    <input type="file" onchange="uploadContent(this, 'offer_main_image', 'image')" accept="image/*">
-                </label>
-            </div>
+                <div class="media-item">
+                    <h4>Oferta (Tło Główne)</h4>
+                    <div class="media-preview" id="preview-offer_main_image"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Wgraj zdjęcie
+                        <input type="file" data-content-key="offer_main_image" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
 
-            <!-- Gallery Background (New) -->
-            <div class="media-item">
-                <h4>Galeria (Tło Parallaksy)</h4>
-                <div class="media-preview" id="preview-gallery_bg"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Wgraj zdjęcie
-                    <input type="file" onchange="uploadContent(this, 'gallery_bg', 'image')" accept="image/*">
-                </label>
-            </div>
+                <div class="media-item">
+                    <h4>Galeria (Tło Parallaksy)</h4>
+                    <div class="media-preview" id="preview-gallery_bg"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Wgraj zdjęcie
+                        <input type="file" data-content-key="gallery_bg" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
 
-            <!-- Why Us Background (New) -->
-            <div class="media-item">
-                <h4>Sztuka kulinarna (Parallax)</h4>
-                <div class="media-preview" id="preview-why_us_bg"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Wgraj zdjęcie
-                    <input type="file" onchange="uploadContent(this, 'why_us_bg', 'image')" accept="image/*">
-                </label>
-            </div>
-        </div>
-
-        <h3 style="margin-top:2rem; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 1rem;">Karty Oferty</h3>
-        <div class="media-grid">
-             <!-- Offer Cards -->
-             <div class="media-item">
-                <h4>Pancakes</h4>
-                <div class="media-preview" id="preview-offer_cards-pancakes"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień
-                    <input type="file" onchange="uploadContent(this, 'offer_cards.pancakes', 'image')" accept="image/*">
-                </label>
-            </div>
-            <div class="media-item">
-                <h4>Lody</h4>
-                <div class="media-preview" id="preview-offer_cards-icecream"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień
-                    <input type="file" onchange="uploadContent(this, 'offer_cards.icecream', 'image')" accept="image/*">
-                </label>
-            </div>
-            <div class="media-item">
-                <h4>Deska Serów</h4>
-                <div class="media-preview" id="preview-offer_cards-cheese"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień
-                    <input type="file" onchange="uploadContent(this, 'offer_cards.cheese', 'image')" accept="image/*">
-                </label>
-            </div>
-        </div>
-        
-        <h3 style="margin-top:2rem; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 1rem;">Zdjęcia w Modalu Oferty (Szczegóły)</h3>
-        <div class="media-grid">
-             <!-- Offer Modal Images -->
-             <div class="media-item">
-                <h4>Pancakes (Modal)</h4>
-                <div class="media-preview" id="preview-offer_modals-pancakes"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień
-                    <input type="file" onchange="uploadContent(this, 'offer_modals.pancakes', 'image')" accept="image/*">
-                </label>
-            </div>
-            <div class="media-item">
-                <h4>Lody (Modal)</h4>
-                <div class="media-preview" id="preview-offer_modals-icecream"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień
-                    <input type="file" onchange="uploadContent(this, 'offer_modals.icecream', 'image')" accept="image/*">
-                </label>
-            </div>
-            <div class="media-item">
-                <h4>Deska Serów (Modal)</h4>
-                <div class="media-preview" id="preview-offer_modals-cheese"></div>
-                <label class="btn btn-secondary upload-btn">
-                    Zmień
-                    <input type="file" onchange="uploadContent(this, 'offer_modals.cheese', 'image')" accept="image/*">
-                </label>
-            </div>
-    </div>
-
-    <!-- Image Upload -->
-    <div class="card">
-        <h2>Dodaj Zdjęcia (Inteligentne Wgrywanie)</h2>
-        <div id="drop-zone">
-            <p>Przeciągnij zdjęcia tutaj lub kliknij, aby wybrać</p>
-        </div>
-        <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
-        <div id="upload-progress"><div id="progress-bar"></div></div>
-        <div id="status-msg" style="margin-top:10px; text-align:center;"></div>
-    </div>
-
-    <!-- Gallery List -->
-    <div class="card">
-        <h2>Twoja Galeria</h2>
-        <div class="gallery-grid" id="galleryList">
-            <!-- Items loaded via JS -->
-        </div>
-    </div>
-
-    <!-- Leads Management -->
-    <div class="card" style="border-left: 4px solid #28a745;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-            <div>
-                <h2 style="margin:0; padding:0; border:none; margin-bottom:0.5rem;">Baza Klientów (Excel)</h2>
-                <p style="color:#666; font-size:0.9rem; margin:0;">Zarządzaj zgłoszeniami z formularza kontaktowego.</p>
-                <div style="margin-top: 8px; font-size: 0.85rem; color: #2e7d32; display: flex; align-items: center; gap: 6px;">
-                    <span style="font-size: 1.1rem;">🛡️</span>
-                    <span>Prywatny magazyn Cloudflare R2: <strong>raricart-private</strong> (Automatyczna kopia zapasowa)</span>
+                <div class="media-item">
+                    <h4>Sztuka kulinarna (Parallax)</h4>
+                    <div class="media-preview" id="preview-why_us_bg"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Wgraj zdjęcie
+                        <input type="file" data-content-key="why_us_bg" data-media-type="image" accept="image/*">
+                    </label>
                 </div>
             </div>
-            <div style="display:flex; gap:10px; align-items:center;">
-                <a href="sync_leads.php" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:8px; background:#0284c7; font-weight:600; padding: 10px 18px; border-radius: 6px; color: #fff;" title="Wykonaj natychmiastową synchronizację z prywatnym R2">
-                    <span>🔄</span> Synchronizuj z R2
-                </a>
-                <a href="download_leads.php" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:8px; background:#28a745; font-weight:600; padding: 10px 18px; border-radius: 6px; color: #fff;">
-                    <span>📥</span> Pobierz .CSV
-                </a>
+
+            <h3 class="section-subhead">Karty Oferty</h3>
+            <div class="media-grid">
+                <div class="media-item">
+                    <h4>Pancakes</h4>
+                    <div class="media-preview" id="preview-offer_cards-pancakes"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień
+                        <input type="file" data-content-key="offer_cards.pancakes" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
+                <div class="media-item">
+                    <h4>Lody</h4>
+                    <div class="media-preview" id="preview-offer_cards-icecream"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień
+                        <input type="file" data-content-key="offer_cards.icecream" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
+                <div class="media-item">
+                    <h4>Deska Serów</h4>
+                    <div class="media-preview" id="preview-offer_cards-cheese"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień
+                        <input type="file" data-content-key="offer_cards.cheese" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
+            </div>
+
+            <h3 class="section-subhead">Zdjęcia w Modalu Oferty (Szczegóły)</h3>
+            <div class="media-grid">
+                <div class="media-item">
+                    <h4>Pancakes (Modal)</h4>
+                    <div class="media-preview" id="preview-offer_modals-pancakes"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień
+                        <input type="file" data-content-key="offer_modals.pancakes" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
+                <div class="media-item">
+                    <h4>Lody (Modal)</h4>
+                    <div class="media-preview" id="preview-offer_modals-icecream"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień
+                        <input type="file" data-content-key="offer_modals.icecream" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
+                <div class="media-item">
+                    <h4>Deska Serów (Modal)</h4>
+                    <div class="media-preview" id="preview-offer_modals-cheese"></div>
+                    <label class="btn btn-secondary upload-btn">
+                        Zmień
+                        <input type="file" data-content-key="offer_modals.cheese" data-media-type="image" accept="image/*">
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Security / Account Management -->
-    <div class="card">
-        <h2>Konto Administratora</h2>
-        <p style="margin-bottom:1rem; opacity:0.8;">Zalogowany jako: <strong><?php echo htmlspecialchars(get_current_user_email()); ?></strong></p>
-        
-        <div class="status-group" style="display:block;">
-            <h4 style="margin:0 0 10px 0; font-size:0.95rem;">Zmiana Hasła</h4>
-            <div style="display:grid; gap:10px; max-width:400px;">
-                <input type="password" id="oldPass" class="status-input" placeholder="Stare hasło">
-                <input type="password" id="newPass" class="status-input" placeholder="Nowe hasło">
-                <input type="password" id="confirmPass" class="status-input" placeholder="Potwierdź nowe hasło">
-                <button class="action-btn" onclick="changePassword()">Zmień Hasło</button>
+        <!-- Image Upload -->
+        <div class="card">
+            <h2>Dodaj Zdjęcia (Inteligentne Wgrywanie)</h2>
+            <div id="drop-zone">
+                <p>Przeciągnij zdjęcia tutaj lub kliknij, aby wybrać</p>
+            </div>
+            <input type="file" id="fileInput" class="visually-hidden-input" multiple accept="image/*">
+            <div id="upload-progress"><div id="progress-bar"></div></div>
+            <div id="status-msg" class="status-msg-box"></div>
+        </div>
+
+        <!-- Gallery List -->
+        <div class="card">
+            <h2>Twoja Galeria</h2>
+            <div class="gallery-grid" id="galleryList"></div>
+        </div>
+
+        <!-- Leads Management -->
+        <div class="card card-leads">
+            <div class="leads-row">
+                <div>
+                    <h2 class="leads-title">Baza Klientów (Excel)</h2>
+                    <p class="leads-desc">Zarządzaj zgłoszeniami z formularza kontaktowego.</p>
+                    <div class="leads-r2-badge">
+                        <span aria-hidden="true">🛡️</span>
+                        <span>Prywatny magazyn Cloudflare R2: <strong>raricart-private</strong> (Automatyczna kopia zapasowa)</span>
+                    </div>
+                </div>
+                <div class="leads-actions">
+                    <form method="POST" action="sync_leads.php" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8'); ?>">
+                        <button type="submit" class="action-btn btn-sync" title="Wykonaj natychmiastową synchronizację z prywatnym R2">
+                            <span aria-hidden="true">🔄</span> Synchronizuj z R2
+                        </button>
+                    </form>
+                    <a href="download_leads.php" class="action-btn btn-download">
+                        <span aria-hidden="true">📥</span> Pobierz .CSV
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security / Account Management -->
+        <div class="card">
+            <h2>Konto Administratora</h2>
+            <p class="text-spaced-lg">Zalogowany jako: <strong><?php echo htmlspecialchars(get_current_user_email(), ENT_QUOTES, 'UTF-8'); ?></strong></p>
+
+            <div class="status-group status-group-block">
+                <h4 class="password-subhead">Zmiana Hasła</h4>
+                <div class="password-grid">
+                    <input type="password" id="oldPass" class="status-input" placeholder="Stare hasło" autocomplete="current-password">
+                    <input type="password" id="newPass" class="status-input" placeholder="Nowe hasło (min. 8 znaków)" minlength="8" autocomplete="new-password">
+                    <input type="password" id="confirmPass" class="status-input" placeholder="Potwierdź nowe hasło" minlength="8" autocomplete="new-password">
+                    <button type="button" class="action-btn" id="changePasswordBtn">Zmień Hasło</button>
+                </div>
             </div>
         </div>
     <?php endif; ?>
 </div>
-
-<script>
-function changePassword() {
-    const oldPass = document.getElementById('oldPass').value;
-    const newPass = document.getElementById('newPass').value;
-    const confirmPass = document.getElementById('confirmPass').value;
-    
-    if(!oldPass || !newPass) {
-        alert('Podaj hasła.');
-        return;
-    }
-    
-    fetch('change_password.php', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ old_password: oldPass, new_password: newPass, confirm_password: confirmPass })
-    })
-    .then(r => r.json())
-    .then(data => {
-        alert((data.status === 'success' ? '✅ ' : '❌ ') + data.message);
-        if(data.status === 'success') {
-            document.getElementById('oldPass').value = '';
-            document.getElementById('newPass').value = '';
-            document.getElementById('confirmPass').value = '';
-        }
-    });
-}
-</script>
-
-<script>
-
-// --- Status Manager ---
-function saveStatus() {
-    const text = document.getElementById('statusText').value;
-    const enabled = document.getElementById('statusToggle').checked;
-    
-    fetch('save_status.php', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ text, enabled })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if(data.status === 'success') alert('Zapisano pomyślnie!');
-        else alert('Błąd zapisu');
-    });
-}
-
-// --- Gallery Manager ---
-
-
-// Current gallery state
-let galleryImages = [];
-
-function loadGallery() {
-    fetch('../api/get_gallery.php')
-    .then(r => r.json())
-    .then(images => {
-        galleryImages = images; // Store state
-        renderGallery();
-    });
-}
-
-function renderGallery() {
-    const grid = document.getElementById('galleryList');
-    grid.innerHTML = '';
-    galleryImages.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'gallery-item';
-        div.setAttribute('data-index', index);
-        div.setAttribute('data-item', typeof item === 'object' ? JSON.stringify(item) : item);
-        
-        const src = typeof item === 'string' ? item : (item.url || item.src || '');
-        let displaySrc;
-        if (src.startsWith('http') || src.startsWith('//')) {
-             displaySrc = src;
-        } else {
-             const cleanPath = src.replace(/^(\.\.\/)+/, '');
-             displaySrc = '../' + cleanPath;
-        }
-        
-        div.innerHTML = `
-            <img src="${displaySrc}" loading="lazy" alt="Realizacja ${index + 1}">
-            <button class="delete-btn" onclick="deleteImageInGrid(${index})" title="Usuń">×</button>
-        `;
-        grid.appendChild(div);
-    });
-
-    initDragAndDrop();
-}
-
-function initDragAndDrop() {
-    const el = document.getElementById('galleryList');
-    if(el.sortable) el.sortable.destroy(); // Cleanup old instance if exists
-
-    el.sortable = new Sortable(el, {
-        animation: 150,
-        ghostClass: 'sortable-ghost',
-        onEnd: function () {
-            const newOrder = [];
-            document.querySelectorAll('#galleryList .gallery-item').forEach(itemEl => {
-                const raw = itemEl.getAttribute('data-item');
-                try {
-                    newOrder.push(JSON.parse(raw));
-                } catch {
-                    newOrder.push(raw);
-                }
-            });
-
-            galleryImages = newOrder;
-            saveGalleryState();
-        }
-    });
-}
-
-function saveGalleryState() {
-    fetch('save_gallery.php', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ images: galleryImages })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if(data.status !== 'success') console.error('Save failed:', data);
-    })
-    .catch(err => console.error('Save error:', err));
-}
-
-function deleteImageInGrid(index) {
-    if(!confirm('Czy na pewno usunąć to zdjęcie?')) return;
-    
-    const item = galleryImages[index];
-    const fileToDelete = typeof item === 'string' ? item : (item.url || item.path || '');
-    
-    // 1. Remove from state
-    galleryImages.splice(index, 1);
-    renderGallery();
-    saveGalleryState();
-    
-    // 2. Delete from storage (Cloudflare R2 or local disk)
-    if (fileToDelete) {
-        fetch('delete.php', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({ file: fileToDelete })
-        });
-    }
-}
-
-// --- Image Uploader (Client-Side Resizing) ---
-const dropZone = document.getElementById('drop-zone');
-const fileInput = document.getElementById('fileInput');
-const progressBar = document.getElementById('progress-bar');
-const progressContainer = document.getElementById('upload-progress');
-
-// Click to Upload
-dropZone.addEventListener('click', () => fileInput.click());
-
-// Drag & Drop
-const events = ['dragenter', 'dragover', 'dragleave', 'drop'];
-events.forEach(eventName => {
-    dropZone.addEventListener(eventName, preventDefaults, false);
-});
-
-function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-}
-
-dropZone.addEventListener('dragenter', () => dropZone.classList.add('hover'));
-dropZone.addEventListener('dragover', () => dropZone.classList.add('hover'));
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('hover'));
-dropZone.addEventListener('drop', (e) => {
-    dropZone.classList.remove('hover');
-    handleFiles(e.dataTransfer.files);
-});
-
-fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-
-async function handleFiles(files) {
-    if (files.length === 0) return;
-    
-    progressContainer.style.display = 'block';
-    
-    let completed = 0;
-    const total = files.length;
-    let newImages = [];
-    
-    for (const file of files) {
-        try {
-            const resizedBlob = await resizeImage(file);
-            const response = await uploadFile(resizedBlob, file.name);
-            const textResponse = await response.text();
-            
-            let result;
-            try {
-                result = JSON.parse(textResponse);
-            } catch (e) {
-                console.error("Server Raw Response:", textResponse); // Debug logic
-                throw new Error("Server returned invalid JSON. Check console.");
-            }
-            
-            if (result.status === 'success') {
-                const item = {
-                    id: Math.random().toString(16).substring(2, 18),
-                    url: result.file,
-                    src: result.file,
-                    path: result.path || result.file,
-                    created_at: new Date().toISOString(),
-                    original_name: file.name
-                };
-                newImages.push(item);
-            } else {
-                alert('Błąd: ' + result.message);
-            }
-            
-            completed++;
-            progressBar.style.width = (completed / total * 100) + '%';
-        } catch (err) {
-            console.error(err);
-            alert('Błąd przetwarzania: ' + err.message);
-        }
-    }
-    
-    // Add new images to start of gallery
-    if (newImages.length > 0) {
-        galleryImages = [...newImages, ...galleryImages];
-        saveGalleryState();
-    }
-    
-    setTimeout(() => {
-        progressContainer.style.display = 'none';
-        progressBar.style.width = '0%';
-        renderGallery();
-        alert('Wgrywanie zakończone!');
-    }, 500);
-}
-
-// --- SITE MEDIA MANAGEMENT ---
-let siteContent = {};
-
-function loadSiteContent() {
-    fetch('../assets/data/content.json?t=' + new Date().getTime())
-    .then(r => r.json())
-    .then(data => {
-        // Safe merge to avoid wiping out in-flight upload updates
-        siteContent = { ...siteContent, ...(data || {}) };
-        renderContentPreviews();
-    })
-    .catch(() => console.log('No content config found, using defaults'));
-}
-
-function renderContentPreviews() {
-    // Helper to set preview
-    const setPrev = (id, src, type='image') => {
-        const el = document.getElementById('preview-' + id);
-        if(!el) return;
-        el.innerHTML = '';
-        
-        let displaySrc;
-        if(src) {
-             if (src.startsWith('http') || src.startsWith('//')) {
-                 displaySrc = src;
-             } else {
-                 const cleanPath = src.replace(/^(\.\.\/)+/, '');
-                 displaySrc = '../' + cleanPath;
-             }
-             
-            if(type === 'video') {
-                el.innerHTML = `<video src="${displaySrc}" muted loop autoplay playsinline></video>`;
-            } else {
-                el.innerHTML = `<img src="${displaySrc}" />`;
-            }
-        } else {
-            el.innerHTML = `<span>Brak</span>`;
-        }
-    };
-
-    setPrev('hero_video', siteContent.hero_video, 'video');
-    setPrev('about_image', siteContent.about_image);
-    setPrev('offer_main_image', siteContent.offer_main_image);
-    setPrev('gallery_bg', siteContent.gallery_bg);
-    setPrev('why_us_bg', siteContent.why_us_bg);
-    
-    if(siteContent.offer_cards) {
-        setPrev('offer_cards-pancakes', siteContent.offer_cards.pancakes);
-        setPrev('offer_cards-icecream', siteContent.offer_cards.icecream);
-        setPrev('offer_cards-cheese', siteContent.offer_cards.cheese);
-    }
-
-    if(siteContent.offer_modals) {
-        setPrev('offer_modals-pancakes', siteContent.offer_modals.pancakes);
-        setPrev('offer_modals-icecream', siteContent.offer_modals.icecream);
-        setPrev('offer_modals-cheese', siteContent.offer_modals.cheese);
-    }
-}
-
-async function uploadContent(input, key, type='image') {
-    const file = input.files[0];
-    if(!file) return;
-
-    const btn = input.parentElement;
-    const originalText = btn.innerText;
-    btn.innerText = 'Wgrywanie...';
-
-    try {
-        let uploadData;
-        
-        // If it's an image, resize it first on client side before sending to PHP
-        if (type === 'image' && file.type.startsWith('image/')) {
-            const resizedBlob = await resizeImage(file);
-            uploadData = resizedBlob;
-        } else {
-            uploadData = file;
-        }
-
-        const formData = new FormData();
-        // Append with original name so PHP pathinfo picks up the right extension
-        formData.append('image', uploadData, file.name || 'upload.jpg');
-        formData.append('target', 'content'); // Output to assets/content
-
-        const res = await fetch('upload.php', { 
-            method: 'POST', 
-            headers: {
-                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: formData 
-        });
-        const text = await res.text();
-        let data;
-        try { data = JSON.parse(text); } catch(e) { throw new Error('Invalid Server JSON format. Server returned: ' + text); }
-
-
-        if(data.status === 'success') {
-            // Update State
-            if(key.includes('.')) {
-                // Nested key (offer_cards.pancakes)
-                const [parent, child] = key.split('.');
-                if(!siteContent[parent]) siteContent[parent] = {};
-                siteContent[parent][child] = data.file;
-            } else {
-                siteContent[key] = data.file;
-            }
-            
-            // Render & Save
-            renderContentPreviews();
-            saveContentState();
-        } else {
-            alert('Błąd: ' + data.message);
-        }
-    } catch(err) {
-        alert('Błąd uploadu: ' + err.message);
-    } finally {
-        btn.innerText = originalText;
-        btn.appendChild(input); // Re-attach input
-    }
-}
-
-function saveContentState() {
-    fetch('save_content.php', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify(siteContent)
-    })
-    .then(r => r.json())
-    .then(data => {
-        if(data.status !== 'success') {
-            alert('Błąd zapisu stanu galerii: ' + data.message);
-        }
-    })
-    .catch(err => {
-        console.error('Błąd wywołania zapisu:', err);
-        alert('Wystąpił krytyczny błąd podczas zapisu struktury. Zobacz konsolę.');
-    });
-}
-
-// Init Content Load
-loadSiteContent();
-
-
-
-function resizeImage(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 2500;
-                const MAX_HEIGHT = 2000;
-                let width = img.width;
-                let height = img.height;
-                
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-                
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                
-                // Use original file type to preserve transparency for PNG/WebP
-                let outputType = file.type;
-                if(outputType !== 'image/png' && outputType !== 'image/webp') {
-                    outputType = 'image/jpeg';
-                }
-                
-                canvas.toBlob((blob) => resolve(blob), outputType, 0.95);
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-function uploadFile(blob, filename) {
-    const formData = new FormData();
-    formData.append('image', blob, filename);
-    formData.append('target', 'gallery');
-    
-    return fetch('upload.php', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: formData
-    });
-}
-
-// Init
-loadGallery();
-</script>
 
 </body>
 </html>

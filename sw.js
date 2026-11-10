@@ -2,7 +2,7 @@
  * Raricart.pl — Service Worker (PWA Offline Support — Hybrid Strategy)
  */
 
-const CACHE_NAME = 'raricart-pwa-v3';
+const CACHE_NAME = 'raricart-pwa-v4';
 const PRECACHE_URLS = [
   '/',
   '/assets/css/styles.css',
@@ -41,12 +41,12 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin/')) return;
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin/') || url.pathname.startsWith('/assets/data/')) return;
 
   const isCodeOrData =
     request.mode === 'navigate' ||
     url.pathname === '/' ||
-    /\.(html|css|js|mjs|json)$/i.test(url.pathname);
+    /\.(html|css|js|mjs|webmanifest)$/i.test(url.pathname);
 
   if (isCodeOrData) {
     event.respondWith(
@@ -61,7 +61,7 @@ self.addEventListener('fetch', (event) => {
         .catch(() =>
           caches.match(request).then((cached) => {
             if (cached) return cached;
-            if (request.mode === 'navigate') return caches.match('/index.html');
+            if (request.mode === 'navigate') return caches.match('/');
             return new Response('Offline', { status: 503, statusText: 'Offline' });
           })
         )

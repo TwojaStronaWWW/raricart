@@ -1,54 +1,85 @@
 <?php
-require_once 'auth.php';
-check_login();
+declare(strict_types=1);
 
-header('Content-Type: application/json');
+require_once __DIR__ . '/auth.php';
 
-// Check CSRF
-check_csrf();
+require_post_method(true);
+check_login(true);
+check_csrf(true);
+
+header('Content-Type: application/json; charset=UTF-8');
 
 $config_file = __DIR__ . '/../assets/data/config.json';
 $currentUser = get_current_user_email();
 
-$input = json_decode(file_get_contents('php://input'), true);
-$oldPass = $input['old_password'] ?? '';
-$newPass = $input['new_password'] ?? '';
-$confirm = $input['confirm_password'] ?? '';
+$rawBody = file_get_contents('php://input', false, null, 0, 16384);
+$input = json_decode((string)$rawBody, true, 8);
+if (!is_array($input)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Nieprawidłowy format żądania.']);
+    exit;
+}
 
-if (!$oldPass || !$newPass || !$confirm) {
+$oldPass = (string)($input['old_password'] ?? '');
+$newPass = (string)($input['new_password'] ?? '');
+$confirm = (string)($input['confirm_password'] ?? '');
+
+if ($oldPass === '' || $newPass === '' || $confirm === '') {
+    http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Wypełnij wszystkie pola.']);
     exit;
 }
 
 if ($newPass !== $confirm) {
+    http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Nowe hasła nie są identyczne.']);
     exit;
 }
 
-if (strlen($newPass) < 5) {
-    echo json_encode(['status' => 'error', 'message' => 'Nowe hasło musi mieć min. 5 znaków.']);
+if (strlen($newPass) < 8) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Nowe hasło musi mieć co najmniej 8 znaków.']);
     exit;
 }
 
-// Load Config
-$config = json_decode(file_get_contents($config_file), true);
+if (hash_equals($oldPass, $newPass)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Nowe hasło musi różnić się od obecnego.']);
+    exit;
+}
 
-if (!isset($config['users'][$currentUser])) {
+$fp = @fopen($config_file, 'c+b');
+if (!$fp || !@flock($fp, LOCK_EX)) {
+    if ($fp) {
+        fclose($fp);
+    }
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'Błąd blokady pliku konfiguracji.']);
+    exit;
+}
+
+rewind($fp);
+$rawConfig = stream_get_contents($fp);
+$config = (is_string($rawConfig) && $rawConfig !== '') ? json_decode($rawConfig, true) : [];
+if (!is_array($config) || !isset($config['users']) || !is_array($config['users']) || !isset($config['users'][$currentUser])) {
+    @flock($fp, LOCK_UN);
+    fclose($fp);
+    http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Błąd użytkownika sesji.']);
     exit;
 }
 
-// Verify Old Password
 $userEntry = $config['users'][$currentUser];
 $existingHash = is_array($userEntry) ? (string)($userEntry['hash'] ?? '') : (string)$userEntry;
-if ($existingHash === '' || !password_verify($oldPass, $existingHash)) {
+if ($existingHash === '' || strpos($existingHash, '$2') !== 0 || !password_verify($oldPass, $existingHash)) {
+    @flock($fp, LOCK_UN);
+    fclose($fp);
+    http_response_code(403);
     echo json_encode(['status' => 'error', 'message' => 'Stare hasło jest nieprawidłowe.']);
     exit;
 }
 
-// Update Password
-$newHash = password_hash($newPass, PASSWORD_DEFAULT);
-
+$newHash = password_hash($newPass, PASSWORD_BCRYPT, ['cost' => 12]);
 if (is_array($config['users'][$currentUser])) {
     $config['users'][$currentUser]['hash'] = $newHash;
     unset($config['users'][$currentUser]['force_change']);
@@ -56,10 +87,24 @@ if (is_array($config['users'][$currentUser])) {
     $config['users'][$currentUser] = $newHash;
 }
 
-if (file_put_contents($config_file, json_encode($config, JSON_PRETTY_PRINT), LOCK_EX) !== false) {
+$encoded = json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+ftruncate($fp, 0);
+rewind($fp);
+$written = fwrite($fp, (string)$encoded);
+fflush($fp);
+@flock($fp, LOCK_UN);
+fclose($fp);
+
+if ($written !== false) {
     unset($_SESSION['must_change_password']);
-    echo json_encode(['status' => 'success', 'message' => 'Hasło zostało zmienione. Możesz teraz korzystać z panelu.']);
+    session_regenerate_id(true);
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Hasło zostało zmienione. Możesz teraz korzystać z panelu.',
+        'csrf_token' => $_SESSION['csrf_token']
+    ]);
 } else {
+    http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Błąd zapisu pliku konfiguracji.']);
 }
-?>

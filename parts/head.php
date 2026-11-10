@@ -116,7 +116,7 @@
       "telephone": "+48883392688",
       "email": "kontakt@raricart.pl",
       "servesCuisine": ["Desserts", "Ice Cream", "Pancakes", "Cheese Boards", "Live Cooking"],
-      "url": "https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'] ?? 'raricart.pl'); ?>",
+      "url": "https://<?php echo in_array(strtolower((string)($_SERVER['HTTP_HOST'] ?? '')), ['raricart.pl', 'test.raricart.pl'], true) ? strtolower((string)$_SERVER['HTTP_HOST']) : 'raricart.pl'; ?>",
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Mobilne Stanowiska Kulinarne Raricart",
@@ -144,7 +144,7 @@
     }
     </script>
     <script>
-        window.siteContentConfig = <?php echo json_encode($content ?? []); ?>;
+        window.siteContentConfig = <?php echo json_encode($content ?? [], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>;
     </script>
     <!-- Hash Navigation: Block native scroll BEFORE layout renders -->
     <script>
@@ -161,6 +161,7 @@
 <?php
 $reqUri = $_SERVER['REQUEST_URI'] ?? '';
 $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-$is_home_page = (strpos($scriptName, 'pakiety.php') === false && strpos($reqUri, '/pakiety') === false);
+$is_packages_page = (strpos($scriptName, 'pakiety.php') !== false || strpos($reqUri, '/pakiety') !== false);
+$is_home_page = !$is_packages_page;
 ?>
-<body <?php echo $is_home_page ? 'class="is-homepage"' : ''; ?>>
+<body class="<?php echo $is_home_page ? 'is-homepage' : 'is-packages-page'; ?>">

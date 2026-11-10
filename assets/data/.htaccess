@@ -1,21 +1,10 @@
-# Protect sensitive JSON files from direct access
-<Files "config.json">
-    Order Deny,Allow
-    Deny from all
-</Files>
+# Pełna blokada dostępu HTTP do magazynu danych flat-file (assets/data/)
+Options -Indexes
 
-<Files "reset_tokens.json">
-    Order Deny,Allow
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
     Deny from all
-</Files>
-
-<Files "login_attempts.json">
-    Order Deny,Allow
-    Deny from all
-</Files>
-
-# Allow public access to content and status for JS
-<FilesMatch "^(content|status|gallery)\.json$">
-    Order Allow,Deny
-    Allow from all
-</FilesMatch>
+</IfModule>

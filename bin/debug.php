@@ -1,12 +1,16 @@
 <?php
-// bin/debug.php - Narzędzie diagnostyczne
-header("Content-Type: text/plain; charset=UTF-8");
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+declare(strict_types=1);
+
+// bin/debug.php - Narzędzie diagnostyczne (wyłącznie CLI)
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit("Forbidden: CLI only.\n");
+}
 
 echo "=== DIAGNOSTYKA RARICART ===\n";
 echo "Server Time: " . date("Y-m-d H:i:s") . " (" . time() . ")\n";
 echo "PHP Version: " . PHP_VERSION . "\n";
-echo "SAPI: " . php_sapi_name() . "\n\n";
+echo "SAPI: " . PHP_SAPI . "\n\n";
 
 $rootDir = dirname(__DIR__);
 $files = [
@@ -24,40 +28,24 @@ echo "--- STATUS PLIKÓW ---\n";
 foreach ($files as $file) {
     $fullPath = $rootDir . '/' . $file;
     if (file_exists($fullPath)) {
-        echo sprintf("%-30s | Mtime: %s | Size: %d bytes\n", 
-            $file, 
-            date("Y-m-d H:i:s", filemtime($fullPath)),
-            filesize($fullPath)
+        echo sprintf(
+            "%-30s | Mtime: %s | Size: %d bytes\n",
+            $file,
+            date("Y-m-d H:i:s", (int)filemtime($fullPath)),
+            (int)filesize($fullPath)
         );
     } else {
         echo sprintf("%-30s | NIE ISTNIEJE\n", $file);
     }
 }
 
-echo "\n--- NAGŁÓWKI HTTP ---\n";
-if (function_exists('apache_request_headers')) {
-    echo "Request Headers:\n";
-    print_r(apache_request_headers());
-}
-
 echo "\n--- OPCACHE ---\n";
 if (function_exists('opcache_get_status')) {
     $status = opcache_get_status(false);
     echo "OPcache enabled: " . ($status ? "YES" : "NO") . "\n";
-    if ($status) {
+    if (is_array($status) && isset($status['scripts']) && is_array($status['scripts'])) {
         echo "Scripts cached: " . count($status['scripts']) . "\n";
     }
 } else {
     echo "OPcache extension not loaded.\n";
 }
-
-echo "\n--- CLOUDFLARE? ---\n";
-if (isset($_SERVER['HTTP_CF_RAY'])) {
-    echo "YES! Detected Cloudflare Ray ID: " . $_SERVER['HTTP_CF_RAY'] . "\n";
-    echo "Connecting IP: " . ($_SERVER['HTTP_CF_CONNECTING_IP'] ?? 'unknown') . "\n";
-} else {
-    echo "NO. Not detected via headers.\n";
-}
-
-echo "\n--- LITESPEED? ---\n";
-echo isset($_SERVER['LSWWS_LOGID']) ? "YES (LiteSpeed detected)" : "UNKNOWN (not detected via \$_SERVER)";

@@ -1,39 +1,70 @@
 <?php
-session_start();
+declare(strict_types=1);
 
 $config_file = __DIR__ . '/../assets/data/config.json';
 $data_dir = __DIR__ . '/../assets/data';
 
-// If config exists, forbid access to setup (Security)
+// Zablokuj dostęp natychmiast, jeśli konfiguracja już istnieje
 if (file_exists($config_file)) {
-    die("Setup został już wykonany. Jeśli chcesz zresetować hasło, usuń plik assets/data/config.json ręcznie z serwera.");
+    http_response_code(403);
+    exit("Setup został już wykonany. Użyj narzędzia CLI bin/set-admin-password.php na serwerze.");
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $password = $_POST['password'] ?? '';
-    $confirm = $_POST['confirm'] ?? '';
-    
-    if (strlen($password) < 5) {
-        $error = "Hasło musi mieć co najmniej 5 znaków.";
-    } elseif ($password !== $confirm) {
-        $error = "Hasła nie są identyczne.";
-    } else {
-        // Create Data Directory if not exists
-        if (!file_exists($data_dir)) {
-            mkdir($data_dir, 0755, true);
-        }
+require_once __DIR__ . '/auth.php';
 
-        // Save Hash
-        $config = [
-            'password_hash' => password_hash($password, PASSWORD_DEFAULT),
-            'setup_date' => date('Y-m-d H:i:s')
-        ];
-        
-        if (file_put_contents($config_file, json_encode($config, JSON_PRETTY_PRINT), LOCK_EX) !== false) {
-            $success = "Hasło ustawione pomyślnie! Przekierowanie do logowania...";
-            header("Refresh: 2; url=index.php");
+$error = '';
+$success = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_sec_fetch_site(false);
+
+    $ip = admin_client_ip();
+    $csrfToken = (string)($_POST['csrf_token'] ?? '');
+    if ($csrfToken === '' || !hash_equals((string)($_SESSION['csrf_token'] ?? ''), $csrfToken)) {
+        http_response_code(403);
+        $error = "Nieprawidłowy token zabezpieczający. Odśwież stronę.";
+    } elseif (!rate_limit('admin_setup_' . $ip, 5, 900)) {
+        http_response_code(429);
+        $error = "Zbyt wiele prób konfiguracji. Spróbuj ponownie później.";
+    } else {
+        $email = strtolower(trim((string)filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL)));
+        $password = (string)($_POST['password'] ?? '');
+        $confirm = (string)($_POST['confirm'] ?? '');
+
+        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = "Podaj prawidłowy adres e-mail administratora.";
+        } elseif (strlen($password) < 8) {
+            $error = "Hasło musi mieć co najmniej 8 znaków.";
+        } elseif ($password !== $confirm) {
+            $error = "Hasła nie są identyczne.";
         } else {
-            $error = "Błąd zapisu pliku konfiguracyjnego. Sprawdź uprawnienia folderu assets/data.";
+            if (!is_dir($data_dir)) {
+                @mkdir($data_dir, 0750, true);
+            }
+
+            $config = [
+                'users' => [
+                    $email => password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]),
+                ],
+                'setup_date' => date('Y-m-d H:i:s'),
+            ];
+
+            // Atomowy zapis z wyłączną blokadą LOCK_EX i flagą tworzenia tylko jeśli plik nie powstał równolegle
+            $fp = @fopen($config_file, 'xb');
+            if ($fp !== false) {
+                if (@flock($fp, LOCK_EX)) {
+                    fwrite($fp, (string)json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                    fflush($fp);
+                    @flock($fp, LOCK_UN);
+                }
+                fclose($fp);
+                @chmod($config_file, 0600);
+                session_regenerate_id(true);
+                $success = "Konto administratora utworzone pomyślnie! Przekierowanie do logowania...";
+                header("Refresh: 2; url=index.php");
+            } else {
+                $error = "Błąd zapisu pliku konfiguracyjnego. Sprawdź uprawnienia folderu assets/data.";
+            }
         }
     }
 }
@@ -44,35 +75,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pierwsza Konfiguracja - Raricart</title>
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #e0e0e0; margin: 0; }
-        .setup-box { background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-        h2 { color: #2d3a2a; margin-bottom: 0.5rem; }
-        p { color: #666; margin-bottom: 2rem; font-size: 0.9rem; }
-        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        button { background: #2d3a2a; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 1rem; width: 100%; }
-        button:hover { opacity: 0.9; }
-        .error { color: #d9534f; margin-bottom: 1rem; background: #f9d6d5; padding: 10px; border-radius: 4px; }
-        .success { color: #5cb85c; margin-bottom: 1rem; background: #dff0d8; padding: 10px; border-radius: 4px; }
-    </style>
+    <link rel="stylesheet" href="admin.css">
 </head>
-<body>
-    <div class="setup-box">
-        <h2>Witaj w Raricart Admin</h2>
-        <p>To jest pierwsze uruchomienie. Ustaw hasło administratora.</p>
-        
-        <?php if (isset($error)): ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
+<body class="auth-page">
+    <div class="login-box">
+        <h2 class="auth-heading">Witaj w Raricart Admin</h2>
+        <p class="auth-subtext">Pierwsze uruchomienie. Utwórz główne konto administratora.</p>
+
+        <?php if ($error !== ''): ?>
+            <div class="auth-msg error" role="alert"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
         <?php endif; ?>
-        
-        <?php if (isset($success)): ?>
-            <div class="success"><?php echo htmlspecialchars($success); ?></div>
+
+        <?php if ($success !== ''): ?>
+            <div class="auth-msg success" role="status"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
         <?php else: ?>
-        <form method="POST">
-            <input type="password" name="password" placeholder="Nowe Hasło" required>
-            <input type="password" name="confirm" placeholder="Potwierdź Hasło" required>
-            <button type="submit">Ustaw Hasło</button>
-        </form>
+            <form method="POST" class="auth-form">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars((string)($_SESSION['csrf_token'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="email" name="email" placeholder="E-mail administratora" required autocomplete="username" class="status-input auth-input btn-block">
+                <input type="password" name="password" placeholder="Hasło (min. 8 znaków)" minlength="8" required autocomplete="new-password" class="status-input auth-input btn-block">
+                <input type="password" name="confirm" placeholder="Potwierdź Hasło" minlength="8" required autocomplete="new-password" class="status-input auth-input-lg btn-block">
+                <button type="submit" class="action-btn btn-block">Utwórz konto</button>
+            </form>
         <?php endif; ?>
     </div>
 </body>

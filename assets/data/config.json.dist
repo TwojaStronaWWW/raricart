@@ -1,5 +1,8 @@
 {
     "users": {
-        "admin@example.com": "$2y$10$hashed_password_placeholder"
+        "admin@example.com": {
+            "hash": "!DISABLED_RUN_PHP_BIN_SET_ADMIN_PASSWORD!",
+            "force_change": true
+        }
     }
 }

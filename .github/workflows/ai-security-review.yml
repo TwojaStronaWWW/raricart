@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize]
     paths:
       - 'api/**'
+      - 'admin/**'
       - '**/php/**'
       - 'src/**'
       - 'GalAnonim/**'
@@ -37,7 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: >-
-      github.event_name == 'pull_request' ||
+      (github.event_name == 'pull_request' &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)) ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request != null &&
        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
@@ -117,7 +119,7 @@ jobs:
 
           # Silnik 2 (Wariant B): Natywne Google Gemini CLI / API (następca Google Jules w CI/CD)
           if [ -z "$REVIEW_BODY" ] && [ -n "${GEMINI_API_KEY:-}" ]; then
-            echo "Uruchamianie audytu przez Google Gemini API (gemini-2.5-flash)..."
+            echo "Uruchamianie audytu przez Google Gemini API (gemini-3.5-flash)..."
             jq -n \
               --arg sys "Jesteś Głównym Architektem Bezpieczeństwa ISO 27001 w projekcie TwojaStronaWWW. Wytyczne:\n${RULES_SUMMARY}" \
               --arg prompt "$PROMPT_TEXT" \
@@ -126,17 +128,17 @@ jobs:
                 contents: [{ role: "user", parts: [{ text: $prompt }] }],
                 generationConfig: { temperature: 0.2, maxOutputTokens: 1400 }
               }' > /tmp/gemini_payload.json
-            GEMINI_RES=$(curl -sS --max-time 25 "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}" \
+            GEMINI_RES=$(curl -sS --max-time 25 "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${GEMINI_API_KEY}" \
               -H "Content-Type: application/json" \
               --data-binary @/tmp/gemini_payload.json || true)
             rm -f /tmp/gemini_payload.json
             REVIEW_BODY=$(echo "$GEMINI_RES" | jq -r '.candidates[0].content.parts[0].text // empty' 2>/dev/null || true)
             if [ -n "$REVIEW_BODY" ]; then
-              ENGINE_USED="Google Gemini 2.5 Flash (Native CI/CD Agent)"
+              ENGINE_USED="Google Gemini 3.5 Flash (Native CI/CD Agent)"
             fi
           fi
 
-          # Silnik 3 (Wariant A): Centralny VPS AI Router (11-Model Cascade Fallback)
+          # Silnik 3 (Wariant A): Centralny VPS AI Router (15-Model Cascade Fallback)
           if [ -z "$REVIEW_BODY" ]; then
             echo "Uruchamianie audytu przez centralny VPS AI Router (https://ai.twojastronawww.pl/chat-router.php)..."
             SHORT_DIFF=$(head -n 160 /tmp/pr_full.diff | iconv -f UTF-8 -t UTF-8 -c || true)
@@ -155,7 +157,7 @@ jobs:
             rm -f /tmp/vps_payload.json
             REVIEW_BODY=$(echo "$VPS_RES" | jq -r '.answer // empty' 2>/dev/null || true)
             if [ -n "$REVIEW_BODY" ]; then
-              ENGINE_USED="VPS AI Router (11-Model Cascade)"
+              ENGINE_USED="VPS AI Router (15-Model Cascade)"
             fi
           fi
 

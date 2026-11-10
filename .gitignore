@@ -4,8 +4,10 @@
 vendor/
 node_modules/
 
-# Logs
+# Logs & Backups
 *.log
+*.bak
+*.bak.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -14,14 +16,22 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Environment / Config
+# Environment / Secrets / Keys (ISO 27001)
 .env
-.env.local
-.env.production
+.env.*
+!.env.example
+*.pem
+*.key
+*.kdbx
+id_ed25519*
 config/secrets.php
 assets/data/config.json
 assets/data/content.json
+assets/data/login_attempts.json
+assets/data/reset_tokens.json
 
+# Generated audits & local npm config
+docs/audits/
 
 # Exclude existing git history from subfolders if they were not removed
 **/.git/
@@ -64,5 +74,3 @@ uploads/
 # Legacy subfolder
 site/
 testpkg/
-
-

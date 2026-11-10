@@ -1,32 +1,32 @@
 <?php
+declare(strict_types=1);
+
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit("Forbidden: CLI only.\n");
+}
+
 $rootDir = dirname(__DIR__);
 $files = [
     $rootDir . '/index.php',
     $rootDir . '/assets/js/script.js'
 ];
 
-$orphans = ['a', 'i', 'o', 'u', 'w', 'z', 'A', 'I', 'O', 'U', 'W', 'Z'];
-
 foreach ($files as $file) {
     if (file_exists($file)) {
-        $content = file_get_contents($file);
-        
-        // Find single letters (a, i, o, u, w, z) that:
-        // 1. Are preceded by a space, newline, or > (HTML tag boundary)
-        // 2. Are followed by one or more whitespace characters
-        // Replace the following whitespace(s) with &nbsp;
+        $content = (string)file_get_contents($file);
         $changed = 0;
-        $newContent = preg_replace_callback(
+        $newContent = (string)preg_replace_callback(
             '/(^|\s|>)([aAiIoOuUwWzZ])\s+/',
-            function ($matches) use (&$changed) {
+            static function (array $matches) use (&$changed): string {
                 $changed++;
                 return $matches[1] . $matches[2] . '&nbsp;';
             },
             $content
         );
-        
+
         if ($changed > 0) {
-            file_put_contents($file, $newContent);
+            file_put_contents($file, $newContent, LOCK_EX);
             echo "Updated $file ($changed replacements)\n";
         } else {
             echo "No changes needed in $file\n";

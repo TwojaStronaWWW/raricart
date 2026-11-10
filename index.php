@@ -22,7 +22,7 @@ include 'parts/head.php';
 include 'parts/navbar.php';
 ?>
 
-    <main class="content">
+    <main id="main-content" class="content">
 
         <!-- 1. HERO SECTION (Split-Screen Lejek 2026) -->
         <?php include 'parts/hero.php'; ?>

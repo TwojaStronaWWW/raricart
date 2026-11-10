@@ -1,4 +1,29 @@
-<Files "leady.csv">
-    Order Allow,Deny
-    Deny from all
-</Files>
+# Ochrona panelu administracyjnego (OWASP ASVS)
+Options -Indexes
+
+<IfModule mod_headers.c>
+    Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+</IfModule>
+
+# Blokada bezpośredniego wywołania HTTP bibliotek wewnętrznych i skryptów CLI
+<FilesMatch "^(auth|generate_hash|migrate_users)\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Blokada bezpośredniego pobrania plików CSV, JSON, kopii i sekretów
+<FilesMatch "(\.(json|bak|csv|sqlite|db|dist|log|md|pem|key|kdbx|lock)$|^\.env)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

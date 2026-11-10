@@ -3,7 +3,7 @@
 $why_raricart_bg = function_exists('get_val') ? get_val('why_us_bg', '') : '';
 ?>
 <section id="dlaczego" class="section section-why-raricart">
-    <div class="parallax-why" <?php if($why_raricart_bg): ?>style="--bg-image: url('<?php echo htmlspecialchars($why_raricart_bg); ?>');"<?php endif; ?>>
+    <div class="parallax-why">
         <div class="why-raricart-container">
             <!-- Nagłówek sekcji -->
             <div class="why-raricart-header">

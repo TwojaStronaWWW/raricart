@@ -735,3 +735,42 @@ h3 {
 		grid-template-columns: 1fr;
 	}
 }
+
+body.is-packages-page {
+	padding-top: 0;
+}
+
+.pakiety-container > main {
+	padding-top: 90px;
+}
+
+.packages-disclaimer {
+	margin-top: 20px;
+	font-size: 0.85em;
+	opacity: 0.8;
+}
+
+.price-note {
+	font-size: 0.85em;
+	opacity: 0.8;
+	margin-top: 15px;
+	text-align: center;
+}
+
+.price-note-wide {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.hero-card-spaced {
+	margin-bottom: 40px;
+}
+
+.logistics-subnote {
+	margin-top: 10px;
+}
+
+.logistics-cta-copy {
+	margin-top: 20px;
+	font-weight: 700;
+}

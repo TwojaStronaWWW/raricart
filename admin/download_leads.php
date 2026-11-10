@@ -1,10 +1,12 @@
 <?php
-require_once 'auth.php';
+declare(strict_types=1);
+
+require_once __DIR__ . '/auth.php';
 check_login();
+@session_write_close();
 
 $file = __DIR__ . '/leady.csv';
 
-// Jeśli plik lokalny nie istnieje lub jest pusty, spróbuj pobrać go z prywatnego bucketa R2
 if (!file_exists($file) || filesize($file) < 10) {
     require_once __DIR__ . '/../api/PrivateStorageService.php';
     $privateStorage = new \Raricart\Api\PrivateStorageService();
@@ -12,16 +14,25 @@ if (!file_exists($file) || filesize($file) < 10) {
 }
 
 if (file_exists($file) && filesize($file) > 0) {
-    header('Content-Description: File Transfer');
-    header('Content-Type: text/csv; charset=UTF-8');
-    header('Content-Disposition: attachment; filename="klienci_raricart_' . date('Y-m-d') . '.csv"');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($file));
-    readfile($file);
-    exit;
-} else {
-    echo "Brak zarejestrowanych leadów w bazie (lokalnie i w prywatnym R2).";
+    $fp = @fopen($file, 'rb');
+    if ($fp && @flock($fp, LOCK_SH)) {
+        clearstatcache(true, $file);
+        $size = (int)filesize($file);
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="klienci_raricart_' . date('Y-m-d') . '.csv"');
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Content-Length: ' . $size);
+        fpassthru($fp);
+        @flock($fp, LOCK_UN);
+        fclose($fp);
+        exit;
+    }
+    if ($fp) {
+        fclose($fp);
+    }
 }
-?>
+
+header('Content-Type: text/plain; charset=UTF-8');
+echo "Brak zarejestrowanych leadów w bazie (lokalnie i w prywatnym R2).";

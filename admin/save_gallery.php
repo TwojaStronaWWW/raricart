@@ -5,16 +5,24 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../api/R2Client.php';
 
+require_post_method(true);
 check_login();
-check_csrf();
+check_csrf(true);
+@session_write_close();
 
 header('Content-Type: application/json; charset=UTF-8');
 
 $jsonFile = __DIR__ . '/../assets/data/gallery.json';
-$input = json_decode((string)file_get_contents('php://input'), true);
+$raw = file_get_contents('php://input', false, null, 0, 262145);
+if (is_string($raw) && strlen($raw) > 262144) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Zbyt duży rozmiar danych galerii.']);
+    exit;
+}
+
+$input = json_decode((string)$raw, true, 16);
 
 if (isset($input['images']) && is_array($input['images'])) {
-    // Atomic write with LOCK_EX to prevent corruption
     $encoded = json_encode(array_values($input['images']), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     if ($encoded !== false && file_put_contents($jsonFile, $encoded, LOCK_EX) !== false) {
         if (defined('R2_ACCOUNT_ID') && defined('R2_ACCESS_KEY_ID') && defined('R2_SECRET_ACCESS_KEY') && defined('R2_BUCKET_NAME')) {

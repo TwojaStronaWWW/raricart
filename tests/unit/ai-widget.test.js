@@ -2,6 +2,9 @@ import { test, describe, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { setupMockDom } from '../helpers/mock-dom.js';
 import {
+  escapeHtml,
+  sanitizeCssValue,
+  isOwnerAnalyticsIgnored,
   formatMarkdown,
   getLocalFallbackAnswer,
   computeKnowledgeVersion,
@@ -251,6 +254,46 @@ describe('Uniwersalny Widget Asystenta AI v3.0 (assets/js/ai-widget.js)', () => 
     assert.ok(widget);
     assert.equal(widget.chipsContainer.children.length, 2);
     assert.equal(widget.chipsContainer.children[0].textContent, 'Pytanie testowe 1');
+  });
+
+  test('Ochrona DOM XSS (escapeHtml + sanitizeCssValue), isOwnerAnalyticsIgnored, tswAiForm oraz 15-modelowa kaskada', () => {
+    assert.equal(
+      escapeHtml('<img src=x onerror="alert(1)">'),
+      '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'
+    );
+    assert.equal(
+      sanitizeCssValue('#3d4a3a; } body { display: none; }', '#000000'),
+      '#000000',
+      'Próba wstrzyknięcia reguł CSS przez atrybut koloru musi spaść do bezpiecznego fallbacku'
+    );
+
+    // Wykluczanie analityki właściciela (?ignore_analytics=1 -> localStorage -> ?ignore_analytics=0) oraz bota webdriver
+    dom.mockWindow.location = { search: '?ignore_analytics=1', hostname: 'raricart.pl', pathname: '/' };
+    dom.mockWindow.navigator = { webdriver: false };
+    assert.equal(isOwnerAnalyticsIgnored(dom.mockWindow), true);
+    assert.equal(dom.mockWindow.localStorage.getItem('tsw_ignore_analytics'), '1');
+
+    dom.mockWindow.location.search = '';
+    assert.equal(isOwnerAnalyticsIgnored(dom.mockWindow), true, 'Flaga z localStorage musi utrzymywać wykluczenie');
+
+    dom.mockWindow.location.search = '?ignore_analytics=0';
+    assert.equal(isOwnerAnalyticsIgnored(dom.mockWindow), false);
+    assert.equal(dom.mockWindow.localStorage.getItem('tsw_ignore_analytics'), null);
+
+    dom.mockWindow.location.search = '';
+    dom.mockWindow.navigator.webdriver = true;
+    assert.equal(isOwnerAnalyticsIgnored(dom.mockWindow), true, 'Automatyczny przeglądarkowy bot CDP/WebDriver musi być wykluczony');
+    dom.mockWindow.navigator.webdriver = false;
+
+    // Weryfikacja opisu 15-modelowej kaskady oraz escapowania złośliwego title w DOM
+    assert.match(getLocalFallbackAnswer('Wdrożenie czatbota AI (RAG)', 'twojastronawww'), /15-modelowej kaskady/);
+
+    const xssWidget = initAiWidget(dom.mockDocument, dom.mockWindow, {
+      title: '<img src=x onerror=alert(1)>'
+    });
+    assert.ok(xssWidget);
+    assert.equal(xssWidget.chatWindow.innerHTML.includes('<img src=x'), false, 'Złośliwy tytuł nie może wstrzyknąć surowego HTML');
+    assert.equal(xssWidget.chatForm.id, 'tswAiForm', 'Formularz czatu musi posiadać id="tswAiForm"');
   });
 });
 

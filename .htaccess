@@ -1,48 +1,72 @@
-# AuthType Basic
-#AuthName "Staging – dostęp tylko dla uprawnionych"
-# AuthUserFile /home/platne/serwer409986/
-# public_html/.htpasswd
-# Require valid-user
-
 # Wyłączenie indeksowania katalogów (ochrona przed przeglądaniem plików)
 Options -Indexes
 
 DirectoryIndex index.php
+
+<IfModule mod_mime.c>
+    AddType image/avif .avif
+    AddType image/webp .webp
+    AddType text/markdown .md
+    AddType application/manifest+json .webmanifest
+    AddCharset UTF-8 .html .css .js .txt .md .webmanifest
+</IfModule>
+
+# Bezwzględna blokada plików konfiguracyjnych, baz danych, logów, kopii i kluczy ([REF-01] / [REF-05])
+<FilesMatch "(\.(json|bak|csv|sqlite|db|dist|log|md|pem|key|kdbx|sh|toml|lock|yml|yaml|htpasswd)$|^\.env|^\.git)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
 RewriteEngine On
+
+# [REF-05] Ochrona przed atakami PHP2Shell / CGI Argument Injection & Wrapper RCE (CVE-2024-4577)
+RewriteCond %{QUERY_STRING} (^|&)(%2d|%ad|-)(d|n|s|w) [NC,OR]
+RewriteCond %{QUERY_STRING} (allow_url_include|auto_prepend_file|auto_append_file|php://|phar://|expect://) [NC]
+RewriteRule ^ - [F,L]
 
 # Kanoniczny adres bez www (301 Moved Permanently – eliminacja duplikacji w Google Search Console)
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
-# Blokada bezpośredniego dostępu HTTP do katalogów wewnętrznych i plików wrażliwych
-RewriteRule ^(bin|config|\.git|\.github|tests|drafts)/ - [F,L]
-RewriteRule ^(composer\.(json|lock)|package\.json|\.env.*) - [F,L]
+# Wymuszenie HTTPS (z wyłączeniem środowisk lokalnych)
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_X_FORWARDED_PROTO} !https [NC]
+RewriteCond %{HTTP_HOST} !^localhost(:[0-9]+)?$ [NC]
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1(:[0-9]+)?$
+RewriteCond %{HTTP_HOST} !\.test$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Blokada bezpośredniego dostępu HTTP do katalogów wewnętrznych i danych surowych
+RewriteRule ^(bin|config|\.git|\.github|\.githooks|tests|drafts|scripts|docker|assets/data)/ - [F,L]
+RewriteRule ^(composer\.(json|lock)|package(-lock)?\.json|\.npmrc|\.env.*|\.gitleaks\.toml) - [F,L]
 
 RewriteRule ^robots\.txt$ api/robots.php [L]
 RewriteRule ^pakiety/?$ pakiety.php [L]
 RewriteRule ^polityka-prywatnosci/?$ polityka-prywatnosci.php [L]
-RewriteCond %{HTTPS} !=on
-RewriteCond %{HTTP_HOST} !^localhost
-RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
-RewriteCond %{HTTP_HOST} !\.test$
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 ErrorDocument 404 /parts/404.html
 
 <IfModule mod_expires.c>
     ExpiresActive On
-    
+
     # Nie cachuj plików dynamicznych
     ExpiresByType text/html "access plus 0 seconds"
     ExpiresByType application/x-httpd-php "access plus 0 seconds"
-    
+
     # Standardowe zasoby statyczne
+    ExpiresByType image/avif "access plus 1 year"
     ExpiresByType image/jpg "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
     ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType video/webm "access plus 1 year"
     ExpiresByType text/css "access plus 1 hour"
     ExpiresByType application/javascript "access plus 1 hour"
     ExpiresByType text/javascript "access plus 1 hour"
@@ -50,32 +74,25 @@ ErrorDocument 404 /parts/404.html
     ExpiresByType font/ttf "access plus 1 year"
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
-    
+
     # Krótki czas dla reszty
     ExpiresDefault "access plus 1 minute"
 </IfModule>
 
-# Agresywne Wyłączenie LiteSpeed Cache (LH.pl) - USUNIĘTE DLA OPTYMALIZACJI
-# <IfModule litespeed>
-#     CacheDisable public /
-#     CacheDisable private /
-# </IfModule>
-
-# Wymuszenie nagłówków cache w HTTP (naprawa "no-cache")
 <IfModule mod_headers.c>
-    # Globalne nagłówki bezpieczeństwa HTTP (OWASP / Best Practices)
+    # Globalne nagłówki bezpieczeństwa HTTP (OWASP / [REF-01])
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
     Header always set Content-Security-Policy "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
-  Header always set Cross-Origin-Resource-Policy "same-site"
+    Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+    Header always set Cross-Origin-Resource-Policy "same-site"
     Header always set Permissions-Policy "geolocation=(), microphone=(self), camera=()"
     Header unset X-Powered-By
 
     # Cache Control dla multimediów statycznych (1 rok)
-    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|webp|swf|webmanifest|woff|woff2|ttf)$">
+    <FilesMatch "\.(ico|pdf|flv|avif|jpg|jpeg|png|gif|webp|mp4|webm|swf|webmanifest|woff|woff2|ttf)$">
         Header set Cache-Control "max-age=31536000, public"
     </FilesMatch>
 
@@ -83,12 +100,16 @@ ErrorDocument 404 /parts/404.html
     <FilesMatch "\.(js|css)$">
         Header set Cache-Control "public, max-age=3600, must-revalidate"
     </FilesMatch>
-    
+
     # Wyłącz nagłówki "no-cache" dodawane przez serwer/hosting
     Header unset Pragma
     Header unset Expires
 </IfModule>
 
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css text/markdown application/javascript application/json application/manifest+json font/ttf font/otf image/svg+xml
+</IfModule>
+
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json font/ttf font/otf image/svg+xml
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/markdown application/javascript application/json application/manifest+json font/ttf font/otf image/svg+xml
 </IfModule>

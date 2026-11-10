@@ -2,9 +2,14 @@
 // api/core.php
 // Centralny plik ładujący dane bazy JSON i udostępniający funkcje pomocnicze.
 
-// Security headers
+// Security headers & PHP2Shell / Phar Deserialization Guard (OWASP)
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
+foreach (['phar', 'ftp', 'ftps'] as $__unsafeWrapper) {
+    if (in_array($__unsafeWrapper, stream_get_wrappers(), true)) {
+        @stream_wrapper_unregister($__unsafeWrapper);
+    }
+}
 if (!headers_sent()) {
     header("X-Content-Type-Options: nosniff");
     header("X-Frame-Options: SAMEORIGIN");
@@ -47,8 +52,8 @@ if (!function_exists('get_val')) {
         // Zabezpieczenie przed pustymi wartościami, które wpadły do JSON
         $result = (empty($val) && $val !== '0' && $val !== 0 && $val !== false) ? $default : $val;
 
-        // Cache busting dla plików lokalnych
-        if (is_string($result) && $result !== $default && strpos($result, '?') === false && strpos($result, 'http') !== 0) {
+        // Cache busting dla plików lokalnych (z blokadą wrapperów strumieniowych :// oraz Path Traversal ..)
+        if (is_string($result) && $result !== $default && strpos($result, '?') === false && strpos($result, 'http') !== 0 && strpos($result, '://') === false && strpos($result, '..') === false) {
             $local_path = __DIR__ . '/../' . ltrim($result, '/');
             if (file_exists($local_path)) {
                 $result .= '?v=' . filemtime($local_path);

@@ -1,38 +1,58 @@
 <?php
+declare(strict_types=1);
+
 // optimize_existing.php - Skrypt do optymalizacji istniejących zdjęć na serwerze
-if (PHP_SAPI !== 'cli') {
-    require_once __DIR__ . '/auth.php';
-    check_login();
-}
-// Tworzy kopie w formacie WebP i skaluje do max 1920px
-ini_set('display_errors', 1);
+ini_set('display_errors', '0');
 error_reporting(E_ALL);
-ini_set('memory_limit', '512M'); // Zwiększamy limit pamięci na czas operacji
-set_time_limit(300); // 5 minut na wykonanie
+
+$isPureCli = (PHP_SAPI === 'cli' && !isset($_SERVER['REQUEST_METHOD']));
+if (!$isPureCli) {
+    require_once __DIR__ . '/auth.php';
+    require_post_method(false);
+    check_login();
+    check_csrf(false);
+    @session_write_close();
+}
+
+ini_set('memory_limit', '512M');
+set_time_limit(300);
 
 $baseDir = __DIR__ . '/../assets/';
 $dirsToScan = ['gallery', 'images'];
 $log = [];
 
-function logMsg($msg) {
+function logMsg(string $msg): void {
     global $log;
     $log[] = date('H:i:s') . ' - ' . $msg;
 }
 
-function processImage($filePath) {
-    $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-    if (!in_array($ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+function processImage(string $filePath): bool {
+    if (is_link($filePath) || !is_file($filePath)) {
         return false;
     }
 
-    // Sprawdź czy wersja WebP już istnieje
-    $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $filePath);
+    $ext = strtolower((string)pathinfo($filePath, PATHINFO_EXTENSION));
+    if (!in_array($ext, ['jpg', 'jpeg', 'png', 'gif'], true)) {
+        return false;
+    }
+
+    $webpPath = (string)preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $filePath);
     if (file_exists($webpPath)) {
         logMsg("Pominięto (WebP istnieje): " . basename($filePath));
         return false;
     }
 
-    // Wczytaj obraz
+    // Strażnik bomby dekompresyjnej (max 8000x8000 px / 36 MP)
+    $imgInfo = @getimagesize($filePath);
+    if (!is_array($imgInfo) || ($imgInfo[0] ?? 0) <= 0 || ($imgInfo[1] ?? 0) <= 0) {
+        logMsg("Pominięto (uszkodzony nagłówek obrazu): " . basename($filePath));
+        return false;
+    }
+    if ($imgInfo[0] > 8000 || $imgInfo[1] > 8000 || ($imgInfo[0] * $imgInfo[1]) > 36000000) {
+        logMsg("Odrzucono (przekroczony limit rozdzielczości 8000x8000 / 36 MP): " . basename($filePath));
+        return false;
+    }
+
     $image = null;
     switch ($ext) {
         case 'jpg':
@@ -41,10 +61,11 @@ function processImage($filePath) {
             break;
         case 'png':
             $image = @imagecreatefrompng($filePath);
-            // Zachowaj przezroczystość dla PNG
-            imagepalettetotruecolor($image);
-            imagealphablending($image, true);
-            imagesavealpha($image, true);
+            if ($image) {
+                @imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+            }
             break;
         case 'gif':
             $image = @imagecreatefromgif($filePath);
@@ -56,19 +77,16 @@ function processImage($filePath) {
         return false;
     }
 
-    // Skalowanie (jeśli większe niż 1920px)
     $width = imagesx($image);
     $height = imagesy($image);
     $maxWidth = 1920;
 
     if ($width > $maxWidth) {
         $newWidth = $maxWidth;
-        $newHeight = floor($height * ($maxWidth / $width));
-        
+        $newHeight = max(1, (int)floor($height * ($maxWidth / $width)));
+
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
-        
-        // Obsługa przezroczystości przy skalowaniu
-        if ($ext == 'png' || $ext == 'gif') {
+        if ($ext === 'png' || $ext === 'gif') {
             imagealphablending($newImage, false);
             imagesavealpha($newImage, true);
             $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
@@ -81,30 +99,32 @@ function processImage($filePath) {
         logMsg("Przeskalowano: " . basename($filePath) . " ($width -> $newWidth)");
     }
 
-    // Zapisz jako WebP
-    if (imagewebp($image, $webpPath, 85)) {
+    if (@imagewebp($image, $webpPath, 85)) {
         logMsg("SUKCES: Utworzono WebP dla: " . basename($filePath));
         imagedestroy($image);
         return true;
-    } else {
-        logMsg("BŁĄD: Nie udało się zapisać WebP: " . basename($webpPath));
-        imagedestroy($image);
-        return false;
     }
+
+    logMsg("BŁĄD: Nie udało się zapisać WebP: " . basename($webpPath));
+    imagedestroy($image);
+    return false;
 }
 
-// 1. Przetwarzanie plików
 $processedCount = 0;
 foreach ($dirsToScan as $dir) {
     $fullPath = $baseDir . $dir;
-    if (!is_dir($fullPath)) continue;
+    if (!is_dir($fullPath)) {
+        continue;
+    }
 
     logMsg("Skanowanie katalogu: $dir...");
-    $files = scandir($fullPath);
+    $files = scandir($fullPath) ?: [];
     foreach ($files as $file) {
-        if ($file === '.' || $file === '..') continue;
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
         $filePath = $fullPath . '/' . $file;
-        if (is_file($filePath)) {
+        if (is_file($filePath) && !is_link($filePath)) {
             if (processImage($filePath)) {
                 $processedCount++;
             }
@@ -112,7 +132,6 @@ foreach ($dirsToScan as $dir) {
     }
 }
 
-// 2. Aktualizacja JSON (jeśli istnieje)
 $jsonFiles = [
     __DIR__ . '/../assets/data/gallery.json',
     __DIR__ . '/../assets/data/content.json'
@@ -120,49 +139,52 @@ $jsonFiles = [
 
 foreach ($jsonFiles as $jsonFile) {
     if (file_exists($jsonFile)) {
-        $content = file_get_contents($jsonFile);
+        $content = (string)file_get_contents($jsonFile);
         $originalContent = $content;
-        
-        // Prosta zamiana rozszerzeń w JSON
-        // Zamieniamy .jpg", .png" na .webp"
-        // Regex szuka rozszerzeń w cudzysłowach, żeby nie popsuć treści
-        $content = preg_replace('/(\.jpg|\.jpeg|\.png|\.gif)("|\?)/i', '.webp$2', $content);
-        
+        $content = (string)preg_replace('/(\.jpg|\.jpeg|\.png|\.gif)("|\?)/i', '.webp$2', $content);
+
         if ($content !== $originalContent) {
-            // Zrób kopię zapasową
-            copy($jsonFile, $jsonFile . '.bak');
+            @copy($jsonFile, $jsonFile . '.bak');
             file_put_contents($jsonFile, $content, LOCK_EX);
             logMsg("Zaktualizowano plik: " . basename($jsonFile));
         }
     }
 }
 
+if ($isPureCli) {
+    foreach ($log as $line) {
+        echo $line . "\n";
+    }
+    echo "Przetworzono obrazów: {$processedCount}\n";
+    exit(0);
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Optymalizacja Obrazów Raricart</title>
-    <style>
-        body { font-family: monospace; padding: 20px; background: #f0f0f0; }
-        .log { background: #fff; padding: 20px; border: 1px solid #ccc; height: 80vh; overflow-y: scroll; }
-        .success { color: green; font-weight: bold; }
-        .info { color: blue; }
-        .btn { padding: 10px 20px; background: #333; color: #fff; text-decoration: none; display: inline-block; margin-top: 20px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optymalizacja Obrazów - Raricart Admin</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <h1>Raport Optymalizacji</h1>
-    <div class="log">
-        <?php foreach ($log as $line): ?>
-            <div><?php echo htmlspecialchars($line); ?></div>
-        <?php endforeach; ?>
-        <?php if ($processedCount == 0): ?>
-            <div class="info">Nie znaleziono nowych obrazów do przetworzenia.</div>
-        <?php else: ?>
-            <div class="success">Przetworzono obrazów: <?php echo $processedCount; ?></div>
-        <?php endif; ?>
+    <div class="container">
+        <div class="card">
+            <h2>Raport Optymalizacji Obrazów</h2>
+            <div class="optimize-log">
+                <?php foreach ($log as $line): ?>
+                    <div><?php echo htmlspecialchars($line, ENT_QUOTES, 'UTF-8'); ?></div>
+                <?php endforeach; ?>
+                <?php if ($processedCount === 0): ?>
+                    <div class="optimize-info">Nie znaleziono nowych obrazów do przetworzenia.</div>
+                <?php else: ?>
+                    <div class="optimize-success">Przetworzono obrazów: <?php echo (int)$processedCount; ?></div>
+                <?php endif; ?>
+            </div>
+            <p class="auth-footer">
+                <a href="dashboard.php" class="action-btn btn-inline-link">Wróć do panelu</a>
+            </p>
+        </div>
     </div>
-    <a href="/" class="btn">Wróć na stronę główną</a>
 </body>
 </html>

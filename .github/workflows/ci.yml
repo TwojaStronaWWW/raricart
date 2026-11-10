@@ -31,7 +31,7 @@ jobs:
 
       - name: 3. Ochrona przed wyciekiem plików sekretów (.env, secrets.php) i skan Gitleaks
         run: |
-          if git ls-files | grep -E "(\.env$|config/secrets\.php|\.htpasswd|leady\.csv)$"; then
+          if git ls-files | grep -E "(\.env$|config/secrets\.php|assets/data/config\.json|\.htpasswd|leady\.csv|^docs/audits/)"; then
             echo "❌ Wykryto plik z wrażliwymi danymi w repozytorium!"
             exit 1
           fi

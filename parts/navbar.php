@@ -41,10 +41,9 @@ if (!function_exists('nav_link')) {
 // Navbar and Logo visible and ready from start
 $nav_init_class = 'visible nav-dark';
 $logo_init_class = 'moving';
-$nav_style = '';
-$logo_style = '';
-$bg_style = '';
 ?>
+    <a href="#main-content" class="skip-link" data-i18n="nav.skip_to_content">Przejdź do głównej treści</a>
+
     <!-- Backgrounds compatibility placeholder (hero video is now inside hero split-screen) -->
     <?php if ($is_home): ?>
     <div class="video-background sr-only" id="videoBg" aria-hidden="true"></div>
@@ -73,7 +72,7 @@ $bg_style = '';
             </a>
         </div>
 
-        <nav id="nav" class="<?php echo $nav_init_class; ?>" <?php echo $nav_style; ?>>
+        <nav id="nav" class="<?php echo $nav_init_class; ?>">
             <ul class="nav-side nav-left">
                 <li><a href="<?php echo nav_link('#oferta-lista'); ?>" aria-label="Przejdź do sekcji Oferta" data-i18n="nav.offer">Oferta</a></li>
                 <li><a href="<?php echo nav_link('#proces'); ?>" aria-label="Przejdź do sekcji Jak to działa" data-i18n="nav.process">Jak to działa</a></li>

@@ -7,7 +7,7 @@
  * - Warstwa Kolorów oparta o CSS Custom Properties (--tsw-ai-*), dziedzicząca z lokalnego CSS strony,
  *   presetów per site_id lub atrybutów HTML (data-primary, data-accent, data-bg, data-surface)
  * - Komunikacja z centralnym routerem AI na VPS (https://ai.twojastronawww.pl/chat-router.php)
- * - Obsługa 11-modelowej kaskady High-Availability (6 dostawców API) po stronie VPS
+ * - Obsługa 15-modelowej kaskady High-Availability (7 dostawców API) po stronie VPS
  * - Priorytetowe przekazywanie leadów kontaktowych (telefon / e-mail omija cache i wyzwala Ntfy 1-Klik)
  * - Dynamiczne Centrum Wiedzy ze strony i bazy JSON/Wiki (np. Salsopedia) z wyszukiwaniem fleksyjnym
  * - Dwupoziomowy Response Cache z automatyczną inwalidacją po zmianie wersji wiedzy (kbVersion)
@@ -341,18 +341,79 @@ export function buildDynamicContext(question, entries) {
 }
 
 /**
+ * Escapowanie znaków specjalnych HTML i atrybutów (ochrona przed DOM XSS)
+ * @param {unknown} str
+ * @returns {string}
+ */
+export function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Sanityzacja wartości wstrzykiwanych do deklaracji CSS Custom Properties (--tsw-ai-*)
+ * @param {unknown} rawValue
+ * @param {string} fallback
+ * @returns {string}
+ */
+export function sanitizeCssValue(rawValue, fallback = '') {
+  if (typeof rawValue !== 'string') return fallback;
+  const trimmed = rawValue.trim();
+  if (!trimmed || trimmed.length > 80) return fallback;
+  if (/[{};<>\\]|url\s*\(|expression\s*\(|@import/i.test(trimmed)) return fallback;
+  return trimmed;
+}
+
+/**
+ * Sprawdza, czy ruch pochodzi od właściciela witryny lub automatycznego bota E2E/CDP (wykluczenie z analityki).
+ * Obsługuje przełącznik URL ?ignore_analytics=1/0 oraz ?tsw_ignore=1/0 zapisywany w localStorage.
+ * @param {Window} [win]
+ * @returns {boolean}
+ */
+export function isOwnerAnalyticsIgnored(win = globalThis.window) {
+  try {
+    if (!win) return false;
+    if (win.__TSW_IGNORE_ANALYTICS__ === true) return true;
+    if (win.navigator?.webdriver === true) return true;
+
+    const search = win.location?.search || '';
+    if (search) {
+      const params = new URLSearchParams(search);
+      const toggle = params.get('ignore_analytics') ?? params.get('tsw_ignore');
+      if (toggle === '1' || toggle === 'true') {
+        try {
+          win.localStorage?.setItem('tsw_ignore_analytics', '1');
+        } catch (_) {}
+        return true;
+      }
+      if (toggle === '0' || toggle === 'false') {
+        try {
+          win.localStorage?.removeItem('tsw_ignore_analytics');
+        } catch (_) {}
+        return false;
+      }
+    }
+
+    if (win.localStorage?.getItem('tsw_ignore_analytics') === '1') {
+      return true;
+    }
+  } catch (_) {}
+  return false;
+}
+
+/**
  * Bezpieczny mikro-parser Markdown (100% odporny na XSS)
  * @param {string} rawText
  * @returns {string}
  */
 export function formatMarkdown(rawText) {
   if (!rawText) return '';
-  let safe = String(rawText)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  let safe = escapeHtml(rawText);
 
   // Pogrubienia **tekst**
   safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
@@ -723,7 +784,7 @@ export function getLocalFallbackAnswer(question, siteId, knowledgeEntries = []) 
   }
 
   if (q.includes('ai') || q.includes('czat') || q.includes('bot') || q.includes('asystent') || q.includes('rag')) {
-    return 'Wdrażamy dedykowanych **Asystentów AI z bazą wiedzy firmy (RAG)** zintegrowanych z centralną bramką kaskadową (11 modeli LLM, pamięć podręczna zapytań `< 5 ms`):\n- Koszt wdrożenia: **od 900 PLN netto** (jednorazowa konfiguracja)\n- Działa **24/7**, odpowiada w ułamku sekundy z pamięci podręcznej i korzysta z darmowych pul API\n- Automatycznie przesyła powiadomienia na telefon (z numerem telefonu i e-mailem na samej górze wiadomości), gdy klient zostawi namiar kontaktowy.';
+    return 'Wdrażamy dedykowanych **Asystentów AI z bazą wiedzy firmy (RAG)** zintegrowanych z centralną bramką 15-modelowej kaskady (15 modeli LLM, 7 dostawców API, pamięć podręczna zapytań `< 5 ms`):\n- Koszt wdrożenia: **od 900 PLN netto** (jednorazowa konfiguracja)\n- Działa **24/7**, odpowiada w ułamku sekundy z pamięci podręcznej i korzysta z darmowych pul API\n- Automatycznie przesyła powiadomienia na telefon (z numerem telefonu i e-mailem na samej górze wiadomości), gdy klient zostawi namiar kontaktowy.';
   }
 
   if (q.includes('współprac') || q.includes('wspolprac') || q.includes('krok') || q.includes('proces') || q.includes('etap') || q.includes('czas') || q.includes('ile trwa') || q.includes('jak wygląda')) {
@@ -802,12 +863,7 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     tenantConfig.title ||
     scriptEl?.getAttribute('data-title') ||
     'Asystent AI';
-  const title = String(rawTitle)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  const title = escapeHtml(rawTitle);
   const kbUrl =
     options.kbUrl ||
     tenantConfig.kbUrl ||
@@ -824,14 +880,14 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     ...(THEME_PRESETS[siteId] || THEME_PRESETS.twojastronawww),
     ...(tenantConfig.theme && typeof tenantConfig.theme === 'object' ? tenantConfig.theme : {})
   };
-  const themePrimary = options.primaryColor || scriptEl?.getAttribute('data-primary') || preset.primary;
-  const themeAccent = options.accentColor || scriptEl?.getAttribute('data-accent') || preset.accent;
-  const themeHighlight = options.highlightColor || scriptEl?.getAttribute('data-highlight') || preset.highlight;
-  const themeBg = options.bgColor || scriptEl?.getAttribute('data-bg') || preset.bg;
-  const themeSurface = options.surfaceColor || scriptEl?.getAttribute('data-surface') || preset.surface;
-  const themeText = options.textColor || scriptEl?.getAttribute('data-text') || preset.text;
-  const themeMuted = options.mutedColor || scriptEl?.getAttribute('data-muted') || preset.muted;
-  const themeOnPrimary = options.onPrimaryColor || scriptEl?.getAttribute('data-on-primary') || preset.onPrimary;
+  const themePrimary = sanitizeCssValue(options.primaryColor || scriptEl?.getAttribute('data-primary') || preset.primary, preset.primary);
+  const themeAccent = sanitizeCssValue(options.accentColor || scriptEl?.getAttribute('data-accent') || preset.accent, preset.accent);
+  const themeHighlight = sanitizeCssValue(options.highlightColor || scriptEl?.getAttribute('data-highlight') || preset.highlight, preset.highlight);
+  const themeBg = sanitizeCssValue(options.bgColor || scriptEl?.getAttribute('data-bg') || preset.bg, preset.bg);
+  const themeSurface = sanitizeCssValue(options.surfaceColor || scriptEl?.getAttribute('data-surface') || preset.surface, preset.surface);
+  const themeText = sanitizeCssValue(options.textColor || scriptEl?.getAttribute('data-text') || preset.text, preset.text);
+  const themeMuted = sanitizeCssValue(options.mutedColor || scriptEl?.getAttribute('data-muted') || preset.muted, preset.muted);
+  const themeOnPrimary = sanitizeCssValue(options.onPrimaryColor || scriptEl?.getAttribute('data-on-primary') || preset.onPrimary, preset.onPrimary);
 
   // Automatyczne wykrycie, czy na stronie jest pływający przycisk CTA (np. #floatingCta na Raricart)
   const hasFloatingCta = Boolean(doc.getElementById('floatingCta') || doc.querySelector('.floating-cta'));
@@ -1352,12 +1408,13 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
       : siteId === 'raricart'
       ? 'Zapytaj o stoiska kulinarne, organizację lub rezerwację terminu...'
       : 'Napisz pytanie o ofertę lub wycenę...';
+  const safePlaceholder = escapeHtml(placeholderText);
 
   const root = doc.createElement('div');
   root.id = 'tsw-ai-widget-root';
   root.setAttribute('data-nosnippet', '');
   root.innerHTML = `
-    <button type="button" class="tsw-ai-btn" id="tswAiToggleBtn" aria-label="Otwórz czat z asystentem AI" aria-expanded="false" aria-controls="tswAiWindow">
+    <button type="button" class="tsw-ai-btn" id="tswAiToggleBtn" aria-label="Otwórz czat: ${title}" aria-expanded="false" aria-controls="tswAiWindow">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
       <span class="tsw-ai-btn-badge" aria-hidden="true">AI</span>
     </button>
@@ -1378,7 +1435,7 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
       <div class="tsw-ai-chips" id="tswAiChips"></div>
 
       <form class="tsw-ai-input-bar tsw-ai-form" id="tswAiForm">
-        <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="${placeholderText}" aria-label="Zadaj pytanie asystentowi" maxlength="500" required autocomplete="off" />
+        <input type="text" class="tsw-ai-input" id="tswAiInput" placeholder="${safePlaceholder}" aria-label="Zadaj pytanie asystentowi" maxlength="500" required autocomplete="off" />
         <button type="button" class="tsw-ai-voice-btn" id="tswAiVoiceBtn" title="Zadaj pytanie głosem (mikrofon)" aria-label="Zadaj pytanie głosem" aria-pressed="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
         </button>
@@ -1621,6 +1678,7 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
 
   function sendAnalyticsBeacon(extra) {
     try {
+      if (isOwnerAnalyticsIgnored(win)) return;
       const nav = win?.navigator || (typeof navigator !== 'undefined' ? navigator : null);
       const loc = win?.location || {};
       const params = new URLSearchParams(loc.search || '');
@@ -1875,7 +1933,8 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
     } catch (_) {}
 
     setTimeout(() => {
-      sendAnalyticsBeacon(lcpMeasured > 0 ? { type: 'pageview', lcp_ms: lcpMeasured } : { type: 'pageview' });
+      const validLcp = Number.isFinite(lcpMeasured) && lcpMeasured >= 50 && lcpMeasured <= 8000;
+      sendAnalyticsBeacon(validLcp ? { type: 'pageview', lcp_ms: lcpMeasured } : { type: 'pageview' });
     }, 600);
 
     win.addEventListener?.('hashchange', () => {
@@ -1920,7 +1979,12 @@ export function initAiWidget(doc = document, win = globalThis.window, options = 
 
     doc.addEventListener?.('submit', (e) => {
       const form = e?.target;
-      if (form && form.id !== 'tswAiForm' && form.id !== 'tsw-ai-form' && (form.id === 'contactForm' || form.classList?.contains?.('contact-form'))) {
+      if (
+        form &&
+        form.id !== 'tswAiForm' &&
+        !form.hasAttribute?.('data-tsw-ignore') &&
+        (form.id === 'contactForm' || form.id === 'form' || form.classList?.contains?.('contact-form'))
+      ) {
         sendAnalyticsBeacon({ type: 'event', event: 'contact_form_submit' });
       }
     });

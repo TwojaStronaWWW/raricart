@@ -5,15 +5,24 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../api/R2Client.php';
 
+require_post_method(true);
 check_login();
-check_csrf();
+check_csrf(true);
+@session_write_close();
 
 header('Content-Type: application/json; charset=UTF-8');
 
 $jsonFile = __DIR__ . '/../assets/data/content.json';
-$input = json_decode((string)file_get_contents('php://input'), true);
+$raw = file_get_contents('php://input', false, null, 0, 65537);
+if (is_string($raw) && strlen($raw) > 65536) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Zbyt duży rozmiar danych (max 64 KB).']);
+    exit;
+}
 
-if ($input && (is_array($input) || is_object($input))) {
+$input = json_decode((string)$raw, true, 16);
+
+if ($input && is_array($input)) {
     $encoded = json_encode($input, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     if ($encoded !== false && file_put_contents($jsonFile, $encoded, LOCK_EX) !== false) {
         if (defined('R2_ACCOUNT_ID') && defined('R2_ACCESS_KEY_ID') && defined('R2_SECRET_ACCESS_KEY') && defined('R2_BUCKET_NAME')) {

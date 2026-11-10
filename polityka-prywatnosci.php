@@ -3,10 +3,11 @@ require_once __DIR__ . '/api/core.php';
 
 include 'parts/head.php';
 ?>
+<a href="#main-content" class="skip-link">Przejdź do głównej treści</a>
 
-<main class="content" style="padding-top: 15vh;">
+<main id="main-content" class="content legal-main">
     <section class="section">
-        <div class="container" style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
+        <div class="container legal-container">
             <h1>Polityka Prywatności</h1>
             <p>Data aktualizacji: <?php echo date('d.m.Y'); ?></p>
 
@@ -17,38 +18,35 @@ include 'parts/head.php';
             <p>Administratorem danych osobowych zawartych w serwisie jest Raricart Live Food Station.</p>
 
             <h3>3. Gromadzone dane</h3>
-            <p>Przetwarzamy dane osobowe, które dobrowolnie podajesz w formularzu kontaktowym:
-                <ul>
-                    <li>Imię i nazwisko</li>
-                    <li>Adres e-mail</li>
-                    <li>Numer telefonu</li>
-                    <li>Informacje o planowanym evencie</li>
-                </ul>
-            </p>
+            <p>Przetwarzamy dane osobowe, które dobrowolnie podajesz w formularzu kontaktowym:</p>
+            <ul>
+                <li>Imię i nazwisko</li>
+                <li>Adres e-mail</li>
+                <li>Numer telefonu</li>
+                <li>Informacje o planowanym evencie</li>
+            </ul>
 
             <h3>4. Cel przetwarzania danych</h3>
-            <p>Dane osobowe są przetwarzane w celu:
-                <ul>
-                    <li>Przygotowania i przedstawienia oferty handlowej</li>
-                    <li>Realizacji kontaktu telefonicznego lub mailowego</li>
-                    <li>Realizacji usług gastronomicznych</li>
-                </ul>
-            </p>
+            <p>Dane osobowe są przetwarzane w celu:</p>
+            <ul>
+                <li>Przygotowania i przedstawienia oferty handlowej</li>
+                <li>Realizacji kontaktu telefonicznego lub mailowego</li>
+                <li>Realizacji usług gastronomicznych</li>
+            </ul>
 
-            <h3>5. Pliki Cookies</h3>
-            <p>Serwis używa plików cookies w celu zapewnienia poprawnego działania strony oraz analizy ruchu. Użytkownik może w każdej chwili zmienić ustawienia plików cookies w swojej przeglądarce.</p>
+            <h3>5. Pliki Cookies i Analityka Bezciasteczkowa</h3>
+            <p>Serwis stosuje minimalizację danych zgodną z RODO (anonimizacja adresów IP oraz analityka bezciasteczkowa). Użytkownik może w każdej chwili zmienić ustawienia plików cookies w swojej przeglądarce.</p>
 
             <h3>6. Prawa Użytkownika</h3>
-            <p>Każdy Użytkownik ma prawo do:
-                <ul>
-                    <li>Dostępu do swoich danych</li>
-                    <li>Sprostowania danych</li>
-                    <li>Usunięcia danych ("prawo do bycia zapomnianym")</li>
-                    <li>Ograniczenia przetwarzania</li>
-                </ul>
-            </p>
+            <p>Każdy Użytkownik ma prawo do:</p>
+            <ul>
+                <li>Dostępu do swoich danych</li>
+                <li>Sprostowania danych</li>
+                <li>Usunięcia danych ("prawo do bycia zapomnianym")</li>
+                <li>Ograniczenia przetwarzania</li>
+            </ul>
 
-            <div style="margin-top: 3rem;">
+            <div class="legal-back-wrap">
                 <a href="index.php" class="cta-secondary">Wróć do strony głównej</a>
             </div>
         </div>

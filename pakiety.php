@@ -13,16 +13,6 @@ include 'parts/head.php';
 <!-- PAKIETY SPECIFIC CSS -->
 <link rel="stylesheet" href="/assets/css/pakiety-style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/pakiety-style.css'); ?>">
 
-<style>
-    /* Spacing for content below the fixed navbar */
-    body {
-        padding-top: 0;
-    }
-    main {
-        padding-top: 90px;
-    }
-</style>
-
 <?php
 include 'parts/navbar.php';
 ?>
@@ -31,7 +21,7 @@ include 'parts/navbar.php';
 <div class="bg-decoration dec-2"></div>
 
 <div class="pakiety-container">
-    <main>
+    <main id="main-content">
         <!-- INDIVIDUAL STATIONS -->
         <section>
 
@@ -226,7 +216,7 @@ include 'parts/navbar.php';
                 <p>Każdy wariant to jasno określony zakres realizacji, z możliwością indywidualnego dostosowania
                     szczegółów.</p>
                 <p>Wybierz opcję, która najlepiej odpowiada Twoim potrzebom.</p>
-                <p style="margin-top: 20px; font-size: 0.85em; opacity: 0.8">* Ceny mają charakter orientacyjny.<br>
+                <p class="packages-disclaimer">* Ceny mają charakter orientacyjny.<br>
                     Szczegółową wycenę przygotowujemy indywidualnie.</p>
             </div>
         </section>
@@ -346,14 +336,14 @@ include 'parts/navbar.php';
                         <span class="price-value">20 030 zł</span>
                     </div>
                 </div>
-                <div class="price-note font-cardo" style="font-size: 0.85em; opacity: 0.8; margin-top: 15px; text-align: center;">(ceny końcowe, auto 560 zł liczone raz, rabat -10% uwzględniony)</div>
+                <div class="price-note font-cardo">(ceny końcowe, auto 560 zł liczone raz, rabat -10% uwzględniony)</div>
             </div>
         </section>
 
         <!-- COMBOS: 2 STATIONS -->
         <section>
             <h2 class="section-title">PAKIETY – 2 STANOWISKA</h2>
-            <div class="card hero-card" style="margin-bottom: 40px;">
+            <div class="card hero-card hero-card-spaced">
                 <span class="badge">RABAT PAKIETOWY -5%</span>
                 <div class="hero-description">
                     <p>Więcej wyboru, większy komfort i płynność, którą goście naprawdę doceniają.</p>
@@ -417,15 +407,15 @@ include 'parts/navbar.php';
                 </div>
             </div>
 
-            <div class="price-note font-cardo" style="font-size: 0.85em; opacity: 0.8; margin-top: 20px; text-align: center; width: 100%;">(ceny końcowe, auto 560 zł uwzględnione, rabat -5% w środku)</div>
+            <div class="price-note price-note-wide font-cardo">(ceny końcowe, auto 560 zł uwzględnione, rabat -5% w środku)</div>
         </section>
 
         <!-- LOGISTICS -->
         <section class="logistics">
             <p>Dojazd do 50 km – w cenie</p>
             <p>Powyżej 50 km: +2 zł/km</p>
-            <p style="margin-top: 10px;">Każde stanowisko zapewnia dedykowaną obsługę.</p>
-            <p style="margin-top: 20px; font-weight: bold;">Kalendarz na sezon 2026 jest otwarty. Jeśli planujesz
+            <p class="logistics-subnote">Każde stanowisko zapewnia dedykowaną obsługę.</p>
+            <p class="logistics-cta-copy">Kalendarz na sezon 2026 jest otwarty. Jeśli planujesz
                 wydarzenie i szukasz formy, która połączy smak z doświadczeniem, napisz do nas. Porozmawiajmy o
                 Twoim wydarzeniu</p>
         </section>
