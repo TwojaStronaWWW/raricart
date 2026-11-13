@@ -29,6 +29,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Configuration File Path
 $config_file = __DIR__ . '/../assets/data/config.json';
+if (!file_exists($config_file) && PHP_SAPI === 'cli' && file_exists($config_file . '.dist')) {
+    $config_file = $config_file . '.dist';
+}
 
 // Check if Config Exists (First Run)
 if (!file_exists($config_file) && basename((string)($_SERVER['SCRIPT_NAME'] ?? '')) !== 'setup.php') {

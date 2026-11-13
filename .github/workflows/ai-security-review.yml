@@ -34,7 +34,7 @@ concurrency:
 
 jobs:
   security-audit:
-    name: 🛡️ Niezależny Audyt Bezpieczeństwa PR (3-Engine Cascade: Claude / Gemini / VPS AI)
+    name: "🛡️ Niezależny Audyt Bezpieczeństwa PR (3-Engine Cascade: Claude / Gemini / VPS AI)"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: >-
