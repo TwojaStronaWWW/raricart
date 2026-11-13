@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/why-station.php - Sekcja 4: Główna Sekcja Sprzedażowa (Dlaczego stacja zamiast cateringu?)
 $why_station_img = function_exists('get_val') ? get_val('offer_main_image', 'https://media.raricart.pl/gallery/b8135a7105f1d9d0_migrated.webp') : 'https://media.raricart.pl/gallery/b8135a7105f1d9d0_migrated.webp';
 ?>

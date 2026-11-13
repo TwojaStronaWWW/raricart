@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/faq.php - Sekcja 11: Najczęstsze pytania (FAQ — 7 pytań wg specyfikacji Emilii)
 ?>
 <section id="faq" class="section section-faq" aria-label="Najczęściej zadawane pytania">

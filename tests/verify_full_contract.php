@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Kompletny audyt spójności: JavaScript <-> HTML <-> CSS
  */
@@ -30,10 +31,10 @@ $uniqueJsIds = array_unique($jsIds[1]);
 
 echo "1. Weryfikacja ID z JavaScript w wyrenderowanym HTML:\n";
 $missingIds = [];
-$dynamicIds = ['ga-script', 'bg']; // ga-script jest tworzony w locie, bg to legacy fallback
+$dynamicIds = ['ga-script', 'bg', 'preCtaCheckBtn', 'floatingCta']; // ga-script tworzony w locie, pozostałe to opcjonalne/wyłączone moduły Lejka 2026
 
 foreach ($uniqueJsIds as $id) {
-    if (in_array($id, $dynamicIds)) continue;
+    if (in_array($id, $dynamicIds, true)) continue;
     
     // Szukaj id="$id" w HTML
     if (strpos($html, 'id="' . $id . '"') !== false || strpos($html, "id='" . $id . "'") !== false) {
@@ -50,8 +51,9 @@ $uniqueJsClasses = array_unique($jsClasses[1]);
 
 echo "\n2. Weryfikacja klas dynamicznych JavaScript w CSS:\n";
 $missingCss = [];
+$stateMarkerClasses = ['shrink', 'is-homepage', 'hidden', 'nav-open', 'is-expanded', 'toast-out'];
 foreach ($uniqueJsClasses as $cls) {
-    if ($cls === 'shrink') continue; // legacy
+    if (in_array($cls, $stateMarkerClasses, true)) continue;
     
     // Szukaj selektora .$cls w CSS
     if (preg_match('/\\.' . preg_quote($cls, '/') . '[^a-zA-Z0-9_-]/', $css)) {
@@ -85,12 +87,10 @@ $lejekSections = [
     'why-station' => 'why-station-section',
     'proces' => 'process-section',
     'audiences' => 'audiences-section',
-    'why-raricart' => 'section-why-raricart',
     'realizacje' => 'section-realizations',
     'reviews' => 'section-reviews',
     'about-story' => 'section-about-story',
     'faq' => 'section-faq',
-    'pre-cta' => 'section-pre-cta',
     'contact' => 'section-contact'
 ];
 

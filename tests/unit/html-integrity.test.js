@@ -68,6 +68,29 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.match(indexHtml, /<link\s+rel="manifest"\s+href="\/site\.webmanifest">/i);
       assert.match(indexHtml, /<link\s+rel="icon"[^>]*href="\/favicon\.ico"/i);
     });
+
+    it('powinien zachowywać optymalną kolejność <head> wg [REF-02] (Capo.js), Speculation Rules API z wykluczeniem /api/*, llms.txt [REF-07] oraz pełny graf @graph JSON-LD [REF-08]', () => {
+      const charsetPos = indexHtml.indexOf('<meta charset="UTF-8">');
+      const viewportPos = indexHtml.indexOf('<meta name="viewport"');
+      const titlePos = indexHtml.indexOf('<title>');
+      const preconnectPos = indexHtml.indexOf('<link rel="preconnect"');
+      const stylesheetPos = indexHtml.indexOf('<link rel="stylesheet" href="/assets/css/styles.css');
+      const descriptionPos = indexHtml.indexOf('<meta name="description"');
+
+      assert.ok(charsetPos !== -1 && viewportPos !== -1 && titlePos !== -1 && preconnectPos !== -1 && stylesheetPos !== -1 && descriptionPos !== -1);
+      assert.ok(charsetPos < viewportPos, 'charset musi być przed viewport');
+      assert.ok(viewportPos < titlePos, 'viewport musi być przed title');
+      assert.ok(titlePos < preconnectPos, 'title musi być przed preconnect');
+      assert.ok(preconnectPos < stylesheetPos, 'preconnect musi być przed głównym stylesheet');
+      assert.ok(stylesheetPos < descriptionPos, 'główny stylesheet musi być przed opisem meta description ([REF-02])');
+
+      assert.match(indexHtml, /<script\s+type="speculationrules">[\s\S]*"\/api\/\*"[\s\S]*<\/script>/i);
+      assert.match(indexHtml, /<link\s+rel="alternate"\s+type="text\/markdown"\s+href="\/llms\.txt"/i);
+      assert.match(indexHtml, /"@graph"\s*:\s*\[/i);
+      assert.match(indexHtml, /"@type"\s*:\s*"FoodEstablishment"/i);
+      assert.match(indexHtml, /"@type"\s*:\s*"WebSite"/i);
+      assert.match(indexHtml, /"@type"\s*:\s*"FAQPage"/i);
+    });
   });
 
   describe('Architektura sekcji Lejka 2026', () => {
@@ -198,6 +221,21 @@ describe('Integralność semantyczna i SEO HTML (Lejek 2026)', () => {
       assert.match(pakietyHtml, /<!DOCTYPE html>/i);
       assert.match(pakietyHtml, /<title>.*Pakiety.*Raricart.*<\/title>/i);
       assert.ok(pakietyHtml.includes('pakiety-style.css'), 'Brak załączenia pakiety-style.css');
+    });
+  });
+
+  describe('Rygor [DR-06] oraz Zero-Inline (brak style="..." i onclick="...")', () => {
+    it('karty kroków procesu (.process-step-card) używają wyłącznie numeracji 01..05 bez duplikacji ikon SVG w tej samej karcie ([DR-06])', () => {
+      assert.strictEqual(indexHtml.includes('class="step-icon"'), false, 'Karty .process-step-card nie mogą zawierać zduplikowanego kontenera .step-icon obok .step-number ([DR-06])');
+      assert.ok(indexHtml.includes('<span class="step-number">01</span>'));
+      assert.ok(indexHtml.includes('<span class="step-number">05</span>'));
+    });
+
+    it('wyrenderowany HTML (index.php i pakiety.php) jest w 100% wolny od atrybutów inline style="..." oraz onclick="..."', () => {
+      assert.strictEqual(/\sstyle="/i.test(indexHtml), false, 'Wykryto zabroniony atrybut inline style="..." w index.php');
+      assert.strictEqual(/\sonclick="/i.test(indexHtml), false, 'Wykryto zabroniony atrybut inline onclick="..." w index.php');
+      assert.strictEqual(/\sstyle="/i.test(pakietyHtml), false, 'Wykryto zabroniony atrybut inline style="..." w pakiety.php');
+      assert.strictEqual(/\sonclick="/i.test(pakietyHtml), false, 'Wykryto zabroniony atrybut inline onclick="..." w pakiety.php');
     });
   });
 });

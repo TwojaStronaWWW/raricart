@@ -12,8 +12,15 @@ header('Content-Type: application/json; charset=UTF-8');
 $config_file = __DIR__ . '/../assets/data/config.json';
 $currentUser = get_current_user_email();
 
+$contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > 65536) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Przekroczono maksymalny rozmiar zapytania (64 KB).']);
+    exit;
+}
+
 $rawBody = file_get_contents('php://input', false, null, 0, 16384);
-$input = json_decode((string)$rawBody, true, 8);
+$input = json_decode((string)$rawBody, true, 16);
 if (!is_array($input)) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Nieprawidłowy format żądania.']);
@@ -60,7 +67,7 @@ if (!$fp || !@flock($fp, LOCK_EX)) {
 
 rewind($fp);
 $rawConfig = stream_get_contents($fp);
-$config = (is_string($rawConfig) && $rawConfig !== '') ? json_decode($rawConfig, true) : [];
+$config = (is_string($rawConfig) && $rawConfig !== '') ? json_decode($rawConfig, true, 16) : [];
 if (!is_array($config) || !isset($config['users']) || !is_array($config['users']) || !isset($config['users'][$currentUser])) {
     @flock($fp, LOCK_UN);
     fclose($fp);

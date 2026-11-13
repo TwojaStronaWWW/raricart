@@ -2740,6 +2740,16 @@ body.lightbox-open {
 	gap: 1rem;
 }
 
+.availability-notice.is-visible {
+	display: flex;
+}
+
+.notice-icon {
+	stroke: var(--color-accent);
+	min-width: 20px;
+	flex-shrink: 0;
+}
+
 .form-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/trust-bar.php - Mini Sekcja Zaufania (4 filary marki Raricart)
 ?>
 <section id="trust-bar" class="trust-bar" aria-label="Dlaczego Raricart">

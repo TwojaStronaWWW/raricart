@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/audiences.php - Sekcja 6: „Dla Kogo?” — Segmentacja Wydarzeń (Lejek 2026)
 ?>
 <section id="dla-kogo" class="section audiences-section" aria-label="Gdzie pojawia się Raricart">

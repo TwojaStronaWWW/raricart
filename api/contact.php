@@ -100,7 +100,9 @@ function contains_waf_l7_attack(mixed $value): bool {
         '/<\s*script\b/i',
         '/\b(javascript|vbscript)\s*:/i',
         '/\bon(error|load|click|mouseover|focus|toggle|animationstart)\s*=/i',
+        '/<\s*iframe\b[^>]*\bsrcdoc\s*=/i',
         '/<\s*(iframe|object|embed)\b/i',
+        '/mathlive#virtual-keyboard-message/i',
         '/\b(union\s+(all\s+)?select|drop\s+table|information_schema|sleep\s*\(\s*\d+\s*\)|benchmark\s*\()\b/i',
         '/(\.\.\/|\.\.\\\\|\/etc\/passwd|\/proc\/self|(php|phar|expect|file):\/\/|<\?(php|=))/i',
     ];
@@ -248,19 +250,19 @@ $emailBody = ($isPartial ? "--- TO JEST NIEUKOŃCZONY SZKIC FORMULARZA ---\n\n" 
              "🛡️ IP (RODO): $maskedIp\n\n" .
              "💬 Wiadomość:\n$message";
 
-// --- LOGIKA SKŁADOWANIA SZKICÓW (DRAFT) ---
+// --- LOGIKA SKŁADOWANIA SZKICÓW (DRAFT - Zero-PII SHA-256) ---
 $emailNorm = strtolower(trim($email));
 $phoneNorm = preg_replace('/\D+/', '', $phone) ?: '';
-$emailHash = $emailNorm !== '' ? md5($emailNorm) : null;
-$phoneHash = $phoneNorm !== '' ? md5($phoneNorm) : null;
-$userId = $emailHash ?: ($phoneHash ?: ($email ? md5($email) : ($phone ? md5($phone) : null)));
+$emailHash = $emailNorm !== '' ? substr(hash('sha256', $emailNorm), 0, 32) : null;
+$phoneHash = $phoneNorm !== '' ? substr(hash('sha256', $phoneNorm), 0, 32) : null;
+$userId = $emailHash ?: ($phoneHash ?: ($email ? substr(hash('sha256', $email), 0, 32) : ($phone ? substr(hash('sha256', $phone), 0, 32) : null)));
 
 $candidateHashes = array_values(array_unique(array_filter([
     $userId,
     $emailHash,
     $phoneHash,
-    $email ? md5($email) : null,
-    $phone ? md5($phone) : null,
+    $email ? substr(hash('sha256', $email), 0, 32) : null,
+    $phone ? substr(hash('sha256', $phone), 0, 32) : null,
 ])));
 
 if ($isPartial && $userId) {
@@ -292,7 +294,7 @@ if ($isPartial && $userId) {
     foreach ($candidateHashes as $h) {
         $candidateFile = $draftsDir . '/draft_' . $h . '.json';
         if (file_exists($candidateFile)) {
-            $savedData = json_decode((string)@file_get_contents($candidateFile), true);
+            $savedData = json_decode((string)@file_get_contents($candidateFile), true, 16);
             if (($savedData['score'] ?? 0) > $currentScore) {
                 $shouldSave = false;
             }
@@ -397,9 +399,10 @@ if ($isPartial && $userId) {
         }
     }
 
-    // 3. Rejestracja zgłoszenia w centralnym systemie ticketowym osTicket (wyłącznie HTTPS!) + Ntfy 1-Klik
+    // 3. Rejestracja zgłoszenia w centralnym systemie ticketowym osTicket (wyłącznie HTTPS + SSRF Guard!) + Ntfy 1-Klik
+    $osTicketUrl = 'https://hd.twojastronawww.pl/ticket_hook.php';
     $osTicketApiKey = get_env_secret('OSTICKET_API_KEY');
-    if (getenv('RARICART_TEST_DISABLE_NETWORK') !== '1' && !empty($osTicketApiKey) && function_exists('curl_init')) {
+    if (getenv('RARICART_TEST_DISABLE_NETWORK') !== '1' && !empty($osTicketApiKey) && function_exists('curl_init') && is_safe_https_url($osTicketUrl)) {
         $ticketPayload = [
             'name' => $cleanNameForHeader ?: 'Klient Raricart',
             'email' => $email ?: 'kontakt@raricart.pl',
@@ -411,7 +414,7 @@ if ($isPartial && $userId) {
             'autorespond' => false,
             'send_email' => false,
         ];
-        $ch = curl_init('https://hd.twojastronawww.pl/ticket_hook.php');
+        $ch = curl_init($osTicketUrl);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'X-API-Key: ' . str_replace(["\r", "\n", "\0"], '', $osTicketApiKey),
             'Content-Type: application/json',
@@ -436,9 +439,10 @@ if ($isPartial && $userId) {
     $ntfyTopic = preg_replace('/[^a-zA-Z0-9_-]/', '', get_env_secret('NTFY_TOPIC')) ?: '';
     if (getenv('RARICART_TEST_DISABLE_NETWORK') !== '1' && $ntfyTopic !== '' && function_exists('curl_init')) {
         $ntfyBaseUrl = rtrim(get_env_secret('NTFY_BASE_URL', 'https://ntfy.sh'), '/');
-        if (stripos($ntfyBaseUrl, 'https://') !== 0) {
+        if (!is_safe_https_url($ntfyBaseUrl)) {
             $ntfyBaseUrl = 'https://ntfy.sh';
         }
+        $ntfyTargetUrl = "{$ntfyBaseUrl}/{$ntfyTopic}";
         $ntfyToken = str_replace(["\r", "\n", "\0"], '', get_env_secret('NTFY_TOKEN'));
 
         $ntfyActions = [];
@@ -462,23 +466,25 @@ if ($isPartial && $userId) {
             $ntfyHeaders[] = 'Authorization: Bearer ' . $ntfyToken;
         }
 
-        $chNtfy = curl_init("{$ntfyBaseUrl}/{$ntfyTopic}");
-        curl_setopt_array($chNtfy, [
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => html_entity_decode($emailBody, ENT_QUOTES, 'UTF-8'),
-            CURLOPT_HTTPHEADER => $ntfyHeaders,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 3,
-            CURLOPT_CONNECTTIMEOUT => 2,
-            CURLOPT_FOLLOWLOCATION => false,
-            CURLOPT_MAXREDIRS => 0
-        ]);
-        if (defined('CURLPROTO_HTTPS')) {
-            curl_setopt($chNtfy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-            curl_setopt($chNtfy, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+        if (is_safe_https_url($ntfyTargetUrl)) {
+            $chNtfy = curl_init($ntfyTargetUrl);
+            curl_setopt_array($chNtfy, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => html_entity_decode($emailBody, ENT_QUOTES, 'UTF-8'),
+                CURLOPT_HTTPHEADER => $ntfyHeaders,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 3,
+                CURLOPT_CONNECTTIMEOUT => 2,
+                CURLOPT_FOLLOWLOCATION => false,
+                CURLOPT_MAXREDIRS => 0
+            ]);
+            if (defined('CURLPROTO_HTTPS')) {
+                curl_setopt($chNtfy, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+                curl_setopt($chNtfy, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+            }
+            @curl_exec($chNtfy);
+            curl_close($chNtfy);
         }
-        @curl_exec($chNtfy);
-        curl_close($chNtfy);
     }
 
     // 4. Wyślij maila z nagłówkami MIME RFC 2045 + RFC 2047 Subject
@@ -532,7 +538,7 @@ function processDraftQueue(string $draftsDir, string $toEmail, ?string $csvTarge
                     continue;
                 }
 
-                $content = json_decode((string)@file_get_contents($file), true);
+                $content = json_decode((string)@file_get_contents($file), true, 16);
                 if (!is_array($content)) {
                     @unlink($file);
                     continue;
@@ -619,7 +625,7 @@ function cleanupMatchingDraftsAndDigest(string $draftsDir, string $emailNorm, st
 
     $draftFiles = glob($draftsDir . '/draft_*.json') ?: [];
     foreach ($draftFiles as $df) {
-        $content = json_decode((string)@file_get_contents($df), true);
+        $content = json_decode((string)@file_get_contents($df), true, 16);
         if (!is_array($content)) {
             continue;
         }

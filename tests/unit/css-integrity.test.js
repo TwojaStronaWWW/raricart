@@ -48,4 +48,19 @@ describe('Integralność stylów CSS (Design System & Responsywność)', () => {
   it('arkusz powinien implementować reguły responsywne dla urządzeń mobilnych (@media)', () => {
     assert.match(css, /@media\s*\(\s*max-width:\s*\d+px\s*\)/i);
   });
+
+  it('arkusze stylów powinny implementować Vanilla CSS Baseline [REF-03] (color-scheme, scrollbar-gutter: stable, @view-transition, text-wrap: balance/pretty) oraz WCAG 2.2 AA [REF-04] (.skip-link, :focus-visible)', () => {
+    assert.match(css, /color-scheme:\s*light/i);
+    assert.match(css, /scrollbar-gutter:\s*stable/i);
+    assert.match(css, /@view-transition\s*\{\s*navigation:\s*auto;\s*\}/i);
+    assert.match(css, /text-wrap:\s*balance/i);
+    assert.match(css, /text-wrap:\s*pretty/i);
+    assert.match(css, /\.skip-link\b/);
+    assert.match(css, /:focus-visible\b/);
+
+    assert.match(pakietyCss, /color-scheme:\s*light/i);
+    assert.match(pakietyCss, /scrollbar-gutter:\s*stable/i);
+    assert.match(pakietyCss, /text-wrap:\s*balance/i);
+    assert.match(pakietyCss, /text-wrap:\s*pretty/i);
+  });
 });

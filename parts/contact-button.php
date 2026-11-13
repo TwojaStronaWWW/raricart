@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/contact-button.php
 ?>
 <a href="/#kontakt" class="floating-cta" id="floatingCta" aria-label="Kontakt">

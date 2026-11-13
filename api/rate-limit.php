@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-// [REF-05 / OWASP PHP2Shell Guard]: Wyrejestrowanie niebezpiecznych wrapperów strumieniowych (phar://, ftp://) i blokada CGI injection
-foreach (['phar', 'ftp', 'ftps'] as $__unsafeWrapper) {
+// [REF-05 / OWASP PHP2Shell Guard]: Wyrejestrowanie niebezpiecznych wrapperów strumieniowych (phar://, ftp://, expect://) i blokada CGI injection
+foreach (['phar', 'ftp', 'ftps', 'expect'] as $__unsafeWrapper) {
     if (in_array($__unsafeWrapper, stream_get_wrappers(), true)) {
         @stream_wrapper_unregister($__unsafeWrapper);
     }
@@ -105,7 +105,7 @@ function is_ip_banned(string $ip): bool {
     if (@flock($fp, LOCK_SH)) {
         $raw = stream_get_contents($fp);
         if (is_string($raw) && $raw !== '') {
-            $data = json_decode($raw, true);
+            $data = json_decode($raw, true, 16);
             $expiresAt = (int)($data['expires_at'] ?? 0);
             if ($expiresAt > time()) {
                 $banned = true;
@@ -154,14 +154,48 @@ function ban_client_ip(string $ip, int $seconds = 900, string $reason = 'securit
 }
 
 /**
- * Mechanizm Rate Limiting oparty na blokadzie plikowej i Garbage Collectorze (ISO 27001).
+ * Strażnik SSRF (OWASP ASVS [REF-05]): weryfikuje schemat HTTPS oraz blokuje adresy prywatne,
+ * loopback i link-local Cloud Metadata (169.254.169.254, 127.0.0.1, localhost, ::1, 0.0.0.0).
+ */
+function is_safe_https_url(string $url): bool {
+    $url = trim($url);
+    if ($url === '' || stripos($url, 'https://') !== 0) {
+        return false;
+    }
+    $parts = parse_url($url);
+    if (!is_array($parts) || strtolower((string)($parts['scheme'] ?? '')) !== 'https') {
+        return false;
+    }
+    $host = strtolower(trim((string)($parts['host'] ?? ''), '[]'));
+    if ($host === '' || in_array($host, ['localhost', '127.0.0.1', '0.0.0.0', '::1', '169.254.169.254', 'metadata.google.internal'], true)) {
+        return false;
+    }
+    if (str_starts_with($host, '169.254.') || str_starts_with($host, '127.') || str_ends_with($host, '.internal') || str_ends_with($host, '.local')) {
+        return false;
+    }
+    if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
+        if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Mechanizm Rate Limiting oparty na blokadzie plikowej i Garbage Collectorze (ISO 27001 / Zero-PII SHA-256).
  * Chroni formularze i endpointy API przed atakami typu brute-force i DoS.
  */
 function rate_limit(string $key, int $limit, int $seconds): bool {
     $dir = rate_limit_dir();
 
-    // Hashujemy klucz (np. zanonimizowane IP + akcja), aby uniknąć kolizji oktetów IPv4 i nie przechowywać IP w nazwach plików (RODO)
-    $sanitizedKey = preg_replace('/[^a-zA-Z0-9_]/', '', substr($key, 0, 24)) . '_' . substr(hash('sha256', $key), 0, 16);
+    // Zero-PII SHA-256: wycinamy cyfry/oktety IP z prefiksu, pozostawiając tylko nazwę akcji oraz skrót SHA-256 klucza (RODO)
+    $actionPrefix = preg_replace('/[^a-zA-Z_]/', '', explode(':', $key)[0] ?? 'rate');
+    $actionPrefix = trim((string)preg_replace('/_+/', '_', (string)$actionPrefix), '_');
+    if ($actionPrefix === '') {
+        $actionPrefix = 'rate';
+    }
+    $keyHash = hash('sha256', $key);
+    $sanitizedKey = substr($actionPrefix, 0, 20) . '_' . substr($keyHash, 0, 24);
     $file = $dir . '/rate_' . $sanitizedKey . '.json';
 
     // Garbage Collector (1% prawdopodobieństwa)
@@ -192,7 +226,7 @@ function rate_limit(string $key, int $limit, int $seconds): bool {
     $current = [];
     $content = stream_get_contents($fp);
     if ($content !== false && $content !== '') {
-        $decoded = json_decode($content, true);
+        $decoded = json_decode($content, true, 16);
         if (is_array($decoded)) {
             $current = $decoded;
         }
@@ -203,7 +237,8 @@ function rate_limit(string $key, int $limit, int $seconds): bool {
     if (!isset($current['start_time']) || ($now - (int)$current['start_time'] > $seconds)) {
         $current = [
             'start_time' => $now,
-            'count' => 0
+            'count' => 0,
+            'key_hash' => $keyHash
         ];
     }
 

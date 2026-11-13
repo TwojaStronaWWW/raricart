@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 // api/core.php
 // Centralny plik ładujący dane bazy JSON i udostępniający funkcje pomocnicze.
 
 // Security headers & PHP2Shell / Phar Deserialization Guard (OWASP)
-ini_set('display_errors', 0);
+ini_set('display_errors', '0');
 error_reporting(E_ALL);
 foreach (['phar', 'ftp', 'ftps'] as $__unsafeWrapper) {
     if (in_array($__unsafeWrapper, stream_get_wrappers(), true)) {
@@ -18,23 +19,44 @@ if (!headers_sent()) {
 
 clearstatcache();
 
+if (!function_exists('read_json_file_shared')) {
+    function read_json_file_shared(string $path): ?array {
+        if (!is_file($path) || filesize($path) <= 10) {
+            return null;
+        }
+        $fp = @fopen($path, 'rb');
+        if (!$fp) {
+            return null;
+        }
+        $raw = '';
+        if (@flock($fp, LOCK_SH)) {
+            $raw = (string)stream_get_contents($fp);
+            @flock($fp, LOCK_UN);
+        }
+        fclose($fp);
+        if ($raw === '') {
+            return null;
+        }
+        $decoded = json_decode($raw, true, 16);
+        return is_array($decoded) ? $decoded : null;
+    }
+}
+
 // Load dynamic content on server side to prevent flickering
 $content = [];
 $content_file = __DIR__ . '/../assets/data/content.json';
 $content_dist = __DIR__ . '/../assets/data/content.json.dist';
 
-if (file_exists($content_file) && filesize($content_file) > 10) {
-    $content = json_decode((string)file_get_contents($content_file), true);
-}
+$content = read_json_file_shared($content_file);
 if (!is_array($content) || empty($content)) {
-    if (file_exists($content_dist) && filesize($content_dist) > 10) {
-        $content = json_decode((string)file_get_contents($content_dist), true);
-    }
+    $content = read_json_file_shared($content_dist);
 }
-if (!is_array($content)) $content = [];
+if (!is_array($content)) {
+    $content = [];
+}
 
 if (!function_exists('get_val')) {
-    function get_val($key, $default) {
+    function get_val(string $key, mixed $default = ''): mixed {
         global $content;
         
         // Obsługa zagnieżdżonych kluczy (np. offer_cards.pancakes)

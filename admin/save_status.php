@@ -10,6 +10,13 @@ check_csrf(true);
 
 header('Content-Type: application/json; charset=UTF-8');
 
+$contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > 65536) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Payload too large']);
+    exit;
+}
+
 $raw = file_get_contents('php://input', false, null, 0, 8193);
 if (is_string($raw) && strlen($raw) > 8192) {
     http_response_code(413);
@@ -17,7 +24,7 @@ if (is_string($raw) && strlen($raw) > 8192) {
     exit;
 }
 
-$data = json_decode((string)$raw, true, 8);
+$data = json_decode((string)$raw, true, 16);
 
 if (is_array($data) && isset($data['text']) && isset($data['enabled'])) {
     $file = __DIR__ . '/../assets/data/status.json';

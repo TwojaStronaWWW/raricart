@@ -3,6 +3,7 @@ Allow: /
 Allow: /llms.txt
 Disallow: /admin/
 Disallow: /api/
+Disallow: /api/bot-trap.php
 Disallow: /drafts/
 Disallow: /bin/
 Disallow: /config/

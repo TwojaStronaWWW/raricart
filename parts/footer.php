@@ -1,3 +1,6 @@
+<?php
+declare(strict_types=1);
+?>
 <footer>
         <div class="footer-content">
             <!-- 1. Brand -->
@@ -97,7 +100,8 @@
             { "href_matches": "/*" },
             { "not": { "href_matches": "/api/*" } },
             { "not": { "href_matches": "/assets/php/*" } },
-            { "not": { "href_matches": "/admin/*" } }
+            { "not": { "href_matches": "/admin/*" } },
+            { "not": { "selector_matches": "[aria-hidden=\"true\"], [data-bot-trap]" } }
           ]
         },
         "eagerness": "moderate"

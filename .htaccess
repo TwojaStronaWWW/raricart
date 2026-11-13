@@ -12,7 +12,7 @@ DirectoryIndex index.php
 </IfModule>
 
 # Bezwzględna blokada plików konfiguracyjnych, baz danych, logów, kopii i kluczy ([REF-01] / [REF-05])
-<FilesMatch "(\.(json|bak|csv|sqlite|db|dist|log|md|pem|key|kdbx|sh|toml|lock|yml|yaml|htpasswd)$|^\.env|^\.git)">
+<FilesMatch "(\.(json|bak|csv|sqlite|db|db-wal|db-shm|dist|log|md|pem|key|kdbx|sh|toml|lock|yml|yaml|htpasswd)$|^\.env|^\.git)">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -99,6 +99,11 @@ ErrorDocument 404 /parts/404.html
     # Cache Control dla skryptów JS i arkuszy CSS (walidacja ETag/Last-Modified + cache-busting ?v=)
     <FilesMatch "\.(js|css)$">
         Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+
+    # Wyłączenie cachowania dla Service Workera (sw.js)
+    <FilesMatch "^sw\.js$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
     </FilesMatch>
 
     # Wyłącz nagłówki "no-cache" dodawane przez serwer/hosting

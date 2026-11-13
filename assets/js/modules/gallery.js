@@ -205,13 +205,12 @@ export function initGallery() {
 					svg.setAttribute('viewBox', '0 0 24 24');
 					svg.setAttribute('fill', 'none');
 					svg.classList.add('notice-icon');
-					svg.style.cssText = 'stroke: var(--color-accent); min-width: 20px;';
 					svg.innerHTML = '<rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.5"/>';
 					const span = document.createElement('span');
 					span.textContent = data.text;
 					notice.appendChild(svg);
 					notice.appendChild(span);
-					notice.style.display = 'flex';
+					notice.classList.add('is-visible');
 				}
 			})
 			.catch(() => {});

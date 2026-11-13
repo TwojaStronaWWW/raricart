@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/about-story.php - Sekcja 11: O Nas — Autentyczna Historia Założycielki (Lejek 2026)
 $about_story_img = function_exists('get_val') ? get_val('about_image', 'https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp') : 'https://media.raricart.pl/gallery/b40f9e32da2f0358_migrated.webp';
 ?>

@@ -44,6 +44,65 @@ class R2Client
     }
 
     /**
+     * Waliduje i normalizuje klucz obiektu Cloudflare R2.
+     * Usuwa wiodące/końcowe '/', blokuje '..', '\', znaki kontrolne ASCII oraz puste klucze.
+     */
+    public function sanitizeObjectKey(string $key): string
+    {
+        if (preg_match('/[\x00-\x1F\x7F]/', $key) === 1 || strpos($key, '\\') !== false) {
+            throw new \InvalidArgumentException('Invalid R2 object key: control characters or backslashes are forbidden.');
+        }
+
+        $trimmed = trim($key);
+        $trimmed = trim($trimmed, '/');
+        if ($trimmed === '') {
+            throw new \InvalidArgumentException('Invalid R2 object key: key cannot be empty.');
+        }
+
+        if (strpos($trimmed, '..') !== false) {
+            throw new \InvalidArgumentException('Invalid R2 object key: path traversal ("..") is forbidden.');
+        }
+
+        $segments = array_values(array_filter(
+            array_map('trim', explode('/', $trimmed)),
+            static fn(string $seg): bool => $seg !== '' && $seg !== '.'
+        ));
+
+        $normalized = implode('/', $segments);
+        if ($normalized === '' || strlen($normalized) > 512) {
+            throw new \InvalidArgumentException('Invalid R2 object key: normalized key length out of bounds.');
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * Generuje podpisany Presigned GET URL (AWS Signature V4, UNSIGNED-PAYLOAD) do bezpiecznego pobierania obiektu z R2.
+     */
+    public function createPresignedGetUrl(string $key, int $expiresInSeconds = 3600, ?int $nowTimestamp = null): string
+    {
+        return $this->buildPresignedUrl('GET', $key, $expiresInSeconds, $nowTimestamp);
+    }
+
+    /**
+     * Generuje podpisany Presigned PUT URL (AWS Signature V4, UNSIGNED-PAYLOAD) do bezpośredniego przesyłania pliku do R2.
+     */
+    public function createPresignedPutUrl(
+        string $key,
+        int|string $expiresOrContentType = 3600,
+        int|string|null $contentTypeOrExpires = null,
+        ?int $nowTimestamp = null
+    ): string {
+        $expiresInSeconds = 3600;
+        if (is_int($expiresOrContentType)) {
+            $expiresInSeconds = $expiresOrContentType;
+        } elseif (is_int($contentTypeOrExpires)) {
+            $expiresInSeconds = $contentTypeOrExpires;
+        }
+        return $this->buildPresignedUrl('PUT', $key, $expiresInSeconds, $nowTimestamp);
+    }
+
+    /**
      * Wysyła plik do bucketu Cloudflare R2.
      */
     public function putObject(string $key, string $content, string $contentType = 'application/octet-stream'): bool
@@ -51,9 +110,9 @@ class R2Client
         $this->lastError = null;
         $this->lastStatusCode = null;
 
-        $key = ltrim($key, '/');
+        $safeKey = $this->sanitizeObjectKey($key);
         $host = "{$this->accountId}.r2.cloudflarestorage.com";
-        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($key);
+        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($safeKey);
 
         $response = $this->sendRequest('PUT', $host, $uri, $content, $contentType);
 
@@ -73,9 +132,9 @@ class R2Client
         $this->lastError = null;
         $this->lastStatusCode = null;
 
-        $key = ltrim($key, '/');
+        $safeKey = $this->sanitizeObjectKey($key);
         $host = "{$this->accountId}.r2.cloudflarestorage.com";
-        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($key);
+        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($safeKey);
 
         $response = $this->sendRequest('GET', $host, $uri, '', 'application/octet-stream');
 
@@ -95,9 +154,9 @@ class R2Client
         $this->lastError = null;
         $this->lastStatusCode = null;
 
-        $key = ltrim($key, '/');
+        $safeKey = $this->sanitizeObjectKey($key);
         $host = "{$this->accountId}.r2.cloudflarestorage.com";
-        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($key);
+        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($safeKey);
 
         $response = $this->sendRequest('HEAD', $host, $uri, '', 'application/octet-stream');
 
@@ -122,9 +181,9 @@ class R2Client
      */
     public function deleteObject(string $key): bool
     {
-        $key = ltrim($key, '/');
+        $safeKey = $this->sanitizeObjectKey($key);
         $host = "{$this->accountId}.r2.cloudflarestorage.com";
-        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($key);
+        $uri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($safeKey);
 
         $response = $this->sendRequest('DELETE', $host, $uri, '', '');
         return ($response['status'] >= 200 && $response['status'] < 300) || $response['status'] === 404;
@@ -135,6 +194,73 @@ class R2Client
         $segments = explode('/', $key);
         $encodedSegments = array_map('rawurlencode', $segments);
         return implode('/', $encodedSegments);
+    }
+
+    private function deriveSigningKey(string $dateStamp, string $service = 's3'): string
+    {
+        $kDate = hash_hmac('sha256', $dateStamp, 'AWS4' . $this->secretAccessKey, true);
+        $kRegion = hash_hmac('sha256', $this->region, $kDate, true);
+        $kService = hash_hmac('sha256', $service, $kRegion, true);
+        return hash_hmac('sha256', 'aws4_request', $kService, true);
+    }
+
+    private function buildPresignedUrl(string $method, string $key, int $expiresInSeconds, ?int $nowTimestamp): string
+    {
+        $safeKey = $this->sanitizeObjectKey($key);
+        if ($this->accountId === '' || $this->accessKeyId === '' || $this->secretAccessKey === '' || $this->bucketName === '') {
+            throw new \RuntimeException('Missing Cloudflare R2 credentials (accountId, accessKeyId, secretAccessKey, bucketName).');
+        }
+
+        $expires = min(max($expiresInSeconds, 60), 86400);
+        $now = $nowTimestamp ?? time();
+        $amzDate = gmdate('Ymd\THis\Z', $now);
+        $dateStamp = gmdate('Ymd', $now);
+        $service = 's3';
+
+        $host = "{$this->accountId}.r2.cloudflarestorage.com";
+        $canonicalUri = '/' . rawurlencode($this->bucketName) . '/' . $this->encodeKey($safeKey);
+        $credentialScope = "{$dateStamp}/{$this->region}/{$service}/aws4_request";
+        $credential = "{$this->accessKeyId}/{$credentialScope}";
+
+        $queryParams = [
+            'X-Amz-Algorithm'     => 'AWS4-HMAC-SHA256',
+            'X-Amz-Credential'    => $credential,
+            'X-Amz-Date'          => $amzDate,
+            'X-Amz-Expires'       => (string)$expires,
+            'X-Amz-SignedHeaders' => 'host',
+        ];
+        ksort($queryParams);
+
+        $encodedPairs = [];
+        foreach ($queryParams as $k => $v) {
+            $encodedPairs[] = rawurlencode($k) . '=' . rawurlencode($v);
+        }
+        $canonicalQueryString = implode('&', $encodedPairs);
+
+        $canonicalHeaders = "host:{$host}\n";
+        $signedHeaders = 'host';
+        $payloadHash = 'UNSIGNED-PAYLOAD';
+
+        $canonicalRequest = implode("\n", [
+            strtoupper($method),
+            $canonicalUri,
+            $canonicalQueryString,
+            $canonicalHeaders,
+            $signedHeaders,
+            $payloadHash,
+        ]);
+
+        $stringToSign = implode("\n", [
+            'AWS4-HMAC-SHA256',
+            $amzDate,
+            $credentialScope,
+            hash('sha256', $canonicalRequest),
+        ]);
+
+        $signingKey = $this->deriveSigningKey($dateStamp, $service);
+        $signature = hash_hmac('sha256', $stringToSign, $signingKey);
+
+        return "https://{$host}{$canonicalUri}?{$canonicalQueryString}&X-Amz-Signature={$signature}";
     }
 
     private function sendRequest(string $method, string $host, string $uri, string $payload, string $contentType): array
@@ -199,9 +325,19 @@ class R2Client
 
         $url = "https://{$host}{$uri}";
 
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            @session_write_close();
+        }
+
+        if (!preg_match('/^[a-z0-9-]+\\.r2\\.cloudflarestorage\\.com$/i', $host)) {
+            $this->lastError = 'SSRF Guard: niedozwolony host docelowy R2.';
+            return ['status' => 0, 'body' => $this->lastError];
+        }
+
+        $responseBuffer = '';
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -209,6 +345,14 @@ class R2Client
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 0);
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, static function ($curl, string $chunk) use (&$responseBuffer): int {
+            $chunkLen = strlen($chunk);
+            if (strlen($responseBuffer) + $chunkLen > self::MAX_RESPONSE_BYTES) {
+                return 0;
+            }
+            $responseBuffer .= $chunk;
+            return $chunkLen;
+        });
         if (defined('CURLPROTO_HTTPS')) {
             curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
             curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
@@ -220,7 +364,7 @@ class R2Client
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         }
 
-        $body = curl_exec($ch);
+        curl_exec($ch);
         $statusCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curlError = curl_error($ch);
         curl_close($ch);
@@ -232,6 +376,6 @@ class R2Client
             return ['status' => 0, 'body' => $curlError];
         }
 
-        return ['status' => $statusCode, 'body' => (string)$body];
+        return ['status' => $statusCode, 'body' => $responseBuffer];
     }
 }

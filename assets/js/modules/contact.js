@@ -359,7 +359,7 @@ export function initContactForm() {
 			submitBtn.disabled = true;
 		}
 
-		fetch('api/contact.php', {
+		const submitPromise = fetch('api/contact.php', {
 			method: 'POST',
 			keepalive: true,
 			headers: { 'Content-Type': 'application/json' },
@@ -396,9 +396,12 @@ export function initContactForm() {
 						confirmBox.hidden = false;
 						confirmBox.style.display = 'flex';
 					}
+					return { ok: true, message: successMsg };
 				} else {
 					formSubmitted = false;
-					showToast('error', 'Błąd', (data && data.message) || 'Wystąpił błąd podczas wysyłania');
+					const errMsg = (data && data.message) || 'Wystąpił błąd podczas wysyłania';
+					showToast('error', 'Błąd', errMsg);
+					return { ok: false, error: errMsg };
 				}
 			})
 			.catch(err => {
@@ -406,6 +409,7 @@ export function initContactForm() {
 				formSubmitted = false;
 				const errorMsg = getTranslation('form.error_msg', 'Błąd połączenia. Spróbuj ponownie lub zadzwoń.');
 				showToast('error', 'Błąd wysyłki', errorMsg);
+				return { ok: false, error: errorMsg };
 			})
 			.finally(() => {
 				isSubmitting = false;
@@ -414,6 +418,10 @@ export function initContactForm() {
 					submitBtn.disabled = false;
 				}
 			});
+
+		if (e?.agentInvoked && typeof e?.respondWith === 'function') {
+			e.respondWith(submitPromise);
+		}
 	});
 
 	// Pre-CTA Check Availability Button Click

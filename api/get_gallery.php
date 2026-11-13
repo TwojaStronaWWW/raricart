@@ -5,20 +5,41 @@ header('Content-Type: application/json; charset=UTF-8');
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
+if (isset($_SERVER['HTTP_SEC_FETCH_SITE']) && strtolower(trim((string)$_SERVER['HTTP_SEC_FETCH_SITE'])) === 'cross-site') {
+    http_response_code(403);
+    echo json_encode([]);
+    exit;
+}
+
 $jsonFile = __DIR__ . '/../assets/data/gallery.json';
 $distFile = __DIR__ . '/../assets/data/gallery.json.dist';
 $images = [];
 $useJson = false;
 
-$raw = '';
-if (file_exists($jsonFile) && filesize($jsonFile) > 10) {
-    $raw = (string)file_get_contents($jsonFile);
-} elseif (file_exists($distFile) && filesize($distFile) > 10) {
-    $raw = (string)file_get_contents($distFile);
+$readJsonWithSharedLock = static function (string $path): string {
+    if (!is_file($path) || filesize($path) <= 10) {
+        return '';
+    }
+    $fp = @fopen($path, 'rb');
+    if (!$fp) {
+        return '';
+    }
+    $content = '';
+    if (@flock($fp, LOCK_SH)) {
+        $content = (string)stream_get_contents($fp);
+        @flock($fp, LOCK_UN);
+    }
+    fclose($fp);
+    return $content;
+};
+
+$raw = $readJsonWithSharedLock($jsonFile);
+if ($raw === '') {
+    $raw = $readJsonWithSharedLock($distFile);
 }
 
 if ($raw !== '') {
-    $decoded = json_decode($raw, true);
+    $decoded = json_decode($raw, true, 16);
     if (is_array($decoded) && !empty($decoded)) {
         foreach ($decoded as $item) {
             if (is_string($item)) {

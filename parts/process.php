@@ -1,5 +1,6 @@
 <?php
-// parts/process.php - Sekcja 5: „Jak to działa?” — Proces Zakupowy (5 przejrzystych kroków — Lejek 2026)
+declare(strict_types=1);
+// parts/process.php - Sekcja 5: „Jak to działa?” — Proces Zakupowy (5 przejrzystych kroków — Lejek 2026, [DR-06] wyłącznie numeracja 01..05 bez duplikacji ikon SVG)
 ?>
 <section id="proces" class="section process-section" aria-label="Jak wygląda proces współpracy">
     <div class="process-container">
@@ -18,11 +19,6 @@
             <div class="process-step-card step-active">
                 <div class="step-card-top">
                     <span class="step-number">01</span>
-                    <div class="step-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                    </div>
                 </div>
                 <div class="step-card-body">
                     <span class="step-tag" data-i18n="process.step1_tag">KONTAKT</span>
@@ -37,11 +33,6 @@
             <div class="process-step-card">
                 <div class="step-card-top">
                     <span class="step-number">02</span>
-                    <div class="step-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
-                    </div>
                 </div>
                 <div class="step-card-body">
                     <span class="step-tag" data-i18n="process.step2_tag">DOPASOWANIE</span>
@@ -56,14 +47,6 @@
             <div class="process-step-card">
                 <div class="step-card-top">
                     <span class="step-number">03</span>
-                    <div class="step-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="1" y="3" width="15" height="13"></rect>
-                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
-                        </svg>
-                    </div>
                 </div>
                 <div class="step-card-body">
                     <span class="step-tag" data-i18n="process.step3_tag">PRZYGOTOWANIE</span>
@@ -78,11 +61,6 @@
             <div class="process-step-card">
                 <div class="step-card-top">
                     <span class="step-number">04</span>
-                    <div class="step-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                        </svg>
-                    </div>
                 </div>
                 <div class="step-card-body">
                     <span class="step-tag" data-i18n="process.step4_tag">SERWIS NA ŻYWO</span>
@@ -97,12 +75,6 @@
             <div class="process-step-card">
                 <div class="step-card-top">
                     <span class="step-number">05</span>
-                    <div class="step-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                    </div>
                 </div>
                 <div class="step-card-body">
                     <span class="step-tag" data-i18n="process.step5_tag">FINAŁ</span>

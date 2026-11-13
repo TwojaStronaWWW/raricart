@@ -176,4 +176,27 @@ describe('Higiena repozytorium (Repo Hygiene wzorowane na Gal Anonim i _site-tem
       }, `Plik ${f} zawiera niepoprawny JSON!`);
     }
   });
+
+  it('standardy [REF-01], [REF-06], [REF-07] (.htaccess, .well-known/security.txt, llms.txt) oraz końce linii LF w skryptach .sh i .githooks/* muszą być spełnione', () => {
+    const htaccess = fs.readFileSync(path.join(ROOT_DIR, '.htaccess'), 'utf-8');
+    assert.match(htaccess, /sqlite\|db/i, 'Brak ochrony plików .sqlite|.db w .htaccess');
+    assert.match(htaccess, /json\|bak\|csv/i, 'Brak ochrony plików .json|.csv w .htaccess');
+    assert.match(htaccess, /\^\\\.env/i, 'Brak ochrony .env w .htaccess');
+
+    const secTxt = fs.readFileSync(path.join(ROOT_DIR, '.well-known', 'security.txt'), 'utf-8');
+    assert.match(secTxt, /Contact:\s*mailto:kontakt@raricart\.pl/i);
+    assert.match(secTxt, /Expires:\s*202[7-9]-\d{2}-\d{2}T/i);
+    assert.match(secTxt, /Canonical:\s*https:\/\/raricart\.pl\/\.well-known\/security\.txt/i);
+    assert.match(secTxt, /Policy:\s*https:\/\/raricart\.pl\/polityka-prywatnosci/i);
+
+    const llmsTxt = fs.readFileSync(path.join(ROOT_DIR, 'llms.txt'), 'utf-8');
+    assert.ok(llmsTxt.includes('# Raricart'), 'Plik llms.txt musi zawierać nagłówek marki Raricart');
+
+    const hookFiles = fs.readdirSync(path.join(ROOT_DIR, '.githooks')).map(f => path.join(ROOT_DIR, '.githooks', f));
+    const binShFiles = fs.readdirSync(path.join(ROOT_DIR, 'bin')).filter(f => f.endsWith('.sh')).map(f => path.join(ROOT_DIR, 'bin', f));
+    for (const lfFile of [...hookFiles, ...binShFiles]) {
+      const raw = fs.readFileSync(lfFile, 'utf-8');
+      assert.strictEqual(raw.includes('\r\n'), false, `Wykryto końce linii CRLF zamiast LF w pliku: ${path.relative(ROOT_DIR, lfFile)}`);
+    }
+  });
 });

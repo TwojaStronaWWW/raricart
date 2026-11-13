@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/stations.php - Sekcja 3: „Co właściwie oferujemy?” — Stacje
 $pancakes_img = function_exists('get_val') ? get_val('offer_cards.pancakes', 'https://media.raricart.pl/gallery/7e983f317a6f7fcd_migrated.webp') : 'https://media.raricart.pl/gallery/7e983f317a6f7fcd_migrated.webp';
 $icecream_img = function_exists('get_val') ? get_val('offer_cards.icecream', 'https://media.raricart.pl/gallery/5164c04607df0960_migrated.webp') : 'https://media.raricart.pl/gallery/5164c04607df0960_migrated.webp';

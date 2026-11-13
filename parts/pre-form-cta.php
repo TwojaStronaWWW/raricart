@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/pre-form-cta.php - Sekcja 12: Ostatnie CTA Przed Formularzem (Lejek 2026)
 $pre_cta_bg = function_exists('get_val') ? get_val('why_us_bg', 'https://media.raricart.pl/gallery/749ae64eb81a3f80_migrated.webp') : 'https://media.raricart.pl/gallery/749ae64eb81a3f80_migrated.webp';
 ?>

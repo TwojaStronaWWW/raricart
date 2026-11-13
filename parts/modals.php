@@ -1,3 +1,6 @@
+<?php
+declare(strict_types=1);
+?>
     <!-- Modals -->
     <div id="modal" class="modal">
         <div class="modal-content">

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
+    color-scheme: light;
     --color-accent: #2d3a2a;
     --color-accent-hover: #3d4a3a;
     --color-bg: #f5f7fa;
@@ -8,6 +9,18 @@
     --color-text-muted: #6b7280;
     --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+h1, h2, h3, h4 {
+    text-wrap: balance;
+}
+
+p, li {
+    text-wrap: pretty;
 }
 
 body {

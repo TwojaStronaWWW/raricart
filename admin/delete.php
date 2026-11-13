@@ -19,8 +19,15 @@ if (ob_get_length()) {
 }
 header('Content-Type: application/json; charset=UTF-8');
 
+$contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > 65536) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Przekroczono maksymalny rozmiar zapytania (64 KB).']);
+    exit;
+}
+
 $raw = file_get_contents('php://input', false, null, 0, 8192);
-$input = json_decode((string)$raw, true, 8);
+$input = json_decode((string)$raw, true, 16);
 $targetFile = $input['file'] ?? $_POST['file'] ?? null;
 
 if (empty($targetFile) || !is_string($targetFile) || strlen($targetFile) > 512) {
@@ -39,7 +46,7 @@ if (file_exists($galleryFile)) {
     if ($fp && @flock($fp, LOCK_EX)) {
         rewind($fp);
         $rawGallery = stream_get_contents($fp);
-        $galleryData = (is_string($rawGallery) && $rawGallery !== '') ? json_decode($rawGallery, true) : null;
+        $galleryData = (is_string($rawGallery) && $rawGallery !== '') ? json_decode($rawGallery, true, 16) : null;
         if (is_array($galleryData)) {
             $initialCount = count($galleryData);
             $updatedData = array_values(array_filter($galleryData, static function ($item) use ($targetFile): bool {

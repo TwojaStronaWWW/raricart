@@ -1,10 +1,23 @@
 <?php
+declare(strict_types=1);
 // parts/realizations.php - Sekcja 8: Realizacje („W blasku przyjęć” - Latające zdjęcia Parallax)
 $galleryFiles = [];
 $jsonFile = __DIR__ . '/../assets/data/gallery.json';
-if (file_exists($jsonFile)) {
-    $galleryFiles = json_decode(file_get_contents($jsonFile), true);
-    if (!is_array($galleryFiles)) $galleryFiles = [];
+if (function_exists('read_json_file_shared')) {
+    $galleryFiles = read_json_file_shared($jsonFile) ?? [];
+} elseif (is_file($jsonFile)) {
+    $fp = @fopen($jsonFile, 'rb');
+    if ($fp && @flock($fp, LOCK_SH)) {
+        $rawGallery = (string)stream_get_contents($fp);
+        @flock($fp, LOCK_UN);
+        $decodedGallery = json_decode($rawGallery, true, 16);
+        if (is_array($decodedGallery)) {
+            $galleryFiles = $decodedGallery;
+        }
+    }
+    if ($fp) {
+        fclose($fp);
+    }
 }
 $totalImages = count($galleryFiles);
 

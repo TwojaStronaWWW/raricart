@@ -1,5 +1,7 @@
 <?php
-header("Content-Type: text/plain");
+declare(strict_types=1);
+
+header("Content-Type: text/plain; charset=UTF-8");
 
 $host = strtolower($_SERVER['HTTP_HOST'] ?? '');
 

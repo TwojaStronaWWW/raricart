@@ -6,15 +6,17 @@ $reviewsFile = __DIR__ . '/../assets/data/reviews.json';
 $reviewsDist = __DIR__ . '/../assets/data/reviews.json.dist';
 $reviewsList = [];
 
-if (file_exists($reviewsFile) && filesize($reviewsFile) > 10) {
+if (function_exists('read_json_file_shared')) {
+    $reviewsList = read_json_file_shared($reviewsFile) ?? read_json_file_shared($reviewsDist) ?? [];
+} elseif (is_file($reviewsFile) && filesize($reviewsFile) > 10) {
     $raw = (string)file_get_contents($reviewsFile);
-    $decoded = json_decode($raw, true);
+    $decoded = json_decode($raw, true, 16);
     if (is_array($decoded)) {
         $reviewsList = $decoded;
     }
-} elseif (file_exists($reviewsDist) && filesize($reviewsDist) > 10) {
+} elseif (is_file($reviewsDist) && filesize($reviewsDist) > 10) {
     $raw = (string)file_get_contents($reviewsDist);
-    $decoded = json_decode($raw, true);
+    $decoded = json_decode($raw, true, 16);
     if (is_array($decoded)) {
         $reviewsList = $decoded;
     }

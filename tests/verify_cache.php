@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Test weryfikujący poprawność mechanizmu cache i wersji plików.
  */

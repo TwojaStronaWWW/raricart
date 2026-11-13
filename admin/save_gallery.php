@@ -12,6 +12,13 @@ check_csrf(true);
 
 header('Content-Type: application/json; charset=UTF-8');
 
+$contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > 262144) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Zbyt duży rozmiar danych galerii.']);
+    exit;
+}
+
 $jsonFile = __DIR__ . '/../assets/data/gallery.json';
 $raw = file_get_contents('php://input', false, null, 0, 262145);
 if (is_string($raw) && strlen($raw) > 262144) {

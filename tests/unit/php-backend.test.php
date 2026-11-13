@@ -649,6 +649,58 @@ it('limit wejścia 65536 B zwraca HTTP 413, a filtr WAF L7 zwraca HTTP 403 i nak
     }
 });
 
+it('wszystkie pliki PHP w projekcie posiadają declare(strict_types=1), a strażnik SSRF is_safe_https_url() blokuje 169.254.169.254, localhost i sieci prywatne ([REF-05])', function() use ($rootDir) {
+    require_once $rootDir . '/api/rate-limit.php';
+
+    assert_true(is_safe_https_url('https://ntfy.sh/raricart_topic'), 'is_safe_https_url musi akceptować https://ntfy.sh');
+    assert_true(is_safe_https_url('https://hd.twojastronawww.pl/ticket_hook.php'), 'is_safe_https_url musi akceptować https://hd.twojastronawww.pl');
+
+    $unsafeUrls = [
+        'http://ntfy.sh/topic',
+        'https://169.254.169.254/latest/meta-data/',
+        'https://127.0.0.1/admin',
+        'https://localhost:8080/api',
+        'https://0.0.0.0/',
+        'https://[::1]/',
+        'https://10.0.0.5/internal',
+        'https://192.168.1.1/router',
+        'https://172.16.0.1/secret',
+        'https://metadata.google.internal/computeMetadata/v1/',
+    ];
+    foreach ($unsafeUrls as $badUrl) {
+        assert_equals(false, is_safe_https_url($badUrl), "SSRF Guard musi zablokować niebezpieczny URL: $badUrl");
+    }
+
+    $tmpRateDir = sys_get_temp_dir() . '/raricart_ratetest_' . bin2hex(random_bytes(4));
+    putenv("RARICART_TEST_RATE_LIMIT_DIR=$tmpRateDir");
+    try {
+        $testIp = '198.51.100.222';
+        $allowed = rate_limit('raricart_contact_' . $testIp, 5, 60);
+        assert_true($allowed, 'Pierwsze wywołanie rate_limit powinno zwrócić true');
+        $rateFiles = glob($tmpRateDir . '/rate_*.json') ?: [];
+        assert_equals(1, count($rateFiles), 'Powinien powstać dokładnie 1 plik rate_*.json');
+        $fileName = basename($rateFiles[0]);
+        assert_true(strpos($fileName, '198') === false && strpos($fileName, '222') === false, "Nazwa pliku rate_limit nie może ujawniać oktetów IP (Zero-PII SHA-256): $fileName");
+        $rateData = json_decode((string)file_get_contents($rateFiles[0]), true, 16);
+        assert_true(is_array($rateData) && isset($rateData['key_hash']) && strlen((string)$rateData['key_hash']) === 64, 'Plik rate_limit musi przechowywać 64-znakowy skrót SHA-256 (key_hash)');
+    } finally {
+        putenv('RARICART_TEST_RATE_LIMIT_DIR=');
+        remove_temp_dir_only($tmpRateDir);
+    }
+
+    $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($rootDir, \FilesystemIterator::SKIP_DOTS));
+    foreach ($iterator as $fileInfo) {
+        $path = $fileInfo->getPathname();
+        if (strpos($path, DIRECTORY_SEPARATOR . '.git' . DIRECTORY_SEPARATOR) !== false || strpos($path, DIRECTORY_SEPARATOR . 'node_modules' . DIRECTORY_SEPARATOR) !== false) {
+            continue;
+        }
+        if (strtolower($fileInfo->getExtension()) === 'php') {
+            $phpCode = (string)file_get_contents($path);
+            assert_true((bool)preg_match('/declare\s*\(\s*strict_types\s*=\s*1\s*\)\s*;/', $phpCode), "Brak declare(strict_types=1); w pliku: $path");
+        }
+    }
+});
+
 // --- 7. PODSUMOWANIE ---
 echo "\n=== PODSUMOWANIE TESTÓW PHP ===\n";
 echo "Zaliczone: $testsPassed\n";

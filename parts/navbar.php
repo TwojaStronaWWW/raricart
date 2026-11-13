@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/navbar.php
 
 // Fix 11d: Subdomain Logic

@@ -12,6 +12,13 @@ check_csrf(true);
 
 header('Content-Type: application/json; charset=UTF-8');
 
+$contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > 65536) {
+    http_response_code(413);
+    echo json_encode(['status' => 'error', 'message' => 'Zbyt duży rozmiar danych (max 64 KB).']);
+    exit;
+}
+
 $jsonFile = __DIR__ . '/../assets/data/content.json';
 $raw = file_get_contents('php://input', false, null, 0, 65537);
 if (is_string($raw) && strlen($raw) > 65536) {

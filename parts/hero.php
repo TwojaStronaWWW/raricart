@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // parts/hero.php - Sekcja Hero (Split-Screen) z wideo Live Food Station
 $default_hero_vid = 'https://media.raricart.pl/content/hero.mp4';
 $hero_vid = function_exists('get_val') ? get_val('hero_video', $default_hero_vid) : $default_hero_vid;
