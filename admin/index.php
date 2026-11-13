@@ -7,7 +7,7 @@ require_once __DIR__ . '/../api/leads-store.php';
 $config_file = __DIR__ . '/../assets/data/config.json';
 
 // Stały skrót bcrypt do wyrównania czasu odpowiedzi przy nieistniejącym koncie (ochrona przed enumeracją loginów)
-const ADMIN_DUMMY_BCRYPT_HASH = '$2y$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW';
+const ADMIN_DUMMY_BCRYPT_HASH = '$2y$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW'; // gitleaks:allow
 
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     header("Location: dashboard.php");

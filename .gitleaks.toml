@@ -29,6 +29,9 @@ tags = ["password", "bcrypt"]
 
 [allowlist]
 description = "Allowlist for template examples and tests"
+regexes = [
+  '''ADMIN_DUMMY_BCRYPT_HASH''',
+]
 paths = [
   '''^\.env\.example$''',
   '''^assets/data/config\.json\.dist$''',
